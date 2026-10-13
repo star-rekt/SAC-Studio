@@ -1,0 +1,16 @@
+{
+  "status": "Draft scale for design-system review; font families grounded in SAC guide and CHILLY20 references",
+  "styles": [
+    {"name":"Display/XL","family":"Quiet Sans","style":"ExtraBold","size":128,"lineHeight":128},
+    {"name":"Display/L","family":"Quiet Sans","style":"ExtraBold","size":96,"lineHeight":104},
+    {"name":"Heading","family":"Quiet Sans","style":"Bold","size":48,"lineHeight":56},
+    {"name":"Body/Email","family":"Quiet Sans","style":"Regular","size":24,"lineHeight":34},
+    {"name":"Body/Site","family":"Sofia Pro","style":"Regular","size":24,"lineHeight":32},
+    {"name":"CTA","family":"Sofia Pro","style":"Bold","size":28,"lineHeight":36},
+    {"name":"Eyebrow","family":"Quiet Sans","style":"Bold","size":24,"lineHeight":30},
+    {"name":"Documentation/Title","family":"Sofia Pro","style":"Black","size":48,"lineHeight":56},
+    {"name":"Documentation/Heading","family":"Sofia Pro","style":"Bold","size":28,"lineHeight":36},
+    {"name":"Documentation/Body","family":"Sofia Pro","style":"Regular","size":18,"lineHeight":28},
+    {"name":"Documentation/Label","family":"Sofia Pro","style":"Bold","size":14,"lineHeight":20}
+  ]
+}

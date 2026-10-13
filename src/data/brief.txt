@@ -1,0 +1,227 @@
+Brief Owner (you):
+Derek Kitching
+
+Figma Board Link:
+
+Site Assets Requested
+
+Hero x2:
+·      Launch
+·      Ends Today
+
+Global Text x2:
+·      Launch
+·      Ends Today
+
+Campaign Banner x2:
+·      Launch
+·      Ends Today
+
+PLP Card:
+·      Launch
+
+PLP & PDP Badging:
+·      Badging required on eligible PLPs and PDPs
+
+CPLP Tiles:
+Men's Apparel
+Women's Apparel
+Hiking Shoes
+Climbing Gear
+Bike Gear
+Sunglasses
+Camp & Hike
+Fishing
+Backpacks
+
+Site Asset Notes
+Summary of Site Changes / Promo Overview:
+SAC Bundle & Save — Buy 3+ Summer Items, Save an Extra 20% (October 20–October 26, 2026)
+
+Campaign Synopsis:
+Framed as an end-of-season summer clearout, this bundle promotion gives SAC customers an extra 20% off when they buy three or more eligible summer items. Eligible merch spans men's and women's summer apparel, hiking shoes, climbing gear, bike gear, sunglasses, camp and hike, fishing, and backpacks. The goal is to clear remaining summer inventory and drive multi-unit baskets as the site shifts to winter. The discount applies automatically in cart once 3+ eligible items are added — no promo code required. Messaging should lean on last-chance urgency: this is the final markdown push on summer gear.
+
+Key Messages:
+·      End-of-Season Summer Blowout
+·      Buy 3+ summer items, save an extra 20%
+·      Shop summer apparel, hiking shoes, climb, bike, sunglasses, camp & hike, fishing, and backpacks
+·      Discount applies automatically in cart — no promo code needed
+·      October 20–26 only — last chance on summer gear
+
+Merch Direction
+Focus on remaining summer inventory across apparel, footwear, and gear. Pricing team to provide the eligible style list.
+
+Brands to Expect:
+·      Columbia
+·      The North Face
+·      Mountain Hardwear
+·      prAna
+·      Osprey
+·      Big Agnes
+·      Dakine
+·      Gorewear
+·      Helly Hansen
+·      Scarpa
+·      La Sportiva
+
+Product Categories to Include:
+·      Men's Summer Apparel
+·      Women's Summer Apparel
+·      Hiking Shoes
+·      Climbing Gear
+·      Bike Gear
+·      Sunglasses
+·      Camp & Hike
+·      Fishing
+·      Backpacks
+
+Campaign Details
+Dates: October 20–October 26, 2026
+Site Placements: Hero, GT, CB, PLP Card
+Cart Logic: Extra 20% off applied automatically in cart when 3+ eligible summer items are added — no promo code required
+ERP Code: SAC__Q3_All_All_20%_All_Bump_BUY3SAVE20SUMMER
+
+Site Experience
+Main CPLP Rules Page: TBD
+CPLP Text Links:
+·      Men's Apparel
+·      Women's Apparel
+·      Hiking Shoes
+·      Climbing Gear
+·      Bike Gear
+·      Sunglasses
+·      Camp & Hike
+·      Fishing
+·      Backpacks
+
+Badging:
+Apply campaign badging on eligible PLPs and PDPs reflecting the "Buy 3, Save 20%" mechanic.
+
+Creative Direction
+Key Narrative:
+Summer's last call. This is the final chance to stock up on summer gear before it's gone — and the more you bundle, the more you save. Messaging should feel urgent and clearance-driven, using classic fun and playful Steep & Cheap tone.
+
+Imagery:
+Feature warm-weather lifestyle and product imagery: hiking, climbing, biking, camping, and fishing. Avoid snow or winter imagery. Key copy overlays: "End-of-Season Blowout" + "Buy 3+, Save an Extra 20%". Use dates (October 20–26) in all site assets.
+
+Email
+E1: 10/20 — Bundle & Save: Launch
+TB: Free Shipping over $200
+Section 1 - Hero
+Design: Hiking imagery with the lockup. Warm weather lifestyle only, no snow or winter. Key overlays are End of Season Blowout and Buy 3+, Save an Extra 20%.
+Copy: Body copy under the hero spells out the mechanic in the playful SAC voice. Buy 3 or more summer items and an extra 20% comes off automatically in cart, no code. October 20 to 26 only.
+CTA: Shop Now
+Section 2 - Lifestyle Category Tiles with Max % off
+Included Categories: Men's Apparel up to 65% off  |  Women's Apparel up to 65% off  |  Hiking Footwear up to 60% off  |  Climbing Gear up to 60% off  |  Bike Gear up to 70% off  |  Camp & Hike up to 60% off
+Merch to confirm every max percentage before build.
+CTA: Shop All
+Section 3 - 4 Simple Brand Tiles (With %)
+Included Brands: Columbia  |  The North Face  |  Mountain Hardwear  |  Osprey
+Merch to confirm the brands inventory
+CTA: Shop All
+Section 4 - Terms & Conditions
+
+E2: 10/21 — Bundle & Save: Summer Apparel Spotlight
+TB: Free Shipping over $200
+Section 1 - Hero
+Design: Summer into fall lifestyle imagery. Show the stack visually so the extra 20% reads as sitting on top of the existing markdown rather than replacing it.
+Copy: Lead summer apparel on sale up to 60% off. The bundle is the plus, buy 3 or more and take an extra 20% off in cart. Make the stacking unmistakable.
+CTA: Shop Now
+Section 2 - Product Recs
+Header: Summer Best Sellers
+CTA: Shop Men's & Shop Women's
+Section 3 - Secondary Lifestyle Tiles
+Header: Bundle & Save 20% Off (Header has to signal that these categories are part of the bundle promo.)
+Included Items: Camp & Hike up to 60% off  |  Hiking Footwear up to 60% off  |  Bike Gear up to 70% off
+Merch to confirm the categories and the max percentages.
+CTA: Shop All
+Section 4 - Terms & Conditions
+
+E3: 10/22 — Bundle & Save: Brand Spotlight
+Section 1 - Hero
+Design: Build on the full template here, reworked to fit the Summer Clearout. The lockup above the brand tiles promotes the extra 20% off.
+Copy: Short paragraph under the H1 explains the promo and makes clear that any of these brands can be bundled for an extra 20% off. Playful SAC voice.
+CTA: Shop Now
+Section 2 - 6 Simple Brand Tiles (With %)
+Included Brands: The North Face  |  Mountain Hardwear  |  Helly Hansen  |  Big Agnes  |  Dakine  |  Gorewear
+ Holding Columbia back for the 10/24 send so the two do not overlap. Merch to confirm the brands inventory
+CTA: Shop All
+
+E4: 10/23 — Bundle & Save: Camp & Hike Spotlight
+TB: Buy 3+ >> Save An Extra 20%
+Section 1 - Hero
+Design: Fall camping lifestyle imagery, warm weather only. Show the stack visually so the extra 20% reads as sitting on top of the existing markdown.
+Copy: Lead camp and hike gear on sale up to 60% off. The bundle is the plus, buy 3 or more for an extra 20% off in cart. Make the stacking unmistakable.
+CTA: Shop Now
+Section 2 - Product Recs
+Header: Bestsellers On Sale
+CTA: Shop All
+Section 3 - Secondary Lifestyle Tiles
+Header: Bundle & Save 20% Off (Header has to signal that these categories are part of the bundle promo.)
+Included Items: Summer Apparel up to 60% off  |  Hiking Footwear up to 60% off  |  Bike Gear up to 70% off
+Merch to confirm the categories and the max percentages.
+CTA: Shop All
+Section 4 - Terms & Conditions
+
+E5: 10/24 — Bundle & Save: Top Picks Of The Summer
+TB: Free Shipping over $200
+Section 1 - Hero
+Design: Simple design style following the launch build as the example. Warm weather lifestyle, no winter imagery.
+Copy: Position as our top picks of the summer. Curated rather than comprehensive, with the bundle mechanic as the reason to add three.
+CTA: Shop Now
+Section 2 - Product Recs
+Header: Summer Top Picks
+CTA: Shop All
+Section 3 - 4 Simple Brand Tiles (No %)
+Header: Summer Top Brands
+Included Brands: Columbia  |  La Sportiva  |  prAna  |  Osprey
+Merch to confirm the brands inventory
+CTA: Shop All
+Section 4 - Terms & Conditions
+
+E6: 10/25 — Bundle & Save: Ends Tmr
+TB: Ends Tomorrow >> Buy 3+ Save An Extra 20%
+Section 1 - Hero
+Design: Same build as the launch with an ends tomorrow callout added. Warm weather lifestyle only.
+Copy: Push ends tomorrow on the summer clearout. Buy 3 or more and an extra 20% comes off automatically in cart, no code.
+CTA: Shop Now
+Section 2 - Lifestyle Category Tiles
+Included Categories: Men's Apparel  |  Women's Apparel  |  Hike & Camp  |  Climbing Gear  |  Bike Gear  |  Footwear
+CTA: Shop All
+Section 3 - 4 Simple Brand Tiles (No %)
+Included Brands: The North Face  |  Columbia  |  Mountain Hardwear  |  Osprey
+Merch to confirm the brands inventory
+CTA: Shop All
+Section 4 - Terms & Conditions
+
+E7: 10/26 — Bundle & Save: Ends Tdy
+TB: Ends Today >> Buy 3+ Save An Extra 20%
+Section 1 - Hero
+Design: Same build as the launch with ends today carrying the lockup. Warm weather lifestyle only.
+Copy: Last day of the summer clearout. Buy 3 or more for an extra 20% off in cart. Summer's last call.
+CTA: Shop Now
+Section 2 - Product Recs
+Header: Bundle and Save Extra 20%
+CTA: Shop All
+Section 3 - 4 Simple Brand Tiles (No %)
+Included Brands: The North Face  |  Columbia  |  Mountain Hardwear  |  Osprey
+Merch to confirm the brands inventory
+CTA: Shop All
+Section 4 - Terms & Conditions
+
+Affiliates
+1 text link
+
+Paid Social
+2 sets + copy
+Concept 1: Summer's Last Call
+Headline: Summer's Last Call
+Subhead: Buy 3+, Save an Extra 20%
+CTA: Shop Now
+Design direction: Lifestyle image,
+
+Concept 2: Stack It Up (reuses the Apparel or Camp & Hike hero)
+Headline: Sale Prices. Plus 20% More.
+Subhead: Buy 3+, extra 20% off in cart
+CTA: Shop the Bundle
+Design direction: Lifestyle image pulled from the email apparel or camp hero, with the stacked offer as the overlay ("Up to 60% off" + "Extra 20%").

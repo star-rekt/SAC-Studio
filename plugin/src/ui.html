@@ -1,0 +1,39 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+  :root { color-scheme: light dark }
+  body { margin:0; padding:18px; font:12px/1.6 Inter,-apple-system,sans-serif;
+         color:var(--figma-color-text); background:var(--figma-color-bg) }
+  h1 { margin:0 0 6px; font-size:15px; letter-spacing:-.2px }
+  p { margin:0 0 10px; font-size:11.5px; line-height:1.6;
+      color:var(--figma-color-text-secondary) }
+  label.drop { display:block; border:1px dashed var(--figma-color-border-strong);
+    border-radius:8px; padding:24px 14px; text-align:center; cursor:pointer;
+    background:var(--figma-color-bg-secondary); margin:14px 0 10px }
+  #name { font-size:12px; color:var(--figma-color-text) }
+  #fonts { display:block; margin-top:5px; font-size:10.5px;
+           color:var(--figma-color-text-secondary) }
+  button { width:100%; padding:9px 12px; font:inherit; border:0; border-radius:6px;
+    cursor:pointer; background:var(--figma-color-bg-brand);
+    color:var(--figma-color-text-onbrand) }
+  button:disabled { opacity:.45; cursor:not-allowed }
+  #status { margin-top:12px; font-size:11.5px; line-height:1.6 }
+  .bad { color:var(--figma-color-text-danger) }
+  .good { color:var(--figma-color-text-success) }
+  code { font-size:10.5px; background:var(--figma-color-bg-secondary);
+         padding:1px 4px; border-radius:3px }
+</style>
+<h1>Bring the whole campaign across.</h1>
+<p>Every asset becomes a frame: text stays text, blocks stay shapes, and a
+  photograph can be swapped without rebuilding the asset around it.</p>
+<label class="drop">
+  <input id="file" type="file" accept=".json" hidden>
+  <span id="name">Choose a .figma.json export</span>
+  <span id="fonts"></span>
+</label>
+<button id="build" disabled>Build the campaign</button>
+<div id="status"></div>
+<p>Get the file from the studio — <b>Export for Figma</b> — or at
+  <code>/api/figma/&lt;campaign&gt;</code>. Install the fonts it names first:
+  a missing face stops the build rather than being swapped for another.</p>
+<script>/*INLINE_JS*/</script>

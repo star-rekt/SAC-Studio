@@ -1,0 +1,11 @@
+node_modules
+.DS_Store
+dist
+dist-desktop
+desktop-release
+tsconfig.tsbuildinfo
+server/.shots
+data/sessions
+data/media-library.json
+data/exports
+measured/

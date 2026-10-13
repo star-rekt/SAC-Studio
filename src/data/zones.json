@@ -1,0 +1,410 @@
+{
+ "schemaVersion": 1,
+ "status": "Generated from data/image-copy-classification.json. Reviewed by eye; see that file for how.",
+ "what": "Photographs in the published SAC library that can carry type, and where. The rect is on the SOURCE image, so a crop that cuts the band out does not have it.",
+ "zones": [
+  {
+   "id": "gallery-113-2",
+   "key": "eb31f4f8a62e3491671e27b0bd6b5dabd74b0c16",
+   "rect": [
+    0,
+    0,
+    0.6,
+    0.5
+   ],
+   "band": "left 60% and top",
+   "surface": "snow",
+   "note": "the strongest in the pool -- a large even pale field"
+  },
+  {
+   "id": "gallery-288-9",
+   "key": "d0c0eebded4779cdf0881ce032f37a93b704b1d7",
+   "rect": [
+    0,
+    0,
+    0.5,
+    0.4
+   ],
+   "band": "top-left",
+   "surface": "blue sky",
+   "note": ""
+  },
+  {
+   "id": "climb-01",
+   "key": "33a796cb4e26f062ec271c38a91d6d4deabec364",
+   "rect": [
+    0.55,
+    0,
+    0.45,
+    1.0
+   ],
+   "band": "right",
+   "surface": "hazy valley",
+   "note": "modest"
+  },
+  {
+   "id": "camp-01",
+   "key": "f5478ad356ccc6d28dfd2e4c5347c378b0383fd9",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top",
+   "surface": "sky and lake",
+   "note": ""
+  },
+  {
+   "id": "camp-03",
+   "key": "6e2b3e4237986646da86dac6874e5f88f3d15799",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top",
+   "surface": "cloudy sky",
+   "note": ""
+  },
+  {
+   "id": "hike-07",
+   "key": "49259e0bfd777466efdb4062932a27f2adb18db1",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top",
+   "surface": "pale sky",
+   "note": ""
+  },
+  {
+   "id": "water-swim-01",
+   "key": "58696480bd37d60ee8eacb1f873ca4564d136245",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top",
+   "surface": "sky and water",
+   "note": ""
+  },
+  {
+   "id": "landscape-01",
+   "key": "eff459223f3dea8740c82e02d63408875e117299",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top third",
+   "surface": "cloudy sky",
+   "note": ""
+  },
+  {
+   "id": "camp-02",
+   "key": "28eda8e306ac1da62cc3d33c3c543f9ed00d9df9",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top",
+   "surface": "sunset sky",
+   "note": "bright sun in frame -- check by eye"
+  },
+  {
+   "id": "hike-01",
+   "key": "d125157533912b2bc2c5a59de1696de563c63faa",
+   "rect": [
+    0,
+    0,
+    0.5,
+    0.5
+   ],
+   "band": "left and top",
+   "surface": "pale sky",
+   "note": ""
+  },
+  {
+   "id": "hike-02",
+   "key": "6be3a3735ee83ea03e03b3ad643bccc19a1e94ad",
+   "rect": [
+    0,
+    0,
+    1,
+    0.5
+   ],
+   "band": "top half",
+   "surface": "blue sky with cloud",
+   "note": ""
+  },
+  {
+   "id": "hike-06",
+   "key": "af3f5cbeea0b98fb47850ca57129ac2e287c5937",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top third",
+   "surface": "pale sky",
+   "note": ""
+  },
+  {
+   "id": "product-gear-06",
+   "key": "ac2d8a1f3fbe901cf55fab1a1d501a22b1a8ec98",
+   "rect": [
+    0.55,
+    0,
+    0.45,
+    1.0
+   ],
+   "band": "right",
+   "surface": "soft blurred sky",
+   "note": "modest"
+  },
+  {
+   "id": "water-swim-02",
+   "key": "2dafc92b047c91457ec8e3ec1a84a306c14e70e1",
+   "rect": [
+    0.33,
+    0,
+    0.67,
+    1.0
+   ],
+   "band": "right two thirds",
+   "surface": "flat teal wall",
+   "note": "man-made flat colour -- better than any sky here"
+  },
+  {
+   "id": "camp-09",
+   "key": "50820e53f814cc247a5a569cda06f00d0e602b01",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top third",
+   "surface": "desert sky",
+   "note": ""
+  },
+  {
+   "id": "product-gear-07",
+   "key": "236fefcc33578676a9c06abea5d9905726e4a770",
+   "rect": [
+    0,
+    0,
+    1,
+    0.66
+   ],
+   "band": "top two thirds",
+   "surface": "blue sky with cloud",
+   "note": ""
+  },
+  {
+   "id": "water-swim-04",
+   "key": "21d4b77bef5bec25e9b7d31e5ad2b5b61f019ca7",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top",
+   "surface": "sky",
+   "note": ""
+  },
+  {
+   "id": "product-gear-03",
+   "key": "e59833290f9df59346231503ef03edf85515d037",
+   "rect": [
+    0.55,
+    0,
+    0.45,
+    1.0
+   ],
+   "band": "right",
+   "surface": "soft sky and sea",
+   "note": ""
+  },
+  {
+   "id": "product-gear-08",
+   "key": "18c2873ad16ca9e7808645c47e94556653fcf1b1",
+   "rect": [
+    0,
+    0,
+    0.35,
+    1.0
+   ],
+   "band": "left or right",
+   "surface": "flat teal and yellow wall",
+   "note": "man-made flat colour"
+  },
+  {
+   "id": "hike-04",
+   "key": "1724d8e7bdf25653b95976c948082fe0f5d20d15",
+   "rect": [
+    0,
+    0,
+    1,
+    0.5
+   ],
+   "band": "top half",
+   "surface": "blue sky with cloud",
+   "note": ""
+  },
+  {
+   "id": "climb-03",
+   "key": "b6dcae228a4248b3f4fcd0bbb9e133c8cd6e5f7f",
+   "rect": [
+    0.03,
+    0.03,
+    0.47,
+    0.94
+   ],
+   "band": "left half",
+   "surface": "sandstone face",
+   "note": "vast even sandstone; the climber sits lower-right, so the zone is the left half only"
+  },
+  {
+   "id": "water-swim-05",
+   "key": "6ba40c6f9f8c41e7a22fa1851b1e0f02b742408a",
+   "rect": [
+    0,
+    0,
+    1,
+    0.5
+   ],
+   "band": "top and water",
+   "surface": "flat water and sky",
+   "note": ""
+  },
+  {
+   "id": "product-gear-05",
+   "key": "65fc93a61a925c8230a3add93bf0268f6fdc6b62",
+   "rect": [
+    0.55,
+    0,
+    0.45,
+    1.0
+   ],
+   "band": "right",
+   "surface": "clean blue sky",
+   "note": ""
+  },
+  {
+   "id": "product-gear-12",
+   "key": "da1d208ff6c0fb0575c765e3f7d579738632a0fb",
+   "rect": [
+    0,
+    0,
+    1,
+    0.5
+   ],
+   "band": "top half",
+   "surface": "cloudy sky",
+   "note": ""
+  },
+  {
+   "id": "general-04",
+   "key": "1bb8187966617ec8fc7ac5359b949046196b23ca",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top",
+   "surface": "cloudy sky",
+   "note": ""
+  },
+  {
+   "id": "water-swim-07",
+   "key": "740444b27a23438ea0580329703b225356953598",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top",
+   "surface": "flat ocean and sky",
+   "note": ""
+  },
+  {
+   "id": "brand-05",
+   "key": "0c31635a5ada117b117477a5bd73d7d8129ebc1c",
+   "rect": [
+    0,
+    0,
+    0.5,
+    0.4
+   ],
+   "band": "top-left",
+   "surface": "pale sky",
+   "note": "modest"
+  },
+  {
+   "id": "brand-04",
+   "key": "2b92d7b65050e8981f285d54fc482d34a182f648",
+   "rect": [
+    0,
+    0,
+    0.5,
+    0.5
+   ],
+   "band": "left and top",
+   "surface": "pale banded rock",
+   "note": "modest"
+  },
+  {
+   "id": "hike-11",
+   "key": "748541a38c0ca576bfb921c7481f1aa18878cbc0",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top",
+   "surface": "grey sky",
+   "note": "modest"
+  },
+  {
+   "id": "general-10",
+   "key": "1340b9813259e37b024054a3ab83b92c152e0fa9",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top",
+   "surface": "gradient sunset sky",
+   "note": "silhouette composition -- very even sky"
+  },
+  {
+   "id": "general-05",
+   "key": "9e4478ba48281d91c913a7b50e66626c0150db18",
+   "rect": [
+    0,
+    0,
+    1,
+    0.33
+   ],
+   "band": "top",
+   "surface": "pale sky",
+   "note": ""
+  }
+ ]
+}

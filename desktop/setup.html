@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'unsafe-inline'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set up SAC Studio</title>
+<style>
+  body { font: 15px/1.5 system-ui, sans-serif; color: #242424; background: #f7f7f4; margin: 0; }
+  main { max-width: 570px; margin: 36px auto; padding: 0 24px; }
+  h1 { font-size: 27px; margin-bottom: 4px; }
+  h2 { font-size: 17px; margin-bottom: 4px; }
+  p { margin: 5px 0 12px; color: #555; }
+  section { padding: 13px 16px; margin: 14px 0; border: 1px solid #d9d9d2; border-radius: 9px; background: white; }
+  button { border: 0; border-radius: 6px; background: #222; color: white; font: inherit; padding: 8px 12px; cursor: pointer; margin: 4px 7px 4px 0; }
+  button.secondary { background: #e5e7e1; color: #242424; }
+  small { color: #626262; }
+  #continue { background: #67a52d; font-weight: 700; margin-top: 12px; }
+</style>
+<main>
+  <h1>SAC Studio setup</h1>
+  <p>Your campaigns stay in your own computer account. Claude and Figma use your own sign-ins; no credentials are included in this installer.</p>
+  <section><h2>1. Claude Code <span id="claude-status"></span></h2>
+    <p>Install Claude Code, open a terminal, run <code>claude</code>, and sign in with your own account.</p>
+    <button id="claude-guide" class="secondary">Claude setup guide</button></section>
+  <section><h2>2. Figma plugin <span id="figma-status"></span></h2>
+    <p>In Figma Desktop, choose Plugins → Development → Import plugin from manifest and select the included manifest. Figma sign-in remains yours.</p>
+    <button id="plugin-folder" class="secondary">Show plugin manifest</button>
+    <button id="figma-guide" class="secondary">Figma instructions</button></section>
+  <section><h2>3. Fonts and image export</h2>
+    <p>Install your organisation’s licensed Quiet Sans and Sofia Pro faces for matching typography. A local Chrome or Edge installation is needed for screenshot/export features.</p>
+    <small id="browser-status">Checking browser…</small></section>
+  <button id="continue">Open SAC Studio</button>
+  <p><small>You can reopen this checklist from the SAC Studio menu.</small></p>
+</main>
+<script src="setup.js"></script>
+</html>

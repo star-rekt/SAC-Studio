@@ -1,0 +1,338 @@
+:root{--ink:#101010;--cream:#F5EBDF;--line:#00000018;--z:.34}
+
+/* Quiet Sans ExtraBold, from the licensed desktop font, where it is installed.
+ *
+ *   The Adobe kit xme8utp serves quiet-sans at 400 and 700 only, and
+ *   typography.json specifies ExtraBold for Display/XL and Display/L -- the
+ *   ticket offer and the marquee. A missing weight does not fall through to
+ *   the next family in the stack: the browser picks the nearest weight it has,
+ *   so every display line came out at 700. Declaring 800 on the KIT'S OWN
+ *   family name is what adds the face rather than being ignored.
+ *
+ *   This only helps a machine with the font installed, which is any designer's
+ *   but nobody else's, so the toolbar still warns about the kit. The real fix
+ *   is adding ExtraBold to the kit; until then an export from a machine with
+ *   the font will not match one from a machine without, and that is worth
+ *   knowing before comparing two PNGs.
+ */
+@font-face{font-family:"quiet-sans";font-weight:800;font-style:normal;font-display:swap;
+  src:local("Quiet Sans ExtraBold"),local("QuietSansExtraBold")}
+@font-face{font-family:"quiet-sans";font-weight:800;font-style:italic;font-display:swap;
+  src:local("Quiet Sans ExtraBold Italic")}
+
+*{box-sizing:border-box}
+body{margin:0;background:#E8E4DE;color:var(--ink);
+  font:14px/1.5 "sofia-pro-variable","Sofia Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.bar{position:sticky;top:0;z-index:20;display:flex;gap:16px;align-items:center;
+  padding:10px 16px;background:#fff;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.bar strong{font-size:15px}
+.muted{color:#00000088;font-size:12px}
+.seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{border:0;background:#fff;padding:6px 12px;cursor:pointer;font:inherit}
+.seg button.on{background:var(--ink);color:#fff}
+.bar button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;font:inherit}
+.bar button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.zoom{display:flex;gap:8px;align-items:center;font-size:12px;color:#00000088}
+/* the asset-type tabs */
+.tabs{position:sticky;top:49px;z-index:19;display:flex;gap:2px;overflow-x:auto;
+  padding:6px 16px;background:#fff;border-bottom:1px solid var(--line)}
+.tabs button{border:0;background:transparent;padding:7px 12px;border-radius:6px;cursor:pointer;
+  font:inherit;font-size:12px;white-space:nowrap;color:#000000aa;display:flex;gap:6px;align-items:center}
+.tabs button span{background:#00000010;border-radius:99px;padding:1px 7px;font-size:11px}
+.tabs button:hover{background:#00000008}
+.tabs button.on{background:var(--ink);color:#fff}
+.tabs button.on span{background:#ffffff2e}
+.bar select{border:1px solid var(--line);border-radius:6px;padding:6px 8px;font:inherit;background:#fff}
+.why{max-width:420px;font-size:11px;line-height:1.45;color:#00000088;margin:0 0 8px}
+.gap{width:420px;padding:28px;background:#FFF3F0;color:#8A1F11;font-size:13px;border-radius:6px}
+main{padding:20px 20px 60px 20px}
+main.with-panel{padding-right:320px}
+/* the panel is a fixed rail: the sticky bars give it the width rather than
+   running underneath it, which hid whatever sat at the top of the panel */
+.bar.with-panel,.tabs.with-panel{padding-right:316px}
+.board{display:flex;gap:28px;align-items:flex-start}
+.col h3{margin:0 0 8px;font-size:13px;display:flex;gap:8px;align-items:baseline}
+.col h3 small{color:#00000066;font-weight:400}
+.scaler{zoom:var(--z)}
+.sheet{position:relative;overflow:hidden;box-shadow:0 2px 14px #0000001f;background:#fff}
+.variant-choice{display:flex;align-items:center;gap:8px;margin:5px 0 10px;color:#555;font-size:12px}
+.variant-choice select{max-width:280px;padding:5px 8px;border:1px solid #ccc;border-radius:5px;background:#fff;color:#222}
+.stack{display:flex;flex-direction:column;height:auto}
+.direction{max-width:420px;background:#fff;border:1px solid var(--line);border-left:3px solid #F14222;
+  padding:10px 12px;margin-bottom:10px;font-size:11px;line-height:1.45}
+.direction h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#00000077}
+.direction p{margin:4px 0}
+.direction b{color:#F14222}
+
+/* editing affordances */
+.ed{outline:0}
+.ed.on:hover{box-shadow:inset 0 0 0 1px #F1422266}
+.ed.on:focus{box-shadow:inset 0 0 0 2px #F14222}
+.ed.picked{box-shadow:inset 0 0 0 2px #F14222}
+.mv.on:hover{cursor:grab}
+.pic{position:relative;overflow:hidden}
+.pic img{width:100%;height:100%;object-fit:cover;display:block;user-select:none}
+.pic.on:hover{cursor:grab;box-shadow:inset 0 0 0 3px #F1422288}
+.pic.picked{box-shadow:inset 0 0 0 3px #F14222}
+.pic.removed.on{outline:2px dashed #F14222;outline-offset:-2px;cursor:pointer}
+.removed-label{position:absolute;inset:0;display:grid;place-items:center;
+  font:12px "Sofia Pro",sans-serif;color:#88382a;background:#ffffffa8}
+span.media.removed{display:grid;place-items:center;border:2px dashed #F14222;
+  color:#88382a;font-size:12px;background:#ffffffa8}
+.standin{position:absolute;inset:0;display:grid;place-content:center;gap:4px;text-align:center;
+  color:#ffffffdd;font-size:13px;text-shadow:0 1px 3px #0006;padding:10px}
+.standin b{font-size:15px}
+.standin em{opacity:.75;font-size:11px}
+
+.panel{position:fixed;right:0;top:49px;bottom:0;width:300px;overflow:auto;background:#fff;
+  border-left:1px solid var(--line);padding:16px;box-shadow:-8px 0 24px #00000012;z-index:21}
+.panel .shut{position:absolute;right:10px;top:8px;width:26px;padding:0;line-height:24px;
+  border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer;font-size:16px}
+.panel h4{margin:16px 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#00000077}
+.panel h4:first-child{margin-top:0}
+/* the selected run's own controls, above the campaign's -- ruled off so it
+   reads as a block about one element rather than about the campaign */
+.panel .picked{padding-bottom:14px;margin-bottom:4px;border-bottom:1px solid #00000014}
+.panel .picked h4:first-child{margin-top:0}
+/* the media library: what a selected slot can be filled with */
+.panel ul.lib{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 10px;padding:0;list-style:none}
+.panel ul.lib li{margin:0}
+.panel ul.lib button{width:100%;margin:0;padding:8px 6px;display:flex;flex-direction:column;
+  align-items:center;gap:6px;background:#F7F5F2;border:1px solid #00000014;border-radius:6px;cursor:pointer}
+.panel ul.lib li.on button{border-color:var(--ink);background:#fff}
+.panel ul.lib img{max-width:100%;height:26px;object-fit:contain}
+.panel ul.lib span{font-size:10px;line-height:1.2;color:#00000099;text-align:center}
+/* photographs are browsed, not listed — 31 of them, and the band that decides
+   whether one can carry type is a thing you see, not a thing you read */
+.panel ul.lib.photos{grid-template-columns:1fr 1fr 1fr;max-height:260px;overflow:auto}
+.panel ul.lib.photos button{padding:0;gap:0;overflow:hidden}
+.panel ul.lib.photos img{height:48px;width:100%;object-fit:cover}
+.panel ul.lib.photos span{padding:3px 2px;font-size:9px}
+.panel ul.lib button[disabled]{opacity:.45;cursor:default}
+.panel .user-media-controls{padding:4px 6px 8px;background:#fff;border:1px solid #ddd}
+.panel .user-media-controls label{font-size:10px;margin:2px 0}
+.panel .user-media-controls input,.panel input:not([type=range]){box-sizing:border-box;width:100%;padding:6px}
+.panel ul.lib .user-media-controls button{display:block;width:auto;padding:4px 6px;
+  font-size:10px;color:#922;background:#fff;border:1px solid #ddd}
+.panel ul.lib button.add-graphic{display:block;width:100%;padding:4px;
+  font-size:10px;background:#eef5e6;border-color:#91b369;color:#263d16}
+.panel .user-media-controls small{display:block;color:#922;overflow-wrap:anywhere}
+.panel .position-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.panel .position-row label{font-size:11px;margin:0}
+.panel .position-row input{margin-top:4px}
+.panel textarea{display:block;width:100%;min-height:56px;margin-top:5px;padding:7px;
+  border:1px solid #ccc;border-radius:5px;font:inherit;resize:vertical}
+.panel section h4:first-child{margin-top:16px}
+/* a media slot is picked with an outline — an inset shadow does not show on an
+   <img> that fills its own box */
+img.media.on{outline:1px dashed #00000026;outline-offset:2px;cursor:pointer}
+img.media.picked{outline:2px solid #F14222;outline-offset:2px}
+.panel code{display:block;font-size:11px;background:#F5F3F0;padding:6px 8px;border-radius:4px;word-break:break-all}
+.panel label{display:block;margin:10px 0}
+.panel label span{display:flex;justify-content:space-between;font-size:11px;color:#00000088}
+.panel input[type=range]{width:100%}
+.panel select,.panel button{width:100%;margin-top:8px;padding:7px 8px;font:inherit;
+  border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer}
+
+/* The in-app browser is often phone-width. A fixed right rail covered the
+   entire editable half of the canvas, so clicks landed on the Library instead
+   of on the component beneath it. Keep the artwork full-width and dock the
+   controls below the visible work area at narrow widths. */
+@media (max-width: 800px){
+  main.with-panel{padding-right:20px;padding-bottom:45vh}
+  .bar.with-panel,.tabs.with-panel{padding-right:16px}
+  .panel{left:0;right:0;top:60vh;bottom:0;width:100%;height:40vh;
+    border-left:0;border-top:1px solid var(--line);box-shadow:0 -8px 24px #00000018}
+}
+
+.nudge{display:flex;gap:6px;margin-top:8px}
+.nudge button{width:auto;flex:1;margin:0;padding:6px 0;font-size:12px}
+.panel ul{margin:0;padding-left:18px;font-size:12px;line-height:1.7}
+kbd{background:#eee;border-radius:3px;padding:1px 4px;font-size:11px}
+
+/* The font warning in the top bar: a weight the kit does not carry is a real
+   difference from the reference boards, not a detail to leave unsaid. */
+.fontwarn{display:flex;align-items:center;gap:6px;font-size:12px;color:#8A4B00;
+  background:#FFF4E5;border:1px solid #F0D9B5;border-radius:6px;padding:4px 9px}
+.fontwarn.bad{color:#8A1F11;background:#FDECEA;border-color:#F3C6C0}
+
+/* ---- the AI connector panel ---- */
+body.shot{background:#fff}
+body.shot #root{display:inline-block}
+.aitab,.doit{display:flex;gap:2px;margin:0 0 12px}
+.doit{gap:6px;margin-top:8px}
+.aitab button,.doit button{flex:1;margin:0;padding:6px 8px;font-size:11px;
+  border:1px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;
+  font-family:inherit;width:auto}
+.aitab button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.doit button:first-child{background:var(--ink);color:#fff;border-color:var(--ink)}
+.doit button:disabled{opacity:.5;cursor:not-allowed}
+.aierr{font-size:12px;line-height:1.5;color:#8A1F11;background:#FFF3F0;padding:8px 10px;border-radius:5px}
+.aierr code{display:inline;background:#00000010;padding:1px 4px}
+.recon{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.recon th{text-align:left;font-weight:600;color:#00000099;width:33%;padding:4px 4px 4px 0;
+  vertical-align:top;font-size:10.5px}
+.recon td{padding:4px 4px 4px 0;vertical-align:top;word-break:break-word}
+.recon td.m{width:14px;text-align:center;color:#00000055}
+.recon tr{border-top:1px solid #00000010}
+.recon tr.agree td,.recon tr.agree th{color:#00000066}
+.recon tr.differ td.m{color:#C2410C;font-weight:700}
+.recon tr.differ th{color:#9A3412}
+.recon tr.only-claude td.m,.recon tr.only-code td.m{color:#1D4ED8;font-weight:700}
+.because{list-style:none;padding:0;margin:0}
+.because li{font-size:11px;line-height:1.5;padding:6px 0;border-top:1px solid #00000010}
+.because i{display:block;color:#00000077;font-style:normal;margin-top:2px}
+.verdict{display:inline-block;margin:12px 0 4px;padding:3px 10px;border-radius:99px;
+  font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.verdict.ship{background:#DCFCE7;color:#14532D}
+.verdict.fix{background:#FEF3C7;color:#78350F}
+.verdict.reject{background:#FEE2E2;color:#7F1D1D}
+.reads{font-size:12px;line-height:1.5;margin:4px 0 0}
+.issues{list-style:none;padding:0;margin:0}
+.issues li{font-size:11px;line-height:1.5;padding:6px 0 6px 8px;border-top:1px solid #00000010;
+  border-left:3px solid transparent}
+.issues li.high{border-left-color:#DC2626}
+.issues li.medium{border-left-color:#D97706}
+.issues li.low{border-left-color:#9CA3AF}
+.issues i{display:block;color:#00000077;font-style:normal;margin-top:2px}
+.shotpeek{width:100%;border:1px solid var(--line);border-radius:4px;display:block}
+
+/* ---- campaigns ---- */
+.cname{border:1px solid transparent;border-radius:6px;padding:5px 8px;font:inherit;font-weight:600;
+  background:transparent;width:230px;color:inherit}
+.cname:hover{border-color:var(--line)}
+.cname:focus{border-color:var(--ink);outline:none;background:#fff}
+.save{font-size:11px;color:#00000066}
+.save.saving{color:#92400E}
+.save.failed{color:#8A1F11;font-weight:600}
+.scrim{position:fixed;inset:0;z-index:40;background:#00000038;display:flex;
+  align-items:flex-start;justify-content:center;padding:64px 20px;overflow:auto}
+.modal{width:min(640px,100%);background:#fff;border-radius:10px;padding:20px 22px 22px;
+  box-shadow:0 24px 60px #00000030}
+.modal h3{margin:0 0 14px;font-size:15px;display:flex;justify-content:space-between;align-items:center}
+.modal h3 button{border:0;background:transparent;font-size:20px;line-height:1;cursor:pointer;
+  color:#00000066;padding:0 2px}
+.field{display:block;margin:0 0 14px}
+.field > span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;
+  color:#00000077;margin-bottom:5px}
+.field > span i{text-transform:none;letter-spacing:0;font-style:normal;color:#00000055;margin-left:6px}
+.field input,.field select,.field textarea{width:100%;padding:8px 10px;font:inherit;
+  border:1px solid var(--line);border-radius:6px;background:#fff}
+.field textarea{font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;resize:vertical}
+.modal .row{display:flex;gap:8px;justify-content:flex-end}
+.modal .row button{padding:8px 14px;font:inherit;border:1px solid var(--line);
+  border-radius:6px;background:#fff;cursor:pointer}
+.modal .row button.go{background:var(--ink);color:#fff;border-color:var(--ink)}
+.modal .row button:disabled{opacity:.45;cursor:not-allowed}
+.cards{list-style:none;padding:0;margin:0 0 12px}
+.cards li{display:flex;gap:6px;align-items:stretch;border-top:1px solid #00000010}
+.cards li > button:first-child{flex:1;text-align:left;border:0;background:transparent;
+  padding:10px 8px;cursor:pointer;font:inherit;border-radius:6px}
+.cards li > button:first-child:hover{background:#00000006}
+.cards li.on > button:first-child{background:#00000008}
+.cards li.on b::after{content:" · open";font-weight:400;color:#00000066;font-size:11px}
+.cards b{display:block;font-size:13px}
+.cards span{display:block;font-size:11px;color:#00000077;margin-top:2px}
+.cards i{display:block;font-size:11px;color:#00000055;font-style:normal;margin-top:2px}
+.cards .x{border:0;background:transparent;color:#00000055;cursor:pointer;padding:0 10px;font-size:17px}
+.cards .x:hover{color:#8A1F11}
+
+/* ---- review rows ---- */
+.rows{list-style:none;padding:0;margin:0}
+.rows li{border-top:1px solid #00000010}
+.rows li > button{width:100%;display:grid;grid-template-columns:44px 1fr auto;gap:8px;
+  align-items:center;text-align:left;border:0;background:transparent;cursor:pointer;
+  padding:7px 2px;font:inherit}
+.rows li > button:hover{background:#00000006}
+.rows img,.rows .ph{grid-row:span 2;width:44px;height:34px;object-fit:cover;
+  border-radius:3px;background:#00000010;display:block}
+.rows b{font-size:12px;line-height:1.3}
+.rows span{font-size:10.5px;color:#00000077}
+/* column 3 stacks: the verdict chip over its issue count. Both on row 1 and
+   they print on top of each other -- '4 FIXies'. */
+/* only the row's OWN children are grid items -- an unscoped `.rows i` also
+   caught the fix lines nested in .detail and set them nowrap, which clipped
+   them at the panel edge */
+.rows li > button > i{font-size:10.5px;color:#00000066;font-style:normal;
+  grid-column:3;grid-row:2;text-align:right;white-space:nowrap}
+.rows li > button > i.bad{color:#8A1F11;grid-column:2/4;grid-row:2;
+  text-align:left;white-space:normal}
+.rows li > button > em{grid-column:3;grid-row:1;font-style:normal;justify-self:end}
+.rows .verdict{margin:0;padding:2px 7px;font-size:9.5px}
+.rows li.running > button{opacity:.75}
+.rows li.queued > button{opacity:.45}
+.detail{padding:2px 2px 12px}
+.detail > ul:first-of-type{margin:6px 0;padding-left:16px;font-size:11px;line-height:1.6}
+.detail a{font-size:11px;color:inherit}
+
+/* ---- proposed fixes ---- */
+.fixit{width:100%;margin:10px 0 0;padding:7px 8px;font:inherit;font-size:11px;
+  border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer}
+.fixit.go{background:var(--ink);color:#fff;border-color:var(--ink)}
+.fixit:disabled{opacity:.55;cursor:not-allowed}
+.ops{list-style:none;padding:0;margin:0}
+.ops li{font-size:11px;line-height:1.5;padding:6px 0 6px 8px;border-top:1px solid #00000010;
+  border-left:3px solid #1D4ED8}
+.ops.cant li{border-left-color:#00000020}
+.ops b{display:block}
+.ops i{display:block;color:#00000077;font-style:normal;margin-top:2px}
+
+/* ---- the rule checklist ---- */
+.checks{list-style:none;padding:0;margin:0}
+.checks li{font-size:11px;line-height:1.5;padding:5px 0 5px 8px;border-top:1px solid #00000010;
+  border-left:3px solid transparent}
+.checks li.pass{border-left-color:#16A34A33}
+.checks li.fail{border-left-color:#DC2626}
+.checks li.pass b{color:#00000077;font-weight:600}
+.checks li.fail b{color:#7F1D1D}
+.checks i{display:block;color:#00000077;font-style:normal;margin-top:2px}
+
+/* the brief field: a contenteditable, because a textarea discards the bold
+   labels brief.ts reads in preference to any pattern */
+.paste{min-height:260px;max-height:46vh;overflow:auto;padding:10px 12px;
+  border:1px solid var(--line);border-radius:6px;background:#fff;
+  font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap}
+.paste:focus{outline:none;border-color:var(--ink)}
+.paste:empty::before{content:attr(data-empty);color:#00000055}
+.paste b,.paste strong{font-weight:700}
+/* a count of nought is the thing worth seeing, not the thing to hide */
+.read li.none{color:#9A3412}
+
+/* ---- deliverables ---- */
+.deliver{list-style:none;padding:0;margin:0 0 10px}
+.deliver li{border-top:1px solid #00000010}
+.deliver label{display:flex;gap:8px;align-items:center;margin:0;padding:5px 0;
+  font-size:11px;cursor:pointer}
+.deliver input{margin:0}
+.deliver input[type=number]{width:42px;padding:3px 4px;border:1px solid var(--line);
+  border-radius:4px;font:inherit;text-align:right}
+.deliver span{flex:1}
+.deliver b{color:#00000077;font-weight:600;min-width:14px;text-align:right}
+.counts{display:flex;gap:10px;margin:0 0 10px}
+.counts label{flex:1;margin:0}
+.counts span{display:block;font-size:10.5px;color:#00000077;margin-bottom:3px}
+.counts input{width:100%;padding:5px 7px;font:inherit;font-size:12px;
+  border:1px solid var(--line);border-radius:5px}
+
+/* ---- colour ---- */
+.swatches{display:flex;align-items:center;gap:5px;margin:0 0 7px}
+.swatches > span{font-size:10.5px;color:#00000077;width:30px}
+.swatches button{width:20px;height:20px;padding:0;margin:0;border:1px solid #00000022;
+  border-radius:4px;cursor:pointer;flex:none}
+.swatches button.on{outline:2px solid var(--ink);outline-offset:1px}
+.swatches .clear{background:#fff;color:#00000066;font-size:13px;line-height:1}
+
+/* ---- design directions ---- */
+.dirs{list-style:none;padding:0;margin:0 0 12px}
+.dirs li{border-top:1px solid #00000010}
+.dirs button{display:grid;grid-template-columns:22px 1fr;gap:8px;width:100%;
+  text-align:left;border:0;background:transparent;cursor:pointer;padding:7px 2px;font:inherit}
+.dirs button:hover{background:#00000006}
+.dirs li.on button{background:#00000009}
+.dirs i{grid-row:span 2;width:22px;height:22px;display:block;border:1px solid #00000022}
+.dirs b{font-size:12px}
+.dirs li.on b::after{content:" ·  in use";font-weight:400;color:#00000066;font-size:10.5px}
+.dirs span{font-size:10.5px;color:#00000077;line-height:1.45}
+/* the brush mark is selectable in its own right, like a run of type */
+.mark.on{outline:1px dashed #00000026;outline-offset:2px;cursor:pointer}
+.mark.picked{outline:2px solid var(--ink);outline-offset:2px}
