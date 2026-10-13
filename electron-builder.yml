@@ -20,6 +20,12 @@ mac:
   identity: null
   target:
     - pkg
+pkg:
+  installLocation: /Applications
+  allowAnywhere: false
+  allowCurrentUserHome: false
+  allowRootDirectory: true
+  isRelocatable: false
 win:
   target:
     - nsis

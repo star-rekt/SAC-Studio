@@ -21,6 +21,10 @@ npm run package:mac    # on macOS
 ```
 
 Installers land in `desktop-release/` (`.pkg` on macOS, NSIS `.exe` on Windows).
+The macOS package installs only to the system `/Applications` directory, needs
+administrator approval, and must not relocate onto an existing development
+build elsewhere on disk. Check its `Distribution` and `PackageInfo` metadata
+before publishing a release.
 The macOS build is currently **unsigned**
 (`identity: null`), so it is suitable for internal QA only. Before broad
 deployment, supply organisation-owned code-signing credentials, notarize the
