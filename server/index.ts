@@ -105,7 +105,7 @@ function expand(t: Tight, label: Record<number, string>, n: number) {
       rule, severity: SEV[String(sev).toUpperCase()] ?? 'medium',
       where: String(where ?? '').slice(0, 60),
       what: String(what ?? '').slice(0, 160),
-      fix: '',
+      fix: '', 
     })),
     label,
   };

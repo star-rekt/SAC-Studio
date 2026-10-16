@@ -156,6 +156,15 @@ function makeNode(l: Layer, images: Record<string, string>, vectors: Record<stri
     return box;
   }
 
+  if (l.clip) {
+    // A mark from the graphics library -- its own path, not the coloured
+    // rectangle around it, the same tool as the photo's stepped window.
+    const shape = cutout(l.clip, l.width, l.height, l.fill);
+    shape.name = l.name;
+    shape.opacity = l.opacity ?? 1;
+    return shape;
+  }
+
   const r = figma.createRectangle();
   r.resize(l.width, l.height);
   r.fills = [{ type: 'SOLID', color: rgb(l.fill), opacity: l.opacity ?? 1 }];

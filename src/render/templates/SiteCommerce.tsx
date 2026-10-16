@@ -4,7 +4,7 @@
  * Flash has no badging/CB frames, so it inherits the structure with its own
  * campaign accent. Text and merchandise photography remain editable layers. */
 import type { SheetAsset } from '../../sheet/types';
-import { Editable } from '../../edit/Editable';
+import { Editable, Ground } from '../../edit/Editable';
 import { Media } from '../../edit/Media';
 import { stack } from '../../fonts';
 import type { Direction } from '../../templates/directions';
@@ -37,7 +37,7 @@ export function CampaignBanner({ asset, templateId, direction }: {
     (asset.variant === 'base' && /end/i.test(asset.scope.phase ?? ''));
   const message = asset.scope.topic || `${ends ? 'Ends Today: ' : ''}${asset.copy.body
     || `${asset.copy.lead || 'EXTRA'} ${asset.copy.offer || '20% OFF'}`}`;
-  return <div className="sheet" style={{ width:w, height:h, background:accent,
+  return <Ground id={`${asset.id}/fill`} className="sheet" style={{ width:w, height:h, background:accent,
     display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
     gap: 22, fontFamily:stack('Sofia Pro'), color:'#fff' }}>
     {editable(`${asset.id}/message`, message, { fontSize:Math.min(50, Math.floor(w / (message.length * .57))), fontWeight:700,
@@ -51,7 +51,7 @@ export function CampaignBanner({ asset, templateId, direction }: {
       {[0,1,2].map(n=><i key={n} style={{ width:18, height:18, borderRadius:'50%',
         background:n===0?'#fff':'#ffffff66' }} />)}
     </div>
-  </div>;
+  </Ground>;
 }
 
 export function GlobalText({ asset, templateId }: { asset: SheetAsset; templateId: string }) {
@@ -67,7 +67,7 @@ export function GlobalText({ asset, templateId }: { asset: SheetAsset; templateI
   const last = [asset.copy.code ? `Use Code ${asset.copy.code}`
     : asset.copy.cta || 'Shop Now', asset.copy.dates].filter(Boolean).join(' · ');
   const fontSize = Math.min(48, Math.floor(1250 / Math.max(1, (first.length + last.length) * .51)));
-  return <div className="sheet" style={{ width:w,height:h,background:'#fff',
+  return <Ground id={`${asset.id}/fill`} className="sheet" style={{ width:w,height:h,background:'#fff',
     display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 58px',
     fontFamily:stack('Sofia Pro'),color:'#121212' }}>
     <Media id={`${asset.id}/chevron-left/mark`} src="/reference/chevron-left.svg"
@@ -78,7 +78,7 @@ export function GlobalText({ asset, templateId }: { asset: SheetAsset; templateI
     </div>
     <Media id={`${asset.id}/chevron-right/mark`} src="/reference/chevron-right.svg"
       alt="Next promotion" style={{width:20,height:44,objectFit:'contain'}} />
-  </div>;
+  </Ground>;
 }
 
 function Phone({ asset, children }: { asset: SheetAsset; children: React.ReactNode }) {

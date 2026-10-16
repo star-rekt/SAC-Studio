@@ -299,7 +299,7 @@ export function JudgePanel({ current, tab, all, session, pickCurrent, apply }: {
               </li>
             ))}
           </ul>
-          <p className="muted">PNGs are written to <code>data/exports/{session}/</code>.</p>
+          <p className="muted">PNGs are written to <code>Documents/SAC_Studio/Sessions/Export/{session}/</code>.</p>
         </>
       )}
     </>

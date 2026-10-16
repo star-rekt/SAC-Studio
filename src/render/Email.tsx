@@ -7,7 +7,7 @@ import { copyFor } from '../model/copy';
 import { Picture } from '../edit/Picture';
 import { Media } from '../edit/Media';
 import { LIBRARY, find as findMedia } from '../model/media';
-import { Editable, Movable } from '../edit/Editable';
+import { Editable, Movable, Ground } from '../edit/Editable';
 import { placeOn } from '../model/safe';
 import { directionsFor, type Direction } from '../templates/directions';
 import { useEdits } from '../edit/store';
@@ -180,14 +180,15 @@ export function EmailHeader({ doc, i, dir, bare = false }:
               color: BRAND.white,
               letterSpacing: -1, textShadow: '0 2px 12px #0005' })}>
           {Array.from({ length: 4 }, () => c.marquee).map((x, n) => (
-            <span key={n}>{x}<span style={{ opacity: .6, margin: '0 26px' }}>|</span></span>
+            <span key={n}>{x}<Editable as="span" id={`${k}/marquee-divider/${n}`}
+              style={{ opacity: .6, margin: '0 26px' }}>|</Editable></span>
           ))}
         </div>
       </div>
 
       {/* the ticket: solid orange, tilted, with a hole punched out of a corner */}
       <Movable id={`${k}/ticket`} style={{ position: 'absolute', left, top, zIndex: 3 }}>
-        <div style={{ width: TW, background: d.accent, borderRadius: d.radius,
+        <Ground id={`${k}/ticket/fill`} style={{ width: TW, background: d.accent, borderRadius: d.radius,
           padding: `30px ${pad + notch}px 26px ${pad}px`,
           transform: d.tilt ? `rotate(${d.tilt}deg)` : undefined,
           boxShadow: '0 18px 44px #0000003D',
@@ -233,11 +234,12 @@ export function EmailHeader({ doc, i, dir, bare = false }:
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, whiteSpace: 'nowrap' }}>
             <Editable id={`${k}/code`} style={font('CTA', { fontSize: foot, lineHeight: 'normal',
                         color: BRAND.white, letterSpacing: 1.2 })}>{t.foot}</Editable>
-            <span style={{ color: '#FFFFFFAA', fontSize: foot + 1 }}>|</span>
+            <Editable as="span" id={`${k}/divider`}
+              style={{ color: '#FFFFFFAA', fontSize: foot + 1 }}>|</Editable>
             <Editable id={`${k}/cta`} style={font('CTA', { fontSize: foot, lineHeight: 'normal',
                         color: BRAND.white, letterSpacing: 1.2 })}>SHOP NOW &gt;</Editable>
           </div>
-        </div>
+        </Ground>
       </Movable>
 
       {/* the brand strip along the bottom */}

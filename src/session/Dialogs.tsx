@@ -51,8 +51,8 @@ export function OpenDialog({ current, onPick, onClose }: {
           ))}
         </ul>
       )}
-      <p className="muted">Saved as files in <code>data/sessions/</code>. The one you have open
-        cannot be deleted from here.</p>
+      <p className="muted">Saved as files in <code>Documents/SAC_Studio/Sessions/</code>. The one you
+        have open cannot be deleted from here.</p>
     </Modal>
   );
 }

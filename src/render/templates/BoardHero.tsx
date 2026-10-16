@@ -3,7 +3,7 @@
  * flattened screenshot. A second requested hero reuses the board's layout
  * while its brief copy (or a designer's edits) changes independently. */
 import type { SheetAsset } from '../../sheet/types';
-import { Editable } from '../../edit/Editable';
+import { Editable, Ground } from '../../edit/Editable';
 import { Picture } from '../../edit/Picture';
 import { Media } from '../../edit/Media';
 import { ZONE_LIST, photoFor } from '../../model/compose';
@@ -28,7 +28,7 @@ function photo(asset: SheetAsset, slot: string, src: string,
 function Bump({ asset }: { asset: SheetAsset }) {
   const [w,h] = asset.size;
   const code = asset.copy.code ? `CODE ${asset.copy.code}` : asset.copy.qualifier || 'NO CODE NEEDED';
-  return <div className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
+  return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
     background:'#f5ecdf',
     backgroundImage:'linear-gradient(#f5ecdfaa,#f5ecdfaa),url(/reference/bump-paper.png)',
     backgroundSize:'cover,612px 408px'}}>
@@ -56,12 +56,12 @@ function Bump({ asset }: { asset: SheetAsset }) {
       {photo(asset,'collage/3','/reference/bump-hero-img5.png',
         {position:'absolute',left:962,top:622,width:428,height:256}, {x:59,y:50})}
     </div>
-  </div>;
+  </Ground>;
 }
 
 function Autumn({ asset }: { asset: SheetAsset }) {
   const [w,h] = asset.size;
-  return <div className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
+  return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
     background:'#1b1a17'}}>
     <div style={base(w,h,1440,920)}>
       {photo(asset,'background','/reference/autumn-hero-photo.png',
@@ -85,13 +85,13 @@ function Autumn({ asset }: { asset: SheetAsset }) {
         {color:'#fff',background:orange,borderRadius:20,padding:'26px 71px',
           fontWeight:700,whiteSpace:'nowrap'})}>{asset.copy.cta || 'Shop Now'}</Editable>
     </div>
-  </div>;
+  </Ground>;
 }
 
 function Flash({ asset }: { asset: SheetAsset }) {
   const [w,h] = asset.size;
   const offer = asset.copy.offer || '70% OFF';
-  return <div className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
+  return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
     background:'#565831'}}>
     <div style={base(w,h,1418,906)}>
       {photo(asset,'background','/reference/flash-hero-photo.png',
@@ -120,7 +120,7 @@ function Flash({ asset }: { asset: SheetAsset }) {
         {color:'#fff',background:orange,borderRadius:19,padding:'28px 72px',
           fontWeight:700})}>{asset.copy.cta || 'Shop Now'}</Editable>
     </div>
-  </div>;
+  </Ground>;
 }
 
 export function BoardHero({ asset, templateId }: {asset:SheetAsset;templateId:string}) {

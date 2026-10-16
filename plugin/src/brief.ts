@@ -19,6 +19,9 @@ export type Layer =
       draw: { x: number; y: number; width: number; height: number } }
   | { n: number; name: string; group?: string; type: 'rect'; fill: string;
       opacity?: number; radius?: number; rotation?: number;
+      /** A mark from the graphics library, cut to its own path rather than
+       *  its bounding box. */
+      clip?: { path: string; view: [number, number] };
       x: number; y: number; width: number; height: number }
   | { n: number; name: string; group?: string; type: 'text'; text: string;
       font: string; weight: number; size: number; lineHeight: number;

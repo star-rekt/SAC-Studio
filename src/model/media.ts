@@ -53,6 +53,7 @@ const MARKS: [string, string][] = [
   ['arrow-01', 'Arrow 1'], ['arrow-02', 'Arrow 2'], ['arrow-05', 'Arrow 5'],
   ['arrow-07', 'Arrow 7'], ['arrow-09', 'Arrow 9'], ['arrow-12', 'Arrow 12'],
   ['arrow-14', 'Arrow 14'], ['arrow-16', 'Arrow 16'],
+  ['ticket-tag', 'Ticket, punched corner'], ['panel-step', 'Panel, stepped'],
 ];
 
 /** The photographs, with the band a person reviewed by eye.
@@ -168,7 +169,7 @@ export function offeredFor(slotId: string): Item[] {
   if (/\/brand\/\d+$/.test(slotId)) return byKind('brand');
   if (/\/wordmark$/.test(slotId)) return byKind('wordmark');
   if (/\/social\/\d+$/.test(slotId)) return byKind('social');
-  if (/\/grain$/.test(slotId)) return byKind('texture');
+  if (/\/grain$|\/fill$/.test(slotId)) return byKind('texture');
   return [];
 }
 

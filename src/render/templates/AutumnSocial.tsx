@@ -23,8 +23,9 @@ export function AutumnSocial({ asset }: { asset: SheetAsset }) {
       background: 'linear-gradient(180deg,#0000 45%,#0008 100%)' }} />
     <div style={{ position: 'absolute', left: x, top, width: ticketW, height: ticketH,
       transform: 'rotate(-4deg)' }}>
-      <Media id={`${id}/mark`} src="/reference/autumn-ticket.png" alt="Autumn ticket"
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+      <Media id={`${id}/ticket/mark`} src="/graphics/ticket-tag.svg" alt="Ticket"
+        title="Click to recolour, resize or swap the ticket shape from the library"
+        style={{ position: 'absolute', left: 0, top: 0, width: ticketW, height: ticketH }} />
       <Media id={`${id}/wordmark`} src="/logos/sac-logo.svg" alt="Steep & Cheap"
         style={{ position: 'absolute', left: 48*scale, top: 75*scale,
           width: 240*scale, height: 80*scale, objectFit: 'contain',
@@ -39,7 +40,7 @@ export function AutumnSocial({ asset }: { asset: SheetAsset }) {
         gap: 14*scale, alignItems: 'baseline', whiteSpace: 'nowrap', fontSize: 38*scale,
         color: '#fff', fontFamily: stack('Quiet Sans') }}>
         <Editable id={`${id}/code`}>{asset.copy.code ? `CODE ${asset.copy.code}` : 'NO CODE NEEDED'}</Editable>
-        <span>|</span>
+        <Editable as="span" id={`${id}/divider`}>|</Editable>
         <Editable id={`${id}/cta`} style={{ fontWeight: 800 }}>{`${(asset.copy.cta || 'Shop Now').toUpperCase()} >`}</Editable>
       </div>
     </div>

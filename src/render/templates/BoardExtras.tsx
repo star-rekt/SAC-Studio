@@ -2,7 +2,7 @@
  * linked page. They deliberately reuse that campaign's own photograph,
  * palette and component language instead of drawing from another board. */
 import type { SheetAsset } from '../../sheet/types';
-import { Editable } from '../../edit/Editable';
+import { Editable, Ground } from '../../edit/Editable';
 import { Picture } from '../../edit/Picture';
 import { Media } from '../../edit/Media';
 import { ZONE_LIST, photoFor } from '../../model/compose';
@@ -29,7 +29,7 @@ function ThemePicture({asset,templateId,style}: {asset:SheetAsset;templateId:str
 export function DerivedTile({asset,templateId}: {asset:SheetAsset;templateId:string}) {
   const [w,h] = asset.size;
   const autumn = templateId==='sc26_0058';
-  return <div className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
+  return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
     background:'#24241b'}}>
     <ThemePicture asset={asset} templateId={templateId}
       style={{position:'absolute',inset:0,width:w,height:h}} />
@@ -43,7 +43,7 @@ export function DerivedTile({asset,templateId}: {asset:SheetAsset;templateId:str
     <Editable id={`${asset.id}/cta`} style={{position:'absolute',left:70,bottom:39,
       ...text(34,{color:'#fff',background:autumn?orange:green,
         padding:'15px 23px',borderRadius:7})}}>{asset.copy.cta || 'Shop Now'}</Editable>
-  </div>;
+  </Ground>;
 }
 
 export function DerivedSite({asset,templateId,direction}: {
@@ -52,7 +52,7 @@ export function DerivedSite({asset,templateId,direction}: {
   const bump = templateId==='sc26_0060', flash = templateId==='sc26_0021';
   const accent = direction && direction.id !== 'a' ? direction.accent
     : flash ? orange : green;
-  if (asset.format==='text-link') return <div className="sheet" style={{width:w,height:h,
+  if (asset.format==='text-link') return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,
     background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',
     gap:18,padding:'0 24px',color:ink}}>
     <Editable id={`${asset.id}/message`} style={text(31,{fontWeight:400})}>
@@ -63,15 +63,15 @@ export function DerivedSite({asset,templateId,direction}: {
     <Editable id={`${asset.id}/cta`} style={text(31,{color:accent,
       textDecoration:'underline',whiteSpace:'nowrap'})}>
       {`${asset.copy.cta || 'Shop Now'} →`}</Editable>
-  </div>;
-  if (asset.format==='logo-strip') return <div className="sheet" style={{width:w,height:h,
+  </Ground>;
+  if (asset.format==='logo-strip') return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,
     background:accent,display:'flex',alignItems:'center',justifyContent:'space-around',
     padding:Math.min(20,w*.03)}}>
     {['the-north-face','patagonia','mountain-hardwear','osprey'].map((brand,n)=><Media
       key={brand} id={`${asset.id}/brand/${n}`} src={`/logos/brand-${brand}.svg`}
       alt={brand} style={{width:w*.20,height:h*.65,objectFit:'contain'}} />)}
-  </div>;
-  if (asset.format==='hero-mobile') return <div className="sheet" style={{width:w,height:h,
+  </Ground>;
+  if (asset.format==='hero-mobile') return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,
     position:'relative',overflow:'hidden',background:bump?'#f5ecdf':'#282820'}}>
     <ThemePicture asset={asset} templateId={templateId}
       style={{position:'absolute',left:0,top:bump?h*.48:0,width:w,height:bump?h*.52:h}} />
@@ -88,11 +88,11 @@ export function DerivedSite({asset,templateId,direction}: {
     <Editable id={`${asset.id}/cta`} style={{position:'absolute',left:22,
       top:bump?h*.35:h*.81,...text(25,{background:bump?ink:orange,color:'#fff',
         borderRadius:10,padding:'17px 24px'})}}>{asset.copy.cta || 'Shop Now'}</Editable>
-  </div>;
+  </Ground>;
   const small = w<500;
   const bg = asset.format==='compact-mobile' ? ink : accent;
   const offer = asset.scope.topic || `${asset.copy.lead || 'EXTRA'} ${asset.copy.offer || '20% OFF'}`;
-  return <div className="sheet" style={{width:w,height:h,background:bg,color:'#fff',
+  return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,background:bg,color:'#fff',
     display:'flex',alignItems:'center',justifyContent:'center',gap:small?7:24,
     padding:small?'0 10px':'0 40px'}}>
     <Editable id={`${asset.id}/message`} style={text(small?22:38,{whiteSpace:'nowrap'})}>
@@ -101,5 +101,5 @@ export function DerivedSite({asset,templateId,direction}: {
     <Editable id={`${asset.id}/cta`} style={text(small?18:32,
       {textDecoration:'underline',whiteSpace:'nowrap'})}>
       {asset.copy.cta || 'Shop Now'}</Editable>
-  </div>;
+  </Ground>;
 }

@@ -54,7 +54,11 @@ app.whenReady().then(async () => {
   process.env.PATH = [join(app.getPath('home'), '.local', 'bin'), process.env.PATH || '']
     .join(delimiter);
   process.env.SAC_STUDIO_DESKTOP = '1';
-  process.env.SAC_STUDIO_DATA_DIR = join(app.getPath('userData'), 'data');
+  // Visible, user-owned storage rather than buried in Application Support --
+  // a campaign is a thing a designer copies, backs up or mails to someone,
+  // not app-internal state. app.getPath('documents') resolves the real,
+  // localized Documents folder on whatever OS and account this runs under.
+  process.env.SAC_STUDIO_DATA_DIR = join(app.getPath('documents'), 'SAC_Studio');
   process.env.SAC_AI_PORT = '0';
   const backend = await import(join(root(), 'dist-desktop', 'server.mjs'));
   const port = await backend.ready;

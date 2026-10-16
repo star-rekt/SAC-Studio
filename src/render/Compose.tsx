@@ -12,7 +12,7 @@ import { stack } from '../fonts';
 import { Picture } from '../edit/Picture';
 import { Media } from '../edit/Media';
 import { LIBRARY } from '../model/media';
-import { Editable } from '../edit/Editable';
+import { Editable, Ground } from '../edit/Editable';
 import { Grain, CodeLine, PhotoWindow, WINDOW_AT, Wordmark, BrushLabel, INK } from './formats/parts';
 import type { FormatSpec } from '../templates/registry';
 import type { SheetAsset } from '../sheet/types';
@@ -143,8 +143,10 @@ export function Compose({ spec, outlook: o, asset, template, dir }: {
   const offerText = offerStr;
 
   return (
-    <div className="sheet" style={{ width: W, height: H, background: GROUND[o.ground] }}>
+    <div className="sheet" style={{ width: W, height: H }}>
       {/* ---- ground ---- */}
+      <Ground id={`${asset.id}/fill`} style={{ position: 'absolute', inset: 0,
+        background: GROUND[o.ground] }} />
       {onPhoto && (
         <Picture id={`${asset.id}/photo`} zone={zoneAt(asset.media.photo, 0)}
                  style={{ position: 'absolute', inset: 0 }} />
@@ -272,9 +274,9 @@ export function Compose({ spec, outlook: o, asset, template, dir }: {
         </div>
       )}
       {o.closing === 'brand-strip' && (
-        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: H * 0.105,
-          background: accent, zIndex: 4, display: 'flex', alignItems: 'center',
-          justifyContent: 'space-around', padding: `0 ${W * 0.03}px` }}>
+        <Ground id={`${asset.id}/strip/fill`} style={{ position: 'absolute', left: 0, right: 0,
+          bottom: 0, height: H * 0.105, background: accent, zIndex: 4, display: 'flex',
+          alignItems: 'center', justifyContent: 'space-around', padding: `0 ${W * 0.03}px` }}>
           {['brand-the-north-face', 'brand-mountain-hardwear'].map((f, n) => {
             const b = LIBRARY.find(i => i.id === f)!;
             return <Media key={n} id={`${asset.id}/brand/${n}`} src={b.file} alt={b.name}
@@ -284,7 +286,7 @@ export function Compose({ spec, outlook: o, asset, template, dir }: {
           <Editable id={`${asset.id}/more`} style={{ fontFamily: stack('Quiet Sans'),
             fontWeight: 800, fontSize: H * 0.032, color: BRAND.white,
             letterSpacing: 1 }}>&amp; MORE</Editable>
-        </div>
+        </Ground>
       )}
     </div>
   );

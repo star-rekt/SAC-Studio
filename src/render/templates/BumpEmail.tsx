@@ -131,8 +131,9 @@ export function BumpEmailHero({ doc, i, variant }: { doc: Doc; i: number; varian
         borderRadius: 30, boxSizing: 'border-box' }}>
         <Image id={id} src="/reference/bump-leaves.jpg" x={0} y={0} w={1052} h={869} zone={s.photo} />
       </div>
-      <Media id={`${id}/mark`} src="/reference/bump-ends-tomorrow-panel.png" alt="Bump offer panel"
-        style={{ ...at(219, 178, 762), height: 640 }} />
+      <Media id={`${id}/panel/mark`} src="/graphics/panel-step.svg" alt="Offer panel"
+        title="Click to recolour, resize or swap the panel shape from the library"
+        style={{ position: 'absolute', left: 219, top: 178, width: 762, height: 640 }} />
       <Editable id={`${id}/urgency`} style={{ ...at(340, 214), ...display(urgencySize(49),
         { color: green, letterSpacing: 3 }) }}>{urgency}</Editable>
       <Offer id={id} x={313} y={292} size={139} {...offer} />

@@ -70,6 +70,8 @@ main.with-panel{padding-right:320px}
 .ed.on:focus{box-shadow:inset 0 0 0 2px #F14222}
 .ed.picked{box-shadow:inset 0 0 0 2px #F14222}
 .mv.on:hover{cursor:grab}
+.gr.on:hover{cursor:pointer;box-shadow:inset 0 0 0 1px #F1422266}
+.gr.picked{box-shadow:inset 0 0 0 2px #F14222}
 .pic{position:relative;overflow:hidden}
 .pic img{width:100%;height:100%;object-fit:cover;display:block;user-select:none}
 .pic.on:hover{cursor:grab;box-shadow:inset 0 0 0 3px #F1422288}

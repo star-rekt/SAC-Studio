@@ -11,11 +11,20 @@
  *  a wrapper here would be felt four files away.
  */
 import { useEffect, useRef, useState } from 'react';
-import { useEdits, picOf, sizeOf } from './store';
-import { Swatches, SizeRow } from './Controls';
+import { useEdits, picOf, sizeOf, paintOf, moveOf } from './store';
+import { Swatches, SizeRow, PositionRow } from './Controls';
 import { offeredFor, isMediaSlot, byKind, LIBRARY, PHOTOS,
          type Item, type Kind } from '../model/media';
 import { tagsFromFilename, type UserMedia } from '../model/userMedia';
+import { canvasZoom } from './Editable';
+import MARK_SHAPES from '../data/mark-shapes.json';
+
+/** The graphics library's own ids, keyed by the file CSS masks against --
+ *  an svg whose name is in here has its real geometry (and the Figma plugin
+ *  can build a vector from it); any other .svg still renders as a plain
+ *  picture rather than guessing at a shape it has no path data for. */
+const MASKABLE = new Set(Object.keys(MARK_SHAPES));
+const maskableUrl = (url: string) => MASKABLE.has(url.replace(/^.*\/|\.svg$/g, ''));
 
 export function Media({ id, src, alt, style, title }: {
   id: string;
@@ -33,24 +42,67 @@ export function Media({ id, src, alt, style, title }: {
   // row it sits in.
   const sc = sizeOf(api.edits, id);
   const pic = picOf(api.edits, id);
+  const paint = paintOf(api.edits, id);
+  const mv = moveOf(api.edits, id);
   const sized = sc === 1 ? style : {
     ...style,
     width: typeof style?.width === 'number' ? style.width * sc : style?.width,
     height: typeof style?.height === 'number' ? style.height * sc : style?.height,
   };
+  const moved = (mv.dx || mv.dy)
+    ? [sized?.transform, `translate(${mv.dx}px, ${mv.dy}px)`].filter(Boolean).join(' ')
+    : sized?.transform;
+  // Alt-drag, same modifier as every other editable thing -- a plain click
+  // still just selects it, which is what opens the panel to swap or recolour.
+  const drag = (e: React.MouseEvent) => {
+    if (!on || !(e.altKey || e.shiftKey || e.metaKey)) return;
+    e.preventDefault(); e.stopPropagation();
+    const x0 = e.clientX, y0 = e.clientY, { dx, dy } = mv;
+    const zoom = canvasZoom(e.currentTarget);
+    const move = (m: MouseEvent) =>
+      api.nudge(id, dx + (m.clientX - x0) / zoom, dy + (m.clientY - y0) / zoom);
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
+  };
   if (pic.hidden) return on ? <span data-id={id}
     className={'pic media removed' + (api.selected === id ? ' picked' : '')}
     style={sized} title="Image removed · click to restore from the editor"
     onClick={e => { e.stopPropagation(); api.select(id); }}>Image removed</span> : null;
+  const url = pic.url || src;
+  // A mark drawn as <img> can never be recoloured -- an external bitmap or
+  // svg reference is opaque to CSS no matter what the file holds inside it.
+  // Masking against its own alpha, the way the brush-strip always has been,
+  // keeps the same swap and size mechanism and adds a real colour control;
+  // data-clip-shape below is what lets toLayers hand the Figma plugin the
+  // real path instead of a flattened picture.
+  if (maskableUrl(url)) {
+    const shape = url.replace(/^.*\/|\.svg$/g, '');
+    return (
+      <div
+        data-id={id}
+        data-clip-shape={shape}
+        className={'pic media vector' + (on ? ' on' : '') + (api.selected === id ? ' picked' : '')}
+        style={{ ...sized, transform: moved,
+          background: paint.bg ?? MARK_SHAPES[shape as keyof typeof MARK_SHAPES].fill,
+          WebkitMaskImage: `url(${url})`, maskImage: `url(${url})`,
+          WebkitMaskSize: '100% 100%', maskSize: '100% 100%',
+          WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat' }}
+        title={on ? (title ?? 'Click to recolour, resize or replace from the library · Alt-drag to move it') : undefined}
+        onMouseDown={drag}
+        onClick={e => { if (!on) return; e.stopPropagation(); api.select(id); }}
+      />
+    );
+  }
   return (
     <img
       data-id={id}
-      src={pic.url || src}
+      src={url}
       alt={alt ?? ''}
       draggable={false}
       className={'pic media' + (on ? ' on' : '') + (api.selected === id ? ' picked' : '')}
-      style={sized}
-      title={on ? (title ?? 'Click to replace from the library') : undefined}
+      style={{ ...sized, transform: moved }}
+      title={on ? (title ?? 'Click to replace from the library · Alt-drag to move it') : undefined}
+      onMouseDown={drag}
       onClick={e => { if (!on) return; e.stopPropagation(); api.select(id); }}
     />
   );
@@ -102,6 +154,8 @@ export function MediaControls({ id }: { id: string }) {
       </button>
       <h4>Size</h4>
       <SizeRow id={id} />
+      <h4>Position</h4>
+      <PositionRow id={id} />
       {kind === 'mark' && (
         <>
           <h4>Colour</h4>

@@ -504,6 +504,16 @@ export default function App() {
             <code>{selected}</code>
             {selected.includes('/pic') || selected.includes('/el/') || selected.endsWith('/photo') || selected.endsWith('/ground')
               ? <PicturePanel id={selected} />
+              : selected.endsWith('/fill')
+              ? <>
+                  <p className="muted">A background shape. Click its text to edit that instead. Hold <kbd>Alt</kbd> and drag it to move it.</p>
+                  <h4>Colour</h4>
+                  <Swatches id={selected} type={false} />
+                  <h4>Size</h4>
+                  <SizeRow id={selected} />
+                  <h4>Position</h4>
+                  <PositionRow id={selected} />
+                </>
               : isMediaSlot(selected)
               ? <MediaControls id={selected} />
               : <>
@@ -530,8 +540,9 @@ export default function App() {
             )}
             {shown.filter(asset => asset.custom).map(asset => <section key={asset.id}>
               <h4>Custom board — {asset.label}</h4>
-              <p className="muted">This type was not on the selected design board. Set its
-                canvas size, then add editable layers. No other template artwork is imported.</p>
+              <p className="muted">This type was not on the selected design board, so it carries
+                the brief's own copy as a starting text block rather than a design. Set its
+                canvas size, then add layers from the library or your own.</p>
               <label>Width (px)
                 <input type="number" min={64} max={8000} value={asset.size[0]}
                   onChange={e => setCustomSize(asset.id, 0, Number(e.target.value))} />

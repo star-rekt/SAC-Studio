@@ -4,9 +4,9 @@
  *  inside a contenteditable is how you select text, and taking that away makes
  *  the field useless for the thing it is mainly for. */
 import { useRef, type CSSProperties, type ReactNode } from 'react';
-import { useEdits, textOf, moveOf, sizeOf, paintOf } from './store';
+import { useEdits, textOf, moveOf, sizeOf, paintOf, picOf } from './store';
 
-const canvasZoom = (element: Element) => {
+export const canvasZoom = (element: Element) => {
   const scaler = element.closest('.scaler');
   return scaler ? Number.parseFloat(getComputedStyle(scaler).zoom) || 1 : 1;
 };
@@ -71,6 +71,57 @@ export function Editable({ id, children, style, as = 'div' }: {
       onClick={() => on && api.select(id)}
       title={on ? 'Type to edit · Alt-drag to move · size in the editor panel' : undefined}
     >{value}</Tag>
+  );
+}
+
+/** A colour-, size- and position-editable surface: the sheet's ground, an
+ *  accent band, a ticket face.
+ *
+ *  Nothing here used to be wired to a background at all, which is what made
+ *  every template's ground, strip and ticket face permanently the template's
+ *  own colour, size and place. The `e.target !== e.currentTarget` guard is
+ *  what lets this sit behind text runs without stealing their clicks: a
+ *  click (or an alt-drag) on a run belongs to that run, same as always; on
+ *  the bare background it belongs to this. */
+export function Ground({ id, style, className, children, ...rest }: {
+  id: string; style?: CSSProperties; className?: string; children?: ReactNode;
+} & Record<string, unknown>) {
+  const api = useEdits();
+  const paint = paintOf(api.edits, id);
+  const sc = sizeOf(api.edits, id);
+  const mv = moveOf(api.edits, id);
+  const texture = picOf(api.edits, id).url;
+  const on = api.mode === 'edit';
+  const picked = api.selected === id;
+
+  const sized = sc === 1 ? null : {
+    width: typeof style?.width === 'number' ? style.width * sc : style?.width,
+    height: typeof style?.height === 'number' ? style.height * sc : style?.height,
+  };
+  const moved = (mv.dx || mv.dy)
+    ? [style?.transform, `translate(${mv.dx}px, ${mv.dy}px)`].filter(Boolean).join(' ')
+    : style?.transform;
+
+  const drag = (e: React.MouseEvent) => {
+    if (!on || e.target !== e.currentTarget || !(e.altKey || e.shiftKey || e.metaKey)) return;
+    e.preventDefault(); e.stopPropagation();
+    const x0 = e.clientX, y0 = e.clientY, { dx, dy } = mv;
+    const zoom = canvasZoom(e.currentTarget);
+    const move = (m: MouseEvent) =>
+      api.nudge(id, dx + (m.clientX - x0) / zoom, dy + (m.clientY - y0) / zoom);
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
+  };
+
+  return (
+    <div {...rest} data-id={id} className={[className, 'gr', on && 'on', picked && 'picked'].filter(Boolean).join(' ')}
+      style={{ ...style, ...sized, transform: moved, ...(paint.bg ? { background: paint.bg } : null),
+        ...(texture ? { backgroundImage: `url(${texture})`, backgroundSize: 'cover',
+                         backgroundPosition: 'center' } : null) }}
+      onMouseDown={drag}
+      onClick={e => { if (!on || e.target !== e.currentTarget) return; api.select(id); }}
+      title={on ? 'Alt-drag to move · size and colour in the editor panel' : undefined}
+    >{children}</div>
   );
 }
 

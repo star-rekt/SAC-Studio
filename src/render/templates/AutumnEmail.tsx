@@ -2,7 +2,7 @@
  *  brand strip. Copy remains editable React text; the ticket is only texture. */
 import type { Doc } from '../../model/compose';
 import { copyFor } from '../../model/copy';
-import { Editable } from '../../edit/Editable';
+import { Editable, Ground } from '../../edit/Editable';
 import { Picture } from '../../edit/Picture';
 import { Media } from '../../edit/Media';
 import { stack } from '../../fonts';
@@ -15,7 +15,7 @@ export function AutumnEmailHero({ doc, i }: { doc: Doc; i: number }) {
   const lead = t.lead || 'EXTRA', offer = t.offer || '20% OFF';
   const urgency = /\bENDS|FINAL|LAST\b/i.test(copy.marquee) ? copy.marquee
     : doc.brief.duration || copy.marquee || 'LIMITED TIME';
-  return <div className="sheet" style={{ width: 1200, height: 826, position: 'relative',
+  return <Ground id={`${id}/fill`} className="sheet" style={{ width: 1200, height: 826, position: 'relative',
     overflow: 'hidden', background: '#282521' }}>
     <Picture id={`${id}/photo`} zone={send.photo} initialSrc="/reference/autumn-email-photo.jpg"
       style={{ position: 'absolute', inset: 0 }} />
@@ -26,12 +26,14 @@ export function AutumnEmailHero({ doc, i }: { doc: Doc; i: number }) {
       fontSize: 65, fontWeight: 800, letterSpacing: -1.5, lineHeight: 1.2 }}>
       {Array.from({ length: 4 }, (_, n) => <span key={n}>
         <Editable as="span" id={`${id}/marquee/${n}`}>{urgency}</Editable>
-        <span style={{ margin: '0 24px', fontWeight: 400 }}>|</span></span>)}
+        <Editable as="span" id={`${id}/marquee-divider/${n}`}
+          style={{ margin: '0 24px', fontWeight: 400 }}>|</Editable></span>)}
     </div>
     <div style={{ position: 'absolute', left: 373, top: 242, width: 770, height: 344,
       transform: 'rotate(-2.7deg)' }}>
-      <Media id={`${id}/mark`} src="/reference/autumn-ticket.png" alt="Autumn ticket"
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+      <Media id={`${id}/ticket/mark`} src="/graphics/ticket-tag.svg" alt="Ticket"
+        title="Click to recolour, resize or swap the ticket shape from the library"
+        style={{ position: 'absolute', left: 0, top: 0, width: 770, height: 344 }} />
       <Editable id={`${id}/offer`} as="h1" style={{ position: 'absolute', left: 40, top: 34,
         margin: 0, whiteSpace: 'pre-line', color: '#fff',
         fontFamily: stack('Quiet Sans'), fontWeight: 800,
@@ -40,7 +42,7 @@ export function AutumnEmailHero({ doc, i }: { doc: Doc; i: number }) {
         gap: 13, whiteSpace: 'nowrap', color: '#fff', fontFamily: stack('Quiet Sans'),
         fontSize: 37, lineHeight: 1 }}>
         <Editable id={`${id}/code`}>{t.foot || 'CODE AUTUMN20'}</Editable>
-        <span>|</span>
+        <Editable as="span" id={`${id}/divider`}>|</Editable>
         <Editable id={`${id}/cta`} style={{ fontWeight: 800, letterSpacing: 1 }}>{`${copy.cta.toUpperCase()} >`}</Editable>
       </div>
     </div>
@@ -53,5 +55,5 @@ export function AutumnEmailHero({ doc, i }: { doc: Doc; i: number }) {
       <Editable id={`${id}/more`} style={{ color: '#fff', fontFamily: stack('Quiet Sans'),
         fontWeight: 800, fontSize: 39 }}>&amp; More</Editable>
     </div>
-  </div>;
+  </Ground>;
 }

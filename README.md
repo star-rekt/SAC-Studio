@@ -18,9 +18,8 @@ npm run dev
 Open `http://localhost:5178/`. Development starts the Vite editor and the
 local Claude connector together. Install and sign in to Claude Code separately
 if you want AI brief parsing. The editor and manual planning still work without
-Claude. The catalogue photos used by the templates are included in this private
-repository so a fresh checkout can build the same designs. To refresh them,
-use `FIGMA_TOKEN=... npm run photos`; never commit the token.
+Claude. Optional catalogue photos can be fetched with a Figma access token via
+`FIGMA_TOKEN=... npm run photos`; do not commit the token.
 
 ## Install for designers
 

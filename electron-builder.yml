@@ -23,7 +23,7 @@ mac:
 pkg:
   installLocation: /Applications
   allowAnywhere: false
-  allowCurrentUserHome: false
+  allowCurrentUserHome: true
   allowRootDirectory: true
   isRelocatable: false
 win:

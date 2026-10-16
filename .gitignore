@@ -1,8 +1,8 @@
 node_modules
-.DS_Store
 dist
 dist-desktop
 desktop-release
+public/photos/*.jpg
 tsconfig.tsbuildinfo
 server/.shots
 data/sessions

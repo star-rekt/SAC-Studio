@@ -3,7 +3,8 @@
  * editable layers. The path is only the cream paper cutout and green keyline. */
 import type { SheetAsset } from '../../sheet/types';
 import { Picture } from '../../edit/Picture';
-import { Editable } from '../../edit/Editable';
+import { Editable, Ground } from '../../edit/Editable';
+import { useEdits, paintOf } from '../../edit/store';
 import { Media } from '../../edit/Media';
 import { ZONE_LIST, photoFor } from '../../model/compose';
 import { stack } from '../../fonts';
@@ -25,6 +26,13 @@ const copyStyle = (left: number, top: number, size: number, extra?: React.CSSPro
 export function BumpSocial({ asset, direction }: { asset: SheetAsset; direction?: Direction }) {
   const [w, h] = asset.size;
   const accent = direction?.id === 'a' || !direction ? green : direction.accent;
+  // The SVG mask repaints 'paper' over the whole frame except the stepped
+  // window -- the root's own background sits behind it and never shows. A
+  // colour change has to reach the mask fill, not just the div, or the
+  // swatch click would look like it did nothing.
+  const fillId = `${asset.id}/fill`;
+  const api = useEdits();
+  const ground = paintOf(api.edits, fillId).bg ?? paper;
   const zone = ZONE_LIST.find(z => z.id === asset.media.photo) ?? photoFor('hike', 0);
   const story = asset.format === 'paid-social-9x16';
   const tall = asset.format === 'paid-social-4x5';
@@ -47,8 +55,8 @@ export function BumpSocial({ asset, direction }: { asset: SheetAsset; direction?
     : direction?.shape === 'notch'
     ? `M 30 30 H ${w-30} V ${h-30} H ${Math.round(w*.55)} V ${Math.round(h*.72)} H 30 Z`
     : paths[asset.format] ?? paths['paid-social-1x1'];
-  return <div className="sheet" data-design-variant="figma" style={{ width: w, height: h,
-    background: paper,
+  return <Ground id={fillId} className="sheet" data-design-variant="figma" style={{ width: w, height: h,
+    background: ground,
     backgroundImage: 'linear-gradient(#f5ecdfaa,#f5ecdfaa),url(/reference/bump-paper.png)',
     backgroundSize: 'cover,612px 408px', overflow: 'hidden' }}>
     <Picture id={`${id}/photo`} zone={zone} initialSrc="/reference/bump-social-photo.jpg"
@@ -59,7 +67,7 @@ export function BumpSocial({ asset, direction }: { asset: SheetAsset; direction?
     <svg viewBox={`0 0 ${w} ${h}`} width={w} height={h}
       style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2 }}
       aria-hidden="true">
-      <path d={`M 0 0 H ${w} V ${h} H 0 Z ${path}`} fill={paper} fillRule="evenodd" />
+      <path d={`M 0 0 H ${w} V ${h} H 0 Z ${path}`} fill={ground} fillRule="evenodd" />
       <path d={path} fill="none" stroke={accent} strokeWidth="7" />
     </svg>
     {!(!tall && !story) && <Media id={`${id}/wordmark`} src="/logos/sac-logo.png"
@@ -90,5 +98,5 @@ export function BumpSocial({ asset, direction }: { asset: SheetAsset; direction?
       <Editable id={`${id}/more`} style={copyStyle(0, 0, 42,
         { position: 'relative', fontWeight: 700 })}>&amp; More</Editable>
     </div>}
-  </div>;
+  </Ground>;
 }

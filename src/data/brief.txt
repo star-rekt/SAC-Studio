@@ -1,4 +1,4 @@
-Brief Owner (you):
+Brief Owner (you): 
 Derek Kitching
 
 Figma Board Link:
@@ -111,11 +111,11 @@ Section 1 - Hero
 Design: Hiking imagery with the lockup. Warm weather lifestyle only, no snow or winter. Key overlays are End of Season Blowout and Buy 3+, Save an Extra 20%.
 Copy: Body copy under the hero spells out the mechanic in the playful SAC voice. Buy 3 or more summer items and an extra 20% comes off automatically in cart, no code. October 20 to 26 only.
 CTA: Shop Now
-Section 2 - Lifestyle Category Tiles with Max % off
+Section 2 - Lifestyle Category Tiles with Max % off 
 Included Categories: Men's Apparel up to 65% off  |  Women's Apparel up to 65% off  |  Hiking Footwear up to 60% off  |  Climbing Gear up to 60% off  |  Bike Gear up to 70% off  |  Camp & Hike up to 60% off
 Merch to confirm every max percentage before build.
 CTA: Shop All
-Section 3 - 4 Simple Brand Tiles (With %)
+Section 3 - 4 Simple Brand Tiles (With %) 
 Included Brands: Columbia  |  The North Face  |  Mountain Hardwear  |  Osprey
 Merch to confirm the brands inventory
 CTA: Shop All
@@ -172,7 +172,7 @@ CTA: Shop Now
 Section 2 - Product Recs
 Header: Summer Top Picks
 CTA: Shop All
-Section 3 - 4 Simple Brand Tiles (No %)
+Section 3 - 4 Simple Brand Tiles (No %) 
 Header: Summer Top Brands
 Included Brands: Columbia  |  La Sportiva  |  prAna  |  Osprey
 Merch to confirm the brands inventory
@@ -188,7 +188,7 @@ CTA: Shop Now
 Section 2 - Lifestyle Category Tiles
 Included Categories: Men's Apparel  |  Women's Apparel  |  Hike & Camp  |  Climbing Gear  |  Bike Gear  |  Footwear
 CTA: Shop All
-Section 3 - 4 Simple Brand Tiles (No %)
+Section 3 - 4 Simple Brand Tiles (No %) 
 Included Brands: The North Face  |  Columbia  |  Mountain Hardwear  |  Osprey
 Merch to confirm the brands inventory
 CTA: Shop All
@@ -203,7 +203,7 @@ CTA: Shop Now
 Section 2 - Product Recs
 Header: Bundle and Save Extra 20%
 CTA: Shop All
-Section 3 - 4 Simple Brand Tiles (No %)
+Section 3 - 4 Simple Brand Tiles (No %) 
 Included Brands: The North Face  |  Columbia  |  Mountain Hardwear  |  Osprey
 Merch to confirm the brands inventory
 CTA: Shop All
@@ -213,8 +213,8 @@ Affiliates
 1 text link
 
 Paid Social
-2 sets + copy
-Concept 1: Summer's Last Call
+2 sets + copy 
+Concept 1: Summer's Last Call 
 Headline: Summer's Last Call
 Subhead: Buy 3+, Save an Extra 20%
 CTA: Shop Now

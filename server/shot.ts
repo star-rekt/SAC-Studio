@@ -40,7 +40,7 @@ export const chrome = () => CANDIDATES.find(existsSync) ?? null;
  *  They are the export -- the thing the judge looks at is the thing you can
  *  open in Finder, attach to a ticket or hand to the Figma plugin, and there
  *  is no second rendering path to keep honest. */
-export const EXPORTS = join(DATA, 'exports');
+export const EXPORTS = join(DATA, 'Sessions', 'Export');
 
 /** What can be changed on this asset, read off the render rather than guessed.
  *

@@ -21,7 +21,7 @@ function Brush({ id, text, top, pale = false }: {
   return <div style={{ position: 'absolute', left: '50%', top, transform: 'translateX(-50%)',
     width: 430, height: 70, display: 'grid', placeItems: 'center' }}>
     <Media id={`${id}/mark`} src="/graphics/brush-strip.svg" alt=""
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+      style={{ position: 'absolute', left: 0, top: 0, width: 430, height: 70 }} />
     <Editable id={`${id}/urgency`} style={{ position: 'relative', color: pale ? '#fff' : '#fff',
       ...type(55, 400), whiteSpace: 'nowrap' }}>{text}</Editable>
   </div>;

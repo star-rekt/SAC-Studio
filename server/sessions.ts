@@ -14,7 +14,7 @@ import { readdir, readFile, writeFile, unlink, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { DATA } from './paths.ts';
 
-export const DIR = join(DATA, 'sessions');
+export const DIR = join(DATA, 'Sessions');
 
 /** Ids come from the client and end up as filenames, so they are checked
  *  rather than trusted. */

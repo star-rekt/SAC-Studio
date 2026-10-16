@@ -29,6 +29,10 @@ export type Layer =
       draw: { x: number; y: number; width: number; height: number } }
   | { n: number; name: string; type: 'rect'; fill: string; opacity?: number;
       radius?: number; rotation?: number;
+      /** A mark from the graphics library, cut to its own path rather than
+       *  its bounding box -- without it a brush stroke or an arrow arrives in
+       *  Figma as the coloured rectangle around it. */
+      clip?: { path: string; view: [number, number] };
       x: number; y: number; width: number; height: number }
   | { n: number; name: string; type: 'text'; text: string; font: string;
       weight: number; size: number; lineHeight: number; letterSpacing: number;
@@ -106,6 +110,7 @@ function broken(el: HTMLElement, leading: number): string {
 
 import { cover } from './toSvg';
 import STEP from '../data/stepped-window.json';
+import MARK_SHAPES from '../data/mark-shapes.json';
 
 /** The shapes a slot may be cut to, by the name the renderer marks it with.
  *  One place, so the mask the browser draws and the mask Figma builds cannot
@@ -161,10 +166,13 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
     const bg = isText ? null : hex(cs.backgroundColor);
     if (bg) {
       const spin = turnOf(cs.transform);
+      const markShape = el.getAttribute('data-clip-shape');
+      const mark = markShape && (MARK_SHAPES as Record<string, { path: string; width: number; height: number }>)[markShape];
       layers.push({ n: ++n, name: name(el, 'block'), type: 'rect',
         fill: bg.fill, opacity: bg.opacity < 1 ? bg.opacity : undefined,
         radius: parseFloat(cs.borderTopLeftRadius) || undefined,
         rotation: spin || undefined,
+        clip: mark ? { path: mark.path, view: [mark.width, mark.height] } : undefined,
         x, y, width: r1(b.width), height: r1(b.height) });
     }
 
