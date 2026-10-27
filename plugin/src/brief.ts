@@ -11,7 +11,7 @@ export type Clip = { path: string; view: [number, number];
 
 export type Layer =
   | { n: number; name: string; group?: string; type: 'image'; src: string;
-      x: number; y: number; width: number; height: number; radius?: number;
+      x: number; y: number; width: number; height: number; radius?: number; rotation?: number;
       /** The shape the box is cut to, where it is not a rectangle. Without it
        *  the signature window arrives in Figma as a rectangular photograph
        *  and the staircase that makes the design is simply gone. */
@@ -25,7 +25,8 @@ export type Layer =
       x: number; y: number; width: number; height: number }
   | { n: number; name: string; group?: string; type: 'text'; text: string;
       font: string; weight: number; size: number; lineHeight: number;
-      letterSpacing: number; colour: string; align: string;
+      letterSpacing: number; colour: string; align: string; underline?: boolean;
+      rotation?: number;
       x: number; y: number; width: number; height: number };
 
 export type Variant = {

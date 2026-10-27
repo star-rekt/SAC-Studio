@@ -271,11 +271,27 @@ export async function shoot(url: string, w: number, h: number, file: string,
 
     let layers: unknown;
     if (opts.layers) {
+      // An exception inside toLayers() (CDP has no way to say so by itself --
+      // Runtime.evaluate just comes back with no result.value, same as
+      // window.__layers being legitimately unset) used to surface as the
+      // uninformative "no editable layers returned" with the actual cause
+      // thrown away. Catching it here and returning the message instead
+      // means a real bug in toLayers() shows its own error on the next try,
+      // rather than looking identical to a page that never rendered.
       const got = await deadline(
-        cdp.send('Runtime.evaluate', { expression: 'window.__layers && window.__layers()',
-                                       awaitPromise: true, returnByValue: true }),
+        cdp.send('Runtime.evaluate', {
+          expression: `(() => { try {
+              if (typeof window.__layers !== 'function')
+                return { __layersError: 'window.__layers is ' + typeof window.__layers
+                  + '; data-shot=' + (document.documentElement.dataset.shot || '(unset)')
+                  + '; root=' + (document.getElementById('root')?.firstElementChild?.tagName ?? '(none)') };
+              return window.__layers();
+            } catch (e) { return { __layersError: String(e && e.stack || e) }; } })()`,
+          awaitPromise: true, returnByValue: true }),
         30_000, 'the page did not produce layers');
-      layers = got?.result?.value ?? undefined;
+      const v = got?.result?.value as { __layersError?: string } | undefined;
+      if (v?.__layersError) throw new Error(`toLayers() threw: ${v.__layersError}`);
+      layers = v ?? undefined;
     }
 
     if (opts.small === false)

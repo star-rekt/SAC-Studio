@@ -11,6 +11,7 @@ import type { AiParse } from '../ai/types';
 import { SPECS } from '../templates/spec';
 import { templateById } from '../templates/registry';
 import { specById } from '../templates/spec';
+import { readBrief } from '../model/brief';
 
 const when = (iso: string) => {
   const d = new Date(iso);
@@ -84,6 +85,18 @@ export function NewDialog({ onCreate, onClose }: {
     setRich(/<(b|strong)\b/i.test(el.innerHTML || ''));
   };
 
+  // The brief's own wording says which campaign type this is, the same way
+  // the full build will read it -- so the template list narrows to what
+  // actually fits before a designer can pick a mismatched one by hand.
+  const detectedType = brief.trim().length >= 40
+    ? readBrief(field.current?.innerHTML || brief, '', brief).type : undefined;
+  const matches = detectedType ? SPECS.filter(s => s.type === detectedType) : SPECS;
+  const options = matches.length ? matches : SPECS;
+  useEffect(() => {
+    if (matches.length === 1 && matches[0].id !== templateId) setTemplateId(matches[0].id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [detectedType]);
+
   return (
     <Modal title="New campaign" onClose={onClose}>
       <label className="field">
@@ -92,14 +105,18 @@ export function NewDialog({ onCreate, onClose }: {
       </label>
       <label className="field">
         <span>Template <i>decides the look, not the content</i></span>
-        <select value={templateId} onChange={e => setTemplateId(e.target.value)}>
-          {SPECS.map(t => (
+        <select value={templateId} onChange={e => setTemplateId(e.target.value)}
+                disabled={matches.length === 1}>
+          {options.map(t => (
             <option key={t.id} value={t.id}>
               {t.name} — {templateById(t.id)?.formats.length ?? 0} formats
             </option>
           ))}
         </select>
       </label>
+      {matches.length === 1 && (
+        <p className="muted">Locked to {matches[0].name} — the brief reads as {detectedType}.</p>
+      )}
       <label className="field">
         <span>Brief <i>paste it as it was written — headings, bullets and all</i></span>
         <div ref={field} className="paste" contentEditable suppressContentEditableWarning

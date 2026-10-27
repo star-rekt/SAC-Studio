@@ -352,9 +352,40 @@ export function readBrief(text: string, override?: CampaignType | '', plain?: st
                ? `EXTRA ${pct[1]}% OFF` : `UP TO ${pct[1]}% OFF`)
     : (placeholders.push('offer (no percentage or amount found) — placeholder shown'), 'UP TO XX% OFF');
 
+  // A promo code gets retyped by hand in several places across a real brief
+  // -- a structured "Code" field, a Creative Direction line, a Campaign
+  // Synopsis paragraph, a Key Messages bullet -- and only ONE of those
+  // mentions has to have a typo for a transcription like ALPINE20/APLINE20
+  // to end up on the board. Taking whichever regex matched first used to
+  // mean whichever mention happened to come first in reading order won,
+  // typo or not -- confirmed on SC26_0071, where the Campaign Synopsis
+  // paragraph's own "using code APLINE20" sat before three separate,
+  // correctly-spelled mentions and was the one that shipped. Every
+  // code-shaped token in the brief is collected instead, and the spelling
+  // repeated the most wins; a lone outlier spelling is reported as a
+  // placeholder rather than silently trusted.
   const saidCode = said('code', 'promo code', 'coupon code');
-  const codeM = (/^[A-Z][A-Z0-9]{3,}$/.test(saidCode) ? [saidCode, saidCode] as RegExpMatchArray : null)
-             || t.match(/\bcode\s*[:\-]?\s*([A-Z][A-Z0-9]{3,})\b/) || t.match(/\b([A-Z]{4,}\d{2})\b/);
+  const codeCounts = new Map<string, number>();
+  const seeCode = (tok: string, weight = 1) =>
+    codeCounts.set(tok, (codeCounts.get(tok) ?? 0) + weight);
+  // A clean, explicitly labelled field (an HTML brief's bold "Code:") is
+  // strong evidence on its own -- weighted so it wins a majority vote
+  // outright rather than merely tying with a typo repeated as often.
+  if (/^[A-Z][A-Z0-9]{3,}$/.test(saidCode)) seeCode(saidCode, 1000);
+  for (const m of t.matchAll(/\bcode\s*[:\-]?\s*([A-Z][A-Z0-9]{3,})\b/gi)) seeCode(m[1].toUpperCase());
+  for (const m of t.matchAll(/\b([A-Z]{4,}\d{2,})\b/g)) seeCode(m[1]);
+  const ranked = [...codeCounts.entries()].sort((a, b) => b[1] - a[1]);
+  const code = ranked[0]?.[0] ?? '';
+  // Candidates that are plausibly the SAME code, misspelled: same length,
+  // the same letters, just reordered -- a transposition, not a different
+  // code naming a different promotion.
+  const sameLetters = (a: string, b: string) => a.length === b.length
+    && [...a].sort().join('') === [...b].sort().join('');
+  const codeConflict = ranked.slice(1).find(([tok]) => sameLetters(tok, code));
+  if (codeConflict) placeholders.push(
+    `promo code appears as both "${code}" and "${codeConflict[0]}" in the brief — `
+    + `used "${code}" (the spelling repeated more often); double-check the exact `
+    + 'code against the source before this ships');
   // A board carries its own code in its artwork. If the brief names none, the
   // line cannot simply be left alone -- that ships CHILLY20 on someone else's
   // campaign -- so it becomes a visible blank for the author to fill.
@@ -366,7 +397,6 @@ export function readBrief(text: string, override?: CampaignType | '', plain?: st
   const itemThreshold = t.match(/\b(?:buy|purchase|add)\s*(\d+)\s*\+\s*(?:eligible\s+|summer\s+)?(?:items?|products?)/i)
     || t.match(/\b(?:buy|purchase|add)\s*(\d+)\s+or\s+more\s+(?:eligible\s+|summer\s+)?(?:items?|products?)/i);
   const minimumItems = itemThreshold ? Number(itemThreshold[1]) : null;
-  const code = codeM ? codeM[1].toUpperCase() : '';
   if (!code && noCode) placeholders.push('no promo code — the code line is removed, as the brief says the discount applies in cart');
   else if (!code) placeholders.push('promo code (none named) — any code on the board is blanked to XXXXXX');
 

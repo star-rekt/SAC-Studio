@@ -10,7 +10,8 @@ import { LIBRARY, find as findMedia } from '../model/media';
 import { Editable, Movable, Ground } from '../edit/Editable';
 import { placeOn } from '../model/safe';
 import { directionsFor, type Direction } from '../templates/directions';
-import { useEdits } from '../edit/store';
+import { useEdits, textOf } from '../edit/store';
+import { fitText } from '../model/textContracts';
 
 const W = 1200;
 const GUT = 64;
@@ -72,10 +73,13 @@ const Nav = () => (
   <div style={{ width: W, height: 170, background: BRAND.white, padding: `28px 92px`,
                 boxSizing: 'border-box', display: 'flex', alignItems: 'center',
                 justifyContent: 'space-between' }}>
-    {/* the published wordmark. Set as type it got the ampersand wrong -- it is
-        navy, not green -- and lost the rule and the Backcountry line. Green
-        belongs to 'Shop All' and to nothing else here. */}
-    <Media id="email/nav/wordmark" src="/logos/sac-logo.png"
+    {/* Set as type it got the ampersand wrong -- it is navy, not green -- and
+        lost the rule and the Backcountry line, so it moved to a file. But
+        `sac-logo.png` carries the exact same navy-ampersand mistake baked
+        into the raster -- never actually fixed, just moved. Pulled the real
+        mark straight off the design system board (Figma node 759:29603)
+        instead: black type, the actual green "&" and rule, transparent SVG. */}
+    <Media id="email/nav/wordmark" src="/logos/sac-logo-light.svg"
            alt="Steep &amp; Cheap, powered by Backcountry"
            style={{ width: 220, display: 'block' }} />
     <div style={{ display: 'flex', gap: 54, ...font('Documentation/Heading', { fontSize: 28 }) }}>
@@ -89,9 +93,13 @@ const Nav = () => (
 /** The orange teaser bar. The brief writes one per send. */
 const TeaserBar = ({ id, text }: { id: string; text: string }) => {
   const [lead, ...rest] = text.split(/\s*(?:>>|\|)\s*/);
+  // minHeight, not height -- a brief's teaser line is free text with no
+  // length cap of its own; a fixed height would get run through by any
+  // line long enough to wrap, since nothing here clips it.
   return (
-    <div style={{ width: W, background: ORANGE, height: 76, display: 'flex',
-                  alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+    <div style={{ width: W, background: ORANGE, minHeight: 76, display: 'flex',
+                  alignItems: 'center', justifyContent: 'center', gap: 16, padding: '14px 32px',
+                  boxSizing: 'border-box', flexWrap: 'wrap' }}>
       <Editable id={id} style={font('Documentation/Heading', { fontSize: 26, color: BRAND.white })}>
         {rest.length ? lead : text}
       </Editable>
@@ -271,6 +279,78 @@ const BandHead = ({ id, children, accent = ORANGE }: { id: string; children: str
   </div>
 );
 
+/** sc26_0021's own section header: white, dark ink, centered -- read off the
+ *  board's "Top Categories" / "Flash Sale Top Picks" / "More Current Deals"
+ *  frames, all three identical down to the pixel. */
+const flashTrim = { textBoxTrim: 'trim-both', textBoxEdge: 'cap alphabetic' } as React.CSSProperties;
+
+const FlashHeader = ({ id, children }: { id: string; children: string }) => {
+  // A 187px-tall band with a fixed 104px font and nothing to clip it: a
+  // header longer than the board's own three examples ("Top Categories",
+  // "Flash Sale Top Picks", "More Current Deals") would run past the band's
+  // edges with no shrink and no clip. Sized off the LIVE text (post-edit),
+  // the same way BoardHero/FlashSocial size their own title off `textOf` --
+  // not the original prop, which Editable itself ignores once edited.
+  const { edits } = useEdits();
+  const live = textOf(edits, id, children);
+  const { fontSize } = fitText(live, 'section.header', { widthBudget: W - 128 });
+  return (
+    <div style={{ width: W, height: 187, background: BRAND.white, display: 'flex',
+      alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}>
+      <Editable id={id} as="h2" style={{ fontFamily: stack('Quiet Sans'), fontWeight: 700,
+        fontSize, lineHeight: (fontSize! * .95) + 'px', letterSpacing: -1.04, color: '#333', ...flashTrim,
+        margin: 0, textAlign: 'center', whiteSpace: 'nowrap' }}>{children}</Editable>
+    </div>
+  );
+};
+
+/** sc26_0021's own board image per category pill, imported from the Figma
+ *  board rather than drawn from the generic stock-photo library -- matched
+ *  by keyword since a brief can phrase a category a few different ways
+ *  ("Men's Apparel", "Men Apparel"). Falls back to the generic zone photo
+ *  for a category the board didn't show one of. */
+function categoryImage(name: string): string | undefined {
+  const n = name.toLowerCase();
+  if (/\bwomen/.test(n)) return '/reference/category-womens-apparel.png';
+  if (/\bmen/.test(n)) return '/reference/category-mens-apparel.png';
+  if (/foot\s*wear|shoes?/.test(n)) return '/reference/category-footwear.png';
+  if (/climb/.test(n)) return '/reference/category-climb-gear.png';
+  if (/camp/.test(n)) return '/reference/category-camp-gear.png';
+  if (/daypack|backpack/.test(n)) return '/reference/category-daypacks.png';
+  return undefined;
+}
+
+/** One of the six orange category pills on sc26_0021's board -- a photo
+ *  badge, the category name, an arrow. */
+const FlashPill = ({ k, name, zone, image }: { k: string; name: string;
+  zone: ReturnType<typeof photoFor>; image?: string }) => {
+  // The arrow glyph sits at a fixed left:945 -- a name with no shrink logic
+  // could run straight into it once it's longer than the board's own
+  // six-category set. Sized off the live (post-edit) text, as above.
+  const { edits } = useEdits();
+  const live = textOf(edits, `${k}/name`, name);
+  const { fontSize } = fitText(live, 'section.pillName', { widthBudget: 945 - 269 - 20 });
+  return (
+  <div style={{ position: 'relative', width: 1072, height: 173, margin: '0 auto 32px',
+    background: '#F14222', borderRadius: 25, boxSizing: 'border-box' }}>
+    <div style={{ position: 'absolute', left: 33, top: 26, width: 185, height: 122,
+      background: BRAND.white, borderRadius: 25, overflow: 'hidden' }}>
+      {/* <Media> has no pan/zoom/replace controls at all -- it is a plain
+          <img>, not an edit target. Every other photo in this studio goes
+          through <Picture> for exactly that reason, and this icon is no
+          different just because it usually has a specific category shot to
+          default to instead of a pursuit-matched stock photo. */}
+      <Picture id={`${k}/icon`} zone={zone} initialSrc={image} style={{ position: 'absolute', inset: 0 }} />
+    </div>
+    <Editable id={`${k}/name`} style={{ position: 'absolute', left: 269, top: 63, ...flashTrim,
+      fontFamily: stack('Quiet Sans'), fontWeight: 600, fontSize, lineHeight: (fontSize!*1.26) + 'px',
+      letterSpacing: -2.16, color: BRAND.white, whiteSpace: 'nowrap' }}>{name}</Editable>
+    <span style={{ position: 'absolute', left: 945, top: 64, width: 70, height: 46,
+      color: BRAND.white, fontSize: 50, lineHeight: '46px', textAlign: 'center' }}>→</span>
+  </div>
+  );
+};
+
 const White = ({ children, pad = 48, bg = BRAND.white }: {
   children: React.ReactNode; pad?: number; bg?: string;
 }) => (
@@ -313,14 +393,16 @@ function ProductGrid({ k, cta, bump = false, count = 4 }: {
 }
 
 /** A lifestyle tile: the photograph carries its percentage and its own pill. */
-function Tile({ k, name, percent, cta, zone, h = 320 }: {
+function Tile({ k, name, percent, cta, zone, h = 320, photo }: {
   k: string; name: string; percent: string; cta: string;
-  zone: ReturnType<typeof photoFor>; h?: number;
+  zone: ReturnType<typeof photoFor>; h?: number; photo?: string;
 }) {
+  const { edits } = useEdits();
+  const liveName = textOf(edits, `${k}/name`, name);
   return (
     <div style={{ position: 'relative', width: '100%', height: h, overflow: 'hidden',
                   borderRadius: 6, marginBottom: 18 }}>
-      <Picture id={`${k}/pic`} zone={zone} label={name} style={{ position: 'absolute', inset: 0 }} />
+      <Picture id={`${k}/pic`} zone={zone} initialSrc={photo} label={name} style={{ position: 'absolute', inset: 0 }} />
       <div style={{ position: 'absolute', inset: 0,
         background: 'linear-gradient(90deg,#00000066 0%,#0000 52%)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', left: 32, top: 28, textAlign: 'left', zIndex: 2 }}>
@@ -330,8 +412,9 @@ function Tile({ k, name, percent, cta, zone, h = 320 }: {
           <Editable id={`${k}/pct`} style={font('Display/L', { fontSize: 58, lineHeight: '58px',
             color: BRAND.white })}>{percent + '% OFF'}</Editable>
         </>}
-        <Editable id={`${k}/name`} style={font('Display/L', { fontSize: 30, lineHeight: '34px',
-          color: BRAND.white, marginTop: percent ? 6 : 0 })}>{name}</Editable>
+        {(() => { const { fontSize } = fitText(liveName, 'section.tileName', { widthBudget: 1000 });
+          return <Editable id={`${k}/name`} style={font('Display/L', { fontSize, lineHeight: (fontSize!*1.13) + 'px',
+            color: BRAND.white, marginTop: percent ? 6 : 0 })}>{name}</Editable>; })()}
       </div>
       <div style={{ position: 'absolute', left: 32, bottom: 28, zIndex: 2 }}>
         <Pill id={`${k}/cta`} size={0.5}>{cta}</Pill>
@@ -340,10 +423,11 @@ function Tile({ k, name, percent, cta, zone, h = 320 }: {
   );
 }
 
-function SectionView({ sec, k, pursuit, body, brief, accent, templateId }: {
+function SectionView({ sec, k, pursuit, body, brief, accent, templateId, recsIndex = 0 }: {
   sec: Section; k: string; pursuit: string; body: string; accent?: string;
-  templateId?: string; brief: Doc['brief'];
+  templateId?: string; brief: Doc['brief']; recsIndex?: number;
 }) {
+  const { edits } = useEdits();
   if (sec.kind === 'hero') {
     // Longer copy is set smaller rather than allowed to run on, so a send with
     // more to say does not change the shape of the band it sits in.
@@ -358,6 +442,35 @@ function SectionView({ sec, k, pursuit, body, brief, accent, templateId }: {
     );
   }
 
+  if (sec.kind === 'productRecs' && templateId === 'sc26_0021')
+    return (
+      <>
+        {/* The board shows this exact frame three times with only the header
+         *  swapped ("Top Categories" / "Flash Sale Top Picks" / "More Current
+         *  Deals") -- a brief with a second Product Recs block and no header
+         *  of its own gets that third frame's text, not a repeat of the first. */}
+        <FlashHeader id={`${k}/head`}>{sec.header || (recsIndex > 0 ? 'More Current Deals' : 'Flash Sale Top Picks')}</FlashHeader>
+        <div style={{ width: W, background: BRAND.white, padding: '48px 64px 100px', boxSizing: 'border-box' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 55,
+            maxWidth: 925, margin: '0 auto' }}>
+            {/* The board's own four placeholder product shots, not a stock
+             *  lifestyle photo -- "Flash Sale Top Picks" is a merch grid,
+             *  not a destination photo. */}
+            {Array.from({ length: Math.max(1, Math.min(sec.count ?? 4, 4)) }, (_, n) => (
+              <Media key={n} id={`${k}/product/${n}/photo`}
+                src={`/reference/flash-top-picks-${n + 1}.png`} alt="Featured product"
+                style={{ width: '100%', aspectRatio: '434.682 / 442.003', borderRadius: 4, objectFit: 'cover' }} />
+            ))}
+          </div>
+          <div style={{ marginTop: 55, textAlign: 'center' }}>
+            <Editable id={`${k}/cta`} style={{ display: 'inline-block', fontFamily: stack('Quiet Sans'),
+              fontWeight: 700, fontSize: 64, letterSpacing: -0.64, color: BRAND.white, ...flashTrim,
+              background: '#333', padding: '39px 100px', borderRadius: 30 }}>{sec.cta || 'See More'}</Editable>
+          </div>
+        </div>
+      </>
+    );
+
   if (sec.kind === 'productRecs')
     return (
       <>
@@ -366,6 +479,40 @@ function SectionView({ sec, k, pursuit, body, brief, accent, templateId }: {
           bump={templateId === 'sc26_0060'} /></White>
       </>
     );
+
+  if (sec.kind === 'categoryTiles' && templateId === 'sc26_0021')
+    return (
+      <>
+        <FlashHeader id={`${k}/head`}>{sec.header || 'Top Categories'}</FlashHeader>
+        <div style={{ width: W, background: BRAND.white, padding: '64px 64px 32px', boxSizing: 'border-box' }}>
+          {sec.items.slice(0, 6).map((it, n) => {
+            const label = it.name.replace(/\s*\(.*\)$/, '').trim();
+            return <FlashPill key={n} k={`${k}/t${n}`} name={label}
+                       image={categoryImage(label)} zone={photoFor(pursuit, n)} />;
+          })}
+        </div>
+      </>
+    );
+
+  if (sec.kind === 'moreDeals') {
+    // The board's own two placeholder photos for this frame -- a forest
+    // rainwear shot and a mountain-ridge backpacking shot -- reused in
+    // whatever order the brief names its deals, not tied to a fixed label.
+    const photos = ['/reference/more-current-deals-rainwear-photo.jpg',
+      '/reference/more-current-deals-backpacks-photo.jpg'];
+    return (
+      <>
+        <FlashHeader id={`${k}/head`}>{sec.header || 'More Current Deals'}</FlashHeader>
+        <div style={{ width: W, background: BRAND.white, padding: '48px 64px 64px', boxSizing: 'border-box' }}>
+          {sec.items.map((it, n) => (
+            <Tile key={n} k={`${k}/t${n}`} name={it.name} percent={it.percent}
+              cta={it.cta || 'Shop Now'} zone={photoFor(pursuit, n)}
+              photo={photos[n % photos.length]} h={413} />
+          ))}
+        </div>
+      </>
+    );
+  }
 
   if (sec.kind === 'categoryTiles')
     return (
@@ -428,8 +575,10 @@ function SectionView({ sec, k, pursuit, body, brief, accent, templateId }: {
                 {brand?.kind === 'brand'
                   ? <Media id={`${k}/brand/${n}`} src={brand.file} alt={brand.name}
                       style={{ width: 350, height: 300, objectFit: 'contain' }} />
-                  : <Editable id={`${k}/brand-name/${n}`} style={font('Display/L', {
-                      color: '#fff', fontSize: 60 })}>{it.name}</Editable>}
+                  : (() => { const live = textOf(edits, `${k}/brand-name/${n}`, it.name);
+                      const { fontSize } = fitText(live, 'brand.fallbackName', { widthBudget: 480 });
+                      return <Editable id={`${k}/brand-name/${n}`} style={font('Display/L', {
+                        color: '#fff', fontSize })}>{it.name}</Editable>; })()}
               </div>;
             })}
           </div>
@@ -461,7 +610,7 @@ function SectionView({ sec, k, pursuit, body, brief, accent, templateId }: {
 const Footer = () => (
   <div style={{ width: W, background: PAPER, padding: `34px ${GUT}px 28px`, boxSizing: 'border-box' }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-      <Media id="email/foot/wordmark" src="/logos/sac-logo.png"
+      <Media id="email/foot/wordmark" src="/logos/sac-logo-light.svg"
              alt="Steep &amp; Cheap, powered by Backcountry"
              style={{ width: 210, display: 'block' }} />
       <div style={{ display: 'flex', gap: 14 }}>
@@ -496,12 +645,12 @@ export function EmailBody({ doc, i, hero, templateId }: {
       <Nav />
       {!bump && s.tb && <TeaserBar id={`${s.id}/tb`} text={s.tb} />}
       {hero ?? <EmailHeader doc={doc} i={i} />}
-      {s.sections.filter(sec => !(bump && sec.kind === 'hero')).map((sec, n) => (
+      {(() => { let recs = 0; return s.sections.filter(sec => !(bump && sec.kind === 'hero')).map((sec, n) => (
         <SectionView key={n} sec={sec} k={`${s.id}/s${n}`} pursuit={s.pursuit}
                      brief={doc.brief}
                      body={copyFor(s, doc.brief).body} accent={bump ? '#79AC41' : undefined}
-                     templateId={templateId} />
-      ))}
+                     templateId={templateId} recsIndex={sec.kind === 'productRecs' ? recs++ : 0} />
+      )); })()}
       <Footer />
     </div>
   );

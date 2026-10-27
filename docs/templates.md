@@ -37,6 +37,44 @@ layer and an id ending in `/photo`, `/product/N`, `/brand/N`, `/wordmark` or
 `/mark`. Those ids drive the Library's compatible choices and keep edits stable
 across saves and exports.
 
+## Every graphic component is a real, editable vector
+
+A mark, wordmark, button, badge or pill is never a flattened PNG, and never a
+color-plus-`borderRadius` drawn straight onto an `<Editable>`/`<Ground>`'s own
+`style`. Either reads in the app as "this is editable" (hover outline, a panel
+that opens) while actually offering nothing a designer can swap or recolour
+as a shape — the gap the ticket card, the CTA pills and the category rows
+each had before being fixed this way:
+
+- The shape is a real `.svg` under `public/graphics/`, registered in
+  `src/data/mark-shapes.json` (`{fill, height, path, width}`) and added to the
+  `MARKS` array in `src/model/media.ts` so it's browsable/droppable from the
+  Library's Graphics grid, not just reachable via a hardcoded `<Media src=...>`.
+- The renderer places it with `<Media src="/graphics/<id>.svg">`
+  (`position:'absolute', inset:0` inside a sized wrapper), with the text as a
+  separate, relatively-positioned `<Editable>` layered on top — not a single
+  element carrying both the copy and the background.
+- `mark-shapes.json`'s `path` is the shape's real outline, measured or pulled
+  from Figma — not guessed. A simple rounded-rect CTA can be computed
+  directly from its measured corner radius and box size (see `pill.svg`,
+  `pill-tile.svg`, `pill-soft.svg` for the formula); anything with real
+  curvature (a brush stroke, a torn edge, a ticket's punched corner) needs
+  the actual vector pulled off Figma, e.g. via `download_assets` against the
+  specific node, not the whole page.
+- A rounded-rect's corner-radius-to-height ratio decides reuse vs. a new
+  shape: within ~5 points of an existing shape's ratio, reuse it (the mask
+  stretches to fit the box, so a close match reads as the same shape);
+  meaningfully different, make a new one rather than visibly distort an
+  existing mask.
+
+`npm run check:graphics` (part of `npm run check`) enforces this automatically
+over every template: every `mark`/`wordmark` library item must be a `.svg`,
+and no template source may set `background` and `borderRadius` together on
+the same `<Editable>`/`<Ground>`. A handful of known rasters still pending a
+real Figma vector pull are named in that script's `PENDING_VECTOR` allowlist
+rather than silently exempted — remove an id there the moment its real
+outline is extracted, not before.
+
 To add a template:
 
 1. Add its measured board to `src/data/references.json`.

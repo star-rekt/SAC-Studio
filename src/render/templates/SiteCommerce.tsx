@@ -8,6 +8,7 @@ import { Editable, Ground } from '../../edit/Editable';
 import { Media } from '../../edit/Media';
 import { stack } from '../../fonts';
 import type { Direction } from '../../templates/directions';
+import { fitText } from '../../model/textContracts';
 
 const green = '#7ea63f', ink = '#333333';
 const products = {
@@ -19,6 +20,10 @@ const products = {
 
 const editable = (id: string, value: string, style: React.CSSProperties) =>
   <Editable id={id} style={style}>{value}</Editable>;
+
+/** Display casing only, for fields that arrive upper-cased ('UP TO 70% OFF',
+ *  '3 DAYS ONLY') but render Title Case on this board's own site chrome. */
+const titleCase = (s: string) => s.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
 
 function promotion(asset: SheetAsset) {
   const offer = asset.copy.offer || '20% OFF';
@@ -35,18 +40,27 @@ export function CampaignBanner({ asset, templateId, direction }: {
     : templateId === 'sc26_0021' ? '#f14222' : green;
   const ends = asset.variant === 'ends-today' ||
     (asset.variant === 'base' && /end/i.test(asset.scope.phase ?? ''));
-  const message = asset.scope.topic || `${ends ? 'Ends Today: ' : ''}${asset.copy.body
-    || `${asset.copy.lead || 'EXTRA'} ${asset.copy.offer || '20% OFF'}`}`;
+  // This board's own reference example happened to say "70% Off" and that
+  // literal string stayed hardcoded here regardless of what any brief since
+  // actually asked for -- a 75%-off brief still rendered the board's number.
+  const offerPhrase = titleCase(asset.copy.body
+    || `${asset.copy.lead || 'EXTRA'} ${asset.copy.offer || '20% OFF'}`);
+  const message = templateId === 'sc26_0021' && !asset.scope.topic
+    ? `${titleCase(ends ? 'Ends Today' : (asset.copy.marquee || '3 Days Only'))}: ${offerPhrase} Sitewide`
+    : asset.scope.topic || `${ends ? 'Ends Today: ' : ''}${asset.copy.body
+      || `${asset.copy.lead || 'EXTRA'} ${asset.copy.offer || '20% OFF'}`}`;
   return <Ground id={`${asset.id}/fill`} className="sheet" style={{ width:w, height:h, background:accent,
     display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
     gap: 22, fontFamily:stack('Sofia Pro'), color:'#fff' }}>
     {editable(`${asset.id}/message`, message, { fontSize:Math.min(50, Math.floor(w / (message.length * .57))), fontWeight:700,
       lineHeight:1.1, textAlign:'center' })}
-    {(asset.copy.code || asset.copy.dates) && editable(`${asset.id}/details`,
-      [asset.copy.code ? `Code ${asset.copy.code}` : '', asset.copy.dates].filter(Boolean).join(' · '),
-      { fontSize:30, fontWeight:500, lineHeight:1.1, textAlign:'center' })}
-    {editable(`${asset.id}/cta`, asset.copy.cta || 'Shop Now', { fontSize:50,
-      lineHeight:1, textDecoration:'underline', textAlign:'center' })}
+    {(() => { const details = [asset.copy.code ? `Code ${asset.copy.code}` : '', asset.copy.dates].filter(Boolean).join(' · ');
+      if (!details) return null;
+      const { fontSize } = fitText(details, 'banner.details', { widthBudget: w * .8, fontMax: 30 });
+      return editable(`${asset.id}/details`, details, { fontSize, fontWeight:500, lineHeight:1.1, textAlign:'center', whiteSpace:'nowrap' }); })()}
+    {(() => { const cta = asset.copy.cta || 'Shop Now';
+      const { fontSize } = fitText(cta, 'banner.cta', { widthBudget: w * .7, fontMax: 50 });
+      return editable(`${asset.id}/cta`, cta, { fontSize, lineHeight:1, textDecoration:'underline', textAlign:'center', whiteSpace:'nowrap' }); })()}
     <div style={{ display:'flex', gap:70, marginTop:0 }} aria-label="Carousel position">
       {[0,1,2].map(n=><i key={n} style={{ width:18, height:18, borderRadius:'50%',
         background:n===0?'#fff':'#ffffff66' }} />)}
@@ -58,14 +72,19 @@ export function GlobalText({ asset, templateId }: { asset: SheetAsset; templateI
   const [w,h] = asset.size;
   const offer = asset.copy.offer || '20% OFF';
   const flash = templateId === 'sc26_0021';
+  const ends = /end/i.test(asset.scope.phase ?? '');
+  // Same bug as CampaignBanner above: a hardcoded "70% Off" regardless of the
+  // brief's actual percent.
   const first = asset.scope.topic || (flash
-    ? `${/end/i.test(asset.scope.phase ?? '') ? 'Ends Today: ' : ''}${asset.copy.body || offer}`
+    ? `${titleCase(ends ? 'Ends Today' : (asset.copy.marquee || '3 Days Only'))}: ${
+        titleCase(asset.copy.body || `Up To ${offer}`)} ${ends ? 'Flash Sale' : 'Sitewide'}`
     : asset.copy.qualifier?.match(/\b(\d+)\+\s+eligible\s+items/i)
       ? `Extra ${offer} on ${asset.copy.qualifier.match(/\b(\d+)\+/)![1]}+ Eligible Items`
     : asset.copy.body && asset.copy.body.length < 65
       ? asset.copy.body : `Extra ${offer} Select Gear`);
   const last = [asset.copy.code ? `Use Code ${asset.copy.code}`
-    : asset.copy.cta || 'Shop Now', asset.copy.dates].filter(Boolean).join(' · ');
+    : asset.copy.cta || (flash && !ends ? 'Shop Flash Sale' : 'Shop Now'),
+    asset.copy.dates].filter(Boolean).join(' · ');
   const fontSize = Math.min(48, Math.floor(1250 / Math.max(1, (first.length + last.length) * .51)));
   return <Ground id={`${asset.id}/fill`} className="sheet" style={{ width:w,height:h,background:'#fff',
     display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 58px',
@@ -177,6 +196,8 @@ function ProductCard({ id, img, label, brand, name, price, promo, accent }: {
     {promo && editable(`${id}/promo`,promo,siteText(22,400,{color:accent,lineHeight:1.35,
       marginBottom:17}))}
     <div style={siteText(24,700)}>★★★★<span style={{color:'#aaa'}}>★</span> <span style={{fontWeight:400,color:'#777'}}>(00)</span></div>
+    {editable(`${id}/cart`,'Add to Cart',siteText(35,700,{background:'#368783',
+      color:'#fff',textAlign:'center',padding:'18px 0',borderRadius:5,marginTop:15}))}
   </div>;
 }
 

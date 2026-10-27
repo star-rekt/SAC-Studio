@@ -184,7 +184,7 @@ function turnOf(t: string): number {
 /** Where object-fit: cover actually puts an image inside its box, honouring
  *  object-position and any scale the designer has zoomed it by. Returns the
  *  drawn rectangle relative to the box's top-left. */
-export function cover(img: HTMLImageElement, box: DOMRect) {
+export function cover(img: HTMLImageElement, box: { width: number; height: number }) {
   const nw = img.naturalWidth || box.width, nh = img.naturalHeight || box.height;
   const cs = getComputedStyle(img);
   // The crop the designer set: a pan as object-position and a zoom as scale.
@@ -196,7 +196,13 @@ export function cover(img: HTMLImageElement, box: DOMRect) {
     return m ? Math.abs(Number(m[1].split(',')[0])) || 1 : 1;
   })();
 
-  const s = Math.max(box.width / nw, box.height / nh) * zoom;
+  // 'cover' (the default, and what every full-bleed photo uses) fills the
+  // box and crops the overflow -- Math.max. 'contain' (every brand logo and
+  // wordmark, drawn at their own aspect inside a box they don't fill) fits
+  // entirely inside it instead -- Math.min. Assuming 'cover' unconditionally
+  // scaled every contained logo UP to fill its box and cropped it the same
+  // way a photo crops, which is what cut edges off brand logos on export.
+  const s = (cs.objectFit === 'contain' ? Math.min : Math.max)(box.width / nw, box.height / nh) * zoom;
   const w = nw * s, h = nh * s;
   return { w, h, dx: (box.width - w) * px, dy: (box.height - h) * py };
 }

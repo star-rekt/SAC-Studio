@@ -87,8 +87,19 @@ function scopesFor(f: FormatSpec, b: Brief, sends: Send[],
   // another. Those are evidence of possible treatments, not a request for two
   // deliverables. One asset is the default; only the brief-specific axes above
   // or an explicit manual quantity add more.
+  // The AI's per-deliverable "messages" are usually just evidence of WHICH
+  // instance a deliverable is (a hero noted as "Launch", a paid social noted
+  // as "Flash Sale"), so a brief asking for several of one format can tell
+  // them apart -- not a line meant to print verbatim. But one brief's single
+  // paid social legitimately names a distinct concept ("Trail socks") that
+  // drives both its copy and its photo match, and that IS meant to carry
+  // through as scope.topic. The distinguishing test: does the message say
+  // anything beyond the sale's own name or one of its phases? If it's just
+  // restating "Launch" or "Flash Sale", it's a label, not content.
+  const genericLabels = new Set([b.name, ...named].filter(Boolean).map(x => x!.trim().toLowerCase()));
   return Array.from({ length: quantity }, (_, i) => {
-    const topic = b.deliverableMessages?.[f.format]?.[i];
+    const rawTopic = b.deliverableMessages?.[f.format]?.[i];
+    const topic = rawTopic && !genericLabels.has(rawTopic.trim().toLowerCase()) ? rawTopic : undefined;
     const phase = quantity > 1 ? named[i] : named.length === 1 ? named[0] : undefined;
     return {
       scope: { ...(topic ? { topic } : {}), ...(phase ? { phase } : {}),
@@ -109,10 +120,8 @@ function initialEmailVariant(templateId: string, send?: Send): string {
       : /sustain/.test(angle) && /brand\s+logos|brand\s+spotlight/.test(direction) ? 'tomorrow'
       : 'launch';
   if (templateId === 'sc26_0060')
-    return /final\s+hours|last\s+chance/.test(angle) ? 'last-chance'
-      : /ends?\s+tomorrow/.test(angle) ? 'ends-tomorrow'
-      : /ends?\s+today|last\s+day/.test(angle) ? 'ends-today'
-      : /sustain|ends?\s+soon/.test(angle) ? 'ends-soon' : 'four-days';
+    return /final\s+hours|last\s+chance|ends?\s+today/.test(angle) ? 'send-3'
+      : /ends?\s+tomorrow/.test(angle) ? 'send-2' : 'send-1';
   return 'base';
 }
 
@@ -140,6 +149,12 @@ function copyFor_(f: FormatSpec, scope: Scope, b: Brief, sends: Send[],
         ...(read?.copy?.cta ? { cta: read.copy.cta } : {}),
         ...(read?.copy?.subject ? { subject: read.copy.subject } : {}),
         ...(read?.copy?.preview ? { preview: read.copy.preview } : {}),
+        // Same pattern as the five above: a literal line the brief actually
+        // stated overrides the angle-vocabulary table's stock word ('EXTRA',
+        // '3 DAYS ONLY', 'NO CODE NEEDED') instead of being discarded.
+        ...(read?.copy?.eyebrow ? { eyebrow: read.copy.eyebrow } : {}),
+        ...(read?.copy?.marquee ? { marquee: read.copy.marquee } : {}),
+        ...(read?.copy?.qualifier ? { qualifier: read.copy.qualifier } : {}),
       },
       because: c.because,
     };
@@ -182,7 +197,10 @@ function copyFor_(f: FormatSpec, scope: Scope, b: Brief, sends: Send[],
       cta: 'Shop Now', qualifier: b.noCode
         ? b.minimumItems ? `on ${b.minimumItems}+ eligible items · no code`
           : 'No code needed'
-        : `Code ${b.code}`,
+        // A brief with no code at all (neither "no code needed" nor a
+        // stated one) fell through to the literal string "Code " with
+        // nothing after it -- a label with no value, not a real qualifier.
+        : b.code ? `Code ${b.code}` : '',
       marquee: (urgent ? scope.phase! : (b.duration || b.name || offerLine)).toUpperCase(),
       code: code || undefined, body: b.offer || offerLine,
     },
@@ -217,9 +235,21 @@ function merge(code: Brief, ai?: AiParse, source = ''): Brief {
     typeof d?.format === 'string' && /^[a-z][a-z0-9-]*$/.test(d.format)
     && Number.isInteger(d.count) && d.count > 0 && d.count <= 50
     && typeof d.evidence === 'string' && !!d.evidence.trim());
-  const formats = claimed.length ? [...new Set(claimed.map(d => d.format))]
-    : ai.assets?.length ? [...new Set(ai.assets.filter(x => /^[a-z][a-z0-9-]*$/.test(x)))]
-    : code.formats;
+  // UNION with the regex parser's own formats, not AI-replaces-code. A real
+  // brief mixes a labeled "Site Assets Requested" list with separately
+  // detailed Email/CPLP/Paid Social/Badging sections elsewhere in the same
+  // document, and the model has repeatedly anchored on the labeled list and
+  // dropped the rest -- different sections dropped on different briefs, so
+  // no prompt wording has made this reliable. The regex parser's own
+  // keyword patterns already catch the standard ones correctly every time
+  // (confirmed against several real briefs); the model still contributes
+  // whatever custom deliverable it names that the parser has no pattern
+  // for. Losing code.formats entirely over an incomplete AI list is a much
+  // worse failure than occasionally keeping a format the brief did not ask
+  // for, so union, never replace.
+  const aiFormats = claimed.length ? claimed.map(d => d.format)
+    : ai.assets?.length ? ai.assets.filter(x => /^[a-z][a-z0-9-]*$/.test(x)) : [];
+  const formats = [...new Set([...code.formats, ...aiFormats])];
   const quantities = { ...code.quantities };
   const deliverableMessages: Record<string, string[]> = {};
   for (const d of claimed) {
@@ -250,7 +280,12 @@ function merge(code: Brief, ai?: AiParse, source = ''): Brief {
     percent: supportedExtra ? ai.percent : pick(code.percent, ai.percent, blank),
     code: pick(code.code, ai.code, blank),
     duration: pick(code.duration, ai.duration, blank),
-    noCode: code.noCode || ai.noCode,
+    // A literal keyword match ("no code", "without a code", "automatically in
+    // cart") -- the regex parser is authoritative here, not a fact the model
+    // ever needs to supply. OR-ing in ai.noCode meant one hallucinated true
+    // (confirmed: asserted on a brief that never mentions a code at all)
+    // permanently forced every "No code needed" qualifier campaign-wide.
+    noCode: code.noCode,
     type: code.type,
   };
 }

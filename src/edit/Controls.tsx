@@ -8,6 +8,7 @@
 import { useEffect, useState } from 'react';
 import { useEdits, paintOf, sizeOf, moveOf } from './store';
 import { BRAND } from '../model/compose';
+import { alignGroup, labelOf, type Align } from './align';
 
 const PALETTE: [string, string][] = [
   ['orange', BRAND.orange], ['cream', BRAND.cream], ['green', BRAND.green],
@@ -73,6 +74,54 @@ export function SizeRow({ id }: { id: string }) {
       </div>
     </>
   );
+}
+
+/** The layers a designer has selected (shift/cmd-click, or a box-select),
+ *  and the three alignments they can apply. By default, layers sharing a
+ *  row (two runs on one line, a button's label on its own pill) move
+ *  together, and every separate row then aligns independently against the
+ *  same margin or centre line -- a badge, a title, an offer line, a date
+ *  line and a CTA all land flush in one click without piling two layers
+ *  that share a line on top of each other (see `alignGroup` in
+ *  `./align.ts`). "Move everything as one block" is the rarer opt-in, for
+ *  when even separate-looking rows should keep whatever stagger they
+ *  already have and only the selection's own outer edge should move.
+ *  Picking exactly which layers move is the designer's job either way:
+ *  build the selection, then drop anything from the list below that
+ *  shouldn't move before aligning. Listed with a remove button each, since a
+ *  highlighted outline on the canvas is easy to lose track of once there are
+ *  four or five of them. */
+export function GroupRow() {
+  const api = useEdits();
+  const ids = api.selectedGroup;
+  const [block, setBlock] = useState(false);
+  if (!ids.length) return null;
+  const align = (a: Align) => alignGroup(ids, a, api.edits, api.nudge, block);
+  return <section className="picked group-row">
+    <h4>Aligning {ids.length} layer{ids.length === 1 ? '' : 's'}</h4>
+    <p className="muted">Shift or Cmd-click a layer (or box-select on the
+      canvas) to add or remove it.</p>
+    <ul className="group-list">
+      {ids.map(id => <li key={id}>
+        <span>{labelOf(id)}</span>
+        <button onClick={() => api.toggleGroup(id)} aria-label={`Remove ${labelOf(id)}`}>&times;</button>
+      </li>)}
+    </ul>
+    <label className="group-mode">
+      <input type="checkbox" checked={block} onChange={e => setBlock(e.target.checked)} />
+      Move everything as one block (off: separate lines align independently;
+      layers sharing a line still move together)
+    </label>
+    <div className="group-align">
+      <button onClick={() => align('left')}>Align left</button>
+      <button onClick={() => align('center')}>Centre</button>
+      <button onClick={() => align('right')}>Align right</button>
+    </div>
+    <button onClick={() => { ids.forEach(api.reset); api.clearGroup(); }}>
+      Reset these layers to the template's own position
+    </button>
+    <button onClick={api.clearGroup}>Clear selection</button>
+  </section>;
 }
 
 /** Offsets are relative to the component's own published position. Moving a

@@ -6,15 +6,9 @@ directories:
 files:
   - package.json
   - desktop/**
-  - dist/**
-  - dist-desktop/**
-  - '!**/*.map'
 extraResources:
-  - from: plugin
-    to: figma-plugin
-    filter:
-      - manifest.json
-      - dist/**
+  - from: content-seed
+    to: content-seed
 mac:
   category: public.app-category.graphics-design
   identity: null

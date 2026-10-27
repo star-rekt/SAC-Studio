@@ -6,6 +6,32 @@
 import { useRef, type CSSProperties, type ReactNode } from 'react';
 import { useEdits, textOf, moveOf, sizeOf, paintOf, picOf } from './store';
 
+/** Shift/cmd-click toggles group membership instead of the usual single
+ *  select -- the same modifiers a plain drag already answers to, but a click
+ *  (no movement in between mousedown and mouseup) never fires that drag, so
+ *  the two never collide.
+ *
+ *  A group is one asset's own layers. The board shows every send/phase of a
+ *  format stacked on the page at once (launch next to ends-today, say), so
+ *  shift-clicking a run on one card and then another on the card below it is
+ *  an easy slip -- and `alignGroup` has no way to tell that apart from a
+ *  real multi-layer selection: it would average two different canvases'
+ *  geometry into one meaningless number. Starting a fresh group the moment a
+ *  click lands on a different asset's `.sheet` is cheaper and more honest
+ *  than trying to detect or warn about the mix afterward. */
+export const pick = (api: { select: (id: string | null) => void;
+  toggleGroup: (id: string) => void; selectedGroup: string[]; clearGroup: () => void },
+  id: string, e: React.MouseEvent) => {
+  if (!(e.shiftKey || e.metaKey)) { api.select(id); return; }
+  const anchorId = api.selectedGroup[0];
+  if (anchorId && anchorId !== id) {
+    const anchor = document.querySelector(`[data-id="${CSS.escape(anchorId)}"]`)?.closest('.sheet');
+    const mine = (e.currentTarget as HTMLElement).closest('.sheet');
+    if (anchor && mine && anchor !== mine) api.clearGroup();
+  }
+  api.toggleGroup(id);
+};
+
 export const canvasZoom = (element: Element) => {
   const scaler = element.closest('.scaler');
   return scaler ? Number.parseFloat(getComputedStyle(scaler).zoom) || 1 : 1;
@@ -21,6 +47,7 @@ export function Editable({ id, children, style, as = 'div' }: {
   const value = textOf(api.edits, id, children);
   const on = api.mode === 'edit';
   const picked = api.selected === id;
+  const grouped = api.selectedGroup.includes(id);
 
   // The run's own size, scaled. Line height travels with it or a resized
   // headline overlaps the line under it.
@@ -50,7 +77,7 @@ export function Editable({ id, children, style, as = 'div' }: {
   return (
     <Tag
       ref={ref as never}
-      className={'ed' + (on ? ' on' : '') + (picked ? ' picked' : '')}
+      className={'ed' + (on ? ' on' : '') + (picked ? ' picked' : '') + (grouped ? ' in-group' : '')}
       data-id={id}
       style={{ ...st, transform: `translate(${mv.dx}px, ${mv.dy}px)` }}
       contentEditable={on}
@@ -68,7 +95,7 @@ export function Editable({ id, children, style, as = 'div' }: {
         if (now.trim() === children.trim()) api.setText(id, '\u0000CLEAR');
         else api.setText(id, now);
       }}
-      onClick={() => on && api.select(id)}
+      onClick={e => on && pick(api, id, e)}
       title={on ? 'Type to edit · Alt-drag to move · size in the editor panel' : undefined}
     >{value}</Tag>
   );
@@ -93,6 +120,7 @@ export function Ground({ id, style, className, children, ...rest }: {
   const texture = picOf(api.edits, id).url;
   const on = api.mode === 'edit';
   const picked = api.selected === id;
+  const grouped = api.selectedGroup.includes(id);
 
   const sized = sc === 1 ? null : {
     width: typeof style?.width === 'number' ? style.width * sc : style?.width,
@@ -114,12 +142,13 @@ export function Ground({ id, style, className, children, ...rest }: {
   };
 
   return (
-    <div {...rest} data-id={id} className={[className, 'gr', on && 'on', picked && 'picked'].filter(Boolean).join(' ')}
+    <div {...rest} data-id={id} className={[className, 'gr', on && 'on', picked && 'picked',
+        grouped && 'in-group'].filter(Boolean).join(' ')}
       style={{ ...style, ...sized, transform: moved, ...(paint.bg ? { background: paint.bg } : null),
         ...(texture ? { backgroundImage: `url(${texture})`, backgroundSize: 'cover',
                          backgroundPosition: 'center' } : null) }}
       onMouseDown={drag}
-      onClick={e => { if (!on || e.target !== e.currentTarget) return; api.select(id); }}
+      onClick={e => { if (!on || e.target !== e.currentTarget) return; pick(api, id, e); }}
       title={on ? 'Alt-drag to move · size and colour in the editor panel' : undefined}
     >{children}</div>
   );

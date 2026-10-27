@@ -44,8 +44,10 @@ const mark = (id: string, name: string): Item =>
 
 /** The marks, as the design system publishes them. */
 const MARKS: [string, string][] = [
-  ['brush-strip', 'Brush strip'], ['torn-paper-wide', 'Torn paper, wide'],
-  ['torn-paper-tall', 'Torn paper, tall'], ['bolt', 'Lightning bolt'],
+  ['brush-strip', 'Brush strip'], ['brush-stroke', 'Brush stroke'],
+  ['torn-paper-wide', 'Torn paper, wide'],
+  ['torn-paper-tall', 'Torn paper, tall'],
+  ['bolt', 'Lightning bolt'], ['bolt-ink', 'Lightning bolt, ink'],
   ['burst-01', 'Burst 1'], ['burst-02', 'Burst 2'],
   ['circle-1', 'Circle 1'], ['circle-2', 'Circle 2'], ['circle-3', 'Circle 3'],
   ['line-1', 'Line 1'], ['line-2', 'Line 2'], ['line-3', 'Line 3'],
@@ -54,6 +56,9 @@ const MARKS: [string, string][] = [
   ['arrow-07', 'Arrow 7'], ['arrow-09', 'Arrow 9'], ['arrow-12', 'Arrow 12'],
   ['arrow-14', 'Arrow 14'], ['arrow-16', 'Arrow 16'],
   ['ticket-tag', 'Ticket, punched corner'], ['panel-step', 'Panel, stepped'],
+  ['pill', 'Button pill'], ['pill-wide', 'Button pill, wide'],
+  ['pill-tile', 'Button pill, tile'], ['pill-soft', 'Button pill, soft corner'],
+  ['bump2-window-outline', 'Stepped window outline'],
 ];
 
 /** The photographs, with the band a person reviewed by eye.
@@ -112,8 +117,11 @@ export const LIBRARY: Item[] = [
   brand('smartwool', 'Smartwool', 'svg'),
   brand('rab', 'Rab', 'svg'),
 
-  { id: 'sac-logo', kind: 'wordmark', name: 'Steep & Cheap', file: '/logos/sac-logo.png',
-    vector: false },
+  // `sac-logo.png` carried a wrong navy "&" (should be the brand green) and
+  // no underline rule -- pulled the real mark off the design system board
+  // (Figma node 759:29603) instead, as a transparent SVG.
+  { id: 'sac-logo', kind: 'wordmark', name: 'Steep & Cheap', file: '/logos/sac-logo-light.svg',
+    vector: true },
   { id: 'sac-logo-reversed', kind: 'wordmark', name: 'Steep & Cheap, reversed',
     file: '/logos/sac-logo.svg', vector: true, reversed: true },
   { id: 'flash-wordmark', kind: 'wordmark', name: 'Flash board Steep & Cheap',
@@ -126,8 +134,9 @@ export const LIBRARY: Item[] = [
   ...MARKS.map(([id, name]) => mark(id, name)),
   { id: 'autumn-ticket', kind: 'mark', name: 'Autumn punched ticket',
     file: '/reference/autumn-ticket.png', vector: false },
-  { id: 'flash-social-brush', kind: 'mark', name: 'Flash green brush',
-    file: '/reference/flash-social-brush.png', vector: false },
+  // No longer a separate catalog item: the real outline is `brush-stroke`
+  // (registered via MARKS above), the same mark Flash's own hero/email
+  // brush uses, recoloured green here instead of a second flattened asset.
   { id: 'bump-last-chance', kind: 'mark', name: 'Bump last-chance lines',
     file: '/reference/bump-last-chance-lines.svg', vector: true },
   { id: 'bump-tomorrow-panel', kind: 'mark', name: 'Bump tomorrow panel',

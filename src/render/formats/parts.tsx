@@ -108,12 +108,10 @@ const STEP_MASK = `url("data:image/svg+xml,${encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${STEP.width} ${STEP.height}">`
   + `<path d="${STEP.path}" fill="#000"/></svg>`)}")`;
 
-/** The wordmark, as published. The kit only has the dark lockup, so on a dark
- *  panel it is knocked out rather than left unreadable -- the boards carry a
- *  white version of the same mark. Swap in the real reversed asset when the
- *  library publishes one. */
+/** The wordmark, as published: the real design-system lockup (Figma node
+ *  759:29603) on a light panel, the reversed white cut on a dark one. */
 export const Wordmark = ({ id, w, onDark }: { id: string; w: number; onDark?: boolean }) => (
-  <Media id={id} src={onDark ? '/logos/sac-logo.svg' : '/logos/sac-logo.png'}
+  <Media id={id} src={onDark ? '/logos/sac-logo.svg' : '/logos/sac-logo-light.svg'}
          alt="Steep &amp; Cheap" title="Click to replace the wordmark"
          style={{ width: w, display: 'block' }} />
 );

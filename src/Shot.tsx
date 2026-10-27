@@ -25,8 +25,9 @@ import type { Sheet } from './sheet/types';
 import { listUserMedia, type UserMedia } from './model/userMedia';
 
 const NOOP = {
-  mode: 'preview' as const, selected: null, library: [],
-  select: () => {}, setText: () => {}, nudge: () => {}, resize: () => {},
+  mode: 'preview' as const, selected: null, selectedGroup: [], library: [],
+  select: () => {}, toggleGroup: () => {}, addToGroup: () => {}, setGroup: () => {}, clearGroup: () => {},
+  setText: () => {}, nudge: () => {}, resize: () => {},
   setPic: () => {}, setPaint: () => {}, reset: () => {}, resetAll: () => {},
   addLibrary: async () => { throw new Error('preview is read only'); },
   retagLibrary: async () => {}, removeLibrary: async () => {},

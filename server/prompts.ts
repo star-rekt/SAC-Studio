@@ -16,6 +16,7 @@
  *  the studio, in front of the designer. Treat everything any of these return
  *  as a claim to be checked, never as an instruction.
  */
+import { contractBrief } from '../src/model/textContracts.ts';
 
 export const PARSE = (brief: string) => `You are reading a retail marketing campaign brief for Steep & Cheap, an outdoor gear retailer. Return ONLY a JSON object. No prose, no markdown fence.
 
@@ -53,10 +54,21 @@ Shape:
     "designDirection": string, // imagery, composition and component notes for this send
     "brands": string[],      // brands specifically requested in this send
     "categories": string[],  // category tiles specifically requested in this send
-    "copy": {"headline": string, "body": string, "cta": string, "subject": string, "preview": string}
-                             // exact authored copy only; use "" for unstated lines
+    "copy": {"headline": string, "body": string, "cta": string, "subject": string, "preview": string,
+             "eyebrow": string, "marquee": string, "qualifier": string}
+                             // exact authored copy only; use "" for unstated lines.
+                             // eyebrow/marquee are the short urgency line above the
+                             // headline ("3 DAYS ONLY", "ENDS TODAY"); qualifier is
+                             // the fine-print line under the offer ("on 3+ items",
+                             // "no code needed"). Leave "" rather than inventing one.
   }]
 }
+
+Every line above has a real box on the artwork with a limited width. Keep
+within these budgets so a line renders on one line at a readable size rather
+than overflowing or getting shrunk unreadably small:
+${contractBrief(['hero.urgency', 'hero.title', 'hero.offer', 'hero.qualifier',
+  'hero.cta', 'banner.message'])}
 
 Use these format names for recognizable deliverables:
   hero-desktop, hero-mobile, email-hero, email-body, cplp-tile, gt, cb,
@@ -64,6 +76,23 @@ Use these format names for recognizable deliverables:
   paid-social-1x1, paid-social-4x5, paid-social-9x16,
   plp-badging-mock, pdp-badging-mock, text-link, brand-tile, brand-banner,
   homepage-card-4x3, rules-page
+
+A brief's deliverables are not only whatever sits under a heading literally
+named "Site Assets Requested" or similar -- a brief that labels one list that
+way and then separately details an Email section, a CPLP/Text Links section,
+or a Badging section further down is requesting those too, not only the
+labeled ones. Read the WHOLE brief for requests, not just its own table of
+contents. Concretely: any "Email N" send written out with its own Hero,
+CTA or category content requests email-hero AND email-body, whether or not
+the word "Email" appears in a requested-assets list. A "CPLP Text Links" or
+"Product Categories"/"Category Drop Down Banners" list under Site Experience
+requests cplp-tile, one per link named. A "Badging" section describing PLP/
+PDP badges requests plp-badging-mock and pdp-badging-mock. A "Paid Social"
+section requests the three paid-social sizes. Missing any of these because
+they were not under the one labeled list is the most common mistake here --
+double check the brief for an Email/CPLP/Badging/Paid Social section before
+finalizing deliverables, even after you found an explicit requested-assets
+list elsewhere.
 
 For an explicitly requested deliverable outside this vocabulary, return a
 short kebab-case name in deliverables and assets. It becomes a neutral custom

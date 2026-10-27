@@ -4,19 +4,29 @@ export type DesignVariant = { id: string; name: string; height: number; node: st
 
 export const EMAIL_VARIANTS: Record<string, DesignVariant[]> = {
   sc26_0060: [
-    { id: 'four-days', name: 'Four days · stepped photo', height: 1395, node: '538:18253' },
-    { id: 'ends-soon', name: 'Ends soon · photo left', height: 1369, node: '538:18387' },
-    { id: 'ends-tomorrow', name: 'Ends tomorrow · centered offer', height: 1526, node: '538:18481' },
-    { id: 'ends-today', name: 'Ends today · outdoor photo', height: 1689, node: '538:18703' },
-    { id: 'last-chance', name: 'Last chance · outline', height: 1329, node: '538:18602' },
+    { id: 'send-1', name: 'Send 1 · 3 days only', height: 826, node: '585:23' },
+    { id: 'send-2', name: 'Send 2 · ends tomorrow', height: 1125, node: '583:4' },
+    { id: 'send-3', name: 'Send 3 · last chance', height: 929, node: '585:25' },
   ],
   sc26_0058: [
     { id: 'ticket', name: 'Autumn20 · ticket over photo', height: 826, node: '211:697439' },
   ],
   sc26_0021: [
-    { id: 'launch', name: 'Flash · launch', height: 1029, node: '248:711098' },
+    // 1029 is the hero alone; the board's own email-body/1 frame carries the
+    // brand strip immediately beneath it (height 126), which FlashEmailHero
+    // now renders as part of this same send.
+    { id: 'launch', name: 'Flash · launch', height: 1029 + 126, node: '248:711098' },
     { id: 'tomorrow', name: 'Flash · ends tomorrow', height: 2087, node: '248:711329' },
     { id: 'today', name: 'Flash · ends today', height: 1295, node: '248:711246' },
+  ],
+  // Each design is self-contained (its own hero, body and footer in one
+  // component, not stitched from a separate email-hero asset), so `height`
+  // is unused here -- it only matters for sc26_0060's hero+body split.
+  sc26_bump2: [
+    { id: 'variant-1', name: 'Design 1', height: 7185, node: '583:3' },
+    { id: 'variant-2', name: 'Design 2 · brand-focused hero', height: 7185, node: '-' },
+    { id: 'variant-3', name: 'Design 3 · framed hero', height: 7185, node: '-' },
+    { id: 'variant-4', name: 'Design 4', height: 7185, node: '585:14' },
   ],
 };
 

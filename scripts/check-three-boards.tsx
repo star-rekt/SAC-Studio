@@ -20,8 +20,9 @@ import { photoFor } from '../src/model/compose';
 import { PARSE } from '../server/prompts';
 
 const preview: Api = {
-  edits: EMPTY, mode: 'preview', selected: null, library: [],
-  select: () => {}, setText: () => {}, nudge: () => {}, resize: () => {},
+  edits: EMPTY, mode: 'preview', selected: null, selectedGroup: [], library: [],
+  select: () => {}, toggleGroup: () => {}, addToGroup: () => {}, setGroup: () => {}, clearGroup: () => {},
+  setText: () => {}, nudge: () => {}, resize: () => {},
   setPic: () => {}, setPaint: () => {}, reset: () => {}, resetAll: () => {},
   addLibrary: async () => { throw new Error('preview is read only'); },
   retagLibrary: async () => {}, removeLibrary: async () => {},
@@ -89,7 +90,8 @@ E1: 10/29 – Launch
 · T&C Disclaimer
 `;
 const spookyRead = readBrief(spookyBrief, '', spookyBrief);
-for (const field of ['dates', 'creativeDirection', 'brands', 'keyMessages', 'tb', 'designDirection'])
+for (const field of ['dates', 'creativeDirection', 'brands', 'keyMessages', 'tb', 'designDirection',
+  'eyebrow', 'marquee', 'qualifier'])
   assert.match(PARSE(spookyBrief), new RegExp(`"${field}"`),
     `Claude parse prompt does not request ${field}`);
 assert.equal(spookyRead.percent, '20', 'brand-card markdown displaced the campaign extra discount');

@@ -59,6 +59,25 @@ export type Api = {
   mode: 'preview' | 'edit';
   selected: string | null;
   select: (id: string | null) => void;
+  /** A second, independent selection: shift/cmd-click toggles an id in or out
+   *  of it without disturbing `selected`, so a designer can build up a set of
+   *  text and graphic layers to align as one block (see `alignGroup` in
+   *  `./align.ts`) without losing the single-item panel they already have
+   *  open. Never includes a photograph -- `Picture`'s own click is a crop
+   *  drag, not a selection, so nothing there ever calls this. */
+  selectedGroup: string[];
+  toggleGroup: (id: string) => void;
+  /** Box-select's own entry point: every id a marquee rectangle swept up,
+   *  added at once rather than one `toggleGroup` call per id -- a toggle
+   *  would drop anything already in the group that the rectangle happened
+   *  to cross again. */
+  addToGroup: (ids: string[]) => void;
+  /** Replaces the group outright, not merged with what's there -- the
+   *  marquee's own live preview calls this on every mouse move so the
+   *  highlighted set always matches exactly what the rectangle currently
+   *  covers, growing AND shrinking as it's dragged back over something. */
+  setGroup: (ids: string[]) => void;
+  clearGroup: () => void;
   setText: (id: string, v: string) => void;
   nudge: (id: string, dx: number, dy: number) => void;
   resize: (id: string, scale: number) => void;

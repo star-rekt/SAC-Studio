@@ -57,6 +57,23 @@ export type Report = {
  *  The plugin wants what to build, not a bundle to open: it reads the images
  *  from this same server, so copying them to disk first would be a detour
  *  through the filesystem on the way back to the same bytes. */
+/** Vite's dev server compiles a page's whole module graph on its first
+ *  request, lazily, per module. Four fresh headless Chromes navigating to it
+ *  at once (the real batch below) raced that cold compile against each
+ *  page's own settle timeout, and whichever one lost rendered nothing at
+ *  all -- not a timeout error, a genuinely empty page, which only surfaced
+ *  three steps later as "no editable layers returned" on whichever asset
+ *  happened to be the unlucky one (confirmed live: window.__layers was never
+ *  defined because React had never mounted, not that toLayers() threw).
+ *  One throwaway shot first, serial and outside the real batch, warms that
+ *  compile so the concurrent batch always hits an already-warm server.
+ *  Best-effort: a failed warm-up is not fatal, since the real batch still
+ *  carries its own per-asset retry. */
+async function warmUp(session: string, origin: string, asset: Asset, file: string) {
+  await shoot(`${origin}/?shot=${encodeURIComponent(asset.id)}&s=${encodeURIComponent(session)}`,
+    asset.size[0], asset.size[1], file, { small: false }).catch(() => undefined);
+}
+
 export async function briefOnly(
   session: string, name: string, assets: Asset[], origin: string,
 ): Promise<Record<string, unknown>> {
@@ -65,6 +82,7 @@ export async function briefOnly(
   // directory and remove it even if one frame fails.
   const scratch = await mkdtemp(join(tmpdir(), 'sac-figma-'));
   try {
+    if (assets[0]) await warmUp(session, origin, assets[0], join(scratch, 'warmup.png'));
     const build: NonNullable<BriefShape['build']> = [];
     const queue = assets.map((asset, index) => ({ asset, index }));
     const workers = await Promise.allSettled(Array.from({ length: Math.min(4, queue.length) }, async () => {
@@ -74,11 +92,21 @@ export async function briefOnly(
         const file = join(scratch, `${index}.png`);
         let shot = await shoot(url, asset.size[0], asset.size[1], file,
           { small: false, layers: true });
-        if (!shot.ok && /never finished|did not return|did not produce/.test(shot.error))
+        let got = shot.ok ? shot.layers as { layers?: Record<string, unknown>[] } | undefined : undefined;
+        // A dev-server reload racing the capture (Vite HMR firing mid-shot,
+        // observed live against a running `npm run dev`) leaves window.__layers
+        // momentarily unset on an otherwise fine page: the screenshot and the
+        // SETTLED check both already succeeded, so shot.ok is true, but the
+        // separate layers evaluate comes back empty. That is the same kind of
+        // transient this retry already covers for an outright timeout -- worth
+        // one more attempt before failing the whole export over it.
+        if (!shot.ok && /never finished|did not return|did not produce|toLayers\(\) threw/.test(shot.error)
+          || shot.ok && !got?.layers) {
           shot = await shoot(url, asset.size[0], asset.size[1], file,
             { small: false, layers: true });
+          got = shot.ok ? shot.layers as { layers?: Record<string, unknown>[] } | undefined : undefined;
+        }
         if (!shot.ok) throw Error(`${asset.id}: ${shot.error}`);
-        const got = shot.layers as { layers?: Record<string, unknown>[] } | undefined;
         if (!got?.layers) throw Error(`${asset.id}: no editable layers returned`);
         build.push({ frame: nameFor(asset, index), assetId: asset.id,
           width: shot.w, height: shot.h, layers: got.layers.map(l => bundledImage(l)) });
@@ -106,6 +134,8 @@ export async function exportCampaign(
   await mkdir(join(dir, 'editable'), { recursive: true });
   await mkdir(join(dir, 'reference'), { recursive: true });
   await mkdir(join(dir, 'media'), { recursive: true });
+
+  if (assets[0]) await warmUp(session, origin, assets[0], join(tmpdir(), `sac-warmup-${process.pid}.png`));
 
   const failed: Report['failed'] = [];
   const index: Record<string, unknown>[] = [];
@@ -202,9 +232,10 @@ export async function exportCampaign(
       'image: place the file named in `src`, relative to this folder. `x/y/width/height` is '
         + 'the visible box — clip to it. `draw` is where to put the image so it covers that box '
         + 'at its true aspect ratio; use those numbers rather than stretching it to the box, '
-        + 'which is what skews a photograph.',
+        + 'which is what skews a photograph. Rotate it `rotation` degrees about its centre where given — '
+        + 'a badge or a card mark in a rotated frame still needs to come in tilted, not straight.',
       'rect: a rectangle at its box, filled `fill`, corner radius `radius`, rotated `rotation` degrees about its centre where given.',
-      'text: a text layer at its box with that string, font, weight, size, line height, letter spacing, colour and alignment. Keep it text — never outline it.',
+      'text: a text layer at its box with that string, font, weight, size, line height, letter spacing, colour and alignment. Underline it when `underline` is true. Keep it text — never outline it.',
       'Check each frame against its reference PNG and fix what differs.',
       'Two things the brief cannot carry: the punched hole in the offer tag is a mask, '
         + 'and the scrims over the photographs are gradients. Add those in Figma where the reference shows them.',

@@ -16,7 +16,7 @@ import { Swatches, SizeRow, PositionRow } from './Controls';
 import { offeredFor, isMediaSlot, byKind, LIBRARY, PHOTOS,
          type Item, type Kind } from '../model/media';
 import { tagsFromFilename, type UserMedia } from '../model/userMedia';
-import { canvasZoom } from './Editable';
+import { canvasZoom, pick } from './Editable';
 import MARK_SHAPES from '../data/mark-shapes.json';
 
 /** The graphics library's own ids, keyed by the file CSS masks against --
@@ -26,13 +26,19 @@ import MARK_SHAPES from '../data/mark-shapes.json';
 const MASKABLE = new Set(Object.keys(MARK_SHAPES));
 const maskableUrl = (url: string) => MASKABLE.has(url.replace(/^.*\/|\.svg$/g, ''));
 
-export function Media({ id, src, alt, style, title }: {
+export function Media({ id, src, alt, style, title, fill }: {
   id: string;
   /** What the template puts here before anyone changes it. */
   src: string;
   alt?: string;
   style?: React.CSSProperties;
   title?: string;
+  /** The maskable (vector) branch's own default colour, for a mark the
+   *  library stocks in one colour (the brush stroke ships registered
+   *  orange) that a template needs in another -- Flash's social posts set
+   *  it green, same mark. A live recolour from the panel still wins over
+   *  this, the same as it wins over the registry's own default. */
+  fill?: string;
 }) {
   const api = useEdits();
   const on = api.mode === 'edit';
@@ -65,9 +71,10 @@ export function Media({ id, src, alt, style, title }: {
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
   };
   if (pic.hidden) return on ? <span data-id={id}
-    className={'pic media removed' + (api.selected === id ? ' picked' : '')}
+    className={'pic media removed' + (api.selected === id ? ' picked' : '')
+      + (api.selectedGroup.includes(id) ? ' in-group' : '')}
     style={sized} title="Image removed · click to restore from the editor"
-    onClick={e => { e.stopPropagation(); api.select(id); }}>Image removed</span> : null;
+    onClick={e => { e.stopPropagation(); pick(api, id, e); }}>Image removed</span> : null;
   const url = pic.url || src;
   // A mark drawn as <img> can never be recoloured -- an external bitmap or
   // svg reference is opaque to CSS no matter what the file holds inside it.
@@ -81,15 +88,16 @@ export function Media({ id, src, alt, style, title }: {
       <div
         data-id={id}
         data-clip-shape={shape}
-        className={'pic media vector' + (on ? ' on' : '') + (api.selected === id ? ' picked' : '')}
+        className={'pic media vector' + (on ? ' on' : '') + (api.selected === id ? ' picked' : '')
+          + (api.selectedGroup.includes(id) ? ' in-group' : '')}
         style={{ ...sized, transform: moved,
-          background: paint.bg ?? MARK_SHAPES[shape as keyof typeof MARK_SHAPES].fill,
+          background: paint.bg ?? fill ?? MARK_SHAPES[shape as keyof typeof MARK_SHAPES].fill,
           WebkitMaskImage: `url(${url})`, maskImage: `url(${url})`,
           WebkitMaskSize: '100% 100%', maskSize: '100% 100%',
           WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat' }}
-        title={on ? (title ?? 'Click to recolour, resize or replace from the library · Alt-drag to move it') : undefined}
+        title={on ? (title ?? 'Click to recolour, resize or replace from the library · Alt-drag to move it · Shift-click to add to an alignment group') : undefined}
         onMouseDown={drag}
-        onClick={e => { if (!on) return; e.stopPropagation(); api.select(id); }}
+        onClick={e => { if (!on) return; e.stopPropagation(); pick(api, id, e); }}
       />
     );
   }
@@ -99,11 +107,12 @@ export function Media({ id, src, alt, style, title }: {
       src={url}
       alt={alt ?? ''}
       draggable={false}
-      className={'pic media' + (on ? ' on' : '') + (api.selected === id ? ' picked' : '')}
+      className={'pic media' + (on ? ' on' : '') + (api.selected === id ? ' picked' : '')
+        + (api.selectedGroup.includes(id) ? ' in-group' : '')}
       style={{ ...sized, transform: moved }}
-      title={on ? (title ?? 'Click to replace from the library · Alt-drag to move it') : undefined}
+      title={on ? (title ?? 'Click to replace from the library · Alt-drag to move it · Shift-click to add to an alignment group') : undefined}
       onMouseDown={drag}
-      onClick={e => { if (!on) return; e.stopPropagation(); api.select(id); }}
+      onClick={e => { if (!on) return; e.stopPropagation(); pick(api, id, e); }}
     />
   );
 }

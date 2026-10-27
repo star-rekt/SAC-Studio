@@ -6,8 +6,13 @@ import type { Angle } from '../model/copy';
 export type AiSend = {
   id: string; label: string; angle: Angle; leadOn: string;
   uptoPercent: string; showStack: boolean; pursuit: string; because: string;
-  /** Only copy actually stated in the brief; absent lines stay empty. */
-  copy?: { headline?: string; body?: string; cta?: string; subject?: string; preview?: string };
+  /** Only copy actually stated in the brief; absent lines stay empty.
+   *  eyebrow/marquee/qualifier used to be template vocabulary only
+   *  ('EXTRA', 'Shop Now', 'NO CODE NEEDED', ...) no matter what the brief
+   *  said -- now a brief that states its own urgency line, banner line or
+   *  fine-print qualifier can actually get it printed. */
+  copy?: { headline?: string; body?: string; cta?: string; subject?: string; preview?: string;
+    eyebrow?: string; marquee?: string; qualifier?: string };
   /** Authored send-level direction, not copy to print on the artwork. */
   tb?: string;
   designDirection?: string;

@@ -20,6 +20,13 @@ import type { Clip, Doc, Layer, Variant } from './brief';
 
 figma.showUI(__html__, { width: 400, height: 520, themeColors: true });
 
+/** Bumped by hand on every change to the font-matching logic below, purely so
+ *  a "same error" report can say for certain whether Figma reloaded this
+ *  build or is still running a cached one -- the error text itself is
+ *  otherwise identical either way and that ambiguity already cost a round
+ *  trip once. */
+const BUILD = 'facefor-6';
+
 const rgb = (h: string) => ({
   r: parseInt(h.slice(1, 3), 16) / 255,
   g: parseInt(h.slice(3, 5), 16) / 255,
@@ -41,8 +48,19 @@ const SAME: Record<number, string[]> = {
 };
 
 function faceFor(family: string, weight: number, have: FontName[]): FontName | null {
-  for (const style of SAME[Math.round(weight / 100) * 100] ?? SAME[400])
+  const want = Math.round(weight / 100) * 100;
+  for (const style of SAME[want] ?? SAME[400])
     for (const f of have) if (f.family === family && f.style === style) return f;
+  // "ExtraBold" is this plugin's own label for 800, not every family's --
+  // confirmed live (JSON-dumped FontName, not a reconstructed string, after
+  // an earlier guess misread a concatenated "family style" display as the
+  // weight being its own separate family): a real install names this style
+  // "Black" under the ordinary SAME family, same shape as every other
+  // weight, Figma just calls it something this plugin didn't try. Still an
+  // exact family match -- only the list of acceptable style names widens.
+  if (want === 800)
+    for (const style of SAME[900])
+      for (const f of have) if (f.family === family && f.style === style) return f;
   return null;
 }
 
@@ -64,12 +82,30 @@ async function loadFaces(doc: Doc): Promise<FontName[]> {
     const fn = faceFor(w.family, w.weight, have);
     if (fn) found.push(fn); else missing.push(`${w.family} ${w.weight}`);
   }
-  if (missing.length)
-    throw Error(`Missing font${missing.length > 1 ? 's' : ''}: ${missing.join(', ')}.\n\n`
+  if (missing.length) {
+    // Purely informational -- lists what IS installed under a similar name,
+    // if anything, so a real mismatch can be fixed precisely instead of
+    // guessed at. It does not change which face gets used: a wrong guess
+    // here previously substituted a different font's metrics into the whole
+    // layout, which is what corrupted an entire export (missing text, cropped
+    // logos, overlap) the one time this fell back automatically instead of
+    // just naming the mismatch and stopping.
+    const clue = have.filter(f => missing.some(n =>
+      f.family.toLowerCase().includes(n.toLowerCase().split(' ')[0])));
+    // JSON.stringify, not a reconstructed "family style" string -- that
+    // reconstruction already guessed wrong once (an empty or oddly-spaced
+    // style field reads identically to a normal one once pasted back
+    // together, so the real family/style split was never actually visible).
+    throw Error(`[${BUILD}] Missing font${missing.length > 1 ? 's' : ''}: ${missing.join(', ')}.\n\n`
+      + (clue.length ? `Figma does list something with a similar name:\n`
+          + clue.map(f => JSON.stringify(f)).join('\n')
+          + `\n\nIf that's meant to be it, tell Claude these exact names.\n\n`
+        : '')
       + `In Figma web, install the licensed font files and Figma Font Installer, `
       + `or upload licensed TTF/OTF faces to your Figma account or organisation. `
       + `Reload Figma, then run this again. Nothing was built — `
       + `substituting a face would change the design without saying so.`);
+  }
 
   await Promise.all(found.map(fn => figma.loadFontAsync(fn)));
   return found;
@@ -87,6 +123,7 @@ function makeNode(l: Layer, images: Record<string, string>, vectors: Record<stri
     t.lineHeight = { unit: 'PIXELS', value: Math.max(1, l.lineHeight) };
     t.letterSpacing = { unit: 'PIXELS', value: l.letterSpacing };
     t.fills = [{ type: 'SOLID', color: rgb(l.colour) }];
+    if (l.underline) t.textDecoration = 'UNDERLINE';
     // The frame hugs its type rather than being resized to the measured box.
     //
     //   A fixed-width frame is re-broken by Figma's own shaping, and a line
@@ -259,16 +296,36 @@ async function build(doc: Doc): Promise<{ frames: number; page: string }> {
           else if (l.align === 'right') node.x = l.x + l.width - node.width;
           node.y = l.y + (l.height - node.height) / 2;
         }
-        if (l.type === 'rect' && l.rotation) {
-          // CSS turns clockwise, Figma anticlockwise, and about the centre
-          // rather than the corner -- a tag pinned by its corner swings away
-          // from where the studio put it.
-          const rad = (-l.rotation * Math.PI) / 180;
+        if (l.rotation) {
+          // NOT negated. Both CSS and this relativeTransform matrix operate
+          // in the same Y-down pixel space (x right, y down) -- the matrix
+          // below is CSS's own rotate() matrix, so handing it the exact same
+          // angle CSS used reproduces the exact same visual turn. A stray
+          // negation here used to flip the direction, which a ticket card at
+          // a few degrees never showed (a mirrored 4deg tilt is nearly
+          // indistinguishable from a real one by eye) -- it's exactly what
+          // turned a wordmark meant to read bottom-to-top (rotate(-90deg)
+          // off its card) into one reading top-to-bottom instead, a few
+          // dozen degrees further than "subtle" and exactly what showed up
+          // as a "flipped" logo on export.
+          //
+          // Built from the NODE's own x/y/width/height -- already set above,
+          // alignment-adjusted for text -- not the layer's l.x/l.width. A
+          // rect or image node is always exactly l.width x l.height, so this
+          // is identical to using l.* for those. Text isn't: it hugs its own
+          // content (textAutoResize), so node.width/height are usually
+          // smaller than the measured box's l.width/l.height, and node.x/y
+          // already carries the left/center/right-alignment offset within
+          // that box. Rotating around the NODE's real centre, by the NODE's
+          // real size, keeps a centred or right-aligned run centred or
+          // right-aligned after the tilt instead of swinging off toward
+          // wherever the wider, unhugged box's centre happened to be.
+          const rad = (l.rotation * Math.PI) / 180;
           const cos = Math.cos(rad), sin = Math.sin(rad);
-          const cx = l.x + l.width / 2, cy = l.y + l.height / 2;
+          const cx = node.x + node.width / 2, cy = node.y + node.height / 2;
           node.relativeTransform = [
-            [cos, -sin, cx - cos * (l.width / 2) + sin * (l.height / 2)],
-            [sin,  cos, cy - sin * (l.width / 2) - cos * (l.height / 2)],
+            [cos, -sin, cx - cos * (node.width / 2) + sin * (node.height / 2)],
+            [sin,  cos, cy - sin * (node.width / 2) - cos * (node.height / 2)],
           ];
         }
         node.setPluginData('sac-layer', String(l.n));

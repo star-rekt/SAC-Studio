@@ -1,6 +1,9 @@
-const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, shell, dialog } = require('electron');
 const { join, delimiter } = require('node:path');
-const { access, mkdir, writeFile } = require('node:fs/promises');
+const { access, mkdir, writeFile, cp, readFile } = require('node:fs/promises');
+const fs = require('node:fs');
+const git = require('isomorphic-git');
+const http = require('isomorphic-git/http/node');
 
 app.setName('SAC Studio');
 app.setPath('userData', join(app.getPath('appData'), 'SAC Studio'));
@@ -10,12 +13,43 @@ let setup;
 let origin;
 let stopServer;
 
+// Bumped only when a content update needs shell changes this build can't
+// run (new IPC, new native resource) -- see applyContentUpdate().
+const SHELL_VERSION = 1;
+const CONTENT_BRANCH = 'main';
+
 const root = () => app.getAppPath();
-const manifest = () => app.isPackaged
-  ? join(process.resourcesPath, 'figma-plugin', 'manifest.json')
-  : join(root(), 'plugin', 'manifest.json');
+// Packaged builds read templates/server/plugin code from a writable git
+// clone instead of the asar, so a template or server fix is `git push` to
+// the mirror, not a new installer. Unpackaged (dev) runs read straight from
+// the source tree as before.
+const contentRoot = () => app.isPackaged ? join(app.getPath('userData'), 'content') : root();
+const manifest = () => join(contentRoot(), 'plugin', 'manifest.json');
 const setupFile = () => join(app.getPath('userData'), 'setup-complete.json');
 const exists = path => access(path).then(() => true, () => false);
+
+async function seedContentIfMissing() {
+  const dir = contentRoot();
+  if (await exists(join(dir, '.git'))) return;
+  await mkdir(dir, { recursive: true });
+  await cp(join(process.resourcesPath, 'content-seed'), dir, { recursive: true });
+}
+
+// Fetches and fast-forwards the content clone against the mirror repo.
+// Never rebases/merges -- a diverged local clone (shouldn't happen; nothing
+// writes to it besides this function) is left alone rather than risk
+// clobbering it. Network/auth failures are swallowed by the caller so a
+// designer without connectivity can still launch on whatever is on disk.
+async function applyContentUpdate() {
+  const dir = contentRoot();
+  const before = await git.resolveRef({ fs, dir, ref: 'HEAD' }).catch(() => null);
+  await git.fastForward({ fs, http, dir, ref: CONTENT_BRANCH, singleBranch: true });
+  const after = await git.resolveRef({ fs, dir, ref: 'HEAD' });
+  if (before === after) return { updated: false };
+  const pkg = JSON.parse(await readFile(join(dir, 'package.json'), 'utf8'));
+  const required = pkg.minShellVersion ?? 1;
+  return { updated: true, incompatible: required > SHELL_VERSION };
+}
 
 function secureWindow(options) {
   const window = new BrowserWindow({
@@ -50,6 +84,30 @@ function openSetup() {
   setup.loadFile(join(__dirname, 'setup.html'));
 }
 
+async function checkForUpdates() {
+  if (!app.isPackaged) {
+    dialog.showMessageBox({ message: 'Content updates only apply to packaged builds.' });
+    return;
+  }
+  try {
+    const result = await applyContentUpdate();
+    if (!result.updated) {
+      dialog.showMessageBox({ message: 'SAC Studio is already up to date.' });
+      return;
+    }
+    if (result.incompatible) {
+      dialog.showMessageBox({ type: 'warning', message: 'An update was applied, but it '
+        + 'needs a newer version of SAC Studio itself. Please reinstall from the latest package.' });
+      return;
+    }
+    const { response } = await dialog.showMessageBox({ type: 'info', buttons: ['Restart Now', 'Later'],
+      message: 'An update was applied. Restart SAC Studio to use it?' });
+    if (response === 0) { app.relaunch(); app.exit(); }
+  } catch (error) {
+    dialog.showMessageBox({ type: 'error', message: `Could not check for updates: ${error.message}` });
+  }
+}
+
 app.whenReady().then(async () => {
   process.env.PATH = [join(app.getPath('home'), '.local', 'bin'), process.env.PATH || '']
     .join(delimiter);
@@ -60,7 +118,15 @@ app.whenReady().then(async () => {
   // localized Documents folder on whatever OS and account this runs under.
   process.env.SAC_STUDIO_DATA_DIR = join(app.getPath('documents'), 'SAC_Studio');
   process.env.SAC_AI_PORT = '0';
-  const backend = await import(join(root(), 'dist-desktop', 'server.mjs'));
+
+  if (app.isPackaged) {
+    await seedContentIfMissing();
+    // Best-effort: a designer with no network, or the mirror unreachable,
+    // still launches on whatever content is already on disk.
+    await applyContentUpdate().catch(() => ({ updated: false }));
+  }
+
+  const backend = await import(join(contentRoot(), 'dist-desktop', 'server.mjs'));
   const port = await backend.ready;
   origin = `http://127.0.0.1:${port}`;
   stopServer = backend.close;
@@ -70,6 +136,7 @@ app.whenReady().then(async () => {
       { label: 'Open Studio', click: openStudio },
       { label: 'Setup and Figma Plugin', click: openSetup },
       { label: 'Open Campaign Data', click: () => shell.openPath(process.env.SAC_STUDIO_DATA_DIR) },
+      { label: 'Check for Updates', click: checkForUpdates },
       { role: 'quit' },
     ] },
     { role: 'editMenu' }, { role: 'viewMenu' }, { role: 'windowMenu' },

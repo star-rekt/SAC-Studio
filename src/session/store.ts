@@ -86,7 +86,15 @@ export const exportForFigma = (session: string): Promise<ExportReport> =>
 /** The plugin needs only this one self-contained file; the review folder is
  * optional and should not be created as a side effect of downloading it. */
 export async function downloadFigmaFile(session: string, name: string): Promise<void> {
-  const response = await fetch(`/api/figma/${encodeURIComponent(session)}`);
+  // The connector (this fetch's target, a separate process on its own port)
+  // has no way to know which origin actually serves the studio's own pages --
+  // in dev that's Vite's port, not its own. Without this it defaulted to its
+  // own origin, which cannot serve `?shot=` at all outside the packaged
+  // desktop build, so the screenshot step navigated to a 404 and every export
+  // failed with a baffling "no editable layers returned" on an arbitrary
+  // asset (confirmed live: the page never rendered anything at all).
+  const response = await fetch(`/api/figma/${encodeURIComponent(session)}`
+    + `?origin=${encodeURIComponent(location.origin)}`);
   if (!response.ok) {
     const error = await response.json().catch(() => ({ error: response.statusText }));
     throw Error(error.error || `${response.status} ${response.statusText}`);

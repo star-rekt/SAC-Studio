@@ -11,11 +11,13 @@
 export type Item = { name: string; percent: string };
 
 export type Section =
-  | { kind: 'hero'; title: string; design: string; copy: string; cta: string }
+  | { kind: 'hero'; title: string; design: string; copy: string; cta: string; offer?: string }
   | { kind: 'categoryTiles'; title: string; header: string; items: Item[]; cta: string }
   | { kind: 'brandTiles'; title: string; header: string; items: Item[]; count: number;
       showPercent: boolean; cta: string }
   | { kind: 'productRecs'; title: string; header: string; cta: string; count?: number }
+  | { kind: 'moreDeals'; title: string; header: string;
+      items: { name: string; percent: string; cta: string }[] }
   | { kind: 'terms'; title: string }
   | { kind: 'unknown'; title: string; body: string };
 
@@ -98,6 +100,19 @@ export function readSends(text: string): Send[] {
                  label: label.includes(':') ? clean(label.slice(label.lastIndexOf(':') + 1)) : label,
                  at: m.index });
   }
+  // A brief that spells "Email 1" out instead of writing the internal "E1"
+  // shorthand (the real Wrike export does this) matched nothing above and
+  // fell back to one implied send with no sections at all -- every field a
+  // Hero block carries was silently dropped, not just unparsed.
+  if (!heads.length) {
+    const spelled = /\bEmail\s+(\d{1,2})\b\s*[:\-–—]?\s*(\d{1,2}\/\d{1,2})?\s*[:\-–—]?\s*([^\n]{2,60})/gi;
+    for (let m = spelled.exec(t); m; m = spelled.exec(t)) {
+      const label = clean(m[3]).replace(/\s*[:\-–—]\s*$/, '');
+      heads.push({ id: `E${m[1]}`, date: m[2] || '',
+                   label: label.includes(':') ? clean(label.slice(label.lastIndexOf(':') + 1)) : label,
+                   at: m.index });
+    }
+  }
 
   return heads.map((h, i) => {
     const whole = t.slice(h.at, i + 1 < heads.length ? heads[i + 1].at : undefined);
@@ -117,18 +132,103 @@ export function readSends(text: string): Send[] {
       || said(block, 'TB');
     const tb = teaser.match(/["“]([^"”]+)["”]/)?.[1] || teaser;
     const inferred: Section[] = [];
-    const hero = lines.find(line => /^Hero\s*:/i.test(line));
-    if (hero) inferred.push({ kind: 'hero', title: 'Hero', design: hero.replace(/^Hero\s*:\s*/i, ''),
-      copy: '', cta: '' });
-    const recs = lines.find(line => /\bBluecore\s+SKUs\b|\bproduct\s+recs\b/i.test(line));
-    if (recs) inferred.push({ kind: 'productRecs', title: 'Product recommendations',
-      header: 'Your Top Picks', cta: 'See More',
-      count: Number(recs.match(/\b(\d+)\s+Bluecore/i)?.[1] ?? 4) });
-    const tiles = lines.find(line => /^Category\s+Tiles\s*:/i.test(line));
-    if (tiles) inferred.push({ kind: 'categoryTiles', title: 'Category Tiles',
-      header: 'Top Categories', cta: 'Shop Now',
-      items: tiles.replace(/^Category\s+Tiles\s*:\s*/i, '')
-        .split(/,\s*(?![^()]*\))/).map(item).filter(value => value.name) });
+    const heroAt = lines.findIndex(line => /^Hero\s*:/i.test(line));
+    if (heroAt >= 0) {
+      // A compact-checklist "Hero:" is a label on its own line, with the
+      // actual content as the bullets under it -- the sale name, the offer,
+      // who gets logo'd, the CTA. Read each bullet as its own field instead
+      // of folding the whole block into one string, which left every field
+      // downstream guessing at a blob that was mostly someone else's line.
+      let design = '', cta = '', offer = '';
+      for (let i = heroAt + 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (!line) continue;
+        if (/^(?:Category\s+Tiles|Category\s+Drop[- ]?Down\s+Banners?|TB|Top\s+Sale\s+Picks|Messaging|Secondary\s*\d*|Section\s*\d+|Paid\s+Social|Badging)\s*:?/i.test(line)) break;
+        if (/^CTA\s*:/i.test(line)) { cta = clean(line.replace(/^CTA\s*:\s*/i, '')); continue; }
+        if (/^Brand\s+Logos?\s*:/i.test(line)) continue;
+        // The offer/percent line and the sale-name line are the two that
+        // remain; the name is whichever one is not itself a bare percent
+        // phrase, and only the first such line is kept as the title source.
+        if (/^\s*(?:up\s*to|extra)?\s*\d+\s*%/i.test(line)) { if (!offer) offer = line; continue; }
+        if (!design) design = line;
+      }
+      inferred.push({ kind: 'hero', title: 'Hero', design: design || lines[heroAt].replace(/^Hero\s*:\s*/i, ''),
+        copy: '', cta, offer });
+    }
+    // The rest of the checklist is read out in the order the brief itself
+    // wrote the lines, not a fixed code order -- a brief that lists its
+    // product grid before its category tiles gets sections in that order.
+    const after: { at: number; section: Section }[] = [];
+    // The real Wrike export writes every one of these as a bare label line
+    // with its content as sub-bullets below, the same shape as "Hero:" --
+    // not the single-line "Label: a, b, c" shorthand a hand-typed test brief
+    // used. Support both: use the label's own line if it already has content
+    // after the colon, else collect the bullets under it.
+    const LABEL_RE = /^(?:Hero|CTA|TB|Category\s+Tiles|Category\s+Drop[- ]?Down\s+Banners?|Top\s+Sale\s+Picks|Secondary\s*\d*|Section\s*\d+|Paid\s+Social|Badging|Messaging)\s*:?\s*$/i;
+    const bulletsAfter = (from: number) => {
+      const out: string[] = [];
+      for (let i = from + 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (!line) { if (out.length) break; else continue; }
+        if (LABEL_RE.test(line)) break;
+        out.push(line.replace(/^o\s+/i, '').trim());
+      }
+      return out;
+    };
+    // A label whose own line has no inline content ("Top Sale Picks" with no
+    // colon, or "Secondary 1:" with nothing after it) states its CTA on a
+    // later, otherwise-unlabelled "CTA:" line instead of inline.
+    const nearbyCta = (from: number) => {
+      for (let i = from + 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (!line) continue;
+        if (/^CTA\s*:/i.test(line)) return clean(line.replace(/^CTA\s*:\s*/i, ''));
+        if (LABEL_RE.test(line) && !/^CTA\s*:?\s*$/i.test(line)) break;
+      }
+      return '';
+    };
+    // "Category Tiles:" is the Bump brief's own name for this line; a real
+    // Flash brief wrote the same thing as "Category Drop Down Banners:" --
+    // same shape (a list of category names), different label.
+    const tilesAt = lines.findIndex(line => /^(?:Category\s+Tiles|Category\s+Drop[- ]?Down\s+Banners?)\s*:/i.test(line));
+    if (tilesAt >= 0) {
+      const inline = lines[tilesAt].replace(/^(?:Category\s+Tiles|Category\s+Drop[- ]?Down\s+Banners?)\s*:\s*/i, '').trim();
+      const raw = inline ? inline.split(/,\s*(?![^()]*\))/) : bulletsAfter(tilesAt);
+      after.push({ at: tilesAt, section: { kind: 'categoryTiles', title: 'Category Tiles',
+        header: 'Top Categories', cta: 'Shop Now', items: raw.map(item).filter(value => value.name) } });
+    }
+    const recsAt = lines.findIndex(line => /\bBluecore\s+SKUs?\b|\bproduct\s+recs\b/i.test(line));
+    // "Top Sale Picks" either names its CTA inline ("...CTA: X") or, same as
+    // Hero, states it on a bare line with the CTA given separately below.
+    const topPicksAt = lines.findIndex(line => /^Top\s+Sale\s+Picks\b/i.test(line));
+    if (topPicksAt >= 0) {
+      const inline = lines[topPicksAt].replace(/^Top\s+Sale\s+Picks\s*CTA\s*:\s*/i, '');
+      const cta = inline !== lines[topPicksAt] ? clean(inline) : (nearbyCta(topPicksAt) || 'See More');
+      after.push({ at: topPicksAt, section: { kind: 'productRecs', title: 'Product recommendations',
+        header: '', cta } });
+    } else if (recsAt >= 0) after.push({ at: recsAt, section: { kind: 'productRecs', title: 'Product recommendations',
+      header: '', cta: nearbyCta(recsAt) || 'See More',
+      count: Number(lines[recsAt].match(/\b(\d+)\s+Bluecore/i)?.[1] ?? 4) } });
+    // Each "Secondary N:" is one item under the board's single "More Current
+    // Deals" frame -- the board gives that frame one header and one
+    // placeholder photo per item, not a separate header per secondary deal.
+    // Inline ("Secondary 1: Name, Up To X% Off, CTA") and bulleted (name on
+    // the next line, "o "-prefixed percent/CTA below it) both occur.
+    const secondaryIdxs = lines.map((_, i) => i).filter(i => /^Secondary\s*\d*\s*:/i.test(lines[i]));
+    if (secondaryIdxs.length) {
+      const items = secondaryIdxs.map(i => {
+        const inline = lines[i].replace(/^Secondary\s*\d*\s*:\s*/i, '').trim();
+        const parts = inline ? inline.split(',').map(clean).filter(Boolean) : bulletsAfter(i);
+        if (!parts.length) return null;
+        const rest = parts.slice(1);
+        const pct = rest.find(p => /\d+\s*%/.test(p))?.match(/\d+/)?.[0] ?? '';
+        const cta = rest.find(p => !/\d+\s*%/.test(p)) ?? 'Shop Now';
+        return { name: parts[0], percent: pct, cta };
+      }).filter((it): it is { name: string; percent: string; cta: string } => it !== null);
+      if (items.length) after.push({ at: secondaryIdxs[0], section: { kind: 'moreDeals', title: 'More Current Deals',
+        header: 'More Current Deals', items } });
+    }
+    inferred.push(...after.sort((a, b) => a.at - b.at).map(x => x.section));
     if (lines.some(line => /\bT\s*&\s*C\b|\bterms\s*(?:and|&)\s*conditions\b/i.test(line)))
       inferred.push({ kind: 'terms', title: 'Terms & Conditions' });
     const sections = numbered.length ? numbered : inferred;

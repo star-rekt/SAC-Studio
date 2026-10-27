@@ -196,8 +196,18 @@ const server = createServer(async (req, res) => {
       if (!sessions.legal(id)) return send(400, { error: `not a session id: ${id}` });
       const sheet = await sessions.get(id);
       if (!sheet) return send(404, { error: `no session ${id}` });
+      // This connector is a separate process from whatever actually serves
+      // the studio's pages -- Vite's own port in dev, this same server only
+      // in the packaged desktop build. Defaulting to studioOrigin() (this
+      // server's own port) meant the screenshot step navigated to a 404 in
+      // dev every time, failing with a baffling "no editable layers
+      // returned" rather than an origin error. The caller names its own
+      // origin instead; local-only, same as the rest of this server.
+      const reqOrigin = url.searchParams.get('origin');
+      const shotOrigin = reqOrigin && /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(reqOrigin)
+        ? reqOrigin : studioOrigin();
       const doc = await figmaDocument(id, sheet.name ?? id, sheetHashOf(sheet),
-        sheet.assets, studioOrigin());
+        sheet.assets, shotOrigin);
       res.writeHead(200, {
         'content-type': 'application/json',
         'content-disposition': `attachment; filename="${safeName(sheet.name ?? id)}.figma.json"`,

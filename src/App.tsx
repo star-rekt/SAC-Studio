@@ -11,7 +11,8 @@ import { BriefPanel, JudgePanel, AiHealth } from './ai/Panel';
 import { applyOps } from './ai/apply';
 import { Ctx, EMPTY, FRESH_PIC, sizeOf, paintOf, useEdits, type Edits, type Pic, type Paint } from './edit/store';
 import { PicturePanel } from './edit/Picture';
-import { Swatches, SizeRow, PositionRow, TextRow } from './edit/Controls';
+import { Swatches, SizeRow, PositionRow, TextRow, GroupRow } from './edit/Controls';
+import { Marquee } from './edit/Marquee';
 import { MediaControls, LibraryPanel } from './edit/Media';
 import { isMediaSlot } from './model/media';
 import type { Item } from './model/media';
@@ -52,6 +53,8 @@ export default function App() {
 
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
   const [selected, select] = useState<string | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState<string[]>([]);
+  const [boxSelect, setBoxSelect] = useState(false);
   const [panel, setPanel] = useState(false);
   const [zoom, setZoom] = useState(0.34);
   const [tab, setTab] = useState('email-hero');
@@ -217,14 +220,35 @@ export default function App() {
   }));
 
   const api = {
-    edits, mode, selected, library,
+    edits, mode, selected, selectedGroup, library,
     select: useCallback((id: string | null) => {
       select(id);
+      // A plain select starts a fresh single-item edit, not an addition to
+      // a block being built up -- leaving the group in place here meant
+      // clicking away from a 4-layer alignment group to check one more
+      // mark, with no modifier held, silently added it as a 5th member.
+      setSelectedGroup([]);
       if (id) {
         setPanel(true);
         setSide('design');
       }
     }, []),
+    toggleGroup: useCallback((id: string) => {
+      setSelectedGroup(g => g.includes(id) ? g.filter(x => x !== id) : [...g, id]);
+      setPanel(true);
+      setSide('design');
+    }, []),
+    addToGroup: useCallback((ids: string[]) => {
+      if (!ids.length) return;
+      setSelectedGroup(g => [...g, ...ids.filter(id => !g.includes(id))]);
+      setPanel(true);
+      setSide('design');
+    }, []),
+    setGroup: useCallback((ids: string[]) => {
+      setSelectedGroup(ids);
+      if (ids.length) { setPanel(true); setSide('design'); }
+    }, []),
+    clearGroup: useCallback(() => setSelectedGroup([]), []),
     setText: useCallback((id: string, v: string) =>
       setEdits(e => {
         // The sentinel means 'this is back to what the template says', which
@@ -331,6 +355,12 @@ export default function App() {
               + Object.values(edits.customText ?? {}).reduce((n, layers) => n + layers.length, 0)
               + Object.keys(edits.customBackground ?? {}).length;
 
+  // Only the template(s) that match this brief's own campaign type are
+  // offered here -- a flash-sale brief does not get switched onto a bump
+  // template by hand once the brief itself has said what it is.
+  const templateMatches = SPECS.filter(s => s.type === doc.brief.type);
+  const templateOptions = templateMatches.length ? templateMatches : SPECS;
+
   const formats = useMemo(() => {
     const seen = new Map<string, number>();
     for (const a of sheet.assets) seen.set(a.format, (seen.get(a.format) ?? 0) + 1);
@@ -348,8 +378,12 @@ export default function App() {
     <Ctx.Provider value={api}>
       <header className={"bar" + (panel ? " with-panel" : "")}>
         <strong>SAC Studio</strong>
-        <select value={templateId} onChange={e => pickTemplate(e.target.value)} title="The template decides the look; the brief decides the content">
-          {SPECS.map(t => (
+        <select value={templateId} onChange={e => pickTemplate(e.target.value)}
+                disabled={templateMatches.length === 1}
+                title={templateMatches.length === 1
+                  ? `Locked to this template — the brief reads as ${doc.brief.type}`
+                  : 'The template decides the look; the brief decides the content'}>
+          {templateOptions.map(t => (
             <option key={t.id} value={t.id}>
               {t.name} — {templateById(t.id)?.formats.length ?? 0} formats
             </option>
@@ -391,6 +425,11 @@ export default function App() {
         )}
         <span className="muted">{count} edit(s)</span>
         <button onClick={api.resetAll} disabled={!count}>Reset all</button>
+        <button className={boxSelect ? 'on' : ''}
+          title="Drag a rectangle on the canvas to select every run or mark it touches"
+          onClick={() => setBoxSelect(v => !v)}>
+          {boxSelect ? 'Box select: on' : 'Box select'}
+        </button>
         <button className={panel ? 'on' : ''} onClick={() => setPanel(v => !v)}>
           {panel ? 'Close editor' : 'Open editor'}
         </button>
@@ -441,6 +480,7 @@ export default function App() {
                 <div className="scaler">
                   <One asset={a} doc={doc} template={template} outlook={outlook}
                        direction={sheet.direction} formatDirections={sheet.formatDirections} />
+                  <Marquee active={boxSelect && mode === 'edit'} />
                 </div>
               </section>
             );
@@ -494,6 +534,7 @@ export default function App() {
           </>
         ) : (
           <>
+            <GroupRow />
             {/* Stacked, not instead of. Selecting a run used to replace the
                 whole Design tab with the run's own controls, and nothing ever
                 deselected -- so after fixing a line the design directions and
