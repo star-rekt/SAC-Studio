@@ -11,7 +11,7 @@
 import type { TemplateSpec } from '../schema';
 
 const spec: TemplateSpec = {
-  id: 'sc26_bump2', name: 'Bump 2 — cream and collage, alt', type: 'bump',
+  id: 'sc26_bump2', name: 'Bump 2 — cream and collage, alt', type: 'bump', exposed: false,
   groundedIn: 'SC26_0060 Wk35-36 Bump',
   figma: { fileKey: 'ioB3sP8LwBiTUPQN7jlF81', nodeId: '538:15528' },
   why: 'A second board-authored pass over SC26_0060: its own hero, four '

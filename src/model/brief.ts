@@ -59,6 +59,10 @@ export function plainText(html: string): string {
 
 export type Brief = {
   type: CampaignType;
+  /** False when `type` is a fallback guess, not read from the brief itself
+   *  (an ERP code, a stated 'Sale Type', or the wording). The template picker
+   *  uses this to offer every template rather than lock onto the guess. */
+  typeConfident: boolean;
   /** The offer as numbers, for rewriting a board whatever shape it is set in:
    *  a percentage, or a saving and the spend that earns it. */
   percent: string;
@@ -273,17 +277,19 @@ export function readBrief(text: string, override?: CampaignType | '', plain?: st
     : /bump/.test(saidType) ? 'bump'
     : /flash/.test(saidType) ? 'flash-sale'
     : /named|holiday|memorial|labor/.test(saidType) ? 'named-sale' : '';
-  let type: CampaignType = override || fromErp || fromLabel
-    || TYPE_WORDS.find(([, re]) => re.test(t))?.[0] || 'flash-sale';
+  const fromWords = TYPE_WORDS.find(([, re]) => re.test(t))?.[0] || '';
+  const typeConfident = Boolean(override || fromErp || fromLabel || fromWords);
+  let type: CampaignType = override || fromErp || fromLabel || fromWords || 'flash-sale';
   const typeWhy = override ? 'set in the panel'
     : fromErp ? `read from the ERP code ${erp![0].slice(0, 44)}`
     : fromLabel ? "taken from the brief's own 'Sale Type'"
-    : TYPE_WORDS.some(([, re]) => re.test(t)) ? 'read from the wording'
-    : 'not stated anywhere, so assumed';
+    : fromWords ? 'read from the wording'
+    : 'not stated anywhere, so only a starting suggestion';
   placeholders.unshift(`campaign type is ${type} — ${typeWhy}`);
   if (override) placeholders.push(`campaign type set to ${override} in the panel, not read from the brief`);
-  else if (!TYPE_WORDS.some(([, re]) => re.test(t)))
-    placeholders.push('campaign type (no flash / bump / spend-save / named sale wording found) — assumed flash-sale');
+  else if (!typeConfident)
+    placeholders.push('campaign type (no flash / bump / spend-save / named sale wording found) — '
+      + 'Flash suggested, pick a template below if this guess is wrong');
 
   // The sale's name, where the brief gives one: up to three words running into
   // 'sale'. A bump is not usually named -- it is a code on an existing sale --
@@ -661,7 +667,7 @@ export function readBrief(text: string, override?: CampaignType | '', plain?: st
   if (concepts.length > 1) placeholders.push(`${concepts.length} paid-social concepts named `
     + `(${concepts.map(c => c.name).join(', ')}) — each ratio is built once per concept`);
 
-  return { type, percent, amounts, name, offer, code, noCode, minimumItems,
+  return { type, typeConfident, percent, amounts, name, offer, code, noCode, minimumItems,
     pursuit, categories, sends, concepts,
            sendsDeclared: declared.size, sendsMissing,
            duration, dates, creativeDirection, imageryDirection, brands,

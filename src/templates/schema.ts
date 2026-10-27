@@ -109,6 +109,9 @@ export type TemplateSpec = {
   aliases?: string[];
   name: string;
   type: string;
+  /** False for a template kept in the codebase but not offered in the picker
+   *  (unfinished, superseded, or not yet signed off). Defaults to true. */
+  exposed?: boolean;
   /** The board the vocabulary was read off, for provenance. */
   groundedIn: string;
   /** The exact page the stored dissection came from. */

@@ -357,9 +357,14 @@ export default function App() {
 
   // Only the template(s) that match this brief's own campaign type are
   // offered here -- a flash-sale brief does not get switched onto a bump
-  // template by hand once the brief itself has said what it is.
-  const templateMatches = SPECS.filter(s => s.type === doc.brief.type);
-  const templateOptions = templateMatches.length ? templateMatches : SPECS;
+  // template by hand once the brief itself has said what it is. A guessed
+  // type (nothing in the brief actually said so) only suggests a template;
+  // every exposed template stays pickable.
+  const exposedSpecs = SPECS.filter(s => s.exposed !== false);
+  const templateMatches = doc.brief.typeConfident
+    ? exposedSpecs.filter(s => s.type === doc.brief.type) : exposedSpecs;
+  const templateOptions = templateMatches.length ? templateMatches : exposedSpecs;
+  const locked = doc.brief.typeConfident && templateMatches.length === 1;
 
   const formats = useMemo(() => {
     const seen = new Map<string, number>();
@@ -379,8 +384,8 @@ export default function App() {
       <header className={"bar" + (panel ? " with-panel" : "")}>
         <strong>SAC Studio</strong>
         <select value={templateId} onChange={e => pickTemplate(e.target.value)}
-                disabled={templateMatches.length === 1}
-                title={templateMatches.length === 1
+                disabled={locked}
+                title={locked
                   ? `Locked to this template — the brief reads as ${doc.brief.type}`
                   : 'The template decides the look; the brief decides the content'}>
           {templateOptions.map(t => (

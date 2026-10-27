@@ -87,15 +87,20 @@ export function NewDialog({ onCreate, onClose }: {
 
   // The brief's own wording says which campaign type this is, the same way
   // the full build will read it -- so the template list narrows to what
-  // actually fits before a designer can pick a mismatched one by hand.
-  const detectedType = brief.trim().length >= 40
-    ? readBrief(field.current?.innerHTML || brief, '', brief).type : undefined;
-  const matches = detectedType ? SPECS.filter(s => s.type === detectedType) : SPECS;
-  const options = matches.length ? matches : SPECS;
+  // actually fits before a designer can pick a mismatched one by hand. A
+  // guessed type (nothing in the brief actually said so) only suggests a
+  // template; it never locks the picker the way a confident read does.
+  const exposedSpecs = SPECS.filter(s => s.exposed !== false);
+  const parsed = brief.trim().length >= 40
+    ? readBrief(field.current?.innerHTML || brief, '', brief) : undefined;
+  const detectedType = parsed?.type;
+  const confident = parsed?.typeConfident ?? false;
+  const matches = confident && detectedType ? exposedSpecs.filter(s => s.type === detectedType) : exposedSpecs;
+  const options = matches.length ? matches : exposedSpecs;
   useEffect(() => {
-    if (matches.length === 1 && matches[0].id !== templateId) setTemplateId(matches[0].id);
+    if (confident && matches.length === 1 && matches[0].id !== templateId) setTemplateId(matches[0].id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [detectedType]);
+  }, [detectedType, confident]);
 
   return (
     <Modal title="New campaign" onClose={onClose}>
@@ -106,7 +111,7 @@ export function NewDialog({ onCreate, onClose }: {
       <label className="field">
         <span>Template <i>decides the look, not the content</i></span>
         <select value={templateId} onChange={e => setTemplateId(e.target.value)}
-                disabled={matches.length === 1}>
+                disabled={confident && matches.length === 1}>
           {options.map(t => (
             <option key={t.id} value={t.id}>
               {t.name} — {templateById(t.id)?.formats.length ?? 0} formats
@@ -114,8 +119,11 @@ export function NewDialog({ onCreate, onClose }: {
           ))}
         </select>
       </label>
-      {matches.length === 1 && (
+      {confident && matches.length === 1 && (
         <p className="muted">Locked to {matches[0].name} — the brief reads as {detectedType}.</p>
+      )}
+      {!confident && detectedType && (
+        <p className="muted">No campaign type stated — {matches[0]?.name ?? 'Flash'} suggested, pick a different template above if this guess is wrong.</p>
       )}
       <label className="field">
         <span>Brief <i>paste it as it was written — headings, bullets and all</i></span>

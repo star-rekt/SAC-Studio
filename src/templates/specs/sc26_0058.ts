@@ -9,6 +9,7 @@ const spec: TemplateSpec = {
   aliases: ['AUTUMN20'],
   name: 'AUTUMN20 — photograph and punched ticket',
   type: 'bump',
+  exposed: false,
   groundedIn: 'SC26_0058 Wk33 Bump',
   figma: { fileKey: '7r3YL4Zko0WfQs5vnSO9OT', nodeId: '211:695439' },
   why: 'Full-bleed outdoor photography, white urgency type, and a single orange-red punched ticket carrying the offer. The linked email and social designs use the ticket over the photograph.',
