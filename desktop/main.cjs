@@ -43,7 +43,7 @@ async function seedContentIfMissing() {
 async function applyContentUpdate() {
   const dir = contentRoot();
   const before = await git.resolveRef({ fs, dir, ref: 'HEAD' }).catch(() => null);
-  await git.fastForward({ fs, http, dir, ref: CONTENT_BRANCH, singleBranch: true });
+  await git.fastForward({ fs, http, dir, ref: CONTENT_BRANCH, remote: 'origin', singleBranch: true });
   const after = await git.resolveRef({ fs, dir, ref: 'HEAD' });
   if (before === after) return { updated: false };
   const pkg = JSON.parse(await readFile(join(dir, 'package.json'), 'utf8'));
