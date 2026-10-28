@@ -1,6 +1,6 @@
 const { app, BrowserWindow, Menu, ipcMain, shell, dialog } = require('electron');
 const { join, delimiter } = require('node:path');
-const { access, mkdir, writeFile, readFile } = require('node:fs/promises');
+const { access, mkdir, writeFile, readFile, rm } = require('node:fs/promises');
 const fs = require('node:fs');
 const git = require('isomorphic-git');
 const http = require('isomorphic-git/http/node');
@@ -33,9 +33,15 @@ const exists = path => access(path).then(() => true, () => false);
 // real git repo with origin configured so applyContentUpdate() can fetch later.
 // Falls back to the bundled content-seed (no .git) when offline so the app
 // still launches — updates won't work until the next launch with connectivity.
+// Seeds the content directory by cloning the mirror repo, which gives us a
+// real git repo with origin configured so applyContentUpdate() can fetch later.
+// Falls back to the bundled content-seed (no .git) when offline so the app
+// still launches — updates won't work until the next launch with connectivity.
 async function seedContentIfMissing() {
   const dir = contentRoot();
   if (await exists(join(dir, '.git'))) return;
+  // Remove any partial/stale content so git.clone gets an empty target.
+  await rm(dir, { recursive: true, force: true });
   await mkdir(dir, { recursive: true });
   try {
     await git.clone({ fs, http, dir, url: MIRROR_URL, ref: CONTENT_BRANCH,
