@@ -156,12 +156,13 @@ function BrandBand({ id, brands, top, exact = false }: {
       const style: React.CSSProperties = pos
         ? { position: 'absolute', left: pos.left, top: pos.top, width: pos.width, height: pos.height, objectFit: 'contain' }
         : { width: 190, height: 80, objectFit: 'contain' };
-      return item?.kind === 'brand'
-        ? <Media key={`${brand}-${n}`} id={`${id}/brand/${n}`}
-            src={item.file} alt={brand} style={style} />
-        : <Editable key={`${brand}-${n}`} id={`${id}/brand-text/${n}`}
-            style={{ ...(pos ? { position: 'absolute', left: pos.left, top: pos.top } : {}),
-              color: '#fff', ...type(40, 700), textAlign: 'center' }}>{brand.toUpperCase()}</Editable>;
+      // A brand the library doesn't stock yet keeps a real placeholder logo
+      // (cycling the known set), not plain text -- every brand slot is an
+      // image, same as the ones the library does resolve.
+      const placeholder = ['the-north-face', 'patagonia', 'mountain-hardwear', 'osprey'][n % 4];
+      const src = item?.kind === 'brand' ? item.file : `/logos/brand-${placeholder}.svg`;
+      return <Media key={`${brand}-${n}`} id={`${id}/brand/${n}`}
+        src={src} alt={brand} style={style} />;
     })}
   </Ground>;
 }

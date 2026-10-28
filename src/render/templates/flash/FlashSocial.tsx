@@ -90,7 +90,7 @@ export function FlashSocial({ asset }: { asset: SheetAsset }) {
       {...(story ? { initialScale: 1.29, focus: {x:39.19,y:0} }
         : { initialScale: tall ? 1.25 : 1.314, zoomOrigin: {x:50,y:100}, focus: {x:50,y:50} })}
       style={{position:'absolute',inset:0,width:w,height:h}} />
-    <Media id={`${id}/wordmark`} src="/reference/flash-wordmark.svg" alt="Steep & Cheap, powered by Backcountry"
+    <Media id={`${id}/wordmark`} src="/logos/SC/v1/Board/SC26_0021 Flash Sale Apr 4/Group 2904.svg" alt="Steep & Cheap, powered by Backcountry"
       style={{position:'absolute',left:spec.wordmark.left,top:spec.wordmark.top,
         width:spec.wordmark.width,height:spec.wordmark.height,objectFit:'contain'}} />
     {/* The same real vector outline BoardHero/FlashEmail use (Figma node

@@ -101,7 +101,7 @@ export function Flash({ asset }: { asset: SheetAsset }) {
           {color:'#fff',fontWeight:800,whiteSpace:'nowrap',letterSpacing:-5.59,
             lineHeight:(fontSize!*.97)+'px'})}>{offerText}</Editable>;
       })()}
-      {(() => {
+      {asset.copy.code && (() => {
         const { text: qualifier, fontSize } = fitText(asset.copy.qualifier ?? '', 'hero.qualifier');
         return <Editable id={`${asset.id}/qualifier`} style={txt(743,575,fontSize!,
           {fontWeight:400,lineHeight:(fontSize!*1.07)+'px',letterSpacing:-1.7,color:'#fff',textAlign:'right',

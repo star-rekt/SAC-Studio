@@ -186,20 +186,28 @@ export function BumpHero({ asset }: { asset: SheetAsset }) {
           style={{position:'absolute',left:toLockupPx(35.71, 'width'),top:toLockupPx(0, 'height'),
           width:toLockupPx(64.29, 'width'),height:toLockupPx(14.97, 'height')}} />
 
-        {/* "3 DAYS ONLY" text inside badge - left:41.66%, right:4.46%, top:4.03%, bottom:88.8% */}
-        <Editable id={`${asset.id}/urgency`} style={txt(
-          toLockupPx(41.66, 'width'),
-          toLockupPx(4.03, 'height'),
-          67.1346,
-          {
-            fontFamily: stack('Quiet Sans'),
-            fontWeight: 700,
-            lineHeight: '171px',
-            letterSpacing: '-0.02em',
-            textTransform: 'capitalize',
-            color: '#FFFFFF'
-          }
-        )}>{urgency}</Editable>
+        {/* "3 DAYS ONLY" text inside badge - left:41.66%, right:4.46%, top:4.03%, bottom:88.8%.
+            Shrink-to-fit, no wrap -- a fixed 67.1346px with no width budget
+            let longer urgency text wrap onto a second line and spill out of
+            the brush-stroke badge instead of shrinking to fit it. */}
+        {(() => {
+          const { fontSize } = fitText(urgency, 'hero.urgency',
+            { widthBudget: toLockupPx(53.88, 'width'), fontMax: 67.1346 });
+          return <Editable id={`${asset.id}/urgency`} style={txt(
+            toLockupPx(41.66, 'width'),
+            toLockupPx(4.03, 'height'),
+            fontSize!,
+            {
+              fontFamily: stack('Quiet Sans'),
+              fontWeight: 700,
+              lineHeight: '171px',
+              letterSpacing: '-0.02em',
+              textTransform: 'capitalize',
+              whiteSpace: 'nowrap',
+              color: '#FFFFFF'
+            }
+          )}>{urgency}</Editable>;
+        })()}
 
         {/* CTA pill - absolute, left:48.29%, right:1%, top:85.28%, bottom:0%.
             The orange backing used to be a bare, un-wired <div> -- no data-id,

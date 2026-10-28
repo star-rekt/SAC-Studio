@@ -1,7 +1,7 @@
 node_modules
+dist
+dist-desktop
 desktop-release
-content-seed
-.DS_Store
 public/photos/*.jpg
 tsconfig.tsbuildinfo
 server/.shots
