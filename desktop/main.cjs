@@ -1,6 +1,6 @@
 const { app, BrowserWindow, Menu, ipcMain, shell, dialog } = require('electron');
 const { join, delimiter } = require('node:path');
-const { access, mkdir, writeFile, cp, readFile } = require('node:fs/promises');
+const { access, mkdir, writeFile, readFile } = require('node:fs/promises');
 const fs = require('node:fs');
 const git = require('isomorphic-git');
 const http = require('isomorphic-git/http/node');
@@ -17,6 +17,7 @@ let stopServer;
 // run (new IPC, new native resource) -- see applyContentUpdate().
 const SHELL_VERSION = 1;
 const CONTENT_BRANCH = 'main';
+const MIRROR_URL = 'https://github.com/star-rekt/SAC-Studio.git';
 
 const root = () => app.getAppPath();
 // Packaged builds read templates/server/plugin code from a writable git
@@ -28,11 +29,23 @@ const manifest = () => join(contentRoot(), 'plugin', 'manifest.json');
 const setupFile = () => join(app.getPath('userData'), 'setup-complete.json');
 const exists = path => access(path).then(() => true, () => false);
 
+// Seeds the content directory by cloning the mirror repo, which gives us a
+// real git repo with origin configured so applyContentUpdate() can fetch later.
+// Falls back to the bundled content-seed (no .git) when offline so the app
+// still launches — updates won't work until the next launch with connectivity.
 async function seedContentIfMissing() {
   const dir = contentRoot();
   if (await exists(join(dir, '.git'))) return;
   await mkdir(dir, { recursive: true });
-  await cp(join(process.resourcesPath, 'content-seed'), dir, { recursive: true });
+  try {
+    await git.clone({ fs, http, dir, url: MIRROR_URL, ref: CONTENT_BRANCH,
+      singleBranch: true, depth: 1 });
+  } catch (_cloneErr) {
+    // Offline or mirror unreachable — copy bundled files as fallback.
+    // Next launch with connectivity will retry the clone.
+    const { cp } = await import('node:fs/promises');
+    await cp(join(process.resourcesPath, 'content-seed'), dir, { recursive: true });
+  }
 }
 
 // Fetches and fast-forwards the content clone against the mirror repo.

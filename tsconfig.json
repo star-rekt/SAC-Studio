@@ -6,5 +6,6 @@
     "resolveJsonModule": true, "allowSyntheticDefaultImports": true,
     "skipLibCheck": true, "isolatedModules": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/render/templates/flash2"]
 }
