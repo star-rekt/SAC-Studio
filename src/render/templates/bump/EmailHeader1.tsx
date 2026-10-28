@@ -61,7 +61,7 @@ export function BumpEmailHeader1({ asset }: { asset: SheetAsset }) {
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none',
         background: 'linear-gradient(180deg,#0003 0%,#0000 45%,#0008 100%)' }} />
 
-      <div style={{ position: 'absolute', left: -15, top: 14, width: 1240, overflow: 'hidden',
+      <div style={{ position: 'absolute', left: -15, top: 4, width: 1240, overflow: 'hidden',
         whiteSpace: 'nowrap', color: '#fff', fontFamily: stack('Quiet Sans'),
         fontSize: 65, fontWeight: 800, letterSpacing: -1.5, lineHeight: 1.2 }}>
         {Array.from({ length: 4 }, (_, n) => <span key={n}>

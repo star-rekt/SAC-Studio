@@ -68,7 +68,7 @@ export function BumpEmailHero({ asset }: { asset: SheetAsset }) {
 
       {/* Looping ticker -- four repeats wide enough that the seam never
           shows inside the 1200px frame, same approach as Autumn's. */}
-      <div style={{ position: 'absolute', left: -15, top: 14, width: 1240, overflow: 'hidden',
+      <div style={{ position: 'absolute', left: -15, top: 4, width: 1240, overflow: 'hidden',
         whiteSpace: 'nowrap', color: '#fff', fontFamily: stack('Quiet Sans'),
         fontSize: 65, fontWeight: 800, letterSpacing: -1.5, lineHeight: 1.2 }}>
         {Array.from({ length: 4 }, (_, n) => <span key={n}>

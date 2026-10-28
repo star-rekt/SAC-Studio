@@ -67,7 +67,7 @@ export function BumpEmailHeader3({ asset }: { asset: SheetAsset }) {
           on a flat orange strip, not directly on the photo. */}
       <div style={{ position: 'absolute', left: 0, top: 0, width: FRAME_W, height: 95, background: '#F14222' }} />
 
-      <div style={{ position: 'absolute', left: -15, top: 14, width: 1240, overflow: 'hidden',
+      <div style={{ position: 'absolute', left: -15, top: 4, width: 1240, overflow: 'hidden',
         whiteSpace: 'nowrap', color: '#fff', fontFamily: stack('Quiet Sans'),
         fontSize: 65, fontWeight: 800, letterSpacing: -1.5, lineHeight: 1.2 }}>
         {Array.from({ length: 4 }, (_, n) => <span key={n}>
