@@ -8,6 +8,8 @@ const paths = [
   '/graphics/circle-1.svg',
   // A compiled template's own board image (Bump 2's default photo).
   '/figma-assets/345302902cffaea91d8cb3aa85fc7f71c3cd817f.png',
+  // A path with spaces (Flash's wordmark), as the exporter now names it: decoded.
+  '/logos/SC/v1/Board/SC26_0021 Flash Sale Apr 4/Group 2904.svg',
 ];
 const layers = paths.map(src => bundledImage({ type: 'image', src }));
 assert.deepEqual(layers.map(l => l.src), paths.map(src => `media${src}`));

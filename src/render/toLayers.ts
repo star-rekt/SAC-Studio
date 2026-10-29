@@ -135,7 +135,9 @@ const r1 = (n: number) => Math.round(n * 10) / 10;
  *  exporter drops the image without saying so. */
 const srcOf = (el: HTMLImageElement) => {
   const raw = el.currentSrc || el.src;
-  return raw.startsWith('data:') ? raw : new URL(raw, location.href).pathname;
+  // Decoded: a URL's path spells a space as %20, and the exporter looks the
+  // file up on disk by this name ("…/SC26_0021 Flash Sale Apr 4/…").
+  return raw.startsWith('data:') ? raw : decodeURIComponent(new URL(raw, location.href).pathname);
 };
 
 /** The run with the breaks the browser actually made in it.

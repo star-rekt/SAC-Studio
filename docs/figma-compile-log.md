@@ -994,3 +994,17 @@ clipping frames inside it included. Plugin `BUILD`: `clips-3`.
 Rollback: `git revert <sha>`.
 
 sha: 19096b8
+
+## Step 42: export finds images whose paths have spaces
+Flash's export failed: "Export image not found: media/logos/SC/v1/Board/SC26_0021%20Flash%20Sale%20Apr%204/Group%202904.svg".
+The file was there. The exporter named each image by its URL path, which spells a space as %20,
+then looked that name up on disk. `toLayers` (`srcOf`) now decodes the path, which holds for any
+image with spaces or other escaped characters, in any template. `check:export` embeds that
+spaced path.
+
+`public/logos/SC/` (the Flash wordmark `FlashSocial.tsx` uses) was untracked in this repo; the
+mirror already carried it. It is now tracked here too.
+
+Rollback: `git revert <sha>`.
+
+sha: 1db4280
