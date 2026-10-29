@@ -194,7 +194,7 @@ If that's meant to be it, tell Claude these exact names.
       throw Error("That is not a SAC Email Studio export.");
     for (const v of doc.variants) {
       if (!Array.isArray(v.layers)) throw Error(`${v.name}: no layers.`);
-      if (!(v.width > 0 && v.height > 0 && v.width <= 8192 && v.height <= 8192))
+      if (!(v.width > 0 && v.height > 0 && v.width <= 32768 && v.height <= 32768))
         throw Error(`${v.name}: ${v.width}x${v.height} is not a frame size.`);
     }
     const missingMedia = /* @__PURE__ */ new Set();

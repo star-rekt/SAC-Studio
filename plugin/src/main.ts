@@ -263,7 +263,9 @@ async function build(doc: Doc): Promise<{ frames: number; page: string }> {
     throw Error('That is not a SAC Email Studio export.');
   for (const v of doc.variants) {
     if (!Array.isArray(v.layers)) throw Error(`${v.name}: no layers.`);
-    if (!(v.width > 0 && v.height > 0 && v.width <= 8192 && v.height <= 8192))
+    // A sanity bound, not Figma's: a long email grows past 8192 (Bump 2's
+    // brand tiles add a row for every two brands the brief names).
+    if (!(v.width > 0 && v.height > 0 && v.width <= 32768 && v.height <= 32768))
       throw Error(`${v.name}: ${v.width}x${v.height} is not a frame size.`);
   }
 

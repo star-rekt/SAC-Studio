@@ -928,3 +928,13 @@ All of these come out flat in Figma.
 Rollback: `git revert <sha>`.
 
 sha: 9964703
+
+## Step 38: the Figma plugin takes frames taller than 8192px
+Importing "15-email-body-e4-alpine20-bump-4: 1200x8428 is not a frame size." failed. The plugin
+capped frames at 8192px, its own sanity bound and not a limit of Figma's. Bump 2's emails
+legitimately grow past it: the brand tiles add a row for every two brands a brief names (design 4
+is 6733px on the board, 8428px with this brief's brands). The bound is now 32768px.
+
+Rollback: `git revert <sha>`.
+
+sha: 381ec64
