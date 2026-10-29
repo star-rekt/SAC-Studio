@@ -15,7 +15,16 @@
  *  opinion about any of those is a second renderer waiting to drift.
  */
 
-export type Layer =
+/** Every layer may sit inside a clip (`parent`: that clip layer's `n`): it
+ *  is drawn inside it and cut by it, as the browser cuts it. */
+export type Layer = ({ parent?: number } & (
+  | { n: number; name: string; type: 'clip';
+      /** An element that cuts what's inside it: overflow that hides
+       *  something, a CSS clip-path, a named shape. Its true box (unrotated)
+       *  and turn; `radius` its corners; `path` the outline when it isn't a
+       *  rectangle (in `view` units); `stroke` an outline drawn over it. */
+      x: number; y: number; width: number; height: number; radius?: number; rotation?: number;
+      path?: { path: string; view: [number, number] }; stroke?: string; strokeWidth?: number }
   | { n: number; name: string; type: 'image'; src: string;
       /** The visible box: clip the image to this. */
       x: number; y: number; width: number; height: number; radius?: number; rotation?: number;
@@ -43,7 +52,7 @@ export type Layer =
       /** Character ranges set differently from the rest (a paragraph's bold,
        *  green code word), as [from, to) offsets into `text`. */
       runs?: { from: number; to: number; weight?: number; colour?: string }[];
-      x: number; y: number; width: number; height: number };
+      x: number; y: number; width: number; height: number }));
 
 const hex = (c: string): { fill: string; opacity: number } | null => {
   const m = c.match(/rgba?\(([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,/\s]+([\d.]+))?/);
@@ -167,7 +176,6 @@ function broken(el: HTMLElement, leading: number, turn = 0): string {
   return lines.join('\n');
 }
 
-import { cover } from './toSvg';
 import STEP from '../data/stepped-window.json';
 import BUMP2_WINDOW from '../data/bump2-window.json';
 import MARK_SHAPES from '../data/mark-shapes.json';
@@ -180,12 +188,53 @@ const SHAPES: Record<string, { path: string; width: number; height: number }> = 
   'bump2-window': BUMP2_WINDOW,
 };
 
-/** A box cut to its own CSS outline (`clip-path: path(…)`: Bump 2's stepped
- *  windows), in that box's own px. */
-function cssClipOf(holder: Element | null) {
-  if (!(holder instanceof HTMLElement)) return undefined;
-  const path = holder.style.clipPath.match(/^path\("(.+)"\)$/)?.[1];
-  return path ? { path, view: [holder.clientWidth, holder.clientHeight] as [number, number] } : undefined;
+/** Whether an element cuts what's inside it, and to what: the clip a layer
+ *  container in Figma has to reproduce. Read off the computed style, so it
+ *  holds for any template:
+ *  - a named shape (`data-clip`: the stepped window);
+ *  - a CSS clip-path -- path(), polygon(), or an inset() that cuts inward
+ *    (an inset reaching outward, the hit-area trim on a headline, cuts
+ *    nothing);
+ *  - overflow hidden/clip, when something inside reaches past the box or
+ *    the box rounds its corners over what's inside.
+ *  `null` when it cuts nothing; `{}` for its plain (rounded) box. */
+function clipShapeOf(el: Element, cs: CSSStyleDeclaration, b: DOMRect):
+    { path?: string; view?: [number, number]; stroke?: string; strokeWidth?: number } | null {
+  const named = SHAPES[el.getAttribute('data-clip') ?? ''];
+  if (named) {
+    const stroke = el.getAttribute('data-clip-stroke') ?? undefined;
+    return { path: named.path, view: [named.width, named.height], stroke,
+             strokeWidth: stroke ? Number(el.getAttribute('data-clip-width')) || 7 : undefined };
+  }
+  const w = (el as HTMLElement).offsetWidth || b.width, h = (el as HTMLElement).offsetHeight || b.height;
+  const len = (v: string, of: number) => v.endsWith('%') ? parseFloat(v) / 100 * of : parseFloat(v) || 0;
+  const cp = cs.clipPath;
+  const path = cp.match(/^path\((?:[a-z-]+,\s*)?["'](.+)["']\)$/)?.[1];
+  if (path) return { path, view: [w, h] };
+  const poly = cp.match(/^polygon\((?:[a-z-]+,\s*)?(.+)\)$/)?.[1];
+  if (poly) {
+    const pts = poly.split(',').map(p => p.trim().split(/\s+/)).map(([x, y]) => `${len(x, w)} ${len(y, h)}`);
+    return { path: `M ${pts.join(' L ')} Z`, view: [w, h] };
+  }
+  const inset = cp.match(/^inset\(([^)]*?)(?:\s+round\s+[^)]*)?\)$/)?.[1];
+  if (inset) {
+    const v = inset.trim().split(/\s+/);
+    const [t, r, bt, l] = [v[0], v[1] ?? v[0], v[2] ?? v[0], v[3] ?? v[1] ?? v[0]];
+    const top = len(t, h), right = len(r, w), bottom = len(bt, h), left = len(l, w);
+    if (top > 0.5 || right > 0.5 || bottom > 0.5 || left > 0.5) {
+      const x0 = Math.max(0, left), y0 = Math.max(0, top), x1 = w - Math.max(0, right), y1 = h - Math.max(0, bottom);
+      return { path: `M ${x0} ${y0} H ${x1} V ${y1} H ${x0} Z`, view: [w, h] };
+    }
+  }
+  if (!['hidden', 'clip'].includes(cs.overflowX) && !['hidden', 'clip'].includes(cs.overflowY)) return null;
+  if (!el.children.length) return null;
+  if (parseFloat(cs.borderTopLeftRadius) > 0) return {};
+  const reach = Array.from(el.querySelectorAll('*')).some(d => {
+    const r = d.getBoundingClientRect();
+    return r.width > 0 && r.height > 0
+      && (r.left < b.left - 0.5 || r.top < b.top - 0.5 || r.right > b.right + 0.5 || r.bottom > b.bottom + 0.5);
+  });
+  return reach ? {} : null;
 }
 
 /** A paragraph set as inline runs (a body copy with its code word in bold
@@ -203,7 +252,7 @@ function paragraphRuns(el: HTMLElement, cs: CSSStyleDeclaration, lead: number) {
   const r = document.createRange();
   const lines: string[] = [];
   const spans: { kid: HTMLElement; from: number; to: number }[] = [];
-  let top = NaN, length = 0, glued = false;
+  let top = NaN, glued = false;
   for (const kid of kids) {
     const data = kid.textContent ?? '';
     const node = kid.firstChild;
@@ -234,17 +283,6 @@ function paragraphRuns(el: HTMLElement, cs: CSSStyleDeclaration, lead: number) {
   return { text: lines.join('\n'), runs };
 }
 
-/** The shape this element is cut to, if an ancestor says it is cut at all. */
-function clipOf(el: Element, root: HTMLElement) {
-  const holder = el.closest('[data-clip]');
-  if (!holder || !root.contains(holder)) return undefined;
-  const shape = SHAPES[holder.getAttribute('data-clip') ?? ''];
-  if (!shape) return undefined;
-  const stroke = holder.getAttribute('data-clip-stroke') ?? undefined;
-  return { path: shape.path, view: [shape.width, shape.height] as [number, number],
-           stroke, strokeWidth: stroke ? Number(holder.getAttribute('data-clip-width')) || 7
-                                       : undefined };
-}
 
 export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] } {
   const base = root.getBoundingClientRect();
@@ -254,91 +292,61 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
   const name = (el: Element, fallback: string) =>
     el.getAttribute('data-id')?.split('/').slice(-2).join('/') ?? fallback;
 
-  const walk = (el: Element) => {
+  const walk = (el: Element, parent?: number) => {
     const cs = getComputedStyle(el);
     if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') return;
     const b = el.getBoundingClientRect();
-    const x = r1(b.left - base.left), y = r1(b.top - base.top);
     const k = scaleOf(el, root);
     if (b.width < 1 || b.height < 1) {
       // A position:absolute box with no explicit height and ONLY
-      // absolutely-positioned children (a common shape here: one wrapper div
-      // sized by its board top/left, two independently-positioned lines
-      // inside it) collapses to zero in its OWN box -- standard CSS, since
+      // absolutely-positioned children collapses to zero in its OWN box --
       // absolutely-positioned children never contribute to a parent's auto
-      // size -- even though those children still paint at real, visible
-      // positions elsewhere on the page (confirmed live: FlashEmail's
-      // title+offer wrapper measured height 0 while its title and offer text
-      // measured real, on-screen boxes). There is nothing of this element's
-      // OWN to draw, but it is not evidence its children are empty too.
-      for (const kid of Array.from(el.children)) walk(kid);
+      // size -- while those children still paint at real, visible positions.
+      // There is nothing of this element's own to draw (and it cuts
+      // nothing), but its children are not empty.
+      for (const kid of Array.from(el.children)) walk(kid, parent);
       return;
     }
 
+    // An element that cuts what's inside it becomes a container: its own
+    // paint and everything inside it are drawn in it and cut by it. A
+    // container, not a per-picture guess, so a tag hanging off a banner, a
+    // turned photo in a window and a paper cut-out are each cut exactly as
+    // the browser cuts them, in any template.
+    const shape = clipShapeOf(el, cs, b);
+    if (shape) {
+      const spin = rotationOf(el, root);
+      const box = spin || k !== 1 ? trueBox(b, cs, k) : b;
+      layers.push({ n: ++n, parent, name: name(el, 'clip'), type: 'clip',
+        x: r1(box.left - base.left), y: r1(box.top - base.top), width: r1(box.width), height: r1(box.height),
+        radius: parseFloat(cs.borderTopLeftRadius) * k || undefined, rotation: spin || undefined,
+        path: shape.path ? { path: shape.path, view: shape.view! } : undefined,
+        stroke: shape.stroke, strokeWidth: shape.strokeWidth });
+      parent = n;
+    }
+
     if (el instanceof HTMLImageElement) {
-      // A panned/zoomed photo's <img> is deliberately rendered LARGER than
-      // what's visible -- Picture.tsx moves it with a CSS transform and lets
-      // its parent's `overflow:hidden` do the actual cropping, rather than
-      // sizing the <img> itself to the crop. Using the img's own (oversized,
-      // offset) rect as "the visible box; clip to it" told Figma to draw and
-      // clip at a box that had nothing to do with what was on screen --
-      // confirmed live: a zoomed hero photo's own rect started above its
-      // header bar and bled into it. The parent that actually clips is the
-      // real visible box; the img's own geometry is only an input to where
-      // the picture draws inside it.
-      // Only substitute the parent's box when the <img> actually overflows
-      // it -- that is the signature of this pan/zoom pattern (one image,
-      // deliberately scaled past its own one-to-one clipping wrapper). A
-      // smaller, already-contained image sharing a wider overflow:hidden
-      // band with siblings (e.g. a brand-logo strip, several small logos
-      // inside one clipping bar) is not that case, and treating the whole
-      // band as every logo's own "visible box" cropped each one down to the
-      // band's outer edges instead of leaving its own correct, smaller box
-      // alone.
-      const parent = el.parentElement;
-      const pRect = parent?.getBoundingClientRect();
-      const overflowsParent = !!pRect && (b.width > pRect.width + 1 || b.height > pRect.height + 1);
-      const clips = overflowsParent && getComputedStyle(parent!).overflow === 'hidden';
+      // The picture as drawn: its own box and turn, the artwork fitted in it
+      // by its object-fit and object-position. Whatever crops it -- the
+      // photo slot it pans and zooms inside, a window's outline -- is the
+      // container around it, so nothing here has to guess at a crop.
       const rotation = rotationOf(el, root);
-      // A plain (non-clipping) rotated image -- a logo, a wordmark -- has
-      // the exact same problem a rotated rect does: `b` is the bigger,
-      // axis-aligned box AROUND the tilted picture, not its own true size.
-      // Handing Figma that inflated (and, for anything near 90deg, AXIS-
-      // SWAPPED) box as if it were the pre-rotation width/height, alongside
-      // a real rotation value, described a shape nobody drew -- which is
-      // exactly what rendered as a garbled, wrongly-stretched wordmark on
-      // export. Rebuilt the same way a rotated mark's box is: true size
-      // from the element's own CSS width/height, centred on the AABB's
-      // centre (rotation-invariant).
-      const trueImgBox = (!clips && rotation) ? trueBox(b, cs, k) : b;
-      const box = clips ? pRect! : trueImgBox;
+      const box = rotation || k !== 1 ? trueBox(b, cs, k) : { left: b.left, top: b.top, width: b.width, height: b.height };
+      const nw = el.naturalWidth || box.width, nh = el.naturalHeight || box.height;
+      const pos = cs.objectPosition.split(' ');
+      const px = (parseFloat(pos[0]) || 50) / 100, py = (parseFloat(pos[1] ?? pos[0]) || 50) / 100;
+      const fit = cs.objectFit === 'contain' ? Math.min(box.width / nw, box.height / nh)
+        : cs.objectFit === 'fill' ? NaN : Math.max(box.width / nw, box.height / nh);
+      const dw = Number.isNaN(fit) ? box.width : nw * fit, dh = Number.isNaN(fit) ? box.height : nh * fit;
       const bx = r1(box.left - base.left), by = r1(box.top - base.top);
-      // Picture.tsx's pan/zoom crop no longer expresses itself as
-      // `object-position` + a `transform: scale()` -- it sizes the <img>
-      // itself to the true, already-panned-and-zoomed render box and
-      // translates it into place, letting the parent's `overflow:hidden` do
-      // the cropping. `cover()`'s job was re-deriving that box from
-      // object-fit/position, which this pattern doesn't set at all --
-      // recomputing it from scratch silently threw away every pan and zoom
-      // edit. The <img>'s own true rect (`b`, computed above) already IS
-      // that box; draw it exactly there instead of re-guessing it.
-      // A plain, box-sized <img> (a brand logo, a wordmark) isn't this
-      // pattern -- it never overflows its own clipping parent -- and still
-      // needs `cover()`, matching whatever `object-fit` it actually uses,
-      // against its own TRUE (unrotated) box, not the rotated AABB.
-      const draw = clips
-        ? { x: r1(b.left - base.left), y: r1(b.top - base.top), w: r1(b.width), h: r1(b.height) }
-        : (() => { const fit = cover(el, box);
-            return { x: r1(bx + fit.dx), y: r1(by + fit.dy), w: r1(fit.w), h: r1(fit.h) }; })();
-      layers.push({ n: ++n, name: name(el, 'image'), type: 'image',
+      const bright = Number(cs.filter.match(/brightness\(([\d.]+)\)/)?.[1] ?? 1);
+      layers.push({ n: ++n, parent, name: name(el, 'image'), type: 'image',
         src: srcOf(el),
         x: bx, y: by, width: r1(box.width), height: r1(box.height),
-        radius: parseFloat((clips ? getComputedStyle(parent!) : cs).borderTopLeftRadius) || undefined,
+        radius: parseFloat(cs.borderTopLeftRadius) * k || undefined,
         rotation: rotation || undefined,
-        clip: clipOf(el, root) ?? cssClipOf(clips ? parent : el),
-        brightness: Number(cs.filter.match(/brightness\(([\d.]+)\)/)?.[1] ?? 1) !== 1
-          ? Number(cs.filter.match(/brightness\(([\d.]+)\)/)![1]) : undefined,
-        draw: { x: draw.x, y: draw.y, width: draw.w, height: draw.h } });
+        brightness: bright !== 1 ? bright : undefined,
+        draw: { x: r1(bx + (box.width - dw) * px), y: r1(by + (box.height - dh) * py), width: r1(dw), height: r1(dh) } });
       return;
     }
 
@@ -367,7 +375,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
       const box = spin ? trueBox(b, cs, k) : { left: b.left, top: b.top, width: b.width, height: b.height };
       const markShape = el.getAttribute('data-clip-shape');
       const mark = markShape && (MARK_SHAPES as Record<string, { path: string; width: number; height: number }>)[markShape];
-      layers.push({ n: ++n, name: name(el, 'block'), type: 'rect',
+      layers.push({ n: ++n, parent, name: name(el, 'block'), type: 'rect',
         fill: bg.fill, opacity: bg.opacity < 1 ? bg.opacity : undefined,
         radius: parseFloat(cs.borderTopLeftRadius) * k || undefined,
         rotation: spin || undefined,
@@ -402,7 +410,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
         const inR = (parseFloat(cs.paddingRight) + parseFloat(cs.borderRightWidth)) * k;
         const inT = (parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth)) * k;
         const inB = (parseFloat(cs.paddingBottom) + parseFloat(cs.borderBottomWidth)) * k;
-        layers.push({ n: ++n, name: name(el, 'text'), type: 'text', text,
+        layers.push({ n: ++n, parent, name: name(el, 'text'), type: 'text', text,
           font, weight: Number(cs.fontWeight) || 400, size: r1(parseFloat(cs.fontSize) * k),
           lineHeight: lead,
           letterSpacing: cs.letterSpacing === 'normal' ? 0 : r1(parseFloat(cs.letterSpacing) * k),
@@ -419,7 +427,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
       return;
     }
 
-    for (const kid of Array.from(el.children)) walk(kid);
+    for (const kid of Array.from(el.children)) walk(kid, parent);
   };
 
   for (const kid of Array.from(root.children)) walk(kid);
@@ -432,5 +440,9 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
                                  && l.x + l.width > 0 && l.y + l.height > 0);
   const fonts = [...new Set(inside.flatMap(l => l.type === 'text'
     ? [`${l.font} ${l.weight}`, ...(l.runs ?? []).filter(r => r.weight).map(r => `${l.font} ${r.weight}`)] : []))].sort();
-  return { layers: inside.map((l, i) => ({ ...l, n: i + 1 })), fonts };
+  // Numbered again from 1, and each `parent` follows its clip's new number
+  // (a clip wholly outside the frame takes its parent link with it).
+  const renum = new Map(inside.map((l, i) => [l.n, i + 1]));
+  return { layers: inside.map((l, i) => ({ ...l, n: i + 1,
+    parent: l.parent !== undefined ? renum.get(l.parent) : undefined })), fonts };
 }

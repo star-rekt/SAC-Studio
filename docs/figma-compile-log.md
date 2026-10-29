@@ -938,3 +938,35 @@ is 6733px on the board, 8428px with this brief's brands). The bound is now 32768
 Rollback: `git revert <sha>`.
 
 sha: 381ec64
+
+## Step 39: Figma export keeps what clips what (all templates)
+The Figma import still cut things wrongly:
+- E1's turned photo sat outside its window;
+- the banners' corner tags hung off the banners;
+- E4's paper cut-out lost its shape;
+- turned images spilled out of their frames.
+
+The cause was structural. The export was a flat list of loose layers, and the only clipping it
+knew was "an image overflowing its own parent" or a named shape, so anything else that the
+browser cuts arrived uncut.
+
+The export now keeps the clipping structure, read off the computed style, so it holds for every
+template, past and future:
+- **What becomes a container (`toLayers`, `clipShapeOf`).** Any element that cuts what's inside
+  it is emitted as a `clip` layer: overflow hidden/clip when something inside reaches past it or
+  it rounds its corners; a CSS clip-path (`path()`, `polygon()`, or an `inset()` that cuts
+  inward); a named shape (`data-clip`, with its outline). Every layer drawn inside it carries
+  `parent`, and the list stays flat for the server.
+- **Images.** Each is its own true box and turn, fitted by object-fit / object-position. The old
+  per-image crop guess is gone.
+- **The plugin.** A clip becomes a frame that clips, with rounded corners, plus its outline as a
+  mask where it isn't a rectangle. Every node is placed in its container's own px and turn
+  (`place`), so turned containers and turned contents both land where the browser drew them.
+  A named shape's outline goes beside the container, so the mask doesn't halve it. `BUILD`:
+  `clips-1`.
+
+Not yet: textures, shadows, blurs and blend modes (step 37's list).
+
+Rollback: `git revert <sha>`.
+
+sha: ff864f8

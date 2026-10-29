@@ -9,7 +9,13 @@
 export type Clip = { path: string; view: [number, number];
                      stroke?: string; strokeWidth?: number };
 
-export type Layer =
+/** `parent`: the clip layer (its `n`) this layer is drawn inside and cut by. */
+export type Layer = ({ parent?: number } & (
+  | { n: number; name: string; group?: string; type: 'clip';
+      /** An element that cuts what's inside it. Its true box and turn, its
+       *  corners, and its outline when it isn't a rectangle. */
+      x: number; y: number; width: number; height: number; radius?: number; rotation?: number;
+      path?: { path: string; view: [number, number] }; stroke?: string; strokeWidth?: number }
   | { n: number; name: string; group?: string; type: 'image'; src: string;
       x: number; y: number; width: number; height: number; radius?: number; rotation?: number;
       /** The shape the box is cut to, where it is not a rectangle. Without it
@@ -31,7 +37,7 @@ export type Layer =
       rotation?: number;
       /** Ranges of `text` set differently (a paragraph's bold green code word). */
       runs?: { from: number; to: number; weight?: number; colour?: string }[];
-      x: number; y: number; width: number; height: number };
+      x: number; y: number; width: number; height: number }));
 
 export type Variant = {
   id: string; name: string; width: number; height: number; layers: Layer[];

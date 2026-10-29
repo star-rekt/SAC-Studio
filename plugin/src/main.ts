@@ -25,7 +25,7 @@ figma.showUI(__html__, { width: 400, height: 520, themeColors: true });
  *  build or is still running a cached one -- the error text itself is
  *  otherwise identical either way and that ambiguity already cost a round
  *  trip once. */
-const BUILD = 'facefor-6';
+const BUILD = 'clips-1';
 
 const rgb = (h: string) => ({
   r: parseInt(h.slice(1, 3), 16) / 255,
@@ -113,6 +113,23 @@ async function loadFaces(doc: Doc): Promise<FontName[]> {
 
 function makeNode(l: Layer, images: Record<string, string>, vectors: Record<string, string>,
                   have: FontName[]): SceneNode {
+  if (l.type === 'clip') {
+    // A container that cuts what's put in it: its box (and rounded corners),
+    // and where it isn't a rectangle, its outline as the first child with
+    // isMask, which cuts everything above it in the container.
+    const f = figma.createFrame();
+    f.resize(Math.max(1, l.width), Math.max(1, l.height));
+    f.fills = [];
+    f.clipsContent = true;
+    if (l.radius) f.cornerRadius = Math.min(l.radius, Math.min(l.width, l.height) / 2);
+    if (l.path) {
+      const mask = cutout(l.path, l.width, l.height, '#000000');
+      mask.name = 'mask';
+      f.appendChild(mask);
+      mask.isMask = true;
+    }
+    return f;
+  }
   if (l.type === 'text') {
     const t = figma.createText();
     const fn = faceFor(l.font, l.weight, have);
@@ -240,22 +257,43 @@ function cutout(c: Clip, w: number, h: number, fill: string,
   return n;
 }
 
-/** Consecutive layers sharing a group name become a group, in place.
- *  Only consecutive ones, so the stacking order is never rearranged. */
-function groupRuns(frame: FrameNode, layers: Layer[]) {
-  const runs: { name: string; nodes: SceneNode[] }[] = [];
+/** Consecutive layers sharing a group name (and container) become a group,
+ *  in place. Only consecutive ones, so the stacking order is never rearranged. */
+function groupRuns(nodes: SceneNode[], layers: Layer[]) {
+  const runs: SceneNode[][] = [];
   let run: SceneNode[] = [], name = '';
   for (let i = 0; i < layers.length; i++) {
     const g = layers[i].group || '';
-    if (g !== name) { if (run.length) runs.push({ name, nodes: run }); run = []; name = g; }
-    if (g) run.push(frame.children[i]);
+    const same = run.length && nodes[i].parent === run[0].parent;
+    if (g !== name || !same) { if (run.length > 1) runs.push(run); run = []; name = g; }
+    if (g) run.push(nodes[i]);
   }
-  if (run.length) runs.push({ name, nodes: run });
+  if (run.length > 1) runs.push(run);
   for (const r of runs) {
-    if (r.nodes.length < 2) continue;
-    const at = frame.children.indexOf(r.nodes[0]);
-    figma.group(r.nodes, frame, at).name = r.name;
+    const into = r[0].parent as FrameNode;
+    figma.group(r, into, into.children.indexOf(r[0])).name = layers[nodes.indexOf(r[0])].group!;
   }
+}
+
+/** A container's centre and turn in the frame's px, and its size. */
+type Holder = { node: FrameNode; cx: number; cy: number; rot: number; w: number; h: number };
+
+/** Puts a node of size w x h with its centre at `at` (frame px), turned
+ *  `at.rot` degrees, into its container's own px: the centre moved into the
+ *  container (un-turned by its turn), the turn made relative to it. The
+ *  angle is CSS's, NOT negated: this matrix is CSS's own rotate() in the
+ *  same y-down space. A text node hugs its type, so it turns about its own
+ *  centre, which keeps a centred or right-aligned run where it was. */
+function place(node: SceneNode, at: { cx: number; cy: number; rot: number }, w: number, h: number, holder?: Holder) {
+  let x = at.cx, y = at.cy, rot = at.rot;
+  if (holder) {
+    const a = -holder.rot * Math.PI / 180, dx = at.cx - holder.cx, dy = at.cy - holder.cy;
+    x = dx * Math.cos(a) - dy * Math.sin(a) + holder.w / 2;
+    y = dx * Math.sin(a) + dy * Math.cos(a) + holder.h / 2;
+    rot = at.rot - holder.rot;
+  }
+  const r = rot * Math.PI / 180, c = Math.cos(r), sn = Math.sin(r);
+  node.relativeTransform = [[c, -sn, x - c * w / 2 + sn * h / 2], [sn, c, y - sn * w / 2 - c * h / 2]];
 }
 
 async function build(doc: Doc): Promise<{ frames: number; page: string }> {
@@ -304,53 +342,42 @@ async function build(doc: Doc): Promise<{ frames: number; page: string }> {
         project: doc.project.id, variant: v.id, revision: doc.project.revision,
       }));
 
+      // Every layer's box is in the frame's px; a clip is a container, and
+      // what's inside it is placed in that container's own px (and turn).
+      const clips = new Map<number, Holder>();
+      const nodes: SceneNode[] = [];
       for (const l of v.layers) {
         const node = makeNode(l, images, doc.vectors || {}, have);
-        frame.appendChild(node);
+        const holder = l.parent !== undefined ? clips.get(l.parent) : undefined;
+        (holder?.node ?? frame).appendChild(node);
         node.name = l.name;
-        node.x = l.x; node.y = l.y;
+        const w = node.width, h = node.height;
+        let left = l.x, top = l.y;
         if (l.type === 'text') {
           // It hugs, so it is put back where the studio had it rather than
           // against the corner of the box that was measured around it.
-          if (l.align === 'center') node.x = l.x + (l.width - node.width) / 2;
-          else if (l.align === 'right') node.x = l.x + l.width - node.width;
-          node.y = l.y + (l.height - node.height) / 2;
+          if (l.align === 'center') left = l.x + (l.width - w) / 2;
+          else if (l.align === 'right') left = l.x + l.width - w;
+          top = l.y + (l.height - h) / 2;
         }
-        if (l.rotation) {
-          // NOT negated. Both CSS and this relativeTransform matrix operate
-          // in the same Y-down pixel space (x right, y down) -- the matrix
-          // below is CSS's own rotate() matrix, so handing it the exact same
-          // angle CSS used reproduces the exact same visual turn. A stray
-          // negation here used to flip the direction, which a ticket card at
-          // a few degrees never showed (a mirrored 4deg tilt is nearly
-          // indistinguishable from a real one by eye) -- it's exactly what
-          // turned a wordmark meant to read bottom-to-top (rotate(-90deg)
-          // off its card) into one reading top-to-bottom instead, a few
-          // dozen degrees further than "subtle" and exactly what showed up
-          // as a "flipped" logo on export.
-          //
-          // Built from the NODE's own x/y/width/height -- already set above,
-          // alignment-adjusted for text -- not the layer's l.x/l.width. A
-          // rect or image node is always exactly l.width x l.height, so this
-          // is identical to using l.* for those. Text isn't: it hugs its own
-          // content (textAutoResize), so node.width/height are usually
-          // smaller than the measured box's l.width/l.height, and node.x/y
-          // already carries the left/center/right-alignment offset within
-          // that box. Rotating around the NODE's real centre, by the NODE's
-          // real size, keeps a centred or right-aligned run centred or
-          // right-aligned after the tilt instead of swinging off toward
-          // wherever the wider, unhugged box's centre happened to be.
-          const rad = (l.rotation * Math.PI) / 180;
-          const cos = Math.cos(rad), sin = Math.sin(rad);
-          const cx = node.x + node.width / 2, cy = node.y + node.height / 2;
-          node.relativeTransform = [
-            [cos, -sin, cx - cos * (node.width / 2) + sin * (node.height / 2)],
-            [sin,  cos, cy - sin * (node.width / 2) - cos * (node.height / 2)],
-          ];
+        const at = { cx: left + w / 2, cy: top + h / 2, rot: l.rotation ?? 0 };
+        place(node, at, w, h, holder);
+        if (l.type === 'clip' && node.type === 'FRAME') {
+          clips.set(l.n, { node, ...at, w, h });
+          // The outline goes beside the container, not in it: its mask would
+          // cut away the outer half of the stroke.
+          if (l.stroke && l.path) {
+            const line = cutout(l.path, w, h, 'none', l.stroke, l.strokeWidth);
+            line.name = 'outline';
+            const into = node.parent as FrameNode;
+            into.insertChild(into.children.indexOf(node) + 1, line);
+            line.relativeTransform = node.relativeTransform;
+          }
         }
         node.setPluginData('sac-layer', String(l.n));
+        nodes.push(node);
       }
-      groupRuns(frame, v.layers);
+      groupRuns(nodes, v.layers);
 
       if (i % 4 === 0 && i) { x = 0; y += rowTall + 160; rowTall = 0; }
       frame.x = x; frame.y = y;

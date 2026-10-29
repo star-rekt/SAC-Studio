@@ -22,7 +22,7 @@
 
   // src/main.ts
   figma.showUI(__html__, { width: 400, height: 520, themeColors: true });
-  var BUILD = "facefor-6";
+  var BUILD = "clips-1";
   var rgb = (h) => ({
     r: parseInt(h.slice(1, 3), 16) / 255,
     g: parseInt(h.slice(3, 5), 16) / 255,
@@ -76,6 +76,20 @@ If that's meant to be it, tell Claude these exact names.
   }
   function makeNode(l, images, vectors, have) {
     var _a, _b, _c;
+    if (l.type === "clip") {
+      const f = figma.createFrame();
+      f.resize(Math.max(1, l.width), Math.max(1, l.height));
+      f.fills = [];
+      f.clipsContent = true;
+      if (l.radius) f.cornerRadius = Math.min(l.radius, Math.min(l.width, l.height) / 2);
+      if (l.path) {
+        const mask = cutout(l.path, l.width, l.height, "#000000");
+        mask.name = "mask";
+        f.appendChild(mask);
+        mask.isMask = true;
+      }
+      return f;
+    }
     if (l.type === "text") {
       const t = figma.createText();
       const fn = faceFor(l.font, l.weight, have);
@@ -170,26 +184,38 @@ If that's meant to be it, tell Claude these exact names.
     n.y = 0;
     return n;
   }
-  function groupRuns(frame, layers) {
+  function groupRuns(nodes, layers) {
     const runs = [];
     let run = [], name = "";
     for (let i = 0; i < layers.length; i++) {
       const g = layers[i].group || "";
-      if (g !== name) {
-        if (run.length) runs.push({ name, nodes: run });
+      const same = run.length && nodes[i].parent === run[0].parent;
+      if (g !== name || !same) {
+        if (run.length > 1) runs.push(run);
         run = [];
         name = g;
       }
-      if (g) run.push(frame.children[i]);
+      if (g) run.push(nodes[i]);
     }
-    if (run.length) runs.push({ name, nodes: run });
+    if (run.length > 1) runs.push(run);
     for (const r of runs) {
-      if (r.nodes.length < 2) continue;
-      const at = frame.children.indexOf(r.nodes[0]);
-      figma.group(r.nodes, frame, at).name = r.name;
+      const into = r[0].parent;
+      figma.group(r, into, into.children.indexOf(r[0])).name = layers[nodes.indexOf(r[0])].group;
     }
   }
+  function place(node, at, w, h, holder) {
+    let x = at.cx, y = at.cy, rot = at.rot;
+    if (holder) {
+      const a = -holder.rot * Math.PI / 180, dx = at.cx - holder.cx, dy = at.cy - holder.cy;
+      x = dx * Math.cos(a) - dy * Math.sin(a) + holder.w / 2;
+      y = dx * Math.sin(a) + dy * Math.cos(a) + holder.h / 2;
+      rot = at.rot - holder.rot;
+    }
+    const r = rot * Math.PI / 180, c = Math.cos(r), sn = Math.sin(r);
+    node.relativeTransform = [[c, -sn, x - c * w / 2 + sn * h / 2], [sn, c, y - sn * w / 2 - c * h / 2]];
+  }
   async function build(doc) {
+    var _a, _b;
     if (!doc || doc.schema !== "sac-studio/1" || !Array.isArray(doc.variants) || !doc.variants.length)
       throw Error("That is not a SAC Email Studio export.");
     for (const v of doc.variants) {
@@ -225,29 +251,36 @@ If that's meant to be it, tell Claude these exact names.
           variant: v.id,
           revision: doc.project.revision
         }));
+        const clips = /* @__PURE__ */ new Map();
+        const nodes = [];
         for (const l of v.layers) {
           const node = makeNode(l, images, doc.vectors || {}, have);
-          frame.appendChild(node);
+          const holder = l.parent !== void 0 ? clips.get(l.parent) : void 0;
+          ((_a = holder == null ? void 0 : holder.node) != null ? _a : frame).appendChild(node);
           node.name = l.name;
-          node.x = l.x;
-          node.y = l.y;
+          const w = node.width, h = node.height;
+          let left = l.x, top = l.y;
           if (l.type === "text") {
-            if (l.align === "center") node.x = l.x + (l.width - node.width) / 2;
-            else if (l.align === "right") node.x = l.x + l.width - node.width;
-            node.y = l.y + (l.height - node.height) / 2;
+            if (l.align === "center") left = l.x + (l.width - w) / 2;
+            else if (l.align === "right") left = l.x + l.width - w;
+            top = l.y + (l.height - h) / 2;
           }
-          if (l.rotation) {
-            const rad = l.rotation * Math.PI / 180;
-            const cos = Math.cos(rad), sin = Math.sin(rad);
-            const cx = node.x + node.width / 2, cy = node.y + node.height / 2;
-            node.relativeTransform = [
-              [cos, -sin, cx - cos * (node.width / 2) + sin * (node.height / 2)],
-              [sin, cos, cy - sin * (node.width / 2) - cos * (node.height / 2)]
-            ];
+          const at = { cx: left + w / 2, cy: top + h / 2, rot: (_b = l.rotation) != null ? _b : 0 };
+          place(node, at, w, h, holder);
+          if (l.type === "clip" && node.type === "FRAME") {
+            clips.set(l.n, __spreadProps(__spreadValues({ node }, at), { w, h }));
+            if (l.stroke && l.path) {
+              const line = cutout(l.path, w, h, "none", l.stroke, l.strokeWidth);
+              line.name = "outline";
+              const into = node.parent;
+              into.insertChild(into.children.indexOf(node) + 1, line);
+              line.relativeTransform = node.relativeTransform;
+            }
           }
           node.setPluginData("sac-layer", String(l.n));
+          nodes.push(node);
         }
-        groupRuns(frame, v.layers);
+        groupRuns(nodes, v.layers);
         if (i % 4 === 0 && i) {
           x = 0;
           y += rowTall + 160;
