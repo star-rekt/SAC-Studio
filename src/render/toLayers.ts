@@ -82,6 +82,19 @@ function rotationOf(el: Element, root: HTMLElement): number {
   return Math.abs(total) < 0.2 ? 0 : Math.round(total * 10) / 10;
 }
 
+/** Total scale from `el` up through (not including) `root`. Like rotation,
+ *  a `scale()` on a wrapper (smart placement shrinks a whole ticket card that
+ *  way) never shows in a child's own computed width, height or font size,
+ *  which are what Figma is handed -- so each is multiplied by this. */
+function scaleOf(el: Element, root: HTMLElement): number {
+  let total = 1;
+  for (let cur: Element | null = el; cur && cur !== root; cur = cur.parentElement) {
+    const m = getComputedStyle(cur).transform.match(/matrix\(([^)]+)\)/);
+    if (m) { const [a, b] = m[1].split(',').map(Number); total *= Math.hypot(a, b); }
+  }
+  return Math.abs(total - 1) < 0.001 ? 1 : total;
+}
+
 /** The box Figma wants for a rotated shape: true (unrotated) width/height,
  *  built back out from the shape's true centre -- not the bigger,
  *  axis-aligned box `getBoundingClientRect()` reports once rotation is
@@ -91,8 +104,8 @@ function rotationOf(el: Element, root: HTMLElement): number {
  *  bounding box's centre is already the right point to rebuild from -- the
  *  element's own CSS width/height (unaffected by any transform, its own or
  *  an ancestor's) gives the true size to rebuild around it. */
-function trueBox(b: DOMRect, cs: CSSStyleDeclaration) {
-  const w = parseFloat(cs.width) || b.width, h = parseFloat(cs.height) || b.height;
+function trueBox(b: DOMRect, cs: CSSStyleDeclaration, k = 1) {
+  const w = parseFloat(cs.width) * k || b.width, h = parseFloat(cs.height) * k || b.height;
   const cx = b.left + b.width / 2, cy = b.top + b.height / 2;
   return { left: cx - w / 2, top: cy - h / 2, width: w, height: h };
 }
@@ -177,6 +190,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
     if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') return;
     const b = el.getBoundingClientRect();
     const x = r1(b.left - base.left), y = r1(b.top - base.top);
+    const k = scaleOf(el, root);
     if (b.width < 1 || b.height < 1) {
       // A position:absolute box with no explicit height and ONLY
       // absolutely-positioned children (a common shape here: one wrapper div
@@ -227,7 +241,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
       // export. Rebuilt the same way a rotated mark's box is: true size
       // from the element's own CSS width/height, centred on the AABB's
       // centre (rotation-invariant).
-      const trueImgBox = (!clips && rotation) ? trueBox(b, cs) : b;
+      const trueImgBox = (!clips && rotation) ? trueBox(b, cs, k) : b;
       const box = clips ? pRect! : trueImgBox;
       const bx = r1(box.left - base.left), by = r1(box.top - base.top);
       // Picture.tsx's pan/zoom crop no longer expresses itself as
@@ -279,12 +293,12 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
       // that to Figma as if it were the shape's own size drew an oversized,
       // undistorted rectangle instead of a correctly-sized rotated one.
       const spin = rotationOf(el, root);
-      const box = spin ? trueBox(b, cs) : { left: b.left, top: b.top, width: b.width, height: b.height };
+      const box = spin ? trueBox(b, cs, k) : { left: b.left, top: b.top, width: b.width, height: b.height };
       const markShape = el.getAttribute('data-clip-shape');
       const mark = markShape && (MARK_SHAPES as Record<string, { path: string; width: number; height: number }>)[markShape];
       layers.push({ n: ++n, name: name(el, 'block'), type: 'rect',
         fill: bg.fill, opacity: bg.opacity < 1 ? bg.opacity : undefined,
-        radius: parseFloat(cs.borderTopLeftRadius) || undefined,
+        radius: parseFloat(cs.borderTopLeftRadius) * k || undefined,
         rotation: spin || undefined,
         clip: mark ? { path: mark.path, view: [mark.width, mark.height] } : undefined,
         x: r1(box.left - base.left), y: r1(box.top - base.top),
@@ -292,7 +306,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
     }
 
     if (isText) {
-      const lead = r1(parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.2);
+      const lead = r1((parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.2) * k);
       const text = broken(el as HTMLElement, lead);
       if (text) {
         const font = faceName(cs.fontFamily);
@@ -306,19 +320,19 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
         // accumulate the real rotation, rebuild the true (unrotated) box
         // from it when there is one.
         const spin = rotationOf(el, root);
-        const box = spin ? trueBox(b, cs) : { left: b.left, top: b.top, width: b.width, height: b.height };
+        const box = spin ? trueBox(b, cs, k) : { left: b.left, top: b.top, width: b.width, height: b.height };
         const tx = r1(box.left - base.left), ty = r1(box.top - base.top);
         // The content box, not the border box. Padding belongs to the pill, and
         // a run pinned to the padded corner sits up and left of where the
         // studio drew it by exactly that padding.
-        const inL = parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth);
-        const inR = parseFloat(cs.paddingRight) + parseFloat(cs.borderRightWidth);
-        const inT = parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth);
-        const inB = parseFloat(cs.paddingBottom) + parseFloat(cs.borderBottomWidth);
+        const inL = (parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth)) * k;
+        const inR = (parseFloat(cs.paddingRight) + parseFloat(cs.borderRightWidth)) * k;
+        const inT = (parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth)) * k;
+        const inB = (parseFloat(cs.paddingBottom) + parseFloat(cs.borderBottomWidth)) * k;
         layers.push({ n: ++n, name: name(el, 'text'), type: 'text', text,
-          font, weight: Number(cs.fontWeight) || 400, size: r1(parseFloat(cs.fontSize)),
+          font, weight: Number(cs.fontWeight) || 400, size: r1(parseFloat(cs.fontSize) * k),
           lineHeight: lead,
-          letterSpacing: cs.letterSpacing === 'normal' ? 0 : r1(parseFloat(cs.letterSpacing)),
+          letterSpacing: cs.letterSpacing === 'normal' ? 0 : r1(parseFloat(cs.letterSpacing) * k),
           colour: colour.fill, align: cs.textAlign === 'start' ? 'left' : cs.textAlign,
           rotation: spin || undefined,
           // `text-decoration` was never read at all -- every underlined

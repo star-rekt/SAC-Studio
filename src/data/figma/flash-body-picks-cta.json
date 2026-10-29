@@ -1,0 +1,51 @@
+{
+ "source": {
+  "file": "7r3YL4Zko0WfQs5vnSO9OT",
+  "node": "248:711141",
+  "name": "CTA"
+ },
+ "size": [
+  1200,
+  270
+ ],
+ "frame": {
+  "fill": "#FFFFFF"
+ },
+ "layers": {
+  "248:711142": {
+   "name": "Frame 2203",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 373.5,
+   "y": 50,
+   "w": 453,
+   "h": 120,
+   "fill": "#333333",
+   "radius": 30
+  },
+  "248:711143": {
+   "name": "See More",
+   "type": "TEXT",
+   "parent": "248:711142",
+   "visible": true,
+   "x": 473.5,
+   "y": 89,
+   "w": 253,
+   "h": 42,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "See More",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 64,
+    "lineHeight": 76.8,
+    "letterSpacing": -0.64,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  }
+ }
+}

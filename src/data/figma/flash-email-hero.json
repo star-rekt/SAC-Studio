@@ -1,0 +1,401 @@
+{
+ "source": {
+  "file": "7r3YL4Zko0WfQs5vnSO9OT",
+  "node": "248:711098",
+  "name": "Hero"
+ },
+ "size": [
+  1200,
+  1029
+ ],
+ "frame": {
+  "image": true,
+  "crop": [
+   [
+    0.64795,
+    0,
+    0.06911
+   ],
+   [
+    0,
+    0.95905,
+    0
+   ]
+  ],
+  "images": [
+   {
+    "ref": "f861cf4f1b805f97bb758fe3ebc4fbf2b45c6b70",
+    "mode": "STRETCH"
+   }
+  ]
+ },
+ "layers": {
+  "248:711099": {
+   "name": "Frame 2203",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 365,
+   "y": 824,
+   "w": 470,
+   "h": 120,
+   "fill": "#F14222",
+   "radius": 30
+  },
+  "248:711100": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "248:711099",
+   "visible": true,
+   "x": 465,
+   "y": 863,
+   "w": 270,
+   "h": 42,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 64,
+    "lineHeight": 76.8,
+    "letterSpacing": -0.64,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711101": {
+   "name": "Group 3246",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 219.2,
+   "y": 252.82,
+   "w": 718.66,
+   "h": 106.4
+  },
+  "248:711102": {
+   "name": "Group 3245",
+   "type": "GROUP",
+   "parent": "248:711101",
+   "visible": true,
+   "x": 292.86,
+   "y": 253.22,
+   "w": 645,
+   "h": 106
+  },
+  "248:711103": {
+   "name": "Group 3173",
+   "type": "GROUP",
+   "parent": "248:711102",
+   "visible": true,
+   "x": 292.86,
+   "y": 253.22,
+   "w": 645,
+   "h": 106
+  },
+  "248:711104": {
+   "name": "70 % OFF",
+   "type": "TEXT",
+   "parent": "248:711103",
+   "visible": true,
+   "x": 292.86,
+   "y": 253.22,
+   "w": 645,
+   "h": 106,
+   "fill": "#333333",
+   "text": {
+    "chars": "70 % OFF",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 161.12,
+    "lineHeight": 156.37,
+    "letterSpacing": -4.83,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "runs": [
+     {
+      "from": 2,
+      "to": 3,
+      "style": {
+       "letterSpacing": -22.56
+      }
+     }
+    ]
+   }
+  },
+  "248:711105": {
+   "name": "UP TO",
+   "type": "TEXT",
+   "parent": "248:711101",
+   "visible": false,
+   "x": 201.02,
+   "y": 252.82,
+   "w": 82,
+   "h": 106,
+   "fill": "#F5EBDF",
+   "text": {
+    "chars": "UP\nTO ",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 64.85,
+    "lineHeight": 62.94,
+    "letterSpacing": -1.95,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711106": {
+   "name": "UP TO",
+   "type": "TEXT",
+   "parent": "248:711101",
+   "visible": true,
+   "x": 219.2,
+   "y": 252.82,
+   "w": 65,
+   "h": 83,
+   "fill": "#333333",
+   "text": {
+    "chars": "UP\nTO ",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 51.03,
+    "lineHeight": 49.52,
+    "letterSpacing": -1.53,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711107": {
+   "name": "Group 3308",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 317,
+   "y": 160,
+   "w": 566.95,
+   "h": 60
+  },
+  "248:711108": {
+   "name": "Group 3245",
+   "type": "GROUP",
+   "parent": "248:711107",
+   "visible": true,
+   "x": 358.53,
+   "y": 160,
+   "w": 484,
+   "h": 60
+  },
+  "248:711109": {
+   "name": "Group 3173",
+   "type": "GROUP",
+   "parent": "248:711108",
+   "visible": true,
+   "x": 358.53,
+   "y": 160,
+   "w": 484,
+   "h": 60
+  },
+  "248:711110": {
+   "name": "FLASH SALE",
+   "type": "TEXT",
+   "parent": "248:711109",
+   "visible": true,
+   "x": 358.53,
+   "y": 160,
+   "w": 484,
+   "h": 60,
+   "fill": "#333333",
+   "text": {
+    "chars": "FLASH SALE",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 90.81,
+    "lineHeight": 120.27,
+    "letterSpacing": -2.72,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711111": {
+   "name": "Group 3242",
+   "type": "GROUP",
+   "parent": "248:711107",
+   "visible": true,
+   "x": 317,
+   "y": 160,
+   "w": 27.02,
+   "h": 59.7
+  },
+  "248:711112": {
+   "name": "Union",
+   "type": "BOOLEAN_OPERATION",
+   "parent": "248:711111",
+   "visible": true,
+   "x": 317,
+   "y": 160,
+   "w": 27.02,
+   "h": 59.7,
+   "fill": "#333333"
+  },
+  "248:711113": {
+   "name": "Vector 150",
+   "type": "VECTOR",
+   "parent": "248:711112",
+   "visible": true,
+   "x": 316.42,
+   "y": 156.98,
+   "w": 18.78,
+   "h": 37.56,
+   "fill": "#D79503",
+   "radius": 0.93
+  },
+  "248:711114": {
+   "name": "Vector 151",
+   "type": "VECTOR",
+   "parent": "248:711112",
+   "visible": true,
+   "x": 325.81,
+   "y": 185.16,
+   "w": 18.78,
+   "h": 37.56,
+   "rotation": -180,
+   "turn": -180,
+   "fill": "#D79503",
+   "radius": 0.93
+  },
+  "248:711115": {
+   "name": "Group 3247",
+   "type": "GROUP",
+   "parent": "248:711107",
+   "visible": true,
+   "x": 856.93,
+   "y": 160,
+   "w": 27.02,
+   "h": 59.7
+  },
+  "248:711116": {
+   "name": "Union",
+   "type": "BOOLEAN_OPERATION",
+   "parent": "248:711115",
+   "visible": true,
+   "x": 856.93,
+   "y": 160,
+   "w": 27.02,
+   "h": 59.7,
+   "fill": "#333333"
+  },
+  "248:711117": {
+   "name": "Vector 150",
+   "type": "VECTOR",
+   "parent": "248:711116",
+   "visible": true,
+   "x": 856.35,
+   "y": 156.98,
+   "w": 18.78,
+   "h": 37.56,
+   "fill": "#D79503",
+   "radius": 0.93
+  },
+  "248:711118": {
+   "name": "Vector 151",
+   "type": "VECTOR",
+   "parent": "248:711116",
+   "visible": true,
+   "x": 865.75,
+   "y": 185.16,
+   "w": 18.78,
+   "h": 37.56,
+   "rotation": -180,
+   "turn": -180,
+   "fill": "#D79503",
+   "radius": 0.93
+  },
+  "248:711119": {
+   "name": "Group 3309",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 411,
+   "y": 59,
+   "w": 378.12,
+   "h": 68.14
+  },
+  "248:711120": {
+   "name": "Group 3303",
+   "type": "GROUP",
+   "parent": "248:711119",
+   "visible": true,
+   "x": 411,
+   "y": 59,
+   "w": 378.12,
+   "h": 68.14
+  },
+  "248:711121": {
+   "name": "___ 1 (Traced)",
+   "type": "VECTOR",
+   "parent": "248:711120",
+   "visible": true,
+   "x": 411,
+   "y": 59,
+   "w": 378.12,
+   "h": 68.14,
+   "rotation": 0.13,
+   "turn": 0.13,
+   "fill": "#F14222",
+   "image": true,
+   "images": [
+    {
+     "ref": "c4718d422f2b5abf2624402ba628a9422e693f27",
+     "mode": "FILL",
+     "opacity": 0.22,
+     "blend": "SCREEN"
+    }
+   ]
+  },
+  "248:711122": {
+   "name": "3 DAYS ONLY",
+   "type": "TEXT",
+   "parent": "248:711119",
+   "visible": true,
+   "x": 437.39,
+   "y": 73.71,
+   "w": 325,
+   "h": 39,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "3 DAYS ONLY",
+    "family": "Sofia Pro",
+    "weight": 500,
+    "size": 56.78,
+    "lineHeight": 55.1,
+    "letterSpacing": -1.7,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  }
+ },
+ "assets": {
+  "c4718d422f2b5abf2624402ba628a9422e693f27": {
+   "src": "/figma-assets/c4718d422f2b5abf2624402ba628a9422e693f27.jpg",
+   "w": 1200,
+   "h": 779
+  },
+  "f861cf4f1b805f97bb758fe3ebc4fbf2b45c6b70": {
+   "src": "/figma-assets/f861cf4f1b805f97bb758fe3ebc4fbf2b45c6b70.jpg",
+   "w": 2400,
+   "h": 1390
+  }
+ }
+}

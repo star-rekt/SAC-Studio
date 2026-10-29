@@ -10,6 +10,7 @@ app.setPath('userData', join(app.getPath('appData'), 'SAC Studio'));
 
 let studio;
 let setup;
+let tokenWindow;
 let origin;
 let stopServer;
 
@@ -27,6 +28,11 @@ const root = () => app.getAppPath();
 const contentRoot = () => app.isPackaged ? join(app.getPath('userData'), 'content') : root();
 const manifest = () => join(contentRoot(), 'plugin', 'manifest.json');
 const setupFile = () => join(app.getPath('userData'), 'setup-complete.json');
+// The designer's own Figma token, in SAC Studio's settings folder: outside
+// the content clone (which updates replace) and never in any repo. The
+// server reads it from here (SAC_STUDIO_ENV); without it the studio still
+// runs on the default library and local uploads.
+const envFile = () => join(app.getPath('userData'), '.env');
 const exists = path => access(path).then(() => true, () => false);
 
 // Seeds the content directory by cloning the mirror repo, which gives us a
@@ -94,6 +100,32 @@ function openStudio() {
   studio.loadURL(origin);
 }
 
+function openToken() {
+  if (tokenWindow && !tokenWindow.isDestroyed()) return tokenWindow.focus();
+  tokenWindow = secureWindow({ width: 560, height: 430, minWidth: 460, minHeight: 400,
+    title: 'Figma Token', backgroundColor: '#f7f7f4',
+    webPreferences: { preload: join(__dirname, 'token-preload.cjs') } });
+  tokenWindow.webContents.on('will-navigate', event => event.preventDefault());
+  tokenWindow.loadFile(join(__dirname, 'token.html'));
+}
+
+// Saves the token to the .env (FIGMA_TOKEN=…, owner-only), puts it in this
+// process's environment so the gallery uses it at once (the server runs in
+// this process), and asks Figma whose it is -- a wrong token is still saved,
+// but the designer is told.
+async function saveToken(value) {
+  const token = value.trim();
+  if (!/^[\w-]{20,}$/.test(token)) return { saved: false, message: 'That doesn\u2019t look like a Figma token (figd_…).' };
+  await mkdir(app.getPath('userData'), { recursive: true });
+  await writeFile(envFile(), `FIGMA_TOKEN=${token}\n`, { mode: 0o600 });
+  process.env.FIGMA_TOKEN = token;
+  const me = await fetch('https://api.figma.com/v1/me', { headers: { 'X-Figma-Token': token } })
+    .then(r => r.ok ? r.json() : null, () => undefined);
+  if (me === undefined) return { saved: true, valid: null, message: 'Saved. Figma couldn\u2019t be reached to check it; it\u2019ll be used when you\u2019re online.' };
+  if (!me) return { saved: true, valid: false, message: 'Saved, but Figma rejected it. Check the token and save again.' };
+  return { saved: true, valid: true, message: `Saved: connected to Figma as ${me.handle || me.email}. The gallery is ready.` };
+}
+
 function openSetup() {
   if (setup && !setup.isDestroyed()) return setup.focus();
   setup = secureWindow({ width: 680, height: 680, minWidth: 560, minHeight: 600,
@@ -137,6 +169,7 @@ app.whenReady().then(async () => {
   // localized Documents folder on whatever OS and account this runs under.
   process.env.SAC_STUDIO_DATA_DIR = join(app.getPath('documents'), 'SAC_Studio');
   process.env.SAC_AI_PORT = '0';
+  process.env.SAC_STUDIO_ENV = envFile();
 
   if (app.isPackaged) {
     await seedContentIfMissing();
@@ -154,6 +187,7 @@ app.whenReady().then(async () => {
     { label: 'SAC Studio', submenu: [
       { label: 'Open Studio', click: openStudio },
       { label: 'Setup and Figma Plugin', click: openSetup },
+      { label: 'Figma Token\u2026', click: openToken },
       { label: 'Open Campaign Data', click: () => shell.openPath(process.env.SAC_STUDIO_DATA_DIR) },
       { label: 'Check for Updates', click: checkForUpdates },
       { role: 'quit' },
@@ -170,6 +204,17 @@ app.whenReady().then(async () => {
   ipcMain.handle('setup:claude', () => shell.openExternal('https://code.claude.com/docs/en/setup'));
   ipcMain.handle('setup:figma', () => shell.openExternal(
     'https://help.figma.com/hc/en-us/articles/360042786733-Create-a-plugin-for-development'));
+  ipcMain.handle('token:status', () => {
+    const token = process.env.FIGMA_TOKEN?.trim();
+    return { saved: !!token, tail: token ? token.slice(-4) : '' };
+  });
+  ipcMain.handle('token:save', (_event, value) => saveToken(String(value)));
+  ipcMain.handle('token:remove', async () => {
+    await rm(envFile(), { force: true });
+    delete process.env.FIGMA_TOKEN;
+  });
+  ipcMain.handle('token:help', () => shell.openExternal(
+    'https://help.figma.com/hc/en-us/articles/8085703771159-Manage-personal-access-tokens'));
   ipcMain.handle('setup:continue', async () => {
     await mkdir(app.getPath('userData'), { recursive: true });
     await writeFile(setupFile(), JSON.stringify({ completedAt: new Date().toISOString() }));

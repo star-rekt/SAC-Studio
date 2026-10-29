@@ -1,0 +1,2350 @@
+{
+ "source": {
+  "file": "ioB3sP8LwBiTUPQN7jlF81",
+  "node": "585:14",
+  "name": "SC/v1/Board/SC26_0060 Wk35-36 Bump/email-body/5"
+ },
+ "size": [
+  1200,
+  6380.84
+ ],
+ "frame": {
+  "fill": "#FFFFFF"
+ },
+ "layers": {
+  "538:18587": {
+   "name": "SL/PH",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "w": 1200,
+   "h": 583,
+   "fill": "#FFFFFF"
+  },
+  "538:18588": {
+   "name": "Frame 2200",
+   "type": "FRAME",
+   "parent": "538:18587",
+   "visible": true,
+   "x": 68.5,
+   "y": 50,
+   "w": 1063,
+   "h": 483
+  },
+  "538:18589": {
+   "name": "Sender Name",
+   "type": "TEXT",
+   "parent": "538:18588",
+   "visible": true,
+   "x": 68.5,
+   "y": 50,
+   "w": 389,
+   "h": 46,
+   "fill": "#000000",
+   "text": {
+    "chars": "Sender Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 70,
+    "lineHeight": 88.95,
+    "letterSpacing": -0.7,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:18590": {
+   "name": "Steep & Cheap",
+   "type": "TEXT",
+   "parent": "538:18588",
+   "visible": true,
+   "x": 68.5,
+   "y": 144,
+   "w": 303,
+   "h": 33,
+   "fill": "#000000",
+   "text": {
+    "chars": "Steep & Cheap",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 50,
+    "lineHeight": 60,
+    "letterSpacing": -0.5,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:18591": {
+   "name": "Subject Line",
+   "type": "TEXT",
+   "parent": "538:18588",
+   "visible": true,
+   "x": 68.5,
+   "y": 225,
+   "w": 354,
+   "h": 46,
+   "fill": "#000000",
+   "text": {
+    "chars": "Subject Line",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 70,
+    "lineHeight": 88.95,
+    "letterSpacing": -0.7,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:18592": {
+   "name": "🔥 Final hours: extra 20% off",
+   "type": "TEXT",
+   "parent": "538:18588",
+   "visible": true,
+   "x": 68.5,
+   "y": 319,
+   "w": 653,
+   "h": 36,
+   "fill": "#000000",
+   "text": {
+    "chars": "🔥 Final hours: extra 20% off",
+    "family": "Inter",
+    "weight": 400,
+    "size": 50,
+    "lineHeight": 60.51,
+    "letterSpacing": -0.5,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:18593": {
+   "name": "Preview",
+   "type": "TEXT",
+   "parent": "538:18588",
+   "visible": true,
+   "x": 68.5,
+   "y": 403,
+   "w": 228,
+   "h": 46,
+   "fill": "#000000",
+   "text": {
+    "chars": "Preview",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 70,
+    "lineHeight": 88.95,
+    "letterSpacing": -0.7,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:18594": {
+   "name": "Code CHILLY20 clocks out tonight",
+   "type": "TEXT",
+   "parent": "538:18588",
+   "visible": true,
+   "x": 68.5,
+   "y": 497,
+   "w": 1063,
+   "h": 36,
+   "fill": "#000000",
+   "text": {
+    "chars": "Code CHILLY20 clocks out tonight",
+    "family": "Inter",
+    "weight": 400,
+    "size": 50,
+    "lineHeight": 60.51,
+    "letterSpacing": -0.5,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "HEIGHT",
+    "trim": true
+   }
+  },
+  "538:18595": {
+   "name": "HEADER",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 583,
+   "w": 1200,
+   "h": 170,
+   "fill": "#FFFFFF"
+  },
+  "538:18596": {
+   "name": "Nav Links",
+   "type": "FRAME",
+   "parent": "538:18595",
+   "visible": true,
+   "x": 461.79,
+   "y": 644.86,
+   "w": 646,
+   "h": 36
+  },
+  "538:18597": {
+   "name": "Nav Link Label",
+   "type": "TEXT",
+   "parent": "538:18596",
+   "visible": true,
+   "x": 461.79,
+   "y": 644.86,
+   "w": 57,
+   "h": 36,
+   "fill": "#000000",
+   "text": {
+    "chars": "men",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 30,
+    "lineHeight": 36,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:18598": {
+   "name": "Nav Link Label",
+   "type": "TEXT",
+   "parent": "538:18596",
+   "visible": true,
+   "x": 595.79,
+   "y": 644.86,
+   "w": 96,
+   "h": 36,
+   "fill": "#000000",
+   "text": {
+    "chars": "Women",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 30,
+    "lineHeight": 36,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:18599": {
+   "name": "Nav Link Label",
+   "type": "TEXT",
+   "parent": "538:18596",
+   "visible": true,
+   "x": 768.79,
+   "y": 644.86,
+   "w": 157,
+   "h": 36,
+   "fill": "#000000",
+   "text": {
+    "chars": "New Arrivals",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 30,
+    "lineHeight": 36,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:18600": {
+   "name": "Nav Link Label",
+   "type": "TEXT",
+   "parent": "538:18596",
+   "visible": true,
+   "x": 1002.79,
+   "y": 644.86,
+   "w": 105,
+   "h": 36,
+   "fill": "#79AC41",
+   "text": {
+    "chars": "Shop All",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 30,
+    "lineHeight": 36,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:18601": {
+   "name": "Logo",
+   "type": "VECTOR",
+   "parent": "538:18595",
+   "visible": true,
+   "x": 92,
+   "y": 612.86,
+   "w": 219.79,
+   "h": 100,
+   "fill": "#000000"
+  },
+  "538:18602": {
+   "name": "Email Hero",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 753,
+   "w": 1200,
+   "h": 1329,
+   "fill": "#6D6D6D"
+  },
+  "538:18603": {
+   "name": "Texture",
+   "type": "RECTANGLE",
+   "parent": "538:18602",
+   "visible": true,
+   "x": 0,
+   "y": 753,
+   "w": 1200,
+   "h": 1329,
+   "fill": "#F5ECDF",
+   "image": true,
+   "crop": [
+    [
+     0.60181,
+     0,
+     0.21125
+    ],
+    [
+     0,
+     1,
+     0
+    ]
+   ],
+   "images": [
+    {
+     "ref": "3ae5c0654807a3bb8c6d679b17ca7f89471408c1",
+     "mode": "STRETCH",
+     "blend": "SCREEN"
+    },
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.32,
+     "blend": "DARKEN"
+    }
+   ]
+  },
+  "538:18604": {
+   "name": "Eyebrow",
+   "type": "TEXT",
+   "parent": "538:18602",
+   "visible": true,
+   "x": 724,
+   "y": 841,
+   "w": 390,
+   "h": 63,
+   "fill": "#79AC41",
+   "text": {
+    "chars": "LAST CHANCE",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 52.17,
+    "lineHeight": 62.6,
+    "letterSpacing": 5.8,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:18605": {
+   "name": "Frame 2204",
+   "type": "FRAME",
+   "parent": "538:18602",
+   "visible": true,
+   "x": 644,
+   "y": 1873.6,
+   "w": 470,
+   "h": 120,
+   "fill": "#333333",
+   "radius": 30
+  },
+  "538:18606": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:18605",
+   "visible": true,
+   "x": 744,
+   "y": 1912.6,
+   "w": 270,
+   "h": 42,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 64,
+    "lineHeight": 76.8,
+    "letterSpacing": -0.64,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:18607": {
+   "name": "Group 3489",
+   "type": "GROUP",
+   "parent": "538:18602",
+   "visible": true,
+   "x": 83,
+   "y": 1106,
+   "w": 732,
+   "h": 446
+  },
+  "538:18608": {
+   "name": "Eyebrow",
+   "type": "TEXT",
+   "parent": "538:18607",
+   "visible": true,
+   "x": 83,
+   "y": 1489,
+   "w": 361,
+   "h": 63,
+   "fill": "#333333",
+   "text": {
+    "chars": "ENDS TODAY",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 52.17,
+    "lineHeight": 62.6,
+    "letterSpacing": 5.8,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:18609": {
+   "name": "Group 3488",
+   "type": "GROUP",
+   "parent": "538:18607",
+   "visible": true,
+   "x": 83,
+   "y": 1106,
+   "w": 732,
+   "h": 387.27
+  },
+  "538:18610": {
+   "name": "Headline",
+   "type": "TEXT",
+   "parent": "538:18609",
+   "visible": true,
+   "x": 83,
+   "y": 1106,
+   "w": 663,
+   "h": 266,
+   "fill": "#333333",
+   "text": {
+    "chars": "EXTRA 20% OFF",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 162.3,
+    "lineHeight": 133.16,
+    "letterSpacing": -1.45,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:18611": {
+   "name": "Subhead",
+   "type": "TEXT",
+   "parent": "538:18609",
+   "visible": true,
+   "x": 83,
+   "y": 1373.27,
+   "w": 732,
+   "h": 120,
+   "fill": "#333333",
+   "text": {
+    "chars": "CODE CHILLY20",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 100.31,
+    "lineHeight": 120.37,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "HEIGHT",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 5,
+      "style": {
+       "fill": "#333333"
+      }
+     },
+     {
+      "from": 5,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 100.31,
+       "fill": "#79AC41"
+      }
+     }
+    ]
+   }
+  },
+  "538:18612": {
+   "name": "Vector 17",
+   "type": "VECTOR",
+   "parent": "538:18602",
+   "visible": true,
+   "x": 57,
+   "y": 810,
+   "w": 1086.5,
+   "h": 1215,
+   "blend": "MULTIPLY",
+   "path": "M0 30L0 229C0 245.569 13.4315 259 30 259L795.5 259C812.069 259 825.5 272.431 825.5 289L825.5 756C825.5 772.569 812.069 786 795.5 786L30 786C13.4315 786 0 799.431 0 816L0 1185C0 1201.57 13.4315 1215 30 1215L468 1215C484.569 1215 498 1201.57 498 1185L498 1017.5C498 1000.93 511.431 987.5 528 987.5L1056.5 987.5C1073.07 987.5 1086.5 974.069 1086.5 957.5L1086.5 151.5C1086.5 134.931 1073.07 121.5 1056.5 121.5L653.5 121.5C636.931 121.5 623.5 108.069 623.5 91.5L623.5 30C623.5 13.4315 610.069 0 593.5 0L30 0C13.4315 0 0 13.4315 0 30Z",
+   "stroke": {
+    "color": "#79AC41",
+    "weight": 7,
+    "align": "CENTER",
+    "path": "M0 229L3.5 229L3.5 30L0 30L-3.5 30L-3.5 229L0 229ZM30 0L30 3.5L593.5 3.5L593.5 0L593.5 -3.5L30 -3.5L30 0ZM623.5 30L620 30L620 91.5L623.5 91.5L627 91.5L627 30L623.5 30ZM653.5 121.5L653.5 125L1056.5 125L1056.5 121.5L1056.5 118L653.5 118L653.5 121.5ZM1086.5 151.5L1083 151.5L1083 957.5L1086.5 957.5L1090 957.5L1090 151.5L1086.5 151.5ZM1056.5 987.5L1056.5 984L528 984L528 987.5L528 991L1056.5 991L1056.5 987.5ZM498 1017.5L494.5 1017.5L494.5 1185L498 1185L501.5 1185L501.5 1017.5L498 1017.5ZM468 1215L468 1211.5L30 1211.5L30 1215L30 1218.5L468 1218.5L468 1215ZM0 1185L3.5 1185L3.5 816L0 816L-3.5 816L-3.5 1185L0 1185ZM30 786L30 789.5L795.5 789.5L795.5 786L795.5 782.5L30 782.5L30 786ZM825.5 756L829 756L829 289L825.5 289L822 289L822 756L825.5 756ZM795.5 259L795.5 255.5L30 255.5L30 259L30 262.5L795.5 262.5L795.5 259ZM825.5 289L829 289C829 270.498 814.002 255.5 795.5 255.5L795.5 259L795.5 262.5C810.136 262.5 822 274.364 822 289L825.5 289ZM795.5 786L795.5 789.5C814.002 789.5 829 774.502 829 756L825.5 756L822 756C822 770.636 810.136 782.5 795.5 782.5L795.5 786ZM0 816L3.5 816C3.5 801.364 15.3645 789.5 30 789.5L30 786L30 782.5C11.4985 782.5 -3.5 797.498 -3.5 816L0 816ZM30 1215L30 1211.5C15.3645 1211.5 3.5 1199.64 3.5 1185L0 1185L-3.5 1185C-3.5 1203.5 11.4985 1218.5 30 1218.5L30 1215ZM498 1185L494.5 1185C494.5 1199.64 482.636 1211.5 468 1211.5L468 1215L468 1218.5C486.502 1218.5 501.5 1203.5 501.5 1185L498 1185ZM528 987.5L528 984C509.498 984 494.5 998.998 494.5 1017.5L498 1017.5L501.5 1017.5C501.5 1002.86 513.364 991 528 991L528 987.5ZM1086.5 957.5L1083 957.5C1083 972.136 1071.14 984 1056.5 984L1056.5 987.5L1056.5 991C1075 991 1090 976.002 1090 957.5L1086.5 957.5ZM1056.5 121.5L1056.5 125C1071.14 125 1083 136.864 1083 151.5L1086.5 151.5L1090 151.5C1090 132.998 1075 118 1056.5 118L1056.5 121.5ZM623.5 91.5L620 91.5C620 110.002 634.998 125 653.5 125L653.5 121.5L653.5 118C638.864 118 627 106.136 627 91.5L623.5 91.5ZM593.5 0L593.5 3.5C608.136 3.5 620 15.3645 620 30L623.5 30L627 30C627 11.4985 612.002 -3.5 593.5 -3.5L593.5 0ZM0 30L3.5 30C3.5 15.3645 15.3645 3.5 30 3.5L30 0L30 -3.5C11.4985 -3.5 -3.5 11.4985 -3.5 30L0 30ZM0 229L-3.5 229C-3.5 247.502 11.4985 262.5 30 262.5L30 259L30 255.5C15.3645 255.5 3.5 243.636 3.5 229L0 229Z"
+   },
+   "radius": 30,
+   "render": {
+    "ref": "render-ioB3sP8LwBiTUPQN7jlF81-538-18612",
+    "x": 53.5,
+    "y": 806.5,
+    "w": 1093.5,
+    "h": 1222
+   }
+  },
+  "538:18613": {
+   "name": "SAC Email Header",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 2082,
+   "w": 1200,
+   "h": 159,
+   "fill": "#FFFFFF"
+  },
+  "538:18614": {
+   "name": "Your Top Picks Header",
+   "type": "FRAME",
+   "parent": "538:18613",
+   "visible": true,
+   "x": 0,
+   "y": 2082.12,
+   "w": 1199,
+   "h": 140,
+   "fill": "#79AC41",
+   "image": true,
+   "crop": [
+    [
+     1.04261,
+     0,
+     -0.02174
+    ],
+    [
+     0,
+     0.18744,
+     0.40662
+    ]
+   ],
+   "images": [
+    {
+     "ref": "c4718d422f2b5abf2624402ba628a9422e693f27",
+     "mode": "STRETCH",
+     "opacity": 0.2,
+     "blend": "SCREEN"
+    }
+   ]
+  },
+  "538:18615": {
+   "name": "Extra 20% Off Your Top Picks",
+   "type": "TEXT",
+   "parent": "538:18614",
+   "visible": true,
+   "x": 81.79,
+   "y": 2123.86,
+   "w": 1035.21,
+   "h": 56,
+   "rotation": 0,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "4de890d214ac7d785d582b0cc28fc197df7c1921",
+     "mode": "FILL",
+     "opacity": 0.51,
+     "blend": "LINEAR_DODGE"
+    }
+   ],
+   "text": {
+    "chars": "Extra 20% Off Your Top Picks",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 85,
+    "lineHeight": 177.66,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:18616": {
+   "name": "SAC Bluecore SKUs",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 2241,
+   "w": 1200,
+   "h": 1510,
+   "fill": "#FFFFFF"
+  },
+  "538:18617": {
+   "name": "Spacer",
+   "type": "FRAME",
+   "parent": "538:18616",
+   "visible": true,
+   "x": 100,
+   "y": 2241,
+   "w": 1000,
+   "h": 10
+  },
+  "538:18618": {
+   "name": "Product Listings",
+   "type": "FRAME",
+   "parent": "538:18616",
+   "visible": true,
+   "x": 100,
+   "y": 2251,
+   "w": 1000,
+   "h": 1500
+  },
+  "538:18619": {
+   "name": "Product Listing 1",
+   "type": "FRAME",
+   "parent": "538:18618",
+   "visible": true,
+   "x": 100,
+   "y": 2256,
+   "w": 475,
+   "h": 695
+  },
+  "538:18620": {
+   "name": "Product Image",
+   "type": "FRAME",
+   "parent": "538:18619",
+   "visible": true,
+   "x": 100,
+   "y": 2256,
+   "w": 475,
+   "h": 475,
+   "image": true,
+   "images": [
+    {
+     "ref": "345302902cffaea91d8cb3aa85fc7f71c3cd817f",
+     "mode": "FILL",
+     "opacity": 0.5
+    }
+   ]
+  },
+  "538:18621": {
+   "name": "Brand Name",
+   "type": "TEXT",
+   "parent": "538:18619",
+   "visible": true,
+   "x": 100,
+   "y": 2761,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Brand Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18622": {
+   "name": "Product Name",
+   "type": "TEXT",
+   "parent": "538:18619",
+   "visible": true,
+   "x": 100,
+   "y": 2816,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Product Name",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18623": {
+   "name": "Price",
+   "type": "TEXT",
+   "parent": "538:18619",
+   "visible": true,
+   "x": 100,
+   "y": 2871,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "${Sale Price} ${Original Price}",
+    "family": "Tiempos Headline",
+    "weight": 800,
+    "size": 28,
+    "lineHeight": 33.94,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 13,
+      "to": 14,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 14,
+      "to": 31,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "textDecoration": "STRIKETHROUGH",
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     }
+    ]
+   }
+  },
+  "538:18624": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:18619",
+   "visible": true,
+   "x": 100,
+   "y": 2926,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18625": {
+   "name": "Product Listing 2",
+   "type": "FRAME",
+   "parent": "538:18618",
+   "visible": true,
+   "x": 625,
+   "y": 2256,
+   "w": 475,
+   "h": 695
+  },
+  "538:18626": {
+   "name": "Product Image",
+   "type": "FRAME",
+   "parent": "538:18625",
+   "visible": true,
+   "x": 625,
+   "y": 2256,
+   "w": 475,
+   "h": 475,
+   "image": true,
+   "images": [
+    {
+     "ref": "aaff26ce5c3314d5753ea84c381fe8f0d201f9a6",
+     "mode": "FILL",
+     "opacity": 0.5
+    }
+   ]
+  },
+  "538:18627": {
+   "name": "Brand Name",
+   "type": "TEXT",
+   "parent": "538:18625",
+   "visible": true,
+   "x": 625,
+   "y": 2761,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Brand Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18628": {
+   "name": "Product Name",
+   "type": "TEXT",
+   "parent": "538:18625",
+   "visible": true,
+   "x": 625,
+   "y": 2816,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Product Name",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18629": {
+   "name": "Price",
+   "type": "TEXT",
+   "parent": "538:18625",
+   "visible": true,
+   "x": 625,
+   "y": 2871,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "${Sale Price} ${Original Price}",
+    "family": "Tiempos Headline",
+    "weight": 800,
+    "size": 28,
+    "lineHeight": 33.94,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 13,
+      "to": 14,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 14,
+      "to": 31,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "textDecoration": "STRIKETHROUGH",
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     }
+    ]
+   }
+  },
+  "538:18630": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:18625",
+   "visible": true,
+   "x": 625,
+   "y": 2926,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18631": {
+   "name": "Product Listing 3",
+   "type": "FRAME",
+   "parent": "538:18618",
+   "visible": true,
+   "x": 100,
+   "y": 3051,
+   "w": 475,
+   "h": 695
+  },
+  "538:18632": {
+   "name": "Product Image",
+   "type": "FRAME",
+   "parent": "538:18631",
+   "visible": true,
+   "x": 100,
+   "y": 3051,
+   "w": 475,
+   "h": 475,
+   "image": true,
+   "images": [
+    {
+     "ref": "942c39e99428d0e4371e227581993553cd8b9c9c",
+     "mode": "FILL",
+     "opacity": 0.5
+    }
+   ]
+  },
+  "538:18633": {
+   "name": "Brand Name",
+   "type": "TEXT",
+   "parent": "538:18631",
+   "visible": true,
+   "x": 100,
+   "y": 3556,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Brand Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18634": {
+   "name": "Product Name",
+   "type": "TEXT",
+   "parent": "538:18631",
+   "visible": true,
+   "x": 100,
+   "y": 3611,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Product Name",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18635": {
+   "name": "Price",
+   "type": "TEXT",
+   "parent": "538:18631",
+   "visible": true,
+   "x": 100,
+   "y": 3666,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "${Sale Price} ${Original Price}",
+    "family": "Tiempos Headline",
+    "weight": 800,
+    "size": 28,
+    "lineHeight": 33.94,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 13,
+      "to": 14,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 14,
+      "to": 31,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "textDecoration": "STRIKETHROUGH",
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     }
+    ]
+   }
+  },
+  "538:18636": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:18631",
+   "visible": true,
+   "x": 100,
+   "y": 3721,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18637": {
+   "name": "Product Listing 4",
+   "type": "FRAME",
+   "parent": "538:18618",
+   "visible": true,
+   "x": 625,
+   "y": 3051,
+   "w": 475,
+   "h": 695
+  },
+  "538:18638": {
+   "name": "Product Image",
+   "type": "FRAME",
+   "parent": "538:18637",
+   "visible": true,
+   "x": 625,
+   "y": 3051,
+   "w": 475,
+   "h": 475,
+   "image": true,
+   "images": [
+    {
+     "ref": "85507a6c9c62bfd499e813988e123a816af8187e",
+     "mode": "FILL",
+     "opacity": 0.5
+    }
+   ]
+  },
+  "538:18639": {
+   "name": "Brand Name",
+   "type": "TEXT",
+   "parent": "538:18637",
+   "visible": true,
+   "x": 625,
+   "y": 3556,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Brand Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18640": {
+   "name": "Product Name",
+   "type": "TEXT",
+   "parent": "538:18637",
+   "visible": true,
+   "x": 625,
+   "y": 3611,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Product Name",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18641": {
+   "name": "Price",
+   "type": "TEXT",
+   "parent": "538:18637",
+   "visible": true,
+   "x": 625,
+   "y": 3666,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "${Sale Price} ${Original Price}",
+    "family": "Tiempos Headline",
+    "weight": 800,
+    "size": 28,
+    "lineHeight": 33.94,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 13,
+      "to": 14,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 14,
+      "to": 31,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "textDecoration": "STRIKETHROUGH",
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     }
+    ]
+   }
+  },
+  "538:18642": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:18637",
+   "visible": true,
+   "x": 625,
+   "y": 3721,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18643": {
+   "name": "SAC Email CTA",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 3751,
+   "w": 1200,
+   "h": 250,
+   "fill": "#FFFFFF"
+  },
+  "538:18644": {
+   "name": "Button",
+   "type": "FRAME",
+   "parent": "538:18643",
+   "visible": true,
+   "x": 399.5,
+   "y": 3819.5,
+   "w": 401,
+   "h": 113,
+   "fill": "#333333",
+   "radius": 25
+  },
+  "538:18645": {
+   "name": "CTA Text",
+   "type": "TEXT",
+   "parent": "538:18644",
+   "visible": true,
+   "x": 499.5,
+   "y": 3859.5,
+   "w": 201,
+   "h": 33,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "See More",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 50,
+    "lineHeight": 60,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:18646": {
+   "name": "SAC Email Header",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 4001,
+   "w": 1200,
+   "h": 159,
+   "fill": "#FFFFFF"
+  },
+  "538:18647": {
+   "name": "Your Top Picks Header",
+   "type": "FRAME",
+   "parent": "538:18646",
+   "visible": true,
+   "x": 0,
+   "y": 4001.12,
+   "w": 1199,
+   "h": 140,
+   "fill": "#79AC41",
+   "image": true,
+   "crop": [
+    [
+     1.04261,
+     0,
+     -0.02174
+    ],
+    [
+     0,
+     0.18744,
+     0.40662
+    ]
+   ],
+   "images": [
+    {
+     "ref": "c4718d422f2b5abf2624402ba628a9422e693f27",
+     "mode": "STRETCH",
+     "opacity": 0.2,
+     "blend": "SCREEN"
+    }
+   ]
+  },
+  "538:18648": {
+   "name": "Extra 20% Off Bestsellers",
+   "type": "TEXT",
+   "parent": "538:18647",
+   "visible": true,
+   "x": 137.79,
+   "y": 4042.86,
+   "w": 923.21,
+   "h": 56,
+   "rotation": 0,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "4de890d214ac7d785d582b0cc28fc197df7c1921",
+     "mode": "FILL",
+     "opacity": 0.51,
+     "blend": "LINEAR_DODGE"
+    }
+   ],
+   "text": {
+    "chars": "Extra 20% Off Bestsellers",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 85,
+    "lineHeight": 177.66,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:18649": {
+   "name": "SAC Bluecore SKUs",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 4160,
+   "w": 1200,
+   "h": 1510,
+   "fill": "#FFFFFF"
+  },
+  "538:18650": {
+   "name": "Spacer",
+   "type": "FRAME",
+   "parent": "538:18649",
+   "visible": true,
+   "x": 100,
+   "y": 4160,
+   "w": 1000,
+   "h": 10
+  },
+  "538:18651": {
+   "name": "Product Listings",
+   "type": "FRAME",
+   "parent": "538:18649",
+   "visible": true,
+   "x": 100,
+   "y": 4170,
+   "w": 1000,
+   "h": 1500
+  },
+  "538:18652": {
+   "name": "Product Listing 1",
+   "type": "FRAME",
+   "parent": "538:18651",
+   "visible": true,
+   "x": 100,
+   "y": 4175,
+   "w": 475,
+   "h": 695
+  },
+  "538:18653": {
+   "name": "Product Image",
+   "type": "FRAME",
+   "parent": "538:18652",
+   "visible": true,
+   "x": 100,
+   "y": 4175,
+   "w": 475,
+   "h": 475,
+   "image": true,
+   "images": [
+    {
+     "ref": "345302902cffaea91d8cb3aa85fc7f71c3cd817f",
+     "mode": "FILL",
+     "opacity": 0.5
+    }
+   ]
+  },
+  "538:18654": {
+   "name": "Brand Name",
+   "type": "TEXT",
+   "parent": "538:18652",
+   "visible": true,
+   "x": 100,
+   "y": 4680,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Brand Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18655": {
+   "name": "Product Name",
+   "type": "TEXT",
+   "parent": "538:18652",
+   "visible": true,
+   "x": 100,
+   "y": 4735,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Product Name",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18656": {
+   "name": "Price",
+   "type": "TEXT",
+   "parent": "538:18652",
+   "visible": true,
+   "x": 100,
+   "y": 4790,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "${Sale Price} ${Original Price}",
+    "family": "Tiempos Headline",
+    "weight": 800,
+    "size": 28,
+    "lineHeight": 33.94,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 13,
+      "to": 14,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 14,
+      "to": 31,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "textDecoration": "STRIKETHROUGH",
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     }
+    ]
+   }
+  },
+  "538:18657": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:18652",
+   "visible": true,
+   "x": 100,
+   "y": 4845,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18658": {
+   "name": "Product Listing 2",
+   "type": "FRAME",
+   "parent": "538:18651",
+   "visible": true,
+   "x": 625,
+   "y": 4175,
+   "w": 475,
+   "h": 695
+  },
+  "538:18659": {
+   "name": "Product Image",
+   "type": "FRAME",
+   "parent": "538:18658",
+   "visible": true,
+   "x": 625,
+   "y": 4175,
+   "w": 475,
+   "h": 475,
+   "image": true,
+   "images": [
+    {
+     "ref": "aaff26ce5c3314d5753ea84c381fe8f0d201f9a6",
+     "mode": "FILL",
+     "opacity": 0.5
+    }
+   ]
+  },
+  "538:18660": {
+   "name": "Brand Name",
+   "type": "TEXT",
+   "parent": "538:18658",
+   "visible": true,
+   "x": 625,
+   "y": 4680,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Brand Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18661": {
+   "name": "Product Name",
+   "type": "TEXT",
+   "parent": "538:18658",
+   "visible": true,
+   "x": 625,
+   "y": 4735,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Product Name",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18662": {
+   "name": "Price",
+   "type": "TEXT",
+   "parent": "538:18658",
+   "visible": true,
+   "x": 625,
+   "y": 4790,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "${Sale Price} ${Original Price}",
+    "family": "Tiempos Headline",
+    "weight": 800,
+    "size": 28,
+    "lineHeight": 33.94,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 13,
+      "to": 14,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 14,
+      "to": 31,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "textDecoration": "STRIKETHROUGH",
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     }
+    ]
+   }
+  },
+  "538:18663": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:18658",
+   "visible": true,
+   "x": 625,
+   "y": 4845,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18664": {
+   "name": "Product Listing 3",
+   "type": "FRAME",
+   "parent": "538:18651",
+   "visible": true,
+   "x": 100,
+   "y": 4970,
+   "w": 475,
+   "h": 695
+  },
+  "538:18665": {
+   "name": "Product Image",
+   "type": "FRAME",
+   "parent": "538:18664",
+   "visible": true,
+   "x": 100,
+   "y": 4970,
+   "w": 475,
+   "h": 475,
+   "image": true,
+   "images": [
+    {
+     "ref": "942c39e99428d0e4371e227581993553cd8b9c9c",
+     "mode": "FILL",
+     "opacity": 0.5
+    }
+   ]
+  },
+  "538:18666": {
+   "name": "Brand Name",
+   "type": "TEXT",
+   "parent": "538:18664",
+   "visible": true,
+   "x": 100,
+   "y": 5475,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Brand Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18667": {
+   "name": "Product Name",
+   "type": "TEXT",
+   "parent": "538:18664",
+   "visible": true,
+   "x": 100,
+   "y": 5530,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Product Name",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18668": {
+   "name": "Price",
+   "type": "TEXT",
+   "parent": "538:18664",
+   "visible": true,
+   "x": 100,
+   "y": 5585,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "${Sale Price} ${Original Price}",
+    "family": "Tiempos Headline",
+    "weight": 800,
+    "size": 28,
+    "lineHeight": 33.94,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 13,
+      "to": 14,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 14,
+      "to": 31,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "textDecoration": "STRIKETHROUGH",
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     }
+    ]
+   }
+  },
+  "538:18669": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:18664",
+   "visible": true,
+   "x": 100,
+   "y": 5640,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18670": {
+   "name": "Product Listing 4",
+   "type": "FRAME",
+   "parent": "538:18651",
+   "visible": true,
+   "x": 625,
+   "y": 4970,
+   "w": 475,
+   "h": 695
+  },
+  "538:18671": {
+   "name": "Product Image",
+   "type": "FRAME",
+   "parent": "538:18670",
+   "visible": true,
+   "x": 625,
+   "y": 4970,
+   "w": 475,
+   "h": 475,
+   "image": true,
+   "images": [
+    {
+     "ref": "85507a6c9c62bfd499e813988e123a816af8187e",
+     "mode": "FILL",
+     "opacity": 0.5
+    }
+   ]
+  },
+  "538:18672": {
+   "name": "Brand Name",
+   "type": "TEXT",
+   "parent": "538:18670",
+   "visible": true,
+   "x": 625,
+   "y": 5475,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Brand Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18673": {
+   "name": "Product Name",
+   "type": "TEXT",
+   "parent": "538:18670",
+   "visible": true,
+   "x": 625,
+   "y": 5530,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Product Name",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18674": {
+   "name": "Price",
+   "type": "TEXT",
+   "parent": "538:18670",
+   "visible": true,
+   "x": 625,
+   "y": 5585,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "${Sale Price} ${Original Price}",
+    "family": "Tiempos Headline",
+    "weight": 800,
+    "size": 28,
+    "lineHeight": 33.94,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 13,
+      "to": 14,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 14,
+      "to": 31,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "textDecoration": "STRIKETHROUGH",
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     }
+    ]
+   }
+  },
+  "538:18675": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:18670",
+   "visible": true,
+   "x": 625,
+   "y": 5640,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:18676": {
+   "name": "SAC Email CTA",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 5670,
+   "w": 1200,
+   "h": 250,
+   "fill": "#FFFFFF"
+  },
+  "538:18677": {
+   "name": "Button",
+   "type": "FRAME",
+   "parent": "538:18676",
+   "visible": true,
+   "x": 399.5,
+   "y": 5738.5,
+   "w": 401,
+   "h": 113,
+   "fill": "#333333",
+   "radius": 25
+  },
+  "538:18678": {
+   "name": "CTA Text",
+   "type": "TEXT",
+   "parent": "538:18677",
+   "visible": true,
+   "x": 499.5,
+   "y": 5778.5,
+   "w": 201,
+   "h": 33,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "See More",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 50,
+    "lineHeight": 60,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:18679": {
+   "name": "Footer",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 5920,
+   "w": 1200,
+   "h": 460.84,
+   "fill": "#F5F5F5"
+  },
+  "538:18680": {
+   "name": "Logo",
+   "type": "VECTOR",
+   "parent": "538:18679",
+   "visible": true,
+   "x": 65.32,
+   "y": 5966.02,
+   "w": 395.01,
+   "h": 179.72,
+   "fill": "#000000"
+  },
+  "538:18681": {
+   "name": "Facebook Logo",
+   "type": "VECTOR",
+   "parent": "538:18679",
+   "visible": true,
+   "x": 986.01,
+   "y": 5965.44,
+   "w": 59.44,
+   "h": 59.2,
+   "fill": "#000000"
+  },
+  "538:18682": {
+   "name": "Instagram Logo",
+   "type": "VECTOR",
+   "parent": "538:18679",
+   "visible": true,
+   "x": 1066.43,
+   "y": 5965.32,
+   "w": 59.44,
+   "h": 59.44,
+   "fill": "#000000"
+  },
+  "538:18683": {
+   "name": "Unsubscribe",
+   "type": "TEXT",
+   "parent": "538:18679",
+   "visible": true,
+   "x": 1025.26,
+   "y": 6249.23,
+   "w": 128,
+   "h": 30,
+   "fill": "#000000",
+   "text": {
+    "chars": "Unsubscribe",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 25,
+    "lineHeight": 30,
+    "letterSpacing": 0,
+    "align": "RIGHT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:18684": {
+   "name": "Talk to a Gearhead",
+   "type": "TEXT",
+   "parent": "538:18679",
+   "visible": true,
+   "x": 962.05,
+   "y": 6283.5,
+   "w": 191,
+   "h": 30,
+   "fill": "#000000",
+   "text": {
+    "chars": "Talk to a Gearhead",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 25,
+    "lineHeight": 30,
+    "letterSpacing": 0,
+    "align": "RIGHT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:18685": {
+   "name": "Physical Address",
+   "type": "TEXT",
+   "parent": "538:18679",
+   "visible": true,
+   "x": 65.04,
+   "y": 6249.23,
+   "w": 611.89,
+   "h": 30,
+   "fill": "#000000",
+   "text": {
+    "chars": "2607 South 3200 West, Suite A, salt Lake City, UT",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 25,
+    "lineHeight": 30,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "HEIGHT",
+    "trim": false
+   }
+  },
+  "538:18686": {
+   "name": "Copyright",
+   "type": "TEXT",
+   "parent": "538:18679",
+   "visible": true,
+   "x": 65.04,
+   "y": 6283.5,
+   "w": 611.89,
+   "h": 30,
+   "fill": "#000000",
+   "text": {
+    "chars": "© 2024 SteepandCheap.com. All rights reserved",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 25,
+    "lineHeight": 30,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "HEIGHT",
+    "trim": false
+   }
+  }
+ },
+ "assets": {
+  "3ae5c0654807a3bb8c6d679b17ca7f89471408c1": {
+   "src": "/figma-assets/3ae5c0654807a3bb8c6d679b17ca7f89471408c1.jpg",
+   "w": 2000,
+   "h": 1333
+  },
+  "05631e129c31da42d3d954c5718d6f692edd363c": {
+   "src": "/figma-assets/05631e129c31da42d3d954c5718d6f692edd363c.png",
+   "w": 612,
+   "h": 408
+  },
+  "c4718d422f2b5abf2624402ba628a9422e693f27": {
+   "src": "/figma-assets/c4718d422f2b5abf2624402ba628a9422e693f27.jpg",
+   "w": 1200,
+   "h": 779
+  },
+  "4de890d214ac7d785d582b0cc28fc197df7c1921": {
+   "src": "/figma-assets/4de890d214ac7d785d582b0cc28fc197df7c1921.jpg",
+   "w": 1200,
+   "h": 797
+  },
+  "345302902cffaea91d8cb3aa85fc7f71c3cd817f": {
+   "src": "/figma-assets/345302902cffaea91d8cb3aa85fc7f71c3cd817f.png",
+   "w": 440,
+   "h": 440
+  },
+  "aaff26ce5c3314d5753ea84c381fe8f0d201f9a6": {
+   "src": "/figma-assets/aaff26ce5c3314d5753ea84c381fe8f0d201f9a6.png",
+   "w": 440,
+   "h": 440
+  },
+  "942c39e99428d0e4371e227581993553cd8b9c9c": {
+   "src": "/figma-assets/942c39e99428d0e4371e227581993553cd8b9c9c.png",
+   "w": 440,
+   "h": 440
+  },
+  "85507a6c9c62bfd499e813988e123a816af8187e": {
+   "src": "/figma-assets/85507a6c9c62bfd499e813988e123a816af8187e.png",
+   "w": 440,
+   "h": 440
+  },
+  "render-ioB3sP8LwBiTUPQN7jlF81-538-18612": {
+   "src": "/figma-assets/render-ioB3sP8LwBiTUPQN7jlF81-538-18612.png",
+   "w": 2187,
+   "h": 2444
+  }
+ }
+}

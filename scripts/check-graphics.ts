@@ -34,9 +34,7 @@ const faults: string[] = [];
  *  Remove an id here the moment its real outline is extracted (the way
  *  `brush-stroke` replaced `flash-social-brush`), not before. */
 const PENDING_VECTOR = new Set([
-  'autumn-ticket',       // Autumn's punched ticket -- needs the same real-path
-                         // pull `ticket-tag`/`brush-stroke` got, not a guess.
-  'bump-tomorrow-panel', // Bump's "tomorrow" panel shape -- same, unpulled.
+  'bump-tomorrow-panel', // Bump's "tomorrow" panel shape -- its real outline not yet pulled.
 ]);
 
 // 1. Library "marks" and wordmarks must be real vectors.

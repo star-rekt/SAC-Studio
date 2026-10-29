@@ -1,0 +1,447 @@
+{
+ "source": {
+  "file": "7r3YL4Zko0WfQs5vnSO9OT",
+  "node": "248:711465",
+  "name": "SC26_0021_Flash Sale Apr4 Hero"
+ },
+ "size": [
+  1418,
+  905.94
+ ],
+ "frame": {
+  "image": true,
+  "crop": [
+   [
+    0.76448,
+    0,
+    0.2356
+   ],
+   [
+    0,
+    0.77634,
+    0.22354
+   ]
+  ],
+  "images": [
+   {
+    "ref": "9c971ba3bfcc72971856a1e76a58d13a74257066",
+    "mode": "STRETCH"
+   }
+  ]
+ },
+ "layers": {
+  "248:711466": {
+   "name": "Group 3246",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 516,
+   "y": 414,
+   "w": 830.13,
+   "h": 123.46
+  },
+  "248:711467": {
+   "name": "Group 3245",
+   "type": "GROUP",
+   "parent": "248:711466",
+   "visible": true,
+   "x": 601.13,
+   "y": 414.46,
+   "w": 745,
+   "h": 123
+  },
+  "248:711468": {
+   "name": "Group 3173",
+   "type": "GROUP",
+   "parent": "248:711467",
+   "visible": true,
+   "x": 601.13,
+   "y": 414.46,
+   "w": 745,
+   "h": 123
+  },
+  "248:711469": {
+   "name": "70 % OFF",
+   "type": "TEXT",
+   "parent": "248:711468",
+   "visible": true,
+   "x": 601.13,
+   "y": 414.46,
+   "w": 745,
+   "h": 123,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "70 % OFF",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 186.21,
+    "lineHeight": 180.72,
+    "letterSpacing": -5.59,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "runs": [
+     {
+      "from": 2,
+      "to": 3,
+      "style": {
+       "letterSpacing": -26.07
+      }
+     }
+    ]
+   }
+  },
+  "248:711470": {
+   "name": "UP TO",
+   "type": "TEXT",
+   "parent": "248:711466",
+   "visible": false,
+   "x": 495,
+   "y": 414,
+   "w": 95,
+   "h": 122,
+   "fill": "#F5EBDF",
+   "text": {
+    "chars": "UP\nTO ",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 74.95,
+    "lineHeight": 72.74,
+    "letterSpacing": -2.25,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711471": {
+   "name": "UP TO",
+   "type": "TEXT",
+   "parent": "248:711466",
+   "visible": true,
+   "x": 516,
+   "y": 414,
+   "w": 75,
+   "h": 96,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "UP\nTO ",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 58.97,
+    "lineHeight": 57.24,
+    "letterSpacing": -1.77,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711472": {
+   "name": "Spring gear, apparel & more",
+   "type": "TEXT",
+   "parent": null,
+   "visible": true,
+   "x": 743,
+   "y": 575,
+   "w": 603,
+   "h": 38,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "Spring gear, apparel & more",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 56.83,
+    "lineHeight": 61,
+    "letterSpacing": -1.7,
+    "align": "RIGHT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711473": {
+   "name": "Ends 2/2",
+   "type": "TEXT",
+   "parent": null,
+   "visible": false,
+   "x": 878,
+   "y": 630,
+   "w": 131,
+   "h": 23,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "Ends 2/2",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 35.12,
+    "lineHeight": 61,
+    "letterSpacing": -1.05,
+    "align": "RIGHT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711474": {
+   "name": "Frame 2202",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 929,
+   "y": 712,
+   "w": 416.91,
+   "h": 104.5,
+   "fill": "#F14222",
+   "radius": 25.5
+  },
+  "248:711475": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "248:711474",
+   "visible": true,
+   "x": 1014.46,
+   "y": 745.27,
+   "w": 246,
+   "h": 37,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Sofia Pro",
+    "weight": 800,
+    "size": 54.41,
+    "lineHeight": 62.57,
+    "letterSpacing": -0.54,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711476": {
+   "name": "Group 3308",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 691,
+   "y": 307,
+   "w": 655.23,
+   "h": 69
+  },
+  "248:711477": {
+   "name": "Group 3245",
+   "type": "GROUP",
+   "parent": "248:711476",
+   "visible": true,
+   "x": 739,
+   "y": 307,
+   "w": 559,
+   "h": 69
+  },
+  "248:711478": {
+   "name": "Group 3173",
+   "type": "GROUP",
+   "parent": "248:711477",
+   "visible": true,
+   "x": 739,
+   "y": 307,
+   "w": 559,
+   "h": 69
+  },
+  "248:711479": {
+   "name": "FLASH SALE",
+   "type": "TEXT",
+   "parent": "248:711478",
+   "visible": true,
+   "x": 739,
+   "y": 307,
+   "w": 559,
+   "h": 69,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "FLASH SALE",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 104.94,
+    "lineHeight": 139,
+    "letterSpacing": -3.15,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711480": {
+   "name": "Group 3242",
+   "type": "GROUP",
+   "parent": "248:711476",
+   "visible": true,
+   "x": 691,
+   "y": 307,
+   "w": 31.23,
+   "h": 69
+  },
+  "248:711481": {
+   "name": "Union",
+   "type": "BOOLEAN_OPERATION",
+   "parent": "248:711480",
+   "visible": true,
+   "x": 691,
+   "y": 307,
+   "w": 31.23,
+   "h": 69,
+   "fill": "#FFFFFF"
+  },
+  "248:711482": {
+   "name": "Vector 150",
+   "type": "VECTOR",
+   "parent": "248:711481",
+   "visible": true,
+   "x": 690.34,
+   "y": 303.51,
+   "w": 21.71,
+   "h": 43.41,
+   "fill": "#D79503",
+   "radius": 1.08
+  },
+  "248:711483": {
+   "name": "Vector 151",
+   "type": "VECTOR",
+   "parent": "248:711481",
+   "visible": true,
+   "x": 701.19,
+   "y": 336.07,
+   "w": 21.71,
+   "h": 43.41,
+   "rotation": -180,
+   "turn": -180,
+   "fill": "#D79503",
+   "radius": 1.08
+  },
+  "248:711484": {
+   "name": "Group 3247",
+   "type": "GROUP",
+   "parent": "248:711476",
+   "visible": true,
+   "x": 1315,
+   "y": 307,
+   "w": 31.23,
+   "h": 69
+  },
+  "248:711485": {
+   "name": "Union",
+   "type": "BOOLEAN_OPERATION",
+   "parent": "248:711484",
+   "visible": true,
+   "x": 1315,
+   "y": 307,
+   "w": 31.23,
+   "h": 69,
+   "fill": "#FFFFFF"
+  },
+  "248:711486": {
+   "name": "Vector 150",
+   "type": "VECTOR",
+   "parent": "248:711485",
+   "visible": true,
+   "x": 1314.34,
+   "y": 303.51,
+   "w": 21.71,
+   "h": 43.41,
+   "fill": "#D79503",
+   "radius": 1.08
+  },
+  "248:711487": {
+   "name": "Vector 151",
+   "type": "VECTOR",
+   "parent": "248:711485",
+   "visible": true,
+   "x": 1325.19,
+   "y": 336.07,
+   "w": 21.71,
+   "h": 43.41,
+   "rotation": -180,
+   "turn": -180,
+   "fill": "#D79503",
+   "radius": 1.08
+  },
+  "248:711488": {
+   "name": "Group 3309",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 909,
+   "y": 190,
+   "w": 437,
+   "h": 78.75
+  },
+  "248:711489": {
+   "name": "Group 3303",
+   "type": "GROUP",
+   "parent": "248:711488",
+   "visible": true,
+   "x": 909,
+   "y": 190,
+   "w": 437,
+   "h": 78.75
+  },
+  "248:711490": {
+   "name": "___ 1 (Traced)",
+   "type": "VECTOR",
+   "parent": "248:711489",
+   "visible": true,
+   "x": 909,
+   "y": 190,
+   "w": 437,
+   "h": 78.75,
+   "rotation": 0.13,
+   "turn": 0.13,
+   "fill": "#F14222",
+   "image": true,
+   "images": [
+    {
+     "ref": "c4718d422f2b5abf2624402ba628a9422e693f27",
+     "mode": "FILL",
+     "opacity": 0.22,
+     "blend": "SCREEN"
+    }
+   ]
+  },
+  "248:711491": {
+   "name": "3 DAYS ONLY",
+   "type": "TEXT",
+   "parent": "248:711488",
+   "visible": true,
+   "x": 940,
+   "y": 207,
+   "w": 375,
+   "h": 45,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "3 DAYS ONLY",
+    "family": "Sofia Pro",
+    "weight": 500,
+    "size": 65.62,
+    "lineHeight": 63.68,
+    "letterSpacing": -1.97,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  }
+ },
+ "assets": {
+  "c4718d422f2b5abf2624402ba628a9422e693f27": {
+   "src": "/figma-assets/c4718d422f2b5abf2624402ba628a9422e693f27.jpg",
+   "w": 1200,
+   "h": 779
+  },
+  "9c971ba3bfcc72971856a1e76a58d13a74257066": {
+   "src": "/figma-assets/9c971ba3bfcc72971856a1e76a58d13a74257066.jpg",
+   "w": 2400,
+   "h": 1510
+  }
+ }
+}

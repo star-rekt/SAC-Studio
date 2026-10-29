@@ -55,10 +55,19 @@ const MARKS: [string, string][] = [
   ['arrow-01', 'Arrow 1'], ['arrow-02', 'Arrow 2'], ['arrow-05', 'Arrow 5'],
   ['arrow-07', 'Arrow 7'], ['arrow-09', 'Arrow 9'], ['arrow-12', 'Arrow 12'],
   ['arrow-14', 'Arrow 14'], ['arrow-16', 'Arrow 16'],
-  ['ticket-tag', 'Ticket, punched corner'], ['panel-step', 'Panel, stepped'],
+  ['ticket-tag', 'Ticket, punched corner'], ['ticket-tag-1x1', 'Ticket, Bump social 1x1'],
+  ['ticket-tag-4x5', 'Ticket, Bump social 4x5'], ['ticket-tag-9x16', 'Ticket, Bump social 9x16'],
+  ['ticket-tag-email-1', 'Ticket, Bump email send 1'], ['ticket-tag-email-2', 'Ticket, Bump email send 2'],
+  ['ticket-tag-email-3', 'Ticket, Bump email send 3'],
+  ['panel-step', 'Panel, stepped'],
   ['pill', 'Button pill'], ['pill-wide', 'Button pill, wide'],
   ['pill-tile', 'Button pill, tile'], ['pill-soft', 'Button pill, soft corner'],
   ['bump2-window-outline', 'Stepped window outline'],
+  ['bump2-window-1x1', 'Stepped window, Bump 2 social 1x1'], ['bump2-window-4x5', 'Stepped window, Bump 2 social 4x5'],
+  ['bump2-window-9x16', 'Stepped window, Bump 2 social 9x16'],
+  ['bump2-email-1-window', 'Stepped window, Bump 2 email 1'], ['bump2-email-2-window', 'Stepped window, Bump 2 email 2'],
+  ['bump2-email-3-window', 'Stepped window, Bump 2 email 3'], ['bump2-email-4-window', 'Stepped cut-out, Bump 2 email 4'],
+  ['bump2-arrow', 'Brush arrow, Bump 2'],
 ];
 
 /** The photographs, with the band a person reviewed by eye.
@@ -77,14 +86,8 @@ export const LIBRARY: Item[] = [
   { id: 'bump-social-photo', kind: 'photo', name: 'Bump social · log crossing',
     file: '/reference/bump-social-photo.jpg', vector: false,
     note: 'Original photograph from the Bump paid-social board' },
-  { id: 'autumn-social-photo', kind: 'photo', name: 'Autumn social · trail',
-    file: '/reference/autumn-social-photo.jpg', vector: false },
-  { id: 'autumn-email-photo', kind: 'photo', name: 'Autumn email · runners',
-    file: '/reference/autumn-email-photo.jpg', vector: false },
   { id: 'flash-email-photo', kind: 'photo', name: 'Flash email · launch',
     file: '/reference/flash-email-photo.jpg', vector: false },
-  { id: 'autumn-hero-photo', kind: 'photo', name: 'Autumn desktop · runners',
-    file: '/reference/autumn-hero-photo.png', vector: false },
   { id: 'flash-hero-photo', kind: 'photo', name: 'Flash desktop and social · hikers',
     file: '/reference/flash-hero-photo.png', vector: false },
   ...([0,3,4,5] as const).map(n => ({ id: `bump-hero-photo-${n}`,
@@ -132,8 +135,6 @@ export const LIBRARY: Item[] = [
     file: '/logos/social-instagram.png', vector: false },
 
   ...MARKS.map(([id, name]) => mark(id, name)),
-  { id: 'autumn-ticket', kind: 'mark', name: 'Autumn punched ticket',
-    file: '/reference/autumn-ticket.png', vector: false },
   // No longer a separate catalog item: the real outline is `brush-stroke`
   // (registered via MARKS above), the same mark Flash's own hero/email
   // brush uses, recoloured green here instead of a second flattened asset.

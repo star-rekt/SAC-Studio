@@ -1,0 +1,1398 @@
+{
+ "source": {
+  "file": "7r3YL4Zko0WfQs5vnSO9OT",
+  "node": "248:711588",
+  "name": "SC26_0021_Flash Sale Apr4 Paid_4x5 1"
+ },
+ "size": [
+  1080,
+  1350
+ ],
+ "frame": {
+  "image": true,
+  "crop": [
+   [
+    0.38738,
+    0,
+    0.28319
+   ],
+   [
+    0,
+    0.76967,
+    0.23033
+   ]
+  ],
+  "images": [
+   {
+    "ref": "9c971ba3bfcc72971856a1e76a58d13a74257066",
+    "mode": "STRETCH"
+   }
+  ]
+ },
+ "layers": {
+  "248:711589": {
+   "name": "Group 3246",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 199,
+   "y": 669,
+   "w": 830.13,
+   "h": 123.46
+  },
+  "248:711590": {
+   "name": "Group 3245",
+   "type": "GROUP",
+   "parent": "248:711589",
+   "visible": true,
+   "x": 284.13,
+   "y": 669.46,
+   "w": 745,
+   "h": 123
+  },
+  "248:711591": {
+   "name": "Group 3173",
+   "type": "GROUP",
+   "parent": "248:711590",
+   "visible": true,
+   "x": 284.13,
+   "y": 669.46,
+   "w": 745,
+   "h": 123
+  },
+  "248:711592": {
+   "name": "75 % OFF",
+   "type": "TEXT",
+   "parent": "248:711591",
+   "visible": true,
+   "x": 284.13,
+   "y": 669.46,
+   "w": 745,
+   "h": 123,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "75 % OFF",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 186.21,
+    "lineHeight": 180.72,
+    "letterSpacing": -5.59,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "runs": [
+     {
+      "from": 2,
+      "to": 3,
+      "style": {
+       "letterSpacing": -26.07
+      }
+     }
+    ]
+   }
+  },
+  "248:711593": {
+   "name": "UP TO",
+   "type": "TEXT",
+   "parent": "248:711589",
+   "visible": false,
+   "x": 178,
+   "y": 669,
+   "w": 95,
+   "h": 122,
+   "fill": "#F5EBDF",
+   "text": {
+    "chars": "UP\nTO ",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 74.95,
+    "lineHeight": 72.74,
+    "letterSpacing": -2.25,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711594": {
+   "name": "UP TO",
+   "type": "TEXT",
+   "parent": "248:711589",
+   "visible": true,
+   "x": 199,
+   "y": 669,
+   "w": 75,
+   "h": 96,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "UP\nTO ",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 58.97,
+    "lineHeight": 57.24,
+    "letterSpacing": -1.77,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711595": {
+   "name": "Group 3308",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 374,
+   "y": 562,
+   "w": 655.23,
+   "h": 69
+  },
+  "248:711596": {
+   "name": "Group 3245",
+   "type": "GROUP",
+   "parent": "248:711595",
+   "visible": true,
+   "x": 422,
+   "y": 562,
+   "w": 559,
+   "h": 69
+  },
+  "248:711597": {
+   "name": "Group 3173",
+   "type": "GROUP",
+   "parent": "248:711596",
+   "visible": true,
+   "x": 422,
+   "y": 562,
+   "w": 559,
+   "h": 69
+  },
+  "248:711598": {
+   "name": "FLASH SALE",
+   "type": "TEXT",
+   "parent": "248:711597",
+   "visible": true,
+   "x": 422,
+   "y": 562,
+   "w": 559,
+   "h": 69,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "FLASH SALE",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 104.94,
+    "lineHeight": 139,
+    "letterSpacing": -3.15,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711599": {
+   "name": "Group 3242",
+   "type": "GROUP",
+   "parent": "248:711595",
+   "visible": true,
+   "x": 374,
+   "y": 562,
+   "w": 31.23,
+   "h": 69
+  },
+  "248:711600": {
+   "name": "Union",
+   "type": "BOOLEAN_OPERATION",
+   "parent": "248:711599",
+   "visible": true,
+   "x": 374,
+   "y": 562,
+   "w": 31.23,
+   "h": 69,
+   "fill": "#FFFFFF"
+  },
+  "248:711601": {
+   "name": "Vector 150",
+   "type": "VECTOR",
+   "parent": "248:711600",
+   "visible": true,
+   "x": 373.33,
+   "y": 558.51,
+   "w": 21.71,
+   "h": 43.41,
+   "fill": "#D79503",
+   "radius": 1.08
+  },
+  "248:711602": {
+   "name": "Vector 151",
+   "type": "VECTOR",
+   "parent": "248:711600",
+   "visible": true,
+   "x": 384.19,
+   "y": 591.07,
+   "w": 21.71,
+   "h": 43.41,
+   "rotation": -180,
+   "turn": -180,
+   "fill": "#D79503",
+   "radius": 1.08
+  },
+  "248:711603": {
+   "name": "Group 3247",
+   "type": "GROUP",
+   "parent": "248:711595",
+   "visible": true,
+   "x": 998,
+   "y": 562,
+   "w": 31.23,
+   "h": 69
+  },
+  "248:711604": {
+   "name": "Union",
+   "type": "BOOLEAN_OPERATION",
+   "parent": "248:711603",
+   "visible": true,
+   "x": 998,
+   "y": 562,
+   "w": 31.23,
+   "h": 69,
+   "fill": "#FFFFFF"
+  },
+  "248:711605": {
+   "name": "Vector 150",
+   "type": "VECTOR",
+   "parent": "248:711604",
+   "visible": true,
+   "x": 997.33,
+   "y": 558.51,
+   "w": 21.71,
+   "h": 43.41,
+   "fill": "#D79503",
+   "radius": 1.08
+  },
+  "248:711606": {
+   "name": "Vector 151",
+   "type": "VECTOR",
+   "parent": "248:711604",
+   "visible": true,
+   "x": 1008.19,
+   "y": 591.07,
+   "w": 21.71,
+   "h": 43.41,
+   "rotation": -180,
+   "turn": -180,
+   "fill": "#D79503",
+   "radius": 1.08
+  },
+  "248:711607": {
+   "name": "Group 3309",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 592,
+   "y": 445,
+   "w": 437,
+   "h": 78.75
+  },
+  "248:711608": {
+   "name": "Group 3303",
+   "type": "GROUP",
+   "parent": "248:711607",
+   "visible": true,
+   "x": 592,
+   "y": 445,
+   "w": 437,
+   "h": 78.75
+  },
+  "248:711609": {
+   "name": "___ 1 (Traced)",
+   "type": "VECTOR",
+   "parent": "248:711608",
+   "visible": true,
+   "x": 592,
+   "y": 445,
+   "w": 437,
+   "h": 78.75,
+   "rotation": 0.13,
+   "turn": 0.13,
+   "fill": "#79AC41",
+   "image": true,
+   "images": [
+    {
+     "ref": "c4718d422f2b5abf2624402ba628a9422e693f27",
+     "mode": "FILL",
+     "opacity": 0.22,
+     "blend": "SCREEN"
+    }
+   ]
+  },
+  "248:711610": {
+   "name": "3 DAYS ONLY",
+   "type": "TEXT",
+   "parent": "248:711607",
+   "visible": true,
+   "x": 623,
+   "y": 462,
+   "w": 375,
+   "h": 45,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "3 DAYS ONLY",
+    "family": "Sofia Pro",
+    "weight": 500,
+    "size": 65.62,
+    "lineHeight": 63.68,
+    "letterSpacing": -1.97,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "248:711611": {
+   "name": "Group 2904",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 729,
+   "y": 123.6,
+   "w": 293,
+   "h": 133.5
+  },
+  "248:711612": {
+   "name": "SAC_Powered By_Logo_Dark",
+   "type": "GROUP",
+   "parent": "248:711611",
+   "visible": true,
+   "x": 729,
+   "y": 123.6,
+   "w": 293,
+   "h": 133.01
+  },
+  "248:711613": {
+   "name": "Group",
+   "type": "GROUP",
+   "parent": "248:711612",
+   "visible": true,
+   "x": 730.27,
+   "y": 231.89,
+   "w": 122.12,
+   "h": 24.72
+  },
+  "248:711614": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711613",
+   "visible": true,
+   "x": 730.27,
+   "y": 237.15,
+   "w": 12.72,
+   "h": 19.18,
+   "fill": "#FFFFFF"
+  },
+  "248:711615": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711613",
+   "visible": true,
+   "x": 745.15,
+   "y": 236.86,
+   "w": 10.93,
+   "h": 13.32,
+   "fill": "#FFFFFF"
+  },
+  "248:711616": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711613",
+   "visible": true,
+   "x": 758.48,
+   "y": 237.15,
+   "w": 16.56,
+   "h": 12.75,
+   "fill": "#FFFFFF"
+  },
+  "248:711617": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711613",
+   "visible": true,
+   "x": 775.29,
+   "y": 236.86,
+   "w": 10.94,
+   "h": 13.32,
+   "fill": "#FFFFFF"
+  },
+  "248:711618": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711613",
+   "visible": true,
+   "x": 787.86,
+   "y": 237.15,
+   "w": 8.1,
+   "h": 12.75,
+   "fill": "#FFFFFF"
+  },
+  "248:711619": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711613",
+   "visible": true,
+   "x": 795.72,
+   "y": 236.86,
+   "w": 10.94,
+   "h": 13.32,
+   "fill": "#FFFFFF"
+  },
+  "248:711620": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711613",
+   "visible": true,
+   "x": 808.56,
+   "y": 231.9,
+   "w": 12.5,
+   "h": 18,
+   "fill": "#FFFFFF"
+  },
+  "248:711621": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711613",
+   "visible": true,
+   "x": 826.78,
+   "y": 231.89,
+   "w": 11.57,
+   "h": 18.01,
+   "fill": "#FFFFFF"
+  },
+  "248:711622": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711613",
+   "visible": true,
+   "x": 839.83,
+   "y": 237.15,
+   "w": 12.57,
+   "h": 19.46,
+   "fill": "#FFFFFF"
+  },
+  "248:711623": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711612",
+   "visible": true,
+   "x": 729,
+   "y": 215.91,
+   "w": 293,
+   "h": 2.49,
+   "fill": "#79AC41"
+  },
+  "248:711624": {
+   "name": "Group",
+   "type": "GROUP",
+   "parent": "248:711612",
+   "visible": true,
+   "x": 731.5,
+   "y": 123.6,
+   "w": 288.26,
+   "h": 83.13
+  },
+  "248:711625": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711624",
+   "visible": true,
+   "x": 731.5,
+   "y": 143.47,
+   "w": 20.79,
+   "h": 47.05,
+   "fill": "#FFFFFF"
+  },
+  "248:711626": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711624",
+   "visible": true,
+   "x": 754.92,
+   "y": 129.92,
+   "w": 20.53,
+   "h": 60.19,
+   "fill": "#FFFFFF"
+  },
+  "248:711627": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711624",
+   "visible": true,
+   "x": 777.55,
+   "y": 143.47,
+   "w": 20.78,
+   "h": 47.05,
+   "fill": "#FFFFFF"
+  },
+  "248:711628": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711624",
+   "visible": true,
+   "x": 803.22,
+   "y": 143.47,
+   "w": 20.78,
+   "h": 47.05,
+   "fill": "#FFFFFF"
+  },
+  "248:711629": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711624",
+   "visible": true,
+   "x": 828.99,
+   "y": 143.46,
+   "w": 20.78,
+   "h": 63.27,
+   "fill": "#FFFFFF"
+  },
+  "248:711630": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711624",
+   "visible": true,
+   "x": 858.08,
+   "y": 129.5,
+   "w": 32.09,
+   "h": 61.02,
+   "fill": "#79AC41"
+  },
+  "248:711631": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711624",
+   "visible": true,
+   "x": 895.99,
+   "y": 143.47,
+   "w": 20.78,
+   "h": 47.05,
+   "fill": "#FFFFFF"
+  },
+  "248:711632": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711624",
+   "visible": true,
+   "x": 921.66,
+   "y": 123.6,
+   "w": 20.79,
+   "h": 66.51,
+   "fill": "#FFFFFF"
+  },
+  "248:711633": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711624",
+   "visible": true,
+   "x": 947.45,
+   "y": 143.47,
+   "w": 20.78,
+   "h": 47.05,
+   "fill": "#FFFFFF"
+  },
+  "248:711634": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711624",
+   "visible": true,
+   "x": 973.19,
+   "y": 143.47,
+   "w": 20.79,
+   "h": 47.06,
+   "fill": "#FFFFFF"
+  },
+  "248:711635": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711624",
+   "visible": true,
+   "x": 998.98,
+   "y": 143.46,
+   "w": 20.78,
+   "h": 63.27,
+   "fill": "#FFFFFF"
+  },
+  "248:711636": {
+   "name": "Group 1613",
+   "type": "GROUP",
+   "parent": "248:711611",
+   "visible": true,
+   "x": 860.22,
+   "y": 228.18,
+   "w": 157.89,
+   "h": 28.92
+  },
+  "248:711637": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711636",
+   "visible": true,
+   "x": 860.22,
+   "y": 231.21,
+   "w": 16.61,
+   "h": 18.89,
+   "fill": "#FFFFFF"
+  },
+  "248:711638": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711636",
+   "visible": true,
+   "x": 877.81,
+   "y": 235.46,
+   "w": 13.8,
+   "h": 14.91,
+   "fill": "#FFFFFF"
+  },
+  "248:711639": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711636",
+   "visible": true,
+   "x": 904.28,
+   "y": 228.18,
+   "w": 15.7,
+   "h": 21.92,
+   "fill": "#FFFFFF"
+  },
+  "248:711640": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711636",
+   "visible": true,
+   "x": 932.59,
+   "y": 235.46,
+   "w": 14.22,
+   "h": 14.91,
+   "fill": "#FFFFFF"
+  },
+  "248:711641": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711636",
+   "visible": true,
+   "x": 947.28,
+   "y": 235.48,
+   "w": 16,
+   "h": 14.88,
+   "fill": "#FFFFFF"
+  },
+  "248:711642": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711636",
+   "visible": true,
+   "x": 964.37,
+   "y": 235.46,
+   "w": 16.18,
+   "h": 14.64,
+   "fill": "#FFFFFF"
+  },
+  "248:711643": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711636",
+   "visible": true,
+   "x": 980.66,
+   "y": 232.15,
+   "w": 9.85,
+   "h": 18.22,
+   "fill": "#FFFFFF"
+  },
+  "248:711644": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711636",
+   "visible": true,
+   "x": 990.91,
+   "y": 235.46,
+   "w": 10.7,
+   "h": 14.64,
+   "fill": "#FFFFFF"
+  },
+  "248:711645": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711636",
+   "visible": true,
+   "x": 1002.58,
+   "y": 235.95,
+   "w": 15.53,
+   "h": 21.15,
+   "fill": "#FFFFFF"
+  },
+  "248:711646": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711636",
+   "visible": true,
+   "x": 891.87,
+   "y": 235.41,
+   "w": 12.13,
+   "h": 15.03,
+   "fill": "#FFFFFF"
+  },
+  "248:711647": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711636",
+   "visible": true,
+   "x": 919.61,
+   "y": 235.41,
+   "w": 12.13,
+   "h": 15.03,
+   "fill": "#FFFFFF"
+  },
+  "248:711648": {
+   "name": "Frame 3324",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 1237,
+   "w": 1080,
+   "h": 113.4
+  },
+  "248:711649": {
+   "name": "Rectangle 3573",
+   "type": "RECTANGLE",
+   "parent": "248:711648",
+   "visible": true,
+   "x": 0,
+   "y": 1237,
+   "w": 1080,
+   "h": 113.4,
+   "fill": "#79AC41",
+   "image": true,
+   "images": [
+    {
+     "ref": "c4718d422f2b5abf2624402ba628a9422e693f27",
+     "mode": "FILL",
+     "opacity": 0.22,
+     "blend": "SCREEN"
+    }
+   ]
+  },
+  "248:711650": {
+   "name": "Group 3394",
+   "type": "GROUP",
+   "parent": "248:711648",
+   "visible": true,
+   "x": 23,
+   "y": 1251,
+   "w": 1034,
+   "h": 85.19
+  },
+  "248:711651": {
+   "name": "Osprey *NEW",
+   "type": "INSTANCE",
+   "parent": "248:711650",
+   "visible": true,
+   "x": 702.35,
+   "y": 1251,
+   "w": 110.65,
+   "h": 85.19
+  },
+  "I248:711651;13300:40": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711651",
+   "visible": true,
+   "x": 775.63,
+   "y": 1331.95,
+   "w": 2.41,
+   "h": 3.1,
+   "fill": "#FFFFFF"
+  },
+  "I248:711651;13300:41": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711651",
+   "visible": true,
+   "x": 773.96,
+   "y": 1330.75,
+   "w": 5.58,
+   "h": 5.43,
+   "fill": "#FFFFFF"
+  },
+  "I248:711651;13300:42": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711651",
+   "visible": true,
+   "x": 743.32,
+   "y": 1251.23,
+   "w": 12.91,
+   "h": 17.93,
+   "fill": "#FFFFFF"
+  },
+  "I248:711651;13300:43": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711651",
+   "visible": true,
+   "x": 706.87,
+   "y": 1257.52,
+   "w": 18.78,
+   "h": 18.64,
+   "fill": "#FFFFFF"
+  },
+  "I248:711651;13300:44": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711651",
+   "visible": true,
+   "x": 729.3,
+   "y": 1252.22,
+   "w": 10.88,
+   "h": 18.6,
+   "fill": "#FFFFFF"
+  },
+  "I248:711651;13300:45": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711651",
+   "visible": true,
+   "x": 794.46,
+   "y": 1256.47,
+   "w": 18.54,
+   "h": 21.15,
+   "fill": "#FFFFFF"
+  },
+  "I248:711651;13300:46": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711651",
+   "visible": true,
+   "x": 778.4,
+   "y": 1253.06,
+   "w": 14.08,
+   "h": 19.31,
+   "fill": "#FFFFFF"
+  },
+  "I248:711651;13300:47": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711651",
+   "visible": true,
+   "x": 759.68,
+   "y": 1251,
+   "w": 16,
+   "h": 18.46,
+   "fill": "#FFFFFF"
+  },
+  "I248:711651;13300:48": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711651",
+   "visible": true,
+   "x": 702.35,
+   "y": 1278.92,
+   "w": 109.71,
+   "h": 57.26,
+   "fill": "#FFFFFF"
+  },
+  "248:711652": {
+   "name": "Outdoor Research",
+   "type": "INSTANCE",
+   "parent": "248:711650",
+   "visible": true,
+   "x": 281.25,
+   "y": 1258.73,
+   "w": 115.64,
+   "h": 68.85
+  },
+  "I248:711652;876:3720": {
+   "name": "Outdoor Research / White / Symbol",
+   "type": "VECTOR",
+   "parent": "248:711652",
+   "visible": true,
+   "x": 281.25,
+   "y": 1258.73,
+   "w": 115.64,
+   "h": 68.85,
+   "fill": "#FFFFFF"
+  },
+  "248:711653": {
+   "name": "Mountain Hardwear",
+   "type": "INSTANCE",
+   "parent": "248:711650",
+   "visible": true,
+   "x": 485.89,
+   "y": 1258.73,
+   "w": 127.46,
+   "h": 69.72
+  },
+  "I248:711653;12701:3": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711653",
+   "visible": true,
+   "x": 486.97,
+   "y": 1258.83,
+   "w": 12.68,
+   "h": 13.21,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:4": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711653",
+   "visible": true,
+   "x": 541.17,
+   "y": 1258.83,
+   "w": 10.93,
+   "h": 13.21,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:5": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711653",
+   "visible": true,
+   "x": 558.21,
+   "y": 1258.83,
+   "w": 10.45,
+   "h": 13.21,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:6": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711653",
+   "visible": true,
+   "x": 573.01,
+   "y": 1258.83,
+   "w": 12.74,
+   "h": 13.21,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:7": {
+   "name": "Group",
+   "type": "GROUP",
+   "parent": "248:711653",
+   "visible": true,
+   "x": 485.89,
+   "y": 1258.73,
+   "w": 127.46,
+   "h": 69.72
+  },
+  "I248:711653;12701:8": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 506.18,
+   "y": 1258.73,
+   "w": 10.83,
+   "h": 13.43,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:9": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 591.64,
+   "y": 1258.83,
+   "w": 2.86,
+   "h": 13.21,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:10": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 523.58,
+   "y": 1258.83,
+   "w": 10.51,
+   "h": 13.32,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:11": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 602.17,
+   "y": 1258.83,
+   "w": 10.93,
+   "h": 13.21,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:12": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 486.97,
+   "y": 1258.83,
+   "w": 12.68,
+   "h": 13.21,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:13": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 541.16,
+   "y": 1258.83,
+   "w": 10.93,
+   "h": 13.21,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:14": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 558.21,
+   "y": 1258.83,
+   "w": 10.45,
+   "h": 13.21,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:15": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 573.01,
+   "y": 1258.83,
+   "w": 12.74,
+   "h": 13.21,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:16": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 506.18,
+   "y": 1258.73,
+   "w": 10.83,
+   "h": 13.43,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:17": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 591.64,
+   "y": 1258.83,
+   "w": 2.86,
+   "h": 13.21,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:18": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 523.58,
+   "y": 1258.83,
+   "w": 10.51,
+   "h": 13.32,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:19": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 602.17,
+   "y": 1258.83,
+   "w": 10.93,
+   "h": 13.21,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:20": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 485.89,
+   "y": 1277.21,
+   "w": 17.89,
+   "h": 24.3,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:21": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 523.16,
+   "y": 1277.21,
+   "w": 34.43,
+   "h": 24.47,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:22": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 503.12,
+   "y": 1277.03,
+   "w": 16.94,
+   "h": 24.69,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:23": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 508.3,
+   "y": 1304.12,
+   "w": 15.01,
+   "h": 23.71,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:24": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 486.08,
+   "y": 1304.26,
+   "w": 22.17,
+   "h": 23.41,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:25": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 541.21,
+   "y": 1303.7,
+   "w": 16.94,
+   "h": 24.5,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:26": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 522.12,
+   "y": 1303.84,
+   "w": 16.38,
+   "h": 24.08,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:27": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 571.07,
+   "y": 1286.14,
+   "w": 24.37,
+   "h": 24.97,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:28": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 576.28,
+   "y": 1291.4,
+   "w": 20.62,
+   "h": 21.14,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:29": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 562.37,
+   "y": 1277.18,
+   "w": 35.65,
+   "h": 36.56,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:30": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 599.65,
+   "y": 1278.82,
+   "w": 13.7,
+   "h": 32.47,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:31": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 593.78,
+   "y": 1309.83,
+   "w": 8.43,
+   "h": 8.46,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:32": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 588.12,
+   "y": 1304.17,
+   "w": 6.61,
+   "h": 6.65,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:33": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 601.25,
+   "y": 1317.3,
+   "w": 6.56,
+   "h": 6.61,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:34": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 591.17,
+   "y": 1320.57,
+   "w": 7.8,
+   "h": 7.88,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:35": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 583.7,
+   "y": 1313.11,
+   "w": 7.81,
+   "h": 7.84,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:36": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 597.01,
+   "y": 1299.63,
+   "w": 7.86,
+   "h": 7.93,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:37": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 604.47,
+   "y": 1307.12,
+   "w": 7.86,
+   "h": 7.89,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:38": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 608.48,
+   "y": 1323.51,
+   "w": 4.24,
+   "h": 4.25,
+   "fill": "#FFFFFF"
+  },
+  "I248:711653;12701:39": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711653;12701:7",
+   "visible": true,
+   "x": 609.88,
+   "y": 1324.49,
+   "w": 1.77,
+   "h": 2.2,
+   "fill": "#FFFFFF"
+  },
+  "248:711654": {
+   "name": "La Sportiva",
+   "type": "INSTANCE",
+   "parent": "248:711650",
+   "visible": true,
+   "x": 23,
+   "y": 1258.73,
+   "w": 169.25,
+   "h": 68.86
+  },
+  "I248:711654;823:4057": {
+   "name": "La Sportiva / White / Symbol",
+   "type": "VECTOR",
+   "parent": "248:711654",
+   "visible": true,
+   "x": 23,
+   "y": 1258.73,
+   "w": 169.25,
+   "h": 68.86,
+   "fill": "#FFFFFF"
+  },
+  "248:711655": {
+   "name": "& MORE",
+   "type": "TEXT",
+   "parent": "248:711650",
+   "visible": true,
+   "x": 902,
+   "y": 1279.13,
+   "w": 155,
+   "h": 29,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "& MORE",
+    "family": "Sofia Pro",
+    "weight": 500,
+    "size": 41.88,
+    "lineHeight": 106.4,
+    "letterSpacing": -0.84,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  }
+ },
+ "assets": {
+  "c4718d422f2b5abf2624402ba628a9422e693f27": {
+   "src": "/figma-assets/c4718d422f2b5abf2624402ba628a9422e693f27.jpg",
+   "w": 1200,
+   "h": 779
+  },
+  "9c971ba3bfcc72971856a1e76a58d13a74257066": {
+   "src": "/figma-assets/9c971ba3bfcc72971856a1e76a58d13a74257066.jpg",
+   "w": 2400,
+   "h": 1510
+  }
+ }
+}

@@ -9,9 +9,8 @@ import type { Template } from '../templates/registry';
 import type { SheetAsset, Sheet } from '../sheet/types';
 import { assetId } from '../sheet/types';
 import { directionsFor, familyOf, type Direction } from '../templates/directions';
-import { AutumnEmailHero } from './templates/autumn/AutumnEmail';
 import { FlashEmailHero } from './templates/flash/FlashEmail';
-import { AutumnSocial } from './templates/autumn/AutumnSocial';
+import { FlashEmailBody } from './templates/flash/FlashEmailBody';
 import { BumpEmailHeader1 } from './templates/bump/EmailHeader1';
 import { BumpEmailHero as BumpEmailHeader2 } from './templates/bump/EmailHero';
 import { BumpEmailHeader3 } from './templates/bump/EmailHeader3';
@@ -24,10 +23,7 @@ import { BumpSocial9x16 } from './templates/bump/Social9x16';
 import { BumpSocial1x1 as Bump2Social1x1 } from './templates/bump2/BumpSocial1x1';
 import { BumpSocial4x5 as Bump2Social4x5 } from './templates/bump2/BumpSocial4x5';
 import { BumpSocial9x16 as Bump2Social9x16 } from './templates/bump2/BumpSocial9x16';
-import { EmailBody as Bump2EmailBody1 } from './templates/bump2/EmailBody';
-import { EmailBody3 as Bump2EmailBody2 } from './templates/bump2/EmailBody3';
-import { EmailBody4 as Bump2EmailBody3 } from './templates/bump2/EmailBody4';
-import { EmailBody5 as Bump2EmailBody4 } from './templates/bump2/EmailBody5';
+import { Bump2EmailBody, Bump2EmailHero, type Design as Bump2Design } from './templates/bump2/EmailBody';
 import { emailVariant } from '../templates/variants';
 import { BadgingMock, CampaignBanner, GlobalText } from './templates/SiteCommerce';
 import { BoardHero } from './templates/BoardHero';
@@ -121,16 +117,15 @@ function bump2Social(asset: SheetAsset) {
   return <Bump2Social1x1 asset={asset} />;
 }
 
-// Bump 2's four email-body designs are each self-contained (hero, products
-// and footer in one component, unlike sc26_0060's separate hero+body split),
-// so sends just cycle through the four drafted designs -- there is no
-// separate "email-hero" asset to stitch in for this template.
+// Bump 2's five email designs are each self-contained (inbox lines, hero,
+// sections and footer in one board frame, unlike sc26_0060's separate
+// hero+body split), so the body draws its own hero; a send's "email-hero"
+// asset, where the brief asks for one, is that hero alone, sharing its edits.
+// A send without a chosen design cycles through the board's five.
+const bump2Design = (asset: SheetAsset, sendIndex: number) =>
+  (Number(emailVariant('sc26_bump2', asset.variant, sendIndex)?.id.replace('design-', '')) || 1) as Bump2Design;
 function bump2EmailBody(asset: SheetAsset, sendIndex: number) {
-  const variant = emailVariant('sc26_bump2', asset.variant, sendIndex);
-  if (variant?.id === 'variant-2') return <Bump2EmailBody2 asset={asset} />;
-  if (variant?.id === 'variant-3') return <Bump2EmailBody3 asset={asset} />;
-  if (variant?.id === 'variant-4') return <Bump2EmailBody4 asset={asset} />;
-  return <Bump2EmailBody1 asset={asset} />;
+  return <Bump2EmailBody asset={asset} design={bump2Design(asset, sendIndex)} />;
 }
 
 function OneBase({ asset, doc, template, outlook, treatment }: Props & { treatment: Direction }) {
@@ -144,8 +139,6 @@ function OneBase({ asset, doc, template, outlook, treatment }: Props & { treatme
     } : asset;
     const hero = outlook.id === 'sc26_0060'
       ? bumpEmailHero(asset, i)
-      : outlook.id === 'sc26_0058'
-      ? <AutumnEmailHero doc={doc} i={i} />
       : outlook.id === 'sc26_0021'
       ? <FlashEmailHero doc={doc} i={i} variant={asset.variant} />
       : heroSpec
@@ -159,16 +152,16 @@ function OneBase({ asset, doc, template, outlook, treatment }: Props & { treatme
     // the hero.
     if (outlook.id === 'sc26_0060') return bumpEmailBody(asset, i, hero);
     if (outlook.id === 'sc26_bump2') return bump2EmailBody(asset, i);
+    if (outlook.id === 'sc26_0021') return <FlashEmailBody doc={doc} i={i} hero={hero} />;
     return <EmailBody doc={doc} i={i} hero={hero} templateId={outlook.id} />;
   }
   if (asset.format === 'email-hero' && i >= 0 && outlook.id === 'sc26_0060')
     return bumpEmailHero(asset, i);
-  if (asset.format === 'email-hero' && i >= 0 && outlook.id === 'sc26_0058')
-    return <AutumnEmailHero doc={doc} i={i} />;
+  // A brief that asks for an email hero on its own gets the chosen design's hero.
+  if (asset.format === 'email-hero' && i >= 0 && outlook.id === 'sc26_bump2')
+    return <Bump2EmailHero asset={asset} design={bump2Design(asset, i)} />;
   if (asset.format === 'email-hero' && i >= 0 && outlook.id === 'sc26_0021')
     return <FlashEmailHero doc={doc} i={i} variant={asset.variant} />;
-  if (outlook.id === 'sc26_0058' && asset.format.startsWith('paid-social-'))
-    return <AutumnSocial asset={asset} />;
   if (outlook.id === 'sc26_0060' && asset.format.startsWith('paid-social-'))
     return bumpSocial(asset, treatment);
   if (outlook.id === 'sc26_bump2' && asset.format.startsWith('paid-social-'))

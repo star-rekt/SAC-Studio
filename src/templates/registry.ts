@@ -145,14 +145,12 @@ function standardCanvas(assets: RawAsset[]): FormatSpec {
  * These are the marquee sizes identified by the saved node dissections. */
 const EMAIL_HERO_SIZE: Record<string, string> = {
   'SC26_0021 Flash Sale Apr 4': '1200x1029',
-  'SC26_0058 Wk33 Bump': '1200x826',
   'SC26_0060 Wk35-36 Bump': '1200x1395',
 };
 // The corpus also contains email *sections* tagged email-body. Choosing its
 // modal geometry made a whole email report as a 1199×2187 fragment.
 const EMAIL_BODY_SIZE: Record<string, [number, number]> = {
   'SC26_0021 Flash Sale Apr 4': [1200, 5397],
-  'SC26_0058 Wk33 Bump': [1200, 6460],
   'SC26_0060 Wk35-36 Bump': [1200, 7185],
 };
 

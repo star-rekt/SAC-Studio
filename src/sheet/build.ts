@@ -122,6 +122,11 @@ function initialEmailVariant(templateId: string, send?: Send): string {
   if (templateId === 'sc26_0060')
     return /final\s+hours|last\s+chance|ends?\s+today/.test(angle) ? 'send-3'
       : /ends?\s+tomorrow/.test(angle) ? 'send-2' : 'send-1';
+  if (templateId === 'sc26_bump2')
+    return /final\s+hours|last\s+chance/.test(angle) ? 'design-5'
+      : /ends?\s+today|last\s+day/.test(angle) ? 'design-1'
+      : /ends?\s+tomorrow/.test(angle) ? 'design-4'
+      : /ends?\s+soon/.test(angle) ? 'design-3' : 'design-2';
   return 'base';
 }
 
@@ -137,14 +142,24 @@ function copyFor_(f: FormatSpec, scope: Scope, b: Brief, sends: Send[],
     const read = aiById.get(send.id);
     const c = read ? copyFromAi(read, b) : copyFor(send, b);
     const t = c.ticket;
+    // The brief's own last-chance wording ("LAST CHANCE", "FINAL HOURS") is
+    // kept; otherwise the phase, or the campaign's duration.
+    const urgency = c.angle === 'ends-today'
+      ? /last\s+chance|final\s+hours/i.test(c.marquee) ? c.marquee.toUpperCase() : 'ENDS TODAY'
+      : c.angle === 'ends-tomorrow' ? 'ENDS TOMORROW' : b.duration?.toUpperCase() || undefined;
     return {
       copy: {
         eyebrow: c.eyebrow, marquee: c.marquee, body: c.body, cta: c.cta,
         lead: t.kind === 'stacked' ? t.lead : t.lead,
         offer: t.kind === 'stacked' ? t.offer : t.offer,
         markdown: t.kind === 'stacked' ? t.markdown : undefined,
-        qualifier: t.foot, code: code || undefined,
-        ...(read?.copy?.headline ? { offer: read.copy.headline } : {}),
+        qualifier: t.foot, code: code || undefined, urgency,
+        bodyStated: !!(read?.copy?.body || (!read && send.assetCopy?.body)) || undefined,
+        // The parsed headline replaces the offer only when it states one (a
+        // figure: "Save an Extra 20%", "Up to 60% off"). A campaign name
+        // ("Spooky Good Deals") is a headline, not the offer: the offer stays
+        // the amount -- the line under EXTRA would otherwise read the name.
+        ...(read?.copy?.headline && /\d/.test(read.copy.headline) ? { offer: read.copy.headline } : {}),
         ...(read?.copy?.body ? { body: read.copy.body } : {}),
         ...(read?.copy?.cta ? { cta: read.copy.cta } : {}),
         ...(read?.copy?.subject ? { subject: read.copy.subject } : {}),
@@ -384,7 +399,7 @@ export function buildSheet(briefText: string, templateId: string, name?: string,
 
   const now = new Date().toISOString();
   return {
-    v: 8, id: `s${Date.now().toString(36)}`, createdAt: now, updatedAt: now,
+    v: 10, id: `s${Date.now().toString(36)}`, createdAt: now, updatedAt: now,
     name: name || brief.name || 'Untitled campaign',
     brief: { text: briefText, html, ai }, templateId: t.id, plan, assets, edits: EMPTY,
   };
@@ -396,8 +411,18 @@ export { pursuitOf };
  * Designer edits, identity and manual planning survive; only derived assets are
  * rebuilt. This is what removes reference-board phase duplicates from existing
  * campaigns as well as from newly created ones. */
+/** Removed templates, and the template their campaigns reopen on: AUTUMN20
+ *  (sc26_0058) was drawn from the same SC26_0058 board as Bump. */
+const RETIRED: Record<string, string> = { sc26_0058: 'sc26_0060', AUTUMN20: 'sc26_0060' };
+
 export function migrateSheet(old: Sheet | (Omit<Sheet, 'v'> & { v: number })): Sheet {
-  if (old.v >= 8) return old as Sheet;
+  // A campaign on a removed template is rebuilt on its replacement (brief,
+  // name and edits kept), rather than failing to open.
+  if (!templateById(old.templateId) && RETIRED[old.templateId])
+    old = { ...old, templateId: RETIRED[old.templateId], v: 0 };
+  // v9: a parsed headline with no figure no longer replaces the offer.
+  // v10: a send's urgency line, and whether the brief writes its body copy.
+  if (old.v >= 10) return old as Sheet;
   const next = buildSheet(old.brief.text, old.templateId, old.name,
                           old.brief.html, old.brief.ai, old.plan);
   const variants = new Map(old.assets.map(a => [a.id, a.variant]));

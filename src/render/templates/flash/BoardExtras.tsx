@@ -9,10 +9,10 @@ import { ZONE_LIST, photoFor } from '../../../model/compose';
 import { stack } from '../../../fonts';
 import type { Direction } from '../../../templates/directions';
 import { fitText, measureAndFit } from './textContracts';
+import { measuredContract } from '../../../model/textContracts';
 
 const photoByBoard: Record<string,string> = {
   sc26_0060:'/reference/bump-social-photo.jpg',
-  sc26_0058:'/reference/autumn-hero-photo.png',
   sc26_0021:'/reference/flash-hero-photo.png',
 };
 const ink = '#333', orange = '#f14222', green = '#79ac41';
@@ -37,7 +37,7 @@ function ThemePicture({asset,templateId,style}: {asset:SheetAsset;templateId:str
 
 export function DerivedTile({asset,templateId}: {asset:SheetAsset;templateId:string}) {
   const [w,h] = asset.size;
-  const autumn = templateId==='sc26_0058', flash = templateId==='sc26_0021';
+  const flash = templateId==='sc26_0021';
   return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
     background:'#24241b'}}>
     <ThemePicture asset={asset} templateId={templateId}
@@ -53,17 +53,19 @@ export function DerivedTile({asset,templateId}: {asset:SheetAsset;templateId:str
       // noticeably wider than the mixed-case source string once CSS
       // `text-transform: uppercase` is applied -- measuring the source
       // string as typed understated the real rendered width by ~28%.
-      const fontSize = measureAndFit(label.toUpperCase(), { family: stack('Quiet Sans'), weight: 800 },
-        { widthBudget: w * .78, fontMax: 118, fontMin: 36 });
-      return <Editable id={`${asset.id}/category`} style={{position:'absolute',left:65,top:h*.42,
+      const font = { family: stack('Quiet Sans'), weight: 800 };
+      const opts = { widthBudget: w * .78, fontMax: 118, fontMin: 36 };
+      const fontSize = measureAndFit(label.toUpperCase(), font, opts);
+      return <Editable id={`${asset.id}/category`} fit={measuredContract('board.category', font, opts)} style={{position:'absolute',left:65,top:h*.42,
         ...text(fontSize, {color:'#fff',textTransform:'uppercase',whiteSpace:'nowrap'})}}>{label}</Editable>;
     })()}
     {(() => { const cta = asset.copy.cta || 'Shop Now';
-      const { fontSize } = fitText(cta, 'section.cta', { widthBudget: w * .6, fontMax: 34 });
+      const fit = fitText(cta, 'section.cta', { widthBudget: w * .6, fontMax: 34 });
+      const { fontSize } = fit;
       return <div style={{position:'absolute',left:70,bottom:39,display:'inline-block'}}>
         <Media id={`${asset.id}/cta/mark`} src="/graphics/pill-tile.svg"
-          fill={(autumn||flash)?orange:green} style={{position:'absolute',inset:0}} />
-        <Editable id={`${asset.id}/cta`} style={{position:'relative',
+          fill={flash?orange:green} style={{position:'absolute',inset:0}} />
+        <Editable id={`${asset.id}/cta`} fit={fit.contract} style={{position:'relative',
           ...text(fontSize!,{color:'#fff',padding:'15px 23px',whiteSpace:'nowrap'})}}>{cta}</Editable>
       </div>; })()}
   </Ground>;
@@ -85,15 +87,17 @@ export function DerivedSite({asset,templateId,direction}: {
     // A flex row with no fixed widths on either child: a long message and a
     // long CTA have nothing stopping them from pushing each other off the
     // 1200-wide canvas (clipped by .sheet's own overflow:hidden, not shrunk).
-    const { fontSize: msgSize } = fitText(message, 'banner.message', { widthBudget: w * .72, fontMax: 31, fontMin: 20 });
-    const { fontSize: ctaSize } = fitText(cta, 'section.cta', { widthBudget: w * .2, fontMax: 31, fontMin: 18 });
+    const msgFit = fitText(message, 'banner.message', { widthBudget: w * .72, fontMax: 31, fontMin: 20 });
+    const { fontSize: msgSize } = msgFit;
+    const ctaFit = fitText(cta, 'section.cta', { widthBudget: w * .2, fontMax: 31, fontMin: 18 });
+    const { fontSize: ctaSize } = ctaFit;
     return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,
       background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',
       gap:18,padding:'0 24px',color:ink}}>
-      <Editable id={`${asset.id}/message`} style={text(msgSize!,{fontWeight:400,whiteSpace:'nowrap'})}>
+      <Editable id={`${asset.id}/message`} fit={msgFit.contract} style={text(msgSize!,{fontWeight:400,whiteSpace:'nowrap'})}>
         {message}
       </Editable>
-      <Editable id={`${asset.id}/cta`} style={text(ctaSize!,{color:accent,
+      <Editable id={`${asset.id}/cta`} fit={ctaFit.contract} style={text(ctaSize!,{color:accent,
         textDecoration:'underline',whiteSpace:'nowrap'})}>
         {cta}</Editable>
     </Ground>;

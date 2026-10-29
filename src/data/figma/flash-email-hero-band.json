@@ -1,0 +1,618 @@
+{
+ "source": {
+  "file": "7r3YL4Zko0WfQs5vnSO9OT",
+  "node": "248:711123",
+  "name": "Frame 3323"
+ },
+ "size": [
+  1200,
+  126
+ ],
+ "frame": {},
+ "layers": {
+  "248:711124": {
+   "name": "Rectangle 3573",
+   "type": "RECTANGLE",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "w": 1200,
+   "h": 126,
+   "fill": "#F14222",
+   "image": true,
+   "images": [
+    {
+     "ref": "c4718d422f2b5abf2624402ba628a9422e693f27",
+     "mode": "FILL",
+     "opacity": 0.22,
+     "blend": "SCREEN"
+    }
+   ]
+  },
+  "248:711125": {
+   "name": "Group 3394",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 124,
+   "y": 22,
+   "w": 952.44,
+   "h": 85.49
+  },
+  "248:711126": {
+   "name": "Osprey *NEW",
+   "type": "INSTANCE",
+   "parent": "248:711125",
+   "visible": true,
+   "x": 965.4,
+   "y": 22,
+   "w": 111.04,
+   "h": 85.49
+  },
+  "I248:711126;13300:40": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711126",
+   "visible": true,
+   "x": 1038.94,
+   "y": 103.23,
+   "w": 2.42,
+   "h": 3.11,
+   "fill": "#FFFFFF"
+  },
+  "I248:711126;13300:41": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711126",
+   "visible": true,
+   "x": 1037.26,
+   "y": 102.03,
+   "w": 5.6,
+   "h": 5.45,
+   "fill": "#FFFFFF"
+  },
+  "I248:711126;13300:42": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711126",
+   "visible": true,
+   "x": 1006.51,
+   "y": 22.23,
+   "w": 12.95,
+   "h": 17.99,
+   "fill": "#FFFFFF"
+  },
+  "I248:711126;13300:43": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711126",
+   "visible": true,
+   "x": 969.93,
+   "y": 28.54,
+   "w": 18.85,
+   "h": 18.7,
+   "fill": "#FFFFFF"
+  },
+  "I248:711126;13300:44": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711126",
+   "visible": true,
+   "x": 992.45,
+   "y": 23.23,
+   "w": 10.92,
+   "h": 18.66,
+   "fill": "#FFFFFF"
+  },
+  "I248:711126;13300:45": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711126",
+   "visible": true,
+   "x": 1057.83,
+   "y": 27.49,
+   "w": 18.6,
+   "h": 21.22,
+   "fill": "#FFFFFF"
+  },
+  "I248:711126;13300:46": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711126",
+   "visible": true,
+   "x": 1041.71,
+   "y": 24.07,
+   "w": 14.13,
+   "h": 19.38,
+   "fill": "#FFFFFF"
+  },
+  "I248:711126;13300:47": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711126",
+   "visible": true,
+   "x": 1022.93,
+   "y": 22,
+   "w": 16.05,
+   "h": 18.52,
+   "fill": "#FFFFFF"
+  },
+  "I248:711126;13300:48": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711126",
+   "visible": true,
+   "x": 965.4,
+   "y": 50.02,
+   "w": 110.09,
+   "h": 57.46,
+   "fill": "#FFFFFF"
+  },
+  "248:711127": {
+   "name": "Outdoor Research",
+   "type": "INSTANCE",
+   "parent": "248:711125",
+   "visible": true,
+   "x": 440.4,
+   "y": 26,
+   "w": 128.49,
+   "h": 76.5
+  },
+  "I248:711127;876:3720": {
+   "name": "Outdoor Research / White / Symbol",
+   "type": "VECTOR",
+   "parent": "248:711127",
+   "visible": true,
+   "x": 440.4,
+   "y": 26,
+   "w": 128.49,
+   "h": 76.5,
+   "fill": "#FFFFFF"
+  },
+  "248:711128": {
+   "name": "Mountain Hardwear",
+   "type": "INSTANCE",
+   "parent": "248:711125",
+   "visible": true,
+   "x": 696.4,
+   "y": 26,
+   "w": 141.62,
+   "h": 77.46
+  },
+  "I248:711128;12701:3": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711128",
+   "visible": true,
+   "x": 697.6,
+   "y": 26.12,
+   "w": 14.09,
+   "h": 14.68,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:4": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711128",
+   "visible": true,
+   "x": 757.81,
+   "y": 26.12,
+   "w": 12.15,
+   "h": 14.68,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:5": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711128",
+   "visible": true,
+   "x": 776.75,
+   "y": 26.12,
+   "w": 11.62,
+   "h": 14.68,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:6": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "248:711128",
+   "visible": true,
+   "x": 793.19,
+   "y": 26.12,
+   "w": 14.15,
+   "h": 14.68,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:7": {
+   "name": "Group",
+   "type": "GROUP",
+   "parent": "248:711128",
+   "visible": true,
+   "x": 696.4,
+   "y": 26,
+   "w": 141.62,
+   "h": 77.46
+  },
+  "I248:711128;12701:8": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 718.94,
+   "y": 26,
+   "w": 12.03,
+   "h": 14.92,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:9": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 813.9,
+   "y": 26.12,
+   "w": 3.18,
+   "h": 14.68,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:10": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 738.28,
+   "y": 26.12,
+   "w": 11.68,
+   "h": 14.8,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:11": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 825.6,
+   "y": 26.12,
+   "w": 12.15,
+   "h": 14.68,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:12": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 697.6,
+   "y": 26.12,
+   "w": 14.09,
+   "h": 14.68,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:13": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 757.81,
+   "y": 26.12,
+   "w": 12.15,
+   "h": 14.68,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:14": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 776.75,
+   "y": 26.12,
+   "w": 11.62,
+   "h": 14.68,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:15": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 793.19,
+   "y": 26.12,
+   "w": 14.15,
+   "h": 14.68,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:16": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 718.94,
+   "y": 26,
+   "w": 12.03,
+   "h": 14.92,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:17": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 813.9,
+   "y": 26.12,
+   "w": 3.18,
+   "h": 14.68,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:18": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 738.28,
+   "y": 26.12,
+   "w": 11.68,
+   "h": 14.8,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:19": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 825.6,
+   "y": 26.12,
+   "w": 12.15,
+   "h": 14.68,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:20": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 696.4,
+   "y": 46.54,
+   "w": 19.87,
+   "h": 27,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:21": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 737.81,
+   "y": 46.54,
+   "w": 38.26,
+   "h": 27.19,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:22": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 715.54,
+   "y": 46.33,
+   "w": 18.83,
+   "h": 27.43,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:23": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 721.29,
+   "y": 76.43,
+   "w": 16.67,
+   "h": 26.34,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:24": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 696.6,
+   "y": 76.59,
+   "w": 24.63,
+   "h": 26.01,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:25": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 757.86,
+   "y": 75.97,
+   "w": 18.82,
+   "h": 27.22,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:26": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 736.65,
+   "y": 76.13,
+   "w": 18.2,
+   "h": 26.76,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:27": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 791.04,
+   "y": 56.45,
+   "w": 27.07,
+   "h": 27.75,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:28": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 796.82,
+   "y": 62.3,
+   "w": 22.91,
+   "h": 23.49,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:29": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 781.37,
+   "y": 46.5,
+   "w": 39.61,
+   "h": 40.62,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:30": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 822.8,
+   "y": 48.32,
+   "w": 15.22,
+   "h": 36.08,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:31": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 816.28,
+   "y": 82.78,
+   "w": 9.37,
+   "h": 9.4,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:32": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 809.99,
+   "y": 76.49,
+   "w": 7.34,
+   "h": 7.39,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:33": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 824.57,
+   "y": 91.08,
+   "w": 7.29,
+   "h": 7.34,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:34": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 813.38,
+   "y": 94.71,
+   "w": 8.67,
+   "h": 8.75,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:35": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 805.08,
+   "y": 86.43,
+   "w": 8.68,
+   "h": 8.71,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:36": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 819.86,
+   "y": 71.45,
+   "w": 8.74,
+   "h": 8.81,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:37": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 828.15,
+   "y": 79.77,
+   "w": 8.74,
+   "h": 8.77,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:38": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 832.6,
+   "y": 97.98,
+   "w": 4.71,
+   "h": 4.72,
+   "fill": "#FFFFFF"
+  },
+  "I248:711128;12701:39": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I248:711128;12701:7",
+   "visible": true,
+   "x": 834.16,
+   "y": 99.07,
+   "w": 1.97,
+   "h": 2.44,
+   "fill": "#FFFFFF"
+  },
+  "248:711129": {
+   "name": "La Sportiva",
+   "type": "INSTANCE",
+   "parent": "248:711125",
+   "visible": true,
+   "x": 124,
+   "y": 26,
+   "w": 188.06,
+   "h": 76.51
+  },
+  "I248:711129;823:4057": {
+   "name": "La Sportiva / White / Symbol",
+   "type": "VECTOR",
+   "parent": "248:711129",
+   "visible": true,
+   "x": 124,
+   "y": 26,
+   "w": 188.06,
+   "h": 76.51,
+   "fill": "#FFFFFF"
+  }
+ },
+ "assets": {
+  "c4718d422f2b5abf2624402ba628a9422e693f27": {
+   "src": "/figma-assets/c4718d422f2b5abf2624402ba628a9422e693f27.jpg",
+   "w": 1200,
+   "h": 779
+  }
+ }
+}

@@ -124,6 +124,9 @@ span.media.removed{display:grid;place-items:center;border:2px dashed #F14222;
    whether one can carry type is a thing you see, not a thing you read */
 .panel ul.lib.photos{grid-template-columns:1fr 1fr 1fr;max-height:260px;overflow:auto}
 .panel ul.lib.photos button{padding:0;gap:0;overflow:hidden}
+.panel .chips{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}
+.panel .chips button{width:auto;margin:0;padding:3px 8px;font-size:11px;border-radius:999px;text-transform:capitalize}
+.panel .chips button.on{border-color:var(--ink);background:#fff}
 .panel ul.lib.photos img{height:48px;width:100%;object-fit:cover}
 .panel ul.lib.photos span{padding:3px 2px;font-size:9px}
 .panel ul.lib button[disabled]{opacity:.45;cursor:default}
@@ -354,3 +357,22 @@ body.shot #root{display:inline-block}
 /* the brush mark is selectable in its own right, like a run of type */
 .mark.on{outline:1px dashed #00000026;outline-offset:2px;cursor:pointer}
 .mark.picked{outline:2px solid var(--ink);outline-offset:2px}
+
+/* Copy fit panel (src/edit/CopyFit.tsx) */
+.copyfit-total{font-size:12px;font-weight:600;margin:0 0 6px}
+.copyfit-asset{margin:0 0 14px;padding:0 0 8px;border-bottom:1px solid #00000014}
+.copyfit-asset h5{margin:8px 0 6px;font-size:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:baseline}
+.copyfit-asset h5 small{font-weight:400;color:#00000088}
+.copyfit-asset h5 .copyfit-sum{color:#D93025;font-weight:600}
+.copyfit-row{display:grid;grid-template-columns:1fr;gap:3px;margin:0 0 8px;padding:6px 8px;border-radius:6px;background:#F7F5F2}
+.copyfit-row.contract{background:#FFF7D6}
+.copyfit-row.wrap{background:#FDE7E5}
+.copyfit-where{all:unset;cursor:pointer;font-size:11px;color:#00000099;display:flex;align-items:center;gap:6px}
+.copyfit-where i{width:8px;height:8px;border-radius:50%;flex:none}
+.copyfit-row textarea{width:100%;box-sizing:border-box;font:inherit;font-size:13px;resize:vertical;min-height:28px}
+.copyfit-box{display:flex;gap:6px;align-items:flex-start}
+.copyfit-restore{all:unset;cursor:pointer;font-size:11px;color:#00000099;text-decoration:underline;padding-top:6px}
+.copyfit-count{font-size:11px;color:#00000099}
+.copyfit-note{font-size:11px;color:#5a3b00}
+.copyfit-row.wrap .copyfit-note{color:#8a1c12}
+.copyfit-stage{position:fixed;left:-200000px;top:0;visibility:hidden;pointer-events:none}

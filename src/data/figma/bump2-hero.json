@@ -1,0 +1,313 @@
+{
+ "source": {
+  "file": "ioB3sP8LwBiTUPQN7jlF81",
+  "node": "569:10",
+  "name": "SC/v1/Board/SC26_0060 Wk35-36 Bump/hero-desktop"
+ },
+ "size": [
+  1440,
+  920
+ ],
+ "frame": {
+  "fill": "#FFFFFF"
+ },
+ "layers": {
+  "538:18820": {
+   "name": "Copy zone — 1440x248",
+   "type": "RECTANGLE",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "w": 1440,
+   "h": 931,
+   "fill": "#F5ECDF",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.4,
+     "blend": "DARKEN"
+    }
+   ]
+  },
+  "538:18821": {
+   "name": "Group 3498",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 55,
+   "y": 286,
+   "w": 1334,
+   "h": 595,
+   "radius": 13
+  },
+  "538:18822": {
+   "name": "Image 1 (hero) — 469x656",
+   "type": "RECTANGLE",
+   "parent": "538:18821",
+   "visible": true,
+   "x": 55,
+   "y": 435,
+   "w": 431,
+   "h": 446,
+   "fill": "#F3D9A4",
+   "image": true,
+   "crop": [
+    [
+     0.9068,
+     0,
+     0.0466
+    ],
+    [
+     0,
+     0.62589,
+     0.29978
+    ]
+   ],
+   "images": [
+    {
+     "ref": "e878ac1c31fa2f7ceae5dae448f8c6b2e2966f02",
+     "mode": "STRETCH"
+    }
+   ],
+   "radius": 13
+  },
+  "538:18823": {
+   "name": "Image 1 (hero) — 469x656",
+   "type": "RECTANGLE",
+   "parent": "538:18821",
+   "visible": true,
+   "x": 517,
+   "y": 286,
+   "w": 414,
+   "h": 595,
+   "fill": "#F3D9A4",
+   "image": true,
+   "crop": [
+    [
+     0.77504,
+     0,
+     0.18027
+    ],
+    [
+     0,
+     0.74297,
+     0.25348
+    ]
+   ],
+   "images": [
+    {
+     "ref": "42c810113a41cc4a68ef45e3ca9ea38114c9bb3d",
+     "mode": "STRETCH"
+    }
+   ],
+   "radius": 13
+  },
+  "538:18824": {
+   "name": "Image 1 (hero) — 469x656",
+   "type": "RECTANGLE",
+   "parent": "538:18821",
+   "visible": true,
+   "x": 962,
+   "y": 286,
+   "w": 427,
+   "h": 305,
+   "fill": "#F3D9A4",
+   "image": true,
+   "crop": [
+    [
+     0.67295,
+     0.04421,
+     0.14399
+    ],
+    [
+     -0.09286,
+     0.72119,
+     0.1981
+    ]
+   ],
+   "images": [
+    {
+     "ref": "33160038442e894699350d05d18f90381e5168ae",
+     "mode": "STRETCH"
+    }
+   ],
+   "radius": 13
+  },
+  "538:18825": {
+   "name": "Image 1 (hero) — 469x656",
+   "type": "RECTANGLE",
+   "parent": "538:18821",
+   "visible": true,
+   "x": 962,
+   "y": 622,
+   "w": 427,
+   "h": 259,
+   "fill": "#F3D9A4",
+   "image": true,
+   "crop": [
+    [
+     0.85376,
+     0,
+     0.00072
+    ],
+    [
+     0,
+     0.75668,
+     0.24332
+    ]
+   ],
+   "images": [
+    {
+     "ref": "34c59f23b14cab3e91ad10983aed9dd84f6680b7",
+     "mode": "STRETCH"
+    }
+   ],
+   "radius": 13
+  },
+  "538:18826": {
+   "name": "Group 3500",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 52,
+   "y": 48,
+   "w": 1314.03,
+   "h": 348,
+   "radius": 13
+  },
+  "538:18827": {
+   "name": "Headline",
+   "type": "TEXT",
+   "parent": "538:18826",
+   "visible": true,
+   "x": 52,
+   "y": 85.43,
+   "w": 710,
+   "h": 117,
+   "fill": "#333333",
+   "text": {
+    "chars": "EXTRA 20% OFF",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 97.12,
+    "lineHeight": 116.54,
+    "letterSpacing": -0.87,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:18828": {
+   "name": "Subhead",
+   "type": "TEXT",
+   "parent": "538:18826",
+   "visible": true,
+   "x": 52,
+   "y": 192.29,
+   "w": 693.7,
+   "h": 72,
+   "fill": "#333333",
+   "text": {
+    "chars": "CODE CHILLY20",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 60.02,
+    "lineHeight": 72.03,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "HEIGHT",
+    "trim": false
+   }
+  },
+  "538:18829": {
+   "name": "Frame 2203",
+   "type": "FRAME",
+   "parent": "538:18826",
+   "visible": true,
+   "x": 56,
+   "y": 300,
+   "w": 323,
+   "h": 96,
+   "fill": "#333333",
+   "radius": 13
+  },
+  "538:18830": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:18829",
+   "visible": true,
+   "x": 111,
+   "y": 332,
+   "w": 213,
+   "h": 32,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Sofia Pro",
+    "weight": 800,
+    "size": 47.05,
+    "lineHeight": 54.1,
+    "letterSpacing": -0.47,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:18831": {
+   "name": "Eyebrow",
+   "type": "TEXT",
+   "parent": "538:18826",
+   "visible": true,
+   "x": 56,
+   "y": 48,
+   "w": 1310.03,
+   "h": 44,
+   "fill": "#F14222",
+   "text": {
+    "chars": "4 DAYS ONLY",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 36.43,
+    "lineHeight": 43.72,
+    "letterSpacing": 6.55,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "HEIGHT",
+    "trim": false
+   }
+  }
+ },
+ "assets": {
+  "05631e129c31da42d3d954c5718d6f692edd363c": {
+   "src": "/figma-assets/05631e129c31da42d3d954c5718d6f692edd363c.png",
+   "w": 612,
+   "h": 408
+  },
+  "e878ac1c31fa2f7ceae5dae448f8c6b2e2966f02": {
+   "src": "/figma-assets/e878ac1c31fa2f7ceae5dae448f8c6b2e2966f02.jpg",
+   "w": 951,
+   "h": 1426
+  },
+  "42c810113a41cc4a68ef45e3ca9ea38114c9bb3d": {
+   "src": "/figma-assets/42c810113a41cc4a68ef45e3ca9ea38114c9bb3d.jpg",
+   "w": 1068,
+   "h": 1602
+  },
+  "33160038442e894699350d05d18f90381e5168ae": {
+   "src": "/figma-assets/33160038442e894699350d05d18f90381e5168ae.jpg",
+   "w": 2000,
+   "h": 1333
+  },
+  "34c59f23b14cab3e91ad10983aed9dd84f6680b7": {
+   "src": "/figma-assets/34c59f23b14cab3e91ad10983aed9dd84f6680b7.jpg",
+   "w": 1129,
+   "h": 748
+  }
+ }
+}

@@ -16,16 +16,23 @@
     "check:boards": "node scripts/check-three-boards.mjs",
     "check:export": "node --import tsx scripts/check-figma-export.ts",
     "check:graphics": "node --import tsx scripts/check-graphics.ts",
-    "check": "npm run typecheck && npm run check:templates && npm run check:boards && npm run check:export && npm run check:graphics && npm run build",
+    "check:autoframe": "node --import tsx scripts/check-autoframe.ts",
+    "check:copyfit": "node --import tsx scripts/check-copyfit.ts",
+    "check": "npm run typecheck && npm run check:templates && npm run check:boards && npm run check:export && npm run check:graphics && npm run check:autoframe && npm run check:copyfit && npm run build",
     "build": "tsc -b && vite build",
     "build:desktop": "npm run build && node scripts/build-desktop.mjs && npm --prefix plugin run build",
     "desktop": "npm run build:desktop && electron .",
     "package:mac": "npm run build:desktop && node scripts/seed-content.mjs && electron-builder --mac pkg",
     "package:win": "npm run build:desktop && node scripts/seed-content.mjs && electron-builder --win nsis",
     "preview": "vite preview",
-    "preview:bump": "vite --config vite.bump-preview.config.ts"
+    "preview:bump": "vite --config vite.bump-preview.config.ts",
+    "figma:pull": "node --import tsx scripts/figma-pull.ts",
+    "check:positions": "node scripts/check-positions.mjs",
+    "positions:bump": "vite --config vite.bump-positions.config.ts",
+    "check:positions:bump": "POSITIONS_URL=http://localhost:5182/ node scripts/check-positions.mjs"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "1.1.1",
     "isomorphic-git": "^1.44.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

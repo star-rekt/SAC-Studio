@@ -15,14 +15,23 @@ import { Swatches, SizeRow, PositionRow, TextRow, GroupRow } from './edit/Contro
 import { Marquee } from './edit/Marquee';
 import { MediaControls, LibraryPanel } from './edit/Media';
 import { isMediaSlot } from './model/media';
+
+/** Whether the selected layer is drawn by <Picture> (a photo that can be
+ *  swapped and cropped), whatever its id is called -- a collage's
+ *  `image-3`, a banner's `category/2/image`. A library mark or logo is
+ *  `.pic.media`, and gets the media controls instead. */
+const isPicture = (id: string) =>
+  !!document.querySelector(`[data-id="${CSS.escape(id)}"]`)?.matches('.pic:not(.media)');
 import type { Item } from './model/media';
 import { listUserMedia, addUserMedia, retagUserMedia, deleteUserMedia,
          type UserMedia } from './model/userMedia';
+import { analysisFor } from './model/analysePhoto';
 import { outlookFor } from './templates/spec';
 import { fontCheck, type FontReport } from './fonts';
 import { listSessions, loadSession, saveSession, useAutosave, exportForFigma, downloadFigmaFile,
          type ExportReport } from './session/store';
 import { readBriefWithAi } from './ai/client';
+import { CopyPanel } from './edit/CopyFit';
 import { OpenDialog, NewDialog } from './session/Dialogs';
 import TYPE from './data/typography.json';
 import BRIEF_TEXT from './data/brief.txt?raw';
@@ -58,7 +67,7 @@ export default function App() {
   const [panel, setPanel] = useState(false);
   const [zoom, setZoom] = useState(0.34);
   const [tab, setTab] = useState('email-hero');
-  const [side, setSide] = useState<'design' | 'library' | 'claude'>('design');
+  const [side, setSide] = useState<'design' | 'library' | 'claude' | 'copy'>('design');
   const [judging, setJudging] = useState<string | null>(null);
   const [booting, setBooting] = useState(true);
   /** Whether this campaign is actually on disk. Until it is, the badge must
@@ -269,6 +278,8 @@ export default function App() {
     addLibrary: async (item: Parameters<typeof addUserMedia>[0]) => {
       const saved = await addUserMedia(item);
       setLibrary(items => [...items, saved]);
+      // Analysed now, in the background, so placing it later costs nothing.
+      if (saved.kind === 'photo') void analysisFor(saved.file);
       return saved;
     },
     retagLibrary: async (id: string, tags: string[]) => {
@@ -459,7 +470,7 @@ export default function App() {
               <section key={a.id} className="col">
                 <h3>{a.label}<small>{a.format} · {a.size[0]}×{
                   a.format === 'email-hero' && sendIndex >= 0
-                    ? emailVariant(sheet.templateId, a.variant, sendIndex)?.height ?? a.size[1]
+                    ? (v => v?.heroHeight ?? v?.height)(emailVariant(sheet.templateId, a.variant, sendIndex)) ?? a.size[1]
                     : a.size[1]}</small></h3>
                 {a.scope.send && (a.format === 'email-hero' || a.format === 'email-body') &&
                   (EMAIL_VARIANTS[sheet.templateId]?.length ?? 0) > 1 &&
@@ -504,6 +515,8 @@ export default function App() {
           onCreate={(brief, html, tid, name, ai) => {
             const fresh = buildSheet(brief, tid, name, html, ai);
             setSheet(fresh); setTemplateId(tid); setJudging(null);
+            // A new campaign opens on Copy fit: what fits where, before any design work.
+            setPanel(true); setSide('copy');
             saveSession(fresh).then(() => setOnDisk(true), () => setOnDisk(false));
           }} />
       )}
@@ -522,9 +535,20 @@ export default function App() {
             }
           }}>Library</button>
           <button className={side === 'claude' ? 'on' : ''} onClick={() => setSide('claude')}>Claude</button>
+          <button className={side === 'copy' ? 'on' : ''} onClick={() => setSide('copy')}>Copy</button>
         </div>
 
-        {side === 'library' ? (
+        {side === 'copy' ? (
+          <CopyPanel assets={shown} tab={tab}
+            render={a => <One asset={a} doc={doc} template={template} outlook={outlook}
+              direction={sheet.direction} formatDirections={sheet.formatDirections} />}
+            onJump={(a, field) => {
+              // Show the field on the canvas without leaving this panel.
+              setTab(a.format); select(field);
+              requestAnimationFrame(() => document.querySelector(`.board [data-id="${CSS.escape(field)}"]`)
+                ?.scrollIntoView({ block: 'center', behavior: 'smooth' }));
+            }} />
+        ) : side === 'library' ? (
           <LibraryPanel selected={selected}
             assets={shown.map(asset => ({ id: asset.id, label: asset.label,
               size: asset.size, custom: asset.custom }))} />
@@ -549,6 +573,7 @@ export default function App() {
             <h4>Selected</h4>
             <code>{selected}</code>
             {selected.includes('/pic') || selected.includes('/el/') || selected.endsWith('/photo') || selected.endsWith('/ground')
+              || isPicture(selected)
               ? <PicturePanel id={selected} />
               : selected.endsWith('/fill')
               ? <>

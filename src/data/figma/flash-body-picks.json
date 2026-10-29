@@ -1,0 +1,123 @@
+{
+ "source": {
+  "file": "7r3YL4Zko0WfQs5vnSO9OT",
+  "node": "248:711133",
+  "name": "Frame 2644"
+ },
+ "size": [
+  924.27,
+  1035
+ ],
+ "frame": {},
+ "layers": {
+  "248:711134": {
+   "name": "Frame 2414",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 48.04,
+   "w": 924.27,
+   "h": 442
+  },
+  "248:711135": {
+   "name": "Variant Image",
+   "type": "RECTANGLE",
+   "parent": "248:711134",
+   "visible": true,
+   "x": 0,
+   "y": 48.04,
+   "w": 434.68,
+   "h": 442,
+   "image": true,
+   "images": [
+    {
+     "ref": "4d8216151e5b00e23e0ed5d0c03a85e2552928b9",
+     "mode": "FILL"
+    }
+   ],
+   "opacity": 0.3
+  },
+  "248:711136": {
+   "name": "Variant Image",
+   "type": "RECTANGLE",
+   "parent": "248:711134",
+   "visible": true,
+   "x": 489.59,
+   "y": 48.04,
+   "w": 434.68,
+   "h": 442,
+   "image": true,
+   "images": [
+    {
+     "ref": "4d8216151e5b00e23e0ed5d0c03a85e2552928b9",
+     "mode": "FILL"
+    }
+   ],
+   "opacity": 0.3
+  },
+  "248:711137": {
+   "name": "Group 2643",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 544.95,
+   "w": 924.27,
+   "h": 442
+  },
+  "248:711138": {
+   "name": "Frame 2415",
+   "type": "FRAME",
+   "parent": "248:711137",
+   "visible": true,
+   "x": 0,
+   "y": 544.95,
+   "w": 924.27,
+   "h": 442
+  },
+  "248:711139": {
+   "name": "Variant Image",
+   "type": "RECTANGLE",
+   "parent": "248:711138",
+   "visible": true,
+   "x": 0,
+   "y": 544.95,
+   "w": 434.68,
+   "h": 442,
+   "image": true,
+   "images": [
+    {
+     "ref": "4d8216151e5b00e23e0ed5d0c03a85e2552928b9",
+     "mode": "FILL"
+    }
+   ],
+   "opacity": 0.3
+  },
+  "248:711140": {
+   "name": "Variant Image",
+   "type": "RECTANGLE",
+   "parent": "248:711138",
+   "visible": true,
+   "x": 489.59,
+   "y": 544.95,
+   "w": 434.68,
+   "h": 442,
+   "image": true,
+   "images": [
+    {
+     "ref": "4d8216151e5b00e23e0ed5d0c03a85e2552928b9",
+     "mode": "FILL"
+    }
+   ],
+   "opacity": 0.3
+  }
+ },
+ "assets": {
+  "4d8216151e5b00e23e0ed5d0c03a85e2552928b9": {
+   "src": "/figma-assets/4d8216151e5b00e23e0ed5d0c03a85e2552928b9.jpg",
+   "w": 884,
+   "h": 884
+  }
+ }
+}

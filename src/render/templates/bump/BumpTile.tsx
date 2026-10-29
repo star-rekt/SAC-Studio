@@ -3,6 +3,8 @@
 import type { SheetAsset } from '../../../sheet/types';
 import { Editable, Ground } from '../../../edit/Editable';
 import { stack } from '../../../fonts';
+import { useEdits, textOf } from '../../../edit/store';
+import { fitText } from '../../../model/textContracts';
 
 export function BumpTile({ asset }: { asset: SheetAsset }) {
   const [w,h] = asset.size;
@@ -10,13 +12,19 @@ export function BumpTile({ asset }: { asset: SheetAsset }) {
     .replace(/\bAPPAREL\b/g,'APPAREL').split(/\s+/);
   const line1 = words.length === 1 ? words[0] : words.slice(0,Math.ceil(words.length/2)).join(' ');
   const line2 = words.length === 1 ? '' : words.slice(Math.ceil(words.length/2)).join(' ');
-  const longest = Math.max(line1.length,line2.length);
-  const fontSize = Math.min(163, Math.floor(1330 / Math.max(4,longest*.69)));
+  const text = line2 ? `${line1}\n${line2}` : line1;
+  // Its contract: 163px when each line fits 1330px, shrinking to fit the
+  // longer line (the live one, once edited), at most to 60%.
+  const { edits } = useEdits();
+  const fit = textOf(edits, `${asset.id}/category`, text).split('\n')
+    .map(line => fitText(line, 'tile.category', { widthBudget: 1330, fontMax: 163, fontMin: 98, charFactor: .69 }))
+    .reduce((a, b) => b.fontSize < a.fontSize ? b : a);
+  const fontSize = fit.fontSize;
   return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
     background:'#f14222',backgroundImage:'radial-gradient(#1f1f1f55 .95px, transparent 1.3px)',
     backgroundSize:'7px 7px',display:'grid',placeItems:'center'}}>
-    <Editable id={`${asset.id}/category`} style={{fontFamily:stack('Quiet Sans'),
+    <Editable id={`${asset.id}/category`} fit={fit.contract} style={{fontFamily:stack('Quiet Sans'),
       fontWeight:800,fontSize,color:'#fff',textAlign:'center',whiteSpace:'pre-line',
-      lineHeight:.92,letterSpacing:-3}}>{line2 ? `${line1}\n${line2}` : line1}</Editable>
+      lineHeight:.92,letterSpacing:-3}}>{text}</Editable>
   </Ground>;
 }

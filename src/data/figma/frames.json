@@ -1,0 +1,230 @@
+[
+  {
+    "slug": "flash-hero",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711465",
+    "note": "SC26_0021 Flash Sale Apr 4, hero desktop (launch)"
+  },
+  {
+    "slug": "flash-email-hero",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711098",
+    "note": "SC26_0021 Flash Sale Apr 4, Email 1 (launch) hero"
+  },
+  {
+    "slug": "flash-email-tomorrow",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711329",
+    "note": "SC26_0021 Flash Sale, Email 2 (ends tomorrow) hero; 711331 sits wholly under the photo card 711332",
+    "skip": [
+      "248:711331"
+    ]
+  },
+  {
+    "slug": "flash-email-today",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711246",
+    "note": "SC26_0021 Flash Sale, Email 3 (ends today) hero"
+  },
+  {
+    "slug": "flash-social-1x1",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711520",
+    "note": "SC26_0021 Flash Sale, paid social 1x1"
+  },
+  {
+    "slug": "flash-social-4x5",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711588",
+    "note": "SC26_0021 Flash Sale, paid social 4x5"
+  },
+  {
+    "slug": "flash-social-9x16",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711656",
+    "note": "SC26_0021 Flash Sale, paid social 9x16"
+  },
+  {
+    "slug": "flash-email-hero-band",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711123",
+    "note": "SC26_0021 Flash Sale, Email 1 brand strip under the hero"
+  },
+  {
+    "slug": "flash-body-categories",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711181",
+    "note": "SC26_0021 Flash Sale, Email 1 body: Top Categories: heading and six category rows"
+  },
+  {
+    "slug": "flash-body-heading",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711130",
+    "note": "SC26_0021 Flash Sale, Email 1 body: section heading (\"Flash Sale Top Picks\")"
+  },
+  {
+    "slug": "flash-body-picks",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711133",
+    "note": "SC26_0021 Flash Sale, Email 1 body: Top Picks product grid"
+  },
+  {
+    "slug": "flash-body-picks-cta",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711141",
+    "note": "SC26_0021 Flash Sale, Email 1 body: Top Picks \"See More\" button band"
+  },
+  {
+    "slug": "flash-body-deal-left",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711144",
+    "note": "SC26_0021 Flash Sale, Email 1 body: More Current Deals banner, copy on the left",
+    "skip": [
+      "248:711147",
+      "248:711149"
+    ]
+  },
+  {
+    "slug": "flash-body-deal-right",
+    "file": "7r3YL4Zko0WfQs5vnSO9OT",
+    "node": "248:711162",
+    "note": "SC26_0021 Flash Sale, Email 1 body: More Current Deals banner, copy on the right",
+    "skip": [
+      "248:711163",
+      "248:711165",
+      "248:711167"
+    ]
+  },
+  {
+    "slug": "bump-hero",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "569:15",
+    "note": "SC26_0058 Wk33 Bump, hero desktop (launch) -- the design bump/Hero.tsx renders"
+  },
+  {
+    "slug": "bump-social-1x1",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "569:16",
+    "note": "SC26_0058 Wk33 Bump, paid social 1x1 -- the design bump/Social1x1.tsx renders"
+  },
+  {
+    "slug": "bump-social-4x5",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "569:17",
+    "note": "SC26_0058 Wk33 Bump, paid social 4x5 -- the design bump/Social4x5.tsx renders"
+  },
+  {
+    "slug": "bump-social-9x16",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "569:18",
+    "note": "SC26_0058 Wk33 Bump, paid social 9x16 -- the design bump/Social9x16.tsx renders"
+  },
+  {
+    "slug": "bump-email-1",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "538:21930",
+    "note": "SC26_0058 Wk33 Bump, send 1 (3 days only) email hero, 826 -- bump/EmailHeader1.tsx"
+  },
+  {
+    "slug": "bump-email-2",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "538:22079",
+    "note": "SC26_0058 Wk33 Bump, send 2 (ends tomorrow) email hero, 1125 -- bump/EmailHero.tsx"
+  },
+  {
+    "slug": "bump-email-3",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "538:22190",
+    "note": "SC26_0058 Wk33 Bump, send 3 (last chance) email hero, 929 -- bump/EmailHeader3.tsx"
+  },
+  {
+    "slug": "bump-body-1",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "585:23",
+    "note": "SC26_0058 Wk33 Bump, send 1 email body (sections under the hero); metadata and hero sections skipped (the hero has its own frame)",
+    "skip": [
+      "538:21915",
+      "538:21930"
+    ]
+  },
+  {
+    "slug": "bump-body-2",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "583:4",
+    "note": "SC26_0058 Wk33 Bump, send 2 email body (sections under the hero); metadata and hero sections skipped (the hero has its own frame)",
+    "skip": [
+      "538:22064",
+      "538:22079"
+    ]
+  },
+  {
+    "slug": "bump-body-3",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "585:25",
+    "note": "SC26_0058 Wk33 Bump, send 3 email body (sections under the hero); metadata and hero sections skipped (the hero has its own frame)",
+    "skip": [
+      "538:22175",
+      "538:22190"
+    ]
+  },
+  {
+    "slug": "bump2-hero",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "569:10",
+    "note": "Bump 2 (cream and collage board, page 538:15528), hero desktop, launch"
+  },
+  {
+    "slug": "bump2-hero-ends",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "582:2",
+    "note": "Bump 2 (cream and collage board, page 538:15528), hero desktop, ends today"
+  },
+  {
+    "slug": "bump2-social-1x1",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "569:7",
+    "note": "Bump 2 (cream and collage board), paid social 1x1"
+  },
+  {
+    "slug": "bump2-social-4x5",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "569:8",
+    "note": "Bump 2 (cream and collage board), paid social 4x5"
+  },
+  {
+    "slug": "bump2-social-9x16",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "569:9",
+    "note": "Bump 2 (cream and collage board), paid social 9x16"
+  },
+  {
+    "slug": "bump2-body-1",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "583:3",
+    "note": "Bump 2 (cream and collage board), email design 1 (hero, sections and footer in one frame)"
+  },
+  {
+    "slug": "bump2-body-2",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "585:11",
+    "note": "Bump 2 (cream and collage board), email design 2 (hero, sections and footer in one frame)"
+  },
+  {
+    "slug": "bump2-body-3",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "585:12",
+    "note": "Bump 2 (cream and collage board), email design 3 (hero, sections and footer in one frame)"
+  },
+  {
+    "slug": "bump2-body-4",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "585:13",
+    "note": "Bump 2 (cream and collage board), email design 4 (hero, sections and footer in one frame)"
+  },
+  {
+    "slug": "bump2-body-5",
+    "file": "ioB3sP8LwBiTUPQN7jlF81",
+    "node": "585:14",
+    "note": "Bump 2 (cream and collage board), email design 5 (hero, sections and footer in one frame)"
+  }
+]

@@ -7,21 +7,31 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useEdits, picOf, FRESH_PIC, type Pic } from './store';
 import { asDataUrl } from './Media';
+import { FigmaGallery } from './FigmaGallery';
 import { ZONE_LIST, photoUrl, standIn, type Zone } from '../model/compose';
 import { byKind, PHOTOS } from '../model/media';
 import { canvasZoom } from './Editable';
+import { SMART_PLACEMENT, PLACEMENT_VERSION } from '../model/autoFrame';
+import { autoPlace, copyIdsFor, srcKey } from './autoPlace';
 
 const byId = new Map(ZONE_LIST.map(z => [z.id, z]));
 export const SuggestedImage = createContext<string | undefined>(undefined);
 
 export function Picture({ id, zone, style, label, focus, initialSrc,
-  initialScale = 1, zoomOrigin }: {
+  initialScale = 1, initialRotate = 0, zoomOrigin, slot }: {
   id: string; zone: Zone; style?: React.CSSProperties; label?: string;
+  /** A shaped slot (a stepped window, a collage tile, a banner): smart
+   *  placement frames the photo within the slot's own visible shape rather
+   *  than the sheet (autoPlace.tsx). */
+  slot?: boolean;
   /** Exact board asset shown until the designer chooses another photograph. */
   initialSrc?: string;
   /** Board crop before a designer makes a relative zoom edit. */
   initialScale?: number;
   zoomOrigin?: { x: number; y: number };
+  /** A board photo turned inside its frame (degrees): applies to that photo
+   *  only -- a swapped-in or uploaded one starts upright. */
+  initialRotate?: number;
   /** Where to sit the crop before anyone has dragged it. Square slots take
    *  the middle; a shaped one says so, because the part of a photograph a
    *  mask keeps is not the part a centred crop shows. */
@@ -71,6 +81,32 @@ export function Picture({ id, zone, style, label, focus, initialSrc,
       tx: (50 - p.x) / 100 * overflowX, ty: (50 - p.y) / 100 * overflowY };
   })() : null;
 
+  // Smart placement runs once per src, after its natural size is known, for:
+  //  - a photo flagged `auto` (a swap, an upload, the Auto-place button), and
+  //    again whenever placement itself has improved since (PLACEMENT_VERSION);
+  //  - a photo the brief chose (not the template's own designed photo) that
+  //    nobody has touched yet.
+  // Any hand crop clears `auto`, so a designer's crop is never redone.
+  const untouched = !api.edits.pic[id];
+  const briefPhoto = untouched && primary && src !== initialSrc;
+  useEffect(() => {
+    if (!SMART_PLACEMENT || !natural || !box.current || zoomOrigin) return;
+    const stale = p.auto && (p.autoFor !== srcKey(src) || p.autoV !== PLACEMENT_VERSION);
+    if (!stale && !briefPhoto) return;
+    void autoPlace({ id, box: box.current, natural, initialScale, src, api });
+  }, [p.auto, p.autoFor, p.autoV, briefPhoto, src, natural]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Follow: while a designer crops by hand, the copy re-places itself around
+  // that crop, once per animation frame -- the photo itself is never moved.
+  useEffect(() => {
+    if (!SMART_PLACEMENT || !p.follow || p.auto || !natural || !box.current || zoomOrigin) return;
+    const frame = requestAnimationFrame(() => {
+      if (box.current) void autoPlace({ id, box: box.current, natural, initialScale, src, api,
+        fixed: { x: p.x, y: p.y, scale: p.scale } });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [p.x, p.y, p.scale, p.follow, p.auto, natural]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const drag = (e: React.MouseEvent) => {
     if (!on) return;
     e.preventDefault(); e.stopPropagation();
@@ -92,7 +128,7 @@ export function Picture({ id, zone, style, label, focus, initialSrc,
       const dx = (m.clientX - x0) / screenZoom, dy = (m.clientY - y0) / screenZoom;
       api.setPic(id, {
         x: !overflowX ? px : Math.max(0, Math.min(100, px - (dx / overflowX) * 100)),
-        y: !overflowY ? py : Math.max(0, Math.min(100, py - (dy / overflowY) * 100)) });
+        y: !overflowY ? py : Math.max(0, Math.min(100, py - (dy / overflowY) * 100)), auto: false });
     };
     const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
@@ -100,16 +136,17 @@ export function Picture({ id, zone, style, label, focus, initialSrc,
 
   const wheel = (e: React.WheelEvent) => {
     if (!on || p.hidden) return;
-    api.setPic(id, { scale: Math.max(1, Math.min(3, p.scale - e.deltaY * 0.002)) });
+    // Down to the plain cover fit -- below 1 when the template starts zoomed in.
+    api.setPic(id, { scale: Math.max(Math.min(1, 1 / initialScale), Math.min(3, p.scale - e.deltaY * 0.002)), auto: false });
   };
 
   const filter = `brightness(${p.brightness}) contrast(${p.contrast}) saturate(${p.saturate})`;
 
   return (
-    <div ref={box} data-id={id}
+    <div ref={box} data-id={id} data-slot={slot ? '' : undefined}
          className={'pic' + (on ? ' on' : '') + (api.selected === id ? ' picked' : '')
            + (p.hidden ? ' removed' : '')}
-         style={{ ...style, background: p.hidden ? 'transparent'
+         style={{ pointerEvents: 'auto', ...style, background: p.hidden ? 'transparent'
            : initialSrc && !missing ? 'transparent' : standIn(z) }}
          onMouseDown={drag} onWheel={wheel}
          title={on ? p.hidden ? 'Image removed · click to restore from the editor'
@@ -133,7 +170,8 @@ export function Picture({ id, zone, style, label, focus, initialSrc,
            } : geometry ? {
              position: 'absolute', left: '50%', top: '50%', objectFit: 'cover',
              width: geometry.renderW, height: geometry.renderH,
-             transform: `translate(calc(-50% + ${geometry.tx}px), calc(-50% + ${geometry.ty}px))`,
+             transform: `translate(calc(-50% + ${geometry.tx}px), calc(-50% + ${geometry.ty}px))`
+               + (initialRotate && src === initialSrc ? ` rotate(${initialRotate}deg)` : ''),
              filter, opacity: missing ? 0 : 1,
            } : { filter, opacity: 0 } /* first paint, before natural size is known */} />}
       {p.hidden && on && <span className="removed-label">Image removed</span>}
@@ -148,6 +186,9 @@ export function Picture({ id, zone, style, label, focus, initialSrc,
   );
 }
 
+// A swapped-in photo is framed automatically; `autoFor` cleared so it re-solves.
+const AUTO: Partial<Pic> = SMART_PLACEMENT ? { auto: true, autoFor: undefined } : {};
+
 /** The controls for whichever picture is selected. */
 export function PicturePanel({ id }: { id: string }) {
   const api = useEdits();
@@ -157,7 +198,8 @@ export function PicturePanel({ id }: { id: string }) {
     <label key={k}>
       <span>{name}<b>{(p[k] as number).toFixed(2)}</b></span>
       <input type="range" min={lo} max={hi} step={step} value={p[k] as number}
-             onChange={e => api.setPic(id, { [k]: Number(e.target.value) } as Partial<Pic>)} />
+             onChange={e => api.setPic(id, { [k]: Number(e.target.value),
+               ...(k === 'scale' || k === 'x' || k === 'y' ? { auto: false } : null) } as Partial<Pic>)} />
     </label>
   );
   return (
@@ -174,22 +216,37 @@ export function PicturePanel({ id }: { id: string }) {
                 x/y/scale reset alongside the swap, same as a fresh upload. */}
             <button title={`${i.name} · ${i.note ?? ''}`}
                     onClick={() => api.setPic(id, PHOTOS.some(p => p.id === i.id)
-                      ? { zone: i.id, url: undefined, hidden: false, x: FRESH_PIC.x, y: FRESH_PIC.y, scale: FRESH_PIC.scale }
-                      : { url: i.file, zone: undefined, hidden: false, x: FRESH_PIC.x, y: FRESH_PIC.y, scale: FRESH_PIC.scale })}>
+                      ? { zone: i.id, url: undefined, hidden: false, x: FRESH_PIC.x, y: FRESH_PIC.y, scale: FRESH_PIC.scale, ...AUTO }
+                      : { url: i.file, zone: undefined, hidden: false, x: FRESH_PIC.x, y: FRESH_PIC.y, scale: FRESH_PIC.scale, ...AUTO })}>
               <img src={i.file} alt="" loading="lazy" />
               <span>{i.name}</span>
             </button>
           </li>
         ))}
       </ul>
+      <FigmaGallery onPick={url => api.setPic(id,
+        { url, zone: undefined, hidden: false, x: FRESH_PIC.x, y: FRESH_PIC.y, scale: FRESH_PIC.scale, ...AUTO })} />
       <button onClick={() => file.current?.click()}>Replace with a file…</button>
       <input ref={file} type="file" accept="image/*" hidden onChange={e => {
         const f = e.target.files?.[0]; e.target.value = ''; if (!f) return;
         // Not createObjectURL: that blob: reference dies with the document, so
         // the upload was lost on reload and silently dropped from the export.
         void asDataUrl(f).then(url => api.setPic(id,
-          { url, zone: undefined, hidden: false, x: FRESH_PIC.x, y: FRESH_PIC.y, scale: FRESH_PIC.scale }));
+          { url, zone: undefined, hidden: false, x: FRESH_PIC.x, y: FRESH_PIC.y, scale: FRESH_PIC.scale, ...AUTO }));
       }} />
+      {SMART_PLACEMENT && <>
+        <button onClick={() => api.setPic(id, { auto: true, autoFor: undefined, hidden: false, follow: true, autoSig: undefined })}>
+          Auto-place (copy and crop)</button>
+        {p.autoTough ? <p className="muted">Tough call: there was no clean spot for the
+          copy, so it took the bottom corner with the least overlap. Check it.</p>
+          : p.autoClean === false && <p className="muted">The copy touches the
+          subject's legs or gear -- the cleanest option here.</p>}
+        {(p.auto || p.follow !== undefined) && <label className="group-mode">
+          <input type="checkbox" checked={p.follow ?? true}
+                 onChange={e => api.setPic(id, { follow: e.target.checked, autoSig: undefined })} />
+          Copy follows the photo when you crop by hand (moving the copy yourself
+          turns this off)</label>}
+      </>}
       {row('scale', 1, 3, 0.01, 'Zoom')}
       {row('x', 0, 100, 1, 'Pan X')}
       {row('y', 0, 100, 1, 'Pan Y')}
@@ -202,7 +259,15 @@ export function PicturePanel({ id }: { id: string }) {
           to the template's own default (see Picture's p = {...picOf(), ...}
           merge above), which is the "original as-shipped" state a reset
           should restore. */}
-      <button onClick={() => api.reset(id)}>Reset this photograph</button>
+      <button onClick={() => {
+        // An auto-placed photo may have moved its copy too; put that back
+        // (positions only -- text edits stay).
+        if (p.auto) copyIdsFor(id).forEach((copy, i) => {
+          api.nudge(copy, 0, 0);
+          if (i === 0) api.resize(copy, 1); // the block wrapper's shrink
+        });
+        api.reset(id);
+      }}>Reset this photograph</button>
     </>
   );
 }

@@ -1,4 +1,4 @@
-/** Bump 2 — cream and collage, alternate hero/email/social treatment
+/** Bump 2 — cream and collage: its own hero, email and social designs
 
  *  A second template for the same SC26_0060 corpus, not a second campaign:
  *  it is grounded in the same measured board (same geometry, same cream
@@ -11,11 +11,11 @@
 import type { TemplateSpec } from '../schema';
 
 const spec: TemplateSpec = {
-  id: 'sc26_bump2', name: 'Bump 2 — cream and collage, alt', type: 'bump', exposed: false,
+  id: 'sc26_bump2', name: 'Bump 2 — cream and collage', type: 'bump',
   groundedIn: 'SC26_0060 Wk35-36 Bump',
   figma: { fileKey: 'ioB3sP8LwBiTUPQN7jlF81', nodeId: '538:15528' },
-  why: 'A second board-authored pass over SC26_0060: its own hero, four '
-     + 'email-body designs and a split paid-social set (1x1/4x5/9x16), '
+  why: 'A second board-authored pass over SC26_0060: its own hero, five '
+     + 'email designs and a split paid-social set (1x1/4x5/9x16), '
      + 'offered as its own template rather than folded into sc26_0060 so '
      + 'the two can be picked between, not merged.',
   accent: '#F14222',

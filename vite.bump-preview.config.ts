@@ -14,5 +14,13 @@ export default defineConfig({
   // at it explicitly.
   publicDir: '../../public',
   plugins: [react()],
-  server: { port: 5181, strictPort: true, open: true },
+  // Same as the studio's: MediaPipe is one ESM bundle the dep optimizer must
+  // not rediscover mid-session, and its gallery/analysis/AI routes live on
+  // the studio's server.
+  optimizeDeps: { exclude: ['@mediapipe/tasks-vision'] },
+  server: { port: 5181, strictPort: true, open: true,
+    proxy: {
+      '/ai': { target: `http://127.0.0.1:${process.env.SAC_AI_PORT ?? 5179}`, changeOrigin: true },
+      '/api': { target: `http://127.0.0.1:${process.env.SAC_AI_PORT ?? 5179}`, changeOrigin: true },
+    } },
 });

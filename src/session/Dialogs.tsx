@@ -98,7 +98,8 @@ export function NewDialog({ onCreate, onClose }: {
   const matches = confident && detectedType ? exposedSpecs.filter(s => s.type === detectedType) : exposedSpecs;
   const options = matches.length ? matches : exposedSpecs;
   useEffect(() => {
-    if (confident && matches.length === 1 && matches[0].id !== templateId) setTemplateId(matches[0].id);
+    // Two Bump templates: the picker stays open between them, starting on the first.
+    if (confident && matches.length && !matches.some(m => m.id === templateId)) setTemplateId(matches[0].id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detectedType, confident]);
 

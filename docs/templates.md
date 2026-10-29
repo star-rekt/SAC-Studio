@@ -1,11 +1,10 @@
 # Template architecture
 
-The studio has three template sources:
+The studio has these template sources (AUTUMN20, `sc26_0058`, was removed; its campaigns reopen on `sc26_0060`):
 
 | id | board | Figma page |
 |---|---|---|
 | `sc26_0021` | Flash Sale Apr 4 | `7r3YL4Zko0WfQs5vnSO9OT`, `248:710921` |
-| `sc26_0058` | Wk33 Bump / AUTUMN20 | `7r3YL4Zko0WfQs5vnSO9OT`, `211:695439` |
 | `sc26_0060` | Wk35–36 Bump / CHILLY20 | `ioB3sP8LwBiTUPQN7jlF81`, `538:15528` |
 
 Each file in `src/templates/specs/` owns the fallback visual vocabulary.
@@ -14,8 +13,8 @@ compositions live as editable React layers under `src/render/templates/`:
 
 | Asset type | Renderer |
 |---|---|
-| Email | `BumpEmail`, `AutumnEmail`, `FlashEmail`, plus `Email` sections |
-| Paid social | `BumpSocial`, `AutumnSocial`, `FlashSocial` |
+| Email | `BumpEmail`, `FlashEmail`, plus `Email` sections |
+| Paid social | `BumpSocial`, `FlashSocial` |
 | Desktop hero | `BoardHero` (three board-specific layouts) |
 | GT, CB, PDP/PLP badging | `SiteCommerce` |
 | Bump CPLP tile | `BumpTile` |

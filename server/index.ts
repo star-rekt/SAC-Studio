@@ -28,18 +28,29 @@
  *    GET    /api/brief/:id   the same manifest, for the Figma plugin to build
  *    GET    /api/export-file/:path  one image the manifest names
  *    GET    /api/figma/:id    the campaign as one .figma.json for the plugin
+ *    GET    /api/figma-gallery              the Figma photo gallery (thumbnails listed)
+ *    GET    /api/figma-gallery/thumb/:node  a ~240px thumbnail
+ *    GET    /api/figma-gallery/full/:node   the full image, fetched on first pick
+ *    POST   /ai/photo {image}  where the people/subject are, for a photo the
+ *                              on-device detectors found nothing in (small JPEG)
+ *    GET    /api/photo-analysis        every cached photo analysis, by src hash
+ *    PUT    /api/photo-analysis/:hash  keep one (worked out in the studio)
  */
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { randomUUID } from 'node:crypto';
 import { join, normalize, relative, isAbsolute } from 'node:path';
 import { execFile } from 'node:child_process';
 import { UI, PUBLIC } from './paths.ts';
 import { ask, firstJson } from './claude.ts';
 import { shoot, chrome, EXPORTS } from './shot.ts';
-import { PARSE, JUDGE, CLASSIFY, FIX } from './prompts.ts';
+import { PARSE, JUDGE, CLASSIFY, FIX, LOCATE } from './prompts.ts';
 import { rules, count, names, digest, geometry } from './rules.ts';
 import * as sessions from './sessions.ts';
 import * as media from './media.ts';
+import * as photoAnalysis from './photoAnalysis.ts';
+import * as gallery from './figmaGallery.ts';
 import { exportCampaign, briefOnly, figmaDocument } from './export.ts';
 
 const PORT = Number(process.env.SAC_AI_PORT ?? 5179);
@@ -112,9 +123,13 @@ function expand(t: Tight, label: Record<number, string>, n: number) {
 }
 
 const body = (req: import('node:http').IncomingMessage, maxChars = 4_000_000) => new Promise<string>((res, rej) => {
-  let s = '';
-  req.on('data', c => { s += c; if (s.length > maxChars) { rej(new Error('too large')); req.destroy(); } });
-  req.on('end', () => res(s));
+  // Past the limit, stop keeping the bytes but let the request finish, so the
+  // studio gets a real error back instead of a dropped connection (which it
+  // could only report as "Unexpected end of JSON input").
+  let s = '', over = false;
+  req.on('data', c => { if (over) return; s += c; if (s.length > maxChars) { over = true; s = ''; } });
+  req.on('end', () => over
+    ? rej(new Error(`That upload is too large (over ${Math.round(maxChars / 1_000_000)} MB).`)) : res(s));
   req.on('error', rej);
 });
 
@@ -145,7 +160,8 @@ const server = createServer(async (req, res) => {
   const host = req.headers.host ?? '';
   const origin = req.headers.origin;
   const allowedOrigin = !origin || origin === studioOrigin() ||
-    (!DESKTOP && origin === 'http://localhost:5178');
+    // The dev placement lab (vite.bump-preview, :5181) proxies here too.
+    (!DESKTOP && (origin === 'http://localhost:5178' || origin === 'http://localhost:5181'));
   if (!/^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host) || !allowedOrigin)
     return send(403, { error: 'local studio requests only' });
 
@@ -265,6 +281,52 @@ const server = createServer(async (req, res) => {
       }
       if (req.method === 'DELETE')
         return send(200, { ok: await media.remove(id) });
+    }
+
+    if (url.pathname === '/api/figma-gallery' && req.method === 'GET') {
+      try {
+        const { items } = await gallery.list();
+        return send(200, { items });
+      } catch (e) {
+        if (e instanceof gallery.NoToken) return send(503, { error: e.message });
+        throw e;
+      }
+    }
+    const pictured = url.pathname.match(/^\/api\/figma-gallery\/(thumb|full)\/([^/]+)$/);
+    if (pictured && req.method === 'GET') {
+      const id = decodeURIComponent(pictured[2]);
+      if (!gallery.validId(id)) return send(400, { error: 'invalid node id' });
+      const bytes = await gallery.image(id, pictured[1] as 'thumb' | 'full');
+      if (!bytes) return send(404, { error: 'not in the Figma gallery' });
+      res.writeHead(200, { 'content-type': 'image/jpeg', 'cache-control': 'private, max-age=86400' });
+      return res.end(bytes);
+    }
+
+    if (url.pathname === '/ai/photo' && req.method === 'POST') {
+      const { image } = JSON.parse(await body(req, 2_000_000)) as { image?: string };
+      const jpeg = image?.match(/^data:image\/jpeg;base64,([A-Za-z0-9+/=]+)$/);
+      if (!jpeg) return send(400, { error: 'send a small JPEG data URL' });
+      const file = join(tmpdir(), `sac-photo-${randomUUID()}.jpg`);
+      await writeFile(file, Buffer.from(jpeg[1], 'base64'));
+      try {
+        const run = await ask(LOCATE(file), 'Read', 3, 90_000, QUICK_MODEL);
+        if (!run.ok) return send(502, { error: run.error });
+        const found = firstJson<{ p?: unknown; h?: unknown; s?: unknown }>(run.text);
+        if (!found) return send(502, { error: 'Claude did not answer with JSON' });
+        const box = (b: unknown) => Array.isArray(b) && b.length === 4
+          && b.every(n => typeof n === 'number' && n >= 0 && n <= 1) ? b as number[] : null;
+        const boxes = (v: unknown) => Array.isArray(v) ? v.map(box).filter((b): b is number[] => !!b) : [];
+        return send(200, { p: boxes(found.p), h: boxes(found.h), s: box(found.s), ms: run.ms });
+      } finally { await rm(file, { force: true }); }
+    }
+
+    if (url.pathname === '/api/photo-analysis' && req.method === 'GET')
+      return send(200, { items: await photoAnalysis.all() });
+    if (url.pathname.startsWith('/api/photo-analysis/') && req.method === 'PUT') {
+      const hash = url.pathname.slice('/api/photo-analysis/'.length);
+      if (!/^[a-f0-9]{64}$/.test(hash)) return send(400, { error: 'invalid photo hash' });
+      await photoAnalysis.put(hash, JSON.parse(await body(req)));
+      return send(200, { ok: true });
     }
 
     if (url.pathname === '/api/sessions' && req.method === 'GET')

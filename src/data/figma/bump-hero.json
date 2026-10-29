@@ -1,0 +1,366 @@
+{
+ "source": {
+  "file": "ioB3sP8LwBiTUPQN7jlF81",
+  "node": "569:15",
+  "name": "SC/v1/Board/SC26_0058 Wk33 Bump/hero-desktop"
+ },
+ "size": [
+  1440,
+  920
+ ],
+ "frame": {
+  "fill": "#FFFFFF"
+ },
+ "layers": {
+  "538:21704": {
+   "name": "Ends 2/2",
+   "type": "TEXT",
+   "parent": null,
+   "visible": false,
+   "x": 891.62,
+   "y": 639.77,
+   "w": 133,
+   "h": 24,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "Ends 2/2",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 35.67,
+    "lineHeight": 61.95,
+    "letterSpacing": -1.07,
+    "align": "RIGHT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:21705": {
+   "name": "SC26_0049 Hero Launch",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "w": 1440,
+   "h": 920,
+   "image": true,
+   "crop": [
+    [
+     0.80008,
+     0,
+     0.1
+    ],
+    [
+     0,
+     0.76665,
+     0.17576
+    ]
+   ],
+   "images": [
+    {
+     "ref": "1a1a4a0aaf038fbecdb098f79acecfbda7bc978d",
+     "mode": "STRETCH"
+    }
+   ]
+  },
+  "538:21706": {
+   "name": "Ends 2/2",
+   "type": "TEXT",
+   "parent": "538:21705",
+   "visible": false,
+   "x": 891.62,
+   "y": 639.77,
+   "w": 133,
+   "h": 24,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "Ends 2/2",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 35.67,
+    "lineHeight": 61.95,
+    "letterSpacing": -1.07,
+    "align": "RIGHT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:21707": {
+   "name": "SAC Bump Lockup 2",
+   "type": "FRAME",
+   "parent": "538:21705",
+   "visible": true,
+   "x": 647.9,
+   "y": 216.3,
+   "w": 710.86,
+   "h": 613.69
+  },
+  "538:21708": {
+   "name": "Frame 2203",
+   "type": "FRAME",
+   "parent": "538:21707",
+   "visible": true,
+   "x": 991.14,
+   "y": 739.63,
+   "w": 360.51,
+   "h": 90.36,
+   "fill": "#F14222",
+   "radius": 22.05
+  },
+  "538:21709": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:21708",
+   "visible": true,
+   "x": 1064.9,
+   "y": 768.39,
+   "w": 213,
+   "h": 32,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Sofia Pro",
+    "weight": 800,
+    "size": 47.05,
+    "lineHeight": 54.1,
+    "letterSpacing": -0.47,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:21710": {
+   "name": "Group 3400",
+   "type": "GROUP",
+   "parent": "538:21707",
+   "visible": true,
+   "x": 647.9,
+   "y": 216.3,
+   "w": 711,
+   "h": 467.45,
+   "shadow": {
+    "x": 0,
+    "y": 0,
+    "blur": 150.6,
+    "color": "#00000096"
+   },
+   "radius": 7.13
+  },
+  "538:21711": {
+   "name": "Group 3398",
+   "type": "GROUP",
+   "parent": "538:21710",
+   "visible": true,
+   "x": 647.9,
+   "y": 342.68,
+   "w": 711,
+   "h": 341.08
+  },
+  "538:21712": {
+   "name": "Group 3385",
+   "type": "GROUP",
+   "parent": "538:21711",
+   "visible": true,
+   "x": 647.9,
+   "y": 487.68,
+   "w": 711,
+   "h": 117
+  },
+  "538:21713": {
+   "name": "Group 3173",
+   "type": "GROUP",
+   "parent": "538:21712",
+   "visible": true,
+   "x": 647.9,
+   "y": 487.68,
+   "w": 711,
+   "h": 117
+  },
+  "538:21714": {
+   "name": "20% OFF",
+   "type": "TEXT",
+   "parent": "538:21713",
+   "visible": true,
+   "x": 647.9,
+   "y": 487.68,
+   "w": 711,
+   "h": 117,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    },
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "shadow": {
+    "x": 2.47,
+    "y": 4.95,
+    "blur": 14.48,
+    "color": "#00000024"
+   },
+   "text": {
+    "chars": "20% OFF",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 177.07,
+    "lineHeight": 171.85,
+    "letterSpacing": -3.54,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:21715": {
+   "name": "CODE AUTUMN20",
+   "type": "TEXT",
+   "parent": "538:21711",
+   "visible": true,
+   "x": 647.9,
+   "y": 638.76,
+   "w": 702.74,
+   "h": 45,
+   "fill": "#FFFFFF",
+   "shadow": {
+    "x": 3.85,
+    "y": 7.7,
+    "blur": 22.53,
+    "color": "#00000024"
+   },
+   "text": {
+    "chars": "CODE AUTUMN20",
+    "family": "Sofia Pro",
+    "weight": 500,
+    "size": 65.06,
+    "lineHeight": 267.47,
+    "letterSpacing": -1.3,
+    "align": "RIGHT",
+    "valign": "TOP",
+    "resize": "HEIGHT",
+    "trim": true
+   }
+  },
+  "538:21716": {
+   "name": "EXTRA",
+   "type": "TEXT",
+   "parent": "538:21711",
+   "visible": true,
+   "x": 819.18,
+   "y": 342.68,
+   "w": 531,
+   "h": 117,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    },
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "shadow": {
+    "x": 2.47,
+    "y": 4.95,
+    "blur": 14.48,
+    "color": "#00000024"
+   },
+   "text": {
+    "chars": "EXTRA ",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 177.07,
+    "lineHeight": 171.85,
+    "letterSpacing": -3.54,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:21717": {
+   "name": "Group 3399",
+   "type": "GROUP",
+   "parent": "538:21710",
+   "visible": true,
+   "x": 901.78,
+   "y": 216.3,
+   "w": 456.85,
+   "h": 91.85,
+   "radius": 7.13
+  },
+  "538:21718": {
+   "name": "Vector 741",
+   "type": "VECTOR",
+   "parent": "538:21717",
+   "visible": true,
+   "x": 901.78,
+   "y": 216.3,
+   "w": 456.85,
+   "h": 91.85,
+   "fill": "#F14222",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "blend": "DARKEN"
+    }
+   ],
+   "radius": 7.13
+  },
+  "538:21719": {
+   "name": "3 DAYS ONLY",
+   "type": "TEXT",
+   "parent": "538:21717",
+   "visible": true,
+   "x": 944.06,
+   "y": 241.05,
+   "w": 383,
+   "h": 44,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "3 DAYS ONLY",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 67.13,
+    "lineHeight": 170.57,
+    "letterSpacing": -1.34,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  }
+ },
+ "assets": {
+  "1a1a4a0aaf038fbecdb098f79acecfbda7bc978d": {
+   "src": "/figma-assets/1a1a4a0aaf038fbecdb098f79acecfbda7bc978d.jpg",
+   "w": 2400,
+   "h": 1600
+  },
+  "05631e129c31da42d3d954c5718d6f692edd363c": {
+   "src": "/figma-assets/05631e129c31da42d3d954c5718d6f692edd363c.png",
+   "w": 612,
+   "h": 408
+  }
+ }
+}

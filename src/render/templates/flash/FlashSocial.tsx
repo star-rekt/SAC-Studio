@@ -1,187 +1,166 @@
-/** SC26_0021 paid social: the board's full-bleed trail photo, right-hand
- * copy stack and green brand rail. Every number below is transcribed from
- * the board's own "Copy as CSS" export, one entry per aspect ratio -- the
- * three ratios are not one layout scaled by width, they are three distinct
- * frames the board measured separately. */
+/** SC26_0021 paid social: the board's full-bleed photo, right-hand copy
+ * column (a centred one on 9x16), wordmark and brand rail -- three distinct
+ * Figma frames, one per ratio, compiled to src/data/figma/flash-social-<ratio>.json
+ * (npm run figma:pull). Every box, size, colour and crop comes from those. */
 import type { SheetAsset } from '../../../sheet/types';
-import { Picture } from '../../../edit/Picture';
 import { Editable, Ground } from '../../../edit/Editable';
 import { Media } from '../../../edit/Media';
 import { ZONE_LIST, photoFor } from '../../../model/compose';
-import { stack } from '../../../fonts';
 import { BrandMark } from '../BrandMark';
 import { useEdits, textOf } from '../../../edit/store';
-import { fitText } from './textContracts';
+import { boardFit } from './textContracts';
+import { layerOf, boxOf, anchorOf, typeOf, type FigmaLayout } from '../../figma/layout';
+import { FigmaFrame } from '../../figma/FigmaFrame';
+import social1x1 from '../../../data/figma/flash-social-1x1.json';
+import social4x5 from '../../../data/figma/flash-social-4x5.json';
+import social9x16 from '../../../data/figma/flash-social-9x16.json';
 
-const trim = { textBoxTrim: 'trim-both', textBoxEdge: 'cap alphabetic' } as React.CSSProperties;
+/** Which Figma layer (src/data/figma/flash-social-<ratio>.json) each
+ *  editable layer is, by the part of its id after `<asset>/flash-social`.
+ *  The position check holds the render to these. */
+export const FLASH_SOCIAL_FIGMA = {
+  '1x1': { wordmark: '248:711543', 'urgency/mark': '248:711539', urgency: '248:711542',
+    'lead/bolt-left': '248:711531', lead: '248:711530', 'lead/bolt-right': '248:711535',
+    prefix: '248:711526', offer: '248:711524', 'strip/fill': '248:711581',
+    'brand/0': '248:711586', 'brand/1': '248:711584', 'brand/2': '248:711585', 'brand/3': '248:711583',
+    more: '248:711587' },
+  '4x5': { wordmark: '248:711611', 'urgency/mark': '248:711607', urgency: '248:711610',
+    'lead/bolt-left': '248:711599', lead: '248:711598', 'lead/bolt-right': '248:711603',
+    prefix: '248:711594', offer: '248:711592', 'strip/fill': '248:711649',
+    'brand/0': '248:711654', 'brand/1': '248:711652', 'brand/2': '248:711653', 'brand/3': '248:711651',
+    more: '248:711655' },
+  '9x16': { wordmark: '248:711679', 'urgency/mark': '248:711675', urgency: '248:711678',
+    'lead/bolt-left': '248:711667', lead: '248:711666', 'lead/bolt-right': '248:711671',
+    prefix: '248:711662', offer: '248:711660',
+    'brand/0': '248:711720', 'brand/1': '248:711718', 'brand/2': '248:711719', 'brand/3': '248:711717',
+    more: '248:711721' },
+} as const;
 
-/** The bolt flanking the title: the library's own "bolt" mark, not a
- *  text-glyph stand-in. */
-function Bolt({ id, size }: { id: string; size: number }) {
-  return <Media id={id} src="/graphics/bolt.svg" alt=""
-    style={{ width: size * 40 / 88, height: size, display: 'block' }} />;
+/** Per ratio: the frame, its title and offer row groups, the brush's own
+ *  vector (its colour), and whether the column is centred (9x16, with a
+ *  brand row under the copy instead of a rail). */
+const RATIOS = {
+  '1x1': { layout: social1x1, titleRow: '248:711527', offerRow: '248:711521', ink: '248:711541', centred: false },
+  '4x5': { layout: social4x5, titleRow: '248:711595', offerRow: '248:711589', ink: '248:711609', centred: false },
+  '9x16': { layout: social9x16, titleRow: '248:711663', offerRow: '248:711657', ink: '248:711677', centred: true },
+} as const;
+const BRANDS = ['la-sportiva', 'outdoor-research', 'mountain-hardwear', 'osprey'] as const;
+
+/** The bolt flanking the title: the library's own "bolt" mark. */
+function Bolt({ id, width, height }: { id: string; width: number; height: number }) {
+  return <Media id={id} src="/graphics/bolt.svg" alt="" style={{ width, height, display: 'block', flex: 'none' }} />;
 }
 
-const white = '#fff';
-
-type Spec = typeof SPECS['1x1'];
-const SPECS = {
-  '1x1': {
-    wordmark: { left: 776.89, top: 90.71, width: 273.11, height: 124.44 },
-    brush: { left: 613, top: 410, width: 437, height: 78.75 },
-    urgency: { left: 643.5, top: 427, fontSize: 65.62, lineHeight: 64 },
-    bolt: { left: 395, right: 1019, top: 527, height: 69 },
-    title: { left: 443, top: 527, fontSize: 104.94, lineHeight: 139 },
-    upto: { left: 220, top: 634, fontSize: 58.97, lineHeight: 57 },
-    // The board's own "75% OFF" frame: left 305.13, width 745 -> right edge
-    // 1050.13 on a 1080-wide canvas, i.e. a 29.87px right margin. Dates/code
-    // and (on 1x1/4x5) the title end at this same edge, not their own.
-    offer: { left: 305.13, top: 634.46, fontSize: 186.21, lineHeight: 181, rightInset: 29.87 },
-  },
-  '4x5': {
-    wordmark: { left: 729, top: 123.6, width: 293, height: 133.5 },
-    brush: { left: 592, top: 445, width: 437, height: 78.75 },
-    urgency: { left: 623, top: 462, fontSize: 65.62, lineHeight: 64 },
-    bolt: { left: 374, right: 998, top: 562, height: 69 },
-    title: { left: 422, top: 562, fontSize: 104.94, lineHeight: 139 },
-    upto: { left: 199, top: 669, fontSize: 58.97, lineHeight: 57 },
-    offer: { left: 284.13, top: 669.46, fontSize: 186.21, lineHeight: 181, rightInset: 50.87 },
-  },
-  '9x16': {
-    wordmark: { left: 397.4, top: 176, width: 285.07, height: 129.89 },
-    brush: { left: 311.8, top: 345.49, width: 457.13, height: 82.38 },
-    urgency: { left: 344.2, top: 363.28, fontSize: 68.64, lineHeight: 67 },
-    bolt: { left: 197.78, right: 850.52, top: 467.88, height: 72.18 },
-    title: { left: 247.99, top: 467.88, fontSize: 109.78, lineHeight: 145 },
-    upto: { left: 105.73, top: 579.81, fontSize: 61.69, lineHeight: 60 },
-    offer: { left: 194.78, top: 580.29, fontSize: 194.79, lineHeight: 189, rightInset: 105.22 },
-  },
-};
-
+/** Behaviour decided here, not in Figma:
+ *  - The copy column ends on the board's right edge (1x1, 4x5) or is
+ *    centred (9x16): rows grow left, or both ways.
+ *  - Every run's contract is its board layer's (boardFit): the board's copy
+ *    is the ideal count, longer copy contracts; the brush stays its size.
+ *  - A code line (no layer on the board) sits under the offer, on the same
+ *    edge; on 9x16 the brand row moves down under it. The board has no
+ *    dates line, so neither does this.
+ *  FigmaFrame supplies the photo at Figma's crop and smart placement. */
 export function FlashSocial({ asset }: { asset: SheetAsset }) {
-  const [w,h] = asset.size;
+  const [w, h] = asset.size;
   const { edits } = useEdits();
-  const zone = ZONE_LIST.find(z => z.id === asset.media.photo) ?? photoFor('hike',0);
-  // A 1080x1350 (4:5) frame's h/w is 1.25 -- under the old >1.3 threshold for
-  // "tall", so every 4x5 asset silently rendered with the 1x1 spec instead.
-  // The format name is the actual source of truth; aspect ratio is only a
-  // fallback for a custom size the brief asked for outside these three.
-  const story = asset.format === 'paid-social-9x16' || (!/^paid-social-/.test(asset.format) && h/w > 1.6);
+  const zone = ZONE_LIST.find(z => z.id === asset.media.photo) ?? photoFor('hike', 0);
+  // The format name is the source of truth; aspect ratio is only a fallback
+  // for a custom size the brief asked for outside these three.
+  const story = asset.format === 'paid-social-9x16' || (!/^paid-social-/.test(asset.format) && h / w > 1.6);
   const tall = asset.format === 'paid-social-4x5'
-    || (!/^paid-social-/.test(asset.format) && !story && h/w > 1.15);
-  const spec: Spec = SPECS[story ? '9x16' : tall ? '4x5' : '1x1'];
-  const railH = 114, id = `${asset.id}/flash-social`;
-  const liveTitle = textOf(edits, `${id}/lead`, asset.copy.title || 'SALE');
-  const titleSize = asset.scope.topic ? spec.title.fontSize
-    : Math.min(spec.title.fontSize,Math.floor(690*(spec.title.fontSize/104.94)/(liveTitle.length*.66+2)));
-  const t = (left:number,top:number,fontSize:number,extra?:React.CSSProperties):React.CSSProperties =>
-    ({position:'absolute',left,top,fontFamily:stack('Quiet Sans'),fontSize,
-      color:white,lineHeight:1,...trim,...extra});
-  // Stacked just under the offer's own cap-height instead of a fixed
-  // +200/+260 that assumed a specific font size, and sized off the title
-  // rather than a flat 32/48px so both scale with it.
-  const afterOffer = spec.offer.top + spec.offer.fontSize * 0.75 + 20;
-  const dateSize = titleSize * .9;
-  const codeGap = asset.copy.code ? dateSize * 0.78 + 15 : 0;
-  const copyBottom = afterOffer + codeGap + (asset.copy.dates ? dateSize * 0.78 : 0);
-  return <Ground id={`${id}/fill`} className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
-    background:'#5b6642'}}>
-    <Picture id={`${id}/photo`} zone={zone} initialSrc="/reference/flash-hero-photo.png"
-      {...(story ? { initialScale: 1.29, focus: {x:39.19,y:0} }
-        : { initialScale: tall ? 1.25 : 1.314, zoomOrigin: {x:50,y:100}, focus: {x:50,y:50} })}
-      style={{position:'absolute',inset:0,width:w,height:h}} />
-    <Media id={`${id}/wordmark`} src="/logos/SC/v1/Board/SC26_0021 Flash Sale Apr 4/Group 2904.svg" alt="Steep & Cheap, powered by Backcountry"
-      style={{position:'absolute',left:spec.wordmark.left,top:spec.wordmark.top,
-        width:spec.wordmark.width,height:spec.wordmark.height,objectFit:'contain'}} />
-    {/* The same real vector outline BoardHero/FlashEmail use (Figma node
-        804:13668, "Brush Stroke"), registered orange in the library --
-        `fill` overrides just the default colour for this green usage,
-        the same way a live recolour from the panel would. */}
-    <Media id={`${id}/urgency/mark`} src="/graphics/brush-stroke.svg" alt="Green brush" fill="#79ac41"
-      title="Click to recolour, resize or swap the brush mark from the library"
-      style={{position:'absolute',left:spec.brush.left,top:spec.brush.top,
-        width:spec.brush.width,height:spec.brush.height}} />
-    {(() => {
-      const urgency = asset.copy.marquee || asset.copy.eyebrow || '3 DAYS ONLY';
-      // The brush mark is a fixed-width graphic (same shape as FlashEmail's);
-      // fixed font + no shrink ran longer urgency text past its edges.
-      const { fontSize } = fitText(urgency, 'hero.urgency', { widthBudget: spec.brush.width - 60, fontMax: spec.urgency.fontSize });
-      return <Editable id={`${id}/urgency`} style={t(spec.urgency.left,spec.urgency.top,fontSize!,
-        {fontFamily:stack('Sofia Pro'),fontWeight:500,lineHeight:(fontSize!*.97)+'px',whiteSpace:'nowrap'})}>{urgency}</Editable>;
-    })()}
-    {asset.scope.topic ? (() => {
-      const eyebrow = asset.copy.eyebrow || '';
-      const { fontSize } = fitText(eyebrow, 'hero.title', { widthBudget: w - spec.title.left - 40, fontMax: spec.title.fontSize });
-      return <Editable id={`${id}/lead`} style={t(spec.title.left,spec.bolt.top,fontSize!,
-        {lineHeight:spec.bolt.height+'px',fontWeight:800,whiteSpace:'nowrap'})}>{eyebrow}</Editable>;
-    })() : (() => {
-      // Bolts flank at the board's own fixed span for "FLASH SALE"; centred
-      // with a size-proportional gap reproduces the same look at any length.
-      // On 1x1/4x5 the title instead ends at the same right edge as the
-      // offer below it (9x16 keeps the centred look -- its title already
-      // sits clear of the offer block, unlike the tighter square/4x5 frames).
-      return <div style={story ? {position:'absolute',left:0,width:w,top:spec.bolt.top,height:spec.bolt.height,
-        display:'flex',alignItems:'center',justifyContent:'center',gap:titleSize*.18}
-        : {position:'absolute',right:spec.offer.rightInset,top:spec.bolt.top,height:spec.bolt.height,
-        display:'flex',alignItems:'center',justifyContent:'flex-end',gap:titleSize*.16}}>
-        <Bolt id={`${id}/lead/bolt-left`} size={spec.bolt.height} />
-        <Editable id={`${id}/lead`} style={{fontFamily:stack('Quiet Sans'),color:white,...trim,
-          lineHeight:spec.bolt.height+'px',fontWeight:800,whiteSpace:'nowrap',fontSize:titleSize}}>{asset.copy.title || 'SALE'}</Editable>
-        <Bolt id={`${id}/lead/bolt-right`} size={spec.bolt.height} />
-      </div>;
-    })()}
-    {!asset.scope.topic && <Editable id={`${id}/prefix`} style={t(spec.upto.left,spec.upto.top,spec.upto.fontSize,
-      {lineHeight:spec.upto.lineHeight+'px',whiteSpace:'pre-line'})}>{/\bUP\s+TO\b/i.test(asset.copy.body || '') ? 'UP\nTO' : asset.copy.lead || 'EXTRA'}</Editable>}
-    <Editable id={`${id}/offer`} style={t(spec.offer.left,spec.offer.top,
-      asset.scope.topic ? Math.max(48, Math.floor(770 / (asset.scope.topic.length*.58))) : spec.offer.fontSize,
-      {lineHeight:spec.offer.lineHeight+'px',fontWeight:800,letterSpacing:-spec.offer.fontSize*.03,
-        whiteSpace:asset.scope.topic?'normal':'nowrap',width:750})}>
-      {asset.scope.topic || asset.copy.offer || '75% OFF'}
-    </Editable>
-    {/* Right-anchored to the offer's own right edge rather than its left --
-        a left-anchored date under a huge, variable-width "75% OFF" landed
-        wherever that text happened to end, not aligned with anything.
-        9x16 keeps the centred copy column the title already uses there,
-        rather than the right edge 1x1/4x5 anchor to. */}
+    || (!/^paid-social-/.test(asset.format) && !story && h / w > 1.15);
+  const ratio = story ? '9x16' : tall ? '4x5' : '1x1';
+  const spec = RATIOS[ratio], layout = spec.layout as unknown as FigmaLayout;
+  const map = FLASH_SOCIAL_FIGMA[ratio] as Record<string, string>;
+  const L = (part: string) => layerOf(layout, map[part] ?? part);
+  const [fw] = layout.size;
+  const id = `${asset.id}/flash-social`;
+
+  // The column's edge: right-aligned rows end where the board's offer row ends.
+  const offerRow = L(spec.offerRow), edge = offerRow.x + offerRow.w;
+  const row = (group: string): React.CSSProperties => spec.centred
+    ? { ...anchorOf(L(group), 'CENTER'), alignItems: 'flex-start' }
+    : { ...anchorOf(L(group), 'RIGHT'), left: 0, width: edge, alignItems: 'flex-start' };
+
+  const brush = L('urgency/mark'), u = L('urgency');
+  const urgency = asset.copy.marquee || asset.copy.eyebrow || '3 DAYS ONLY';
+  const urgencyFit = boardFit(textOf(edits, `${id}/urgency`, urgency), 'hero.urgency', u);
+
+  const title = asset.copy.title || 'SALE';
+  const titleFit = boardFit(textOf(edits, `${id}/lead`, title), 'hero.title', L('lead'));
+  const titleSize = titleFit.fontSize ?? L('lead').text!.size;
+  const k = titleSize / L('lead').text!.size;
+  const boltGap = (L('lead').x - L('lead/bolt-left').x - L('lead/bolt-left').w) * k;
+
+  const offerText = asset.scope.topic || asset.copy.offer || '75% OFF';
+  const offerFit = boardFit(textOf(edits, `${id}/offer`, offerText), 'hero.offer', L('offer'));
+  const prefixGap = L('offer').x - L('prefix').x - L('prefix').w;
+  const offerBottom = L('offer').y + L('offer').h * (offerFit.fontSize ?? L('offer').text!.size) / L('offer').text!.size;
+
+  const code = asset.copy.code;
+  const codeSize = titleSize * .9, codeTop = offerBottom + 30;
+  const codeShift = code ? codeSize * 0.78 + 30 : 0;
+
+  const rail = !spec.centred ? L('strip/fill') : null;
+  const texture = rail?.images?.[0] && layout.assets?.[rail.images[0].ref];
+  const brandShift = spec.centred ? codeShift : 0;
+  const logos = <>
+    {BRANDS.map((brand, n) => <BrandMark key={brand} id={`${id}/brand/${n}`} name={asset.media.brands?.[n]}
+      fallback={`/logos/brand-${brand}.svg`}
+      style={{ ...boxOf(L(`brand/${n}`)), top: L(`brand/${n}`).y + brandShift - (rail?.y ?? 0),
+        left: L(`brand/${n}`).x, objectFit: 'contain' }} />)}
+    <Editable id={`${id}/more`} style={{ ...typeOf(L('more')), position: 'absolute', left: L('more').x,
+      top: L('more').y + brandShift - (rail?.y ?? 0) }}>&amp; MORE</Editable>
+  </>;
+  const photo = layout.frame.images?.[0] && layout.assets?.[layout.frame.images[0].ref];
+
+  return <FigmaFrame id={id} size={[w, h]} layout={layout} zone={zone} background="#5b6642"
+    photo={photo ? { id: `${id}/photo`, src: photo.src, size: [photo.w, photo.h] } : undefined}
+    fixed={<>
+      <Media id={`${id}/wordmark`} src="/logos/SC/v1/Board/SC26_0021 Flash Sale Apr 4/Group 2904.svg"
+        alt="Steep & Cheap, powered by Backcountry" style={{ ...boxOf(L('wordmark')), objectFit: 'contain' }} />
+      {rail
+        ? <Ground id={`${id}/strip/fill`} style={{ ...boxOf(rail), background: rail.fill, overflow: 'hidden' }}>
+            {texture && <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', backgroundImage: `url(${texture.src})`,
+              backgroundSize: 'cover', mixBlendMode: 'screen', opacity: rail.images![0].opacity }} />}
+            {logos}
+          </Ground>
+        : logos}
+    </>}>
+    <Media id={`${id}/urgency/mark`} src="/graphics/brush-stroke.svg" alt="Green brush" fill={L(spec.ink).fill}
+      title="Click to recolour, resize or swap the brush mark from the library" style={boxOf(brush)} />
+    <div style={{ ...boxOf(brush), display: 'grid', placeItems: 'center', pointerEvents: 'none' }}>
+      {/* The board sets the text a hair off the brush's centre; kept. */}
+      <Editable id={`${id}/urgency`} fit={urgencyFit.contract} style={{ ...typeOf(u, urgencyFit.fontSize), position: 'relative',
+        left: u.x + u.w / 2 - brush.x - brush.w / 2 }}>{urgency}</Editable>
+    </div>
+
+    <div style={{ ...row(spec.titleRow), alignItems: 'center', height: L('lead').h }}>
+      {asset.scope.topic
+        ? (() => { const fit = boardFit(textOf(edits, `${id}/lead`, asset.copy.eyebrow || ''), 'hero.title', L('lead'));
+          return <Editable id={`${id}/lead`} fit={fit.contract} style={typeOf(L('lead'), fit.fontSize)}>{asset.copy.eyebrow || ''}</Editable>; })()
+        : <>
+          <Bolt id={`${id}/lead/bolt-left`} width={L('lead/bolt-left').w * k} height={L('lead/bolt-left').h * k} />
+          <Editable id={`${id}/lead`} fit={titleFit.contract}
+            style={{ ...typeOf(L('lead'), titleSize), margin: `0 ${boltGap}px` }}>{title}</Editable>
+          <Bolt id={`${id}/lead/bolt-right`} width={L('lead/bolt-right').w * k} height={L('lead/bolt-right').h * k} />
+        </>}
+    </div>
+
+    <div style={row(spec.offerRow)}>
+      {!asset.scope.topic && <Editable id={`${id}/prefix`} style={{ ...typeOf(L('prefix')), whiteSpace: 'pre',
+        marginRight: prefixGap }}>{/\bUP\s+TO\b/i.test(asset.copy.body || '') ? 'UP\nTO' : asset.copy.lead || 'EXTRA'}</Editable>}
+      <Editable id={`${id}/offer`} fit={offerFit.contract} style={typeOf(L('offer'), offerFit.fontSize)}>{offerText}</Editable>
+    </div>
+
     {/* The label "CODE" stays regular weight; only the code word itself is
         bold -- Editable is plain-string-only, so each needs its own id. */}
-    {asset.copy.code && <div style={story
-      ? t(0,afterOffer,dateSize,{width:w,textAlign:'center',whiteSpace:'nowrap'})
-      : t(0,afterOffer,dateSize,{left:undefined,right:spec.offer.rightInset,textAlign:'right',
-          whiteSpace:'nowrap'})}>
-      <Editable as="span" id={`${id}/code/label`} style={{fontWeight:400}}>{'CODE '}</Editable>
-      <Editable as="span" id={`${id}/code/value`} style={{fontWeight:800}}>{asset.copy.code}</Editable>
+    {code && <div style={{ position: 'absolute', top: codeTop, whiteSpace: 'nowrap', color: L('offer').fill,
+      fontFamily: typeOf(L('offer')).fontFamily, fontSize: codeSize, lineHeight: 1,
+      textBoxTrim: 'trim-both', textBoxEdge: 'cap alphabetic',
+      ...spec.centred ? { left: 0, width: fw, textAlign: 'center' } : { left: 0, width: edge, textAlign: 'right' } } as React.CSSProperties}>
+      <Editable as="span" id={`${id}/code/label`} style={{ fontWeight: 400 }}>{'CODE '}</Editable>
+      <Editable as="span" id={`${id}/code/value`} style={{ fontWeight: 800 }}>{code}</Editable>
     </div>}
-    {asset.copy.dates && <Editable id={`${id}/dates`} style={story
-      ? t(0,afterOffer+codeGap,dateSize,{width:w,textAlign:'center',fontWeight:700,whiteSpace:'nowrap'})
-      : t(0,afterOffer+codeGap,dateSize,{left:undefined,right:spec.offer.rightInset,textAlign:'right',
-          fontWeight:700,whiteSpace:'nowrap'})}>{asset.copy.dates}</Editable>}
-    {/* 9x16 has no bottom brand rail -- the logos sit directly under the
-        copy instead, plain on the photo, not boxed in a green bar. */}
-    {story ? (
-      <div style={{position:'absolute',left:0,width:w,top:copyBottom+30,
-        display:'flex',alignItems:'center',justifyContent:'center',gap:70}}>
-        {(['la-sportiva','outdoor-research','mountain-hardwear','osprey'] as const)
-          .map((brand,n)=><BrandMark key={brand} id={`${id}/brand/${n}`}
-            name={asset.media.brands?.[n]} fallback={`/logos/brand-${brand}.svg`}
-            style={{width:[126,113,123,113][n],height:62,objectFit:'contain'}} />)}
-        <Editable id={`${id}/more`} style={{fontFamily:stack('Quiet Sans'),
-          fontSize:30,color:white,fontWeight:700,whiteSpace:'nowrap'}}>&amp; MORE</Editable>
-      </div>
-    ) : (
-      // A bare <div> here had no data-id -- unselectable, unrecolourable,
-      // and exported as an anonymous Figma "block" instead of a named layer
-      // (the same gap the Bump desktop hero's CTA pill had).
-      <Ground id={`${id}/strip/fill`} style={{position:'absolute',left:0,right:0,bottom:0,height:railH,
-        background:'#79ac41',display:'flex',alignItems:'center',
-        justifyContent:'space-around',padding:'0 48px'}}>
-        {(['la-sportiva','outdoor-research','mountain-hardwear','osprey'] as const)
-          .map((brand,n)=><BrandMark key={brand} id={`${id}/brand/${n}`}
-            name={asset.media.brands?.[n]} fallback={`/logos/brand-${brand}.svg`}
-            style={{width:[168,150,164,150][n],height:83,objectFit:'contain'}} />)}
-        <Editable id={`${id}/more`} style={{fontFamily:stack('Quiet Sans'),
-          fontSize:39,color:white,fontWeight:700,whiteSpace:'nowrap'}}>&amp; MORE</Editable>
-      </Ground>
-    )}
-  </Ground>;
+  </FigmaFrame>;
 }

@@ -12,7 +12,19 @@ import type { Item } from '../model/media';
 export type Move = { dx: number; dy: number };
 export type Pic = { zone?: string; url?: string; x: number; y: number;
                     scale: number; brightness: number; contrast: number; saturate: number;
-                    hidden?: boolean };
+                    hidden?: boolean;
+                    /** Crop chosen by smart placement (autoPlace.tsx), not by hand;
+                     *  `autoFor` is the src it was solved for, `autoClean` whether
+                     *  the subject ended up fully clear of the copy. */
+                    auto?: boolean; autoFor?: string; autoClean?: boolean;
+                    /** No clean layout existed: the copy took a bottom corner with the
+                     *  least overlap. */
+                    autoTough?: boolean;
+                    /** The copy re-places itself around a hand crop, until the copy
+                     *  itself is moved by hand (`autoSig` is how that's told apart). */
+                    follow?: boolean; autoSig?: string;
+                    /** The PLACEMENT_VERSION that placed it. */
+                    autoV?: number };
 
 export const FRESH_PIC: Pic =
   { x: 50, y: 50, scale: 1, brightness: 1, contrast: 1, saturate: 1 };

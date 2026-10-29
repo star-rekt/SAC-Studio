@@ -8,7 +8,7 @@ import { Editable, Ground } from '../../edit/Editable';
 import { Media } from '../../edit/Media';
 import { stack } from '../../fonts';
 import type { Direction } from '../../templates/directions';
-import { fitText } from '../../model/textContracts';
+import { fitText, type Contract } from '../../model/textContracts';
 
 const green = '#7ea63f', ink = '#333333';
 const products = {
@@ -18,8 +18,8 @@ const products = {
     '/reference/badge-boot-grey.jpg', '/reference/badge-boot-grey.jpg'],
 };
 
-const editable = (id: string, value: string, style: React.CSSProperties) =>
-  <Editable id={id} style={style}>{value}</Editable>;
+const editable = (id: string, value: string, style: React.CSSProperties, fit?: Contract) =>
+  <Editable id={id} fit={fit} style={style}>{value}</Editable>;
 
 /** Display casing only, for fields that arrive upper-cased ('UP TO 70% OFF',
  *  '3 DAYS ONLY') but render Title Case on this board's own site chrome. */
@@ -56,11 +56,13 @@ export function CampaignBanner({ asset, templateId, direction }: {
       lineHeight:1.1, textAlign:'center' })}
     {(() => { const details = [asset.copy.code ? `Code ${asset.copy.code}` : '', asset.copy.dates].filter(Boolean).join(' · ');
       if (!details) return null;
-      const { fontSize } = fitText(details, 'banner.details', { widthBudget: w * .8, fontMax: 30 });
-      return editable(`${asset.id}/details`, details, { fontSize, fontWeight:500, lineHeight:1.1, textAlign:'center', whiteSpace:'nowrap' }); })()}
+      const fit = fitText(details, 'banner.details', { widthBudget: w * .8, fontMax: 30 });
+      const { fontSize } = fit;
+      return editable(`${asset.id}/details`, details, { fontSize, fontWeight:500, lineHeight:1.1, textAlign:'center', whiteSpace:'nowrap' }, fit.contract); })()}
     {(() => { const cta = asset.copy.cta || 'Shop Now';
-      const { fontSize } = fitText(cta, 'banner.cta', { widthBudget: w * .7, fontMax: 50 });
-      return editable(`${asset.id}/cta`, cta, { fontSize, lineHeight:1, textDecoration:'underline', textAlign:'center', whiteSpace:'nowrap' }); })()}
+      const fit = fitText(cta, 'banner.cta', { widthBudget: w * .7, fontMax: 50 });
+      const { fontSize } = fit;
+      return editable(`${asset.id}/cta`, cta, { fontSize, lineHeight:1, textDecoration:'underline', textAlign:'center', whiteSpace:'nowrap' }, fit.contract); })()}
     <div style={{ display:'flex', gap:70, marginTop:0 }} aria-label="Carousel position">
       {[0,1,2].map(n=><i key={n} style={{ width:18, height:18, borderRadius:'50%',
         background:n===0?'#fff':'#ffffff66' }} />)}

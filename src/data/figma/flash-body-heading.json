@@ -1,0 +1,49 @@
+{
+ "source": {
+  "file": "7r3YL4Zko0WfQs5vnSO9OT",
+  "node": "248:711130",
+  "name": "Header"
+ },
+ "size": [
+  1200,
+  187
+ ],
+ "frame": {
+  "fill": "#FFFFFF"
+ },
+ "layers": {
+  "248:711131": {
+   "name": "Group 3209",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 172,
+   "y": 59,
+   "w": 854,
+   "h": 69
+  },
+  "248:711132": {
+   "name": "Flash Sale Top Picks",
+   "type": "TEXT",
+   "parent": "248:711131",
+   "visible": true,
+   "x": 172,
+   "y": 59,
+   "w": 854,
+   "h": 69,
+   "fill": "#333333",
+   "text": {
+    "chars": "Flash Sale Top Picks",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 104.39,
+    "lineHeight": 98.72,
+    "letterSpacing": -1.04,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  }
+ }
+}

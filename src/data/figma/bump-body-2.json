@@ -1,0 +1,3230 @@
+{
+ "source": {
+  "file": "ioB3sP8LwBiTUPQN7jlF81",
+  "node": "583:4",
+  "name": "SC/v1/Board/SC26_0058 Wk33 Bump/email-body"
+ },
+ "size": [
+  1200,
+  6769.84
+ ],
+ "frame": {
+  "fill": "#FFFFFF"
+ },
+ "layers": {
+  "538:22064": {
+   "name": "SL/PH",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "w": 1200,
+   "h": 644,
+   "fill": "#FFFFFF"
+  },
+  "538:22065": {
+   "name": "Frame 2200",
+   "type": "FRAME",
+   "parent": "538:22064",
+   "visible": true,
+   "x": 68.5,
+   "y": 50,
+   "w": 1063,
+   "h": 544
+  },
+  "538:22066": {
+   "name": "Sender Name",
+   "type": "TEXT",
+   "parent": "538:22065",
+   "visible": true,
+   "x": 68.5,
+   "y": 50,
+   "w": 389,
+   "h": 46,
+   "fill": "#000000",
+   "text": {
+    "chars": "Sender Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 70,
+    "lineHeight": 88.95,
+    "letterSpacing": -0.7,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22067": {
+   "name": "Steep & Cheap",
+   "type": "TEXT",
+   "parent": "538:22065",
+   "visible": true,
+   "x": 68.5,
+   "y": 144,
+   "w": 303,
+   "h": 33,
+   "fill": "#000000",
+   "text": {
+    "chars": "Steep & Cheap",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 50,
+    "lineHeight": 60,
+    "letterSpacing": -0.5,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22068": {
+   "name": "Subject Line",
+   "type": "TEXT",
+   "parent": "538:22065",
+   "visible": true,
+   "x": 68.5,
+   "y": 225,
+   "w": 354,
+   "h": 46,
+   "fill": "#000000",
+   "text": {
+    "chars": "Subject Line",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 70,
+    "lineHeight": 88.95,
+    "letterSpacing": -0.7,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22069": {
+   "name": "⏰ Extra 20% off fall gear ends tomorrow",
+   "type": "TEXT",
+   "parent": "538:22065",
+   "visible": true,
+   "x": 68.5,
+   "y": 319,
+   "w": 938,
+   "h": 36,
+   "fill": "#000000",
+   "text": {
+    "chars": "⏰ Extra 20% off fall gear ends tomorrow",
+    "family": "Inter",
+    "weight": 400,
+    "size": 50,
+    "lineHeight": 60.51,
+    "letterSpacing": -0.5,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22070": {
+   "name": "Preview",
+   "type": "TEXT",
+   "parent": "538:22065",
+   "visible": true,
+   "x": 68.5,
+   "y": 403,
+   "w": 228,
+   "h": 46,
+   "fill": "#000000",
+   "text": {
+    "chars": "Preview",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 70,
+    "lineHeight": 88.95,
+    "letterSpacing": -0.7,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22071": {
+   "name": "Code AUTUMN20 clocks out soon, top picks inside",
+   "type": "TEXT",
+   "parent": "538:22065",
+   "visible": true,
+   "x": 68.5,
+   "y": 497,
+   "w": 1063,
+   "h": 97,
+   "fill": "#000000",
+   "text": {
+    "chars": "Code AUTUMN20 clocks out soon, top picks inside",
+    "family": "Inter",
+    "weight": 400,
+    "size": 50,
+    "lineHeight": 60.51,
+    "letterSpacing": -0.5,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22072": {
+   "name": "HEADER",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 644,
+   "w": 1200,
+   "h": 170,
+   "fill": "#FFFFFF"
+  },
+  "538:22073": {
+   "name": "Nav Links",
+   "type": "FRAME",
+   "parent": "538:22072",
+   "visible": true,
+   "x": 461.79,
+   "y": 705.86,
+   "w": 646,
+   "h": 36
+  },
+  "538:22074": {
+   "name": "Nav Link Label",
+   "type": "TEXT",
+   "parent": "538:22073",
+   "visible": true,
+   "x": 461.79,
+   "y": 705.86,
+   "w": 57,
+   "h": 36,
+   "fill": "#000000",
+   "text": {
+    "chars": "men",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 30,
+    "lineHeight": 36,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:22075": {
+   "name": "Nav Link Label",
+   "type": "TEXT",
+   "parent": "538:22073",
+   "visible": true,
+   "x": 595.79,
+   "y": 705.86,
+   "w": 96,
+   "h": 36,
+   "fill": "#000000",
+   "text": {
+    "chars": "Women",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 30,
+    "lineHeight": 36,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:22076": {
+   "name": "Nav Link Label",
+   "type": "TEXT",
+   "parent": "538:22073",
+   "visible": true,
+   "x": 768.79,
+   "y": 705.86,
+   "w": 157,
+   "h": 36,
+   "fill": "#000000",
+   "text": {
+    "chars": "New Arrivals",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 30,
+    "lineHeight": 36,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:22077": {
+   "name": "Nav Link Label",
+   "type": "TEXT",
+   "parent": "538:22073",
+   "visible": true,
+   "x": 1002.79,
+   "y": 705.86,
+   "w": 105,
+   "h": 36,
+   "fill": "#79AC41",
+   "text": {
+    "chars": "Shop All",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 30,
+    "lineHeight": 36,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:22078": {
+   "name": "Logo",
+   "type": "VECTOR",
+   "parent": "538:22072",
+   "visible": true,
+   "x": 92,
+   "y": 673.86,
+   "w": 219.79,
+   "h": 100,
+   "fill": "#000000"
+  },
+  "538:22079": {
+   "name": "Email Hero",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 814,
+   "w": 1200,
+   "h": 1125,
+   "image": true,
+   "crop": [
+    [
+     0.83518,
+     0,
+     0.08241
+    ],
+    [
+     0,
+     1.01458,
+     -0.01443
+    ]
+   ],
+   "images": [
+    {
+     "ref": "0dfa9897ff1e1d3ad4cc1faa5068e4e0a2de03e5",
+     "mode": "STRETCH"
+    }
+   ]
+  },
+  "538:22080": {
+   "name": "Group 2920",
+   "type": "GROUP",
+   "parent": "538:22079",
+   "visible": true,
+   "x": 137.3,
+   "y": 1291,
+   "w": 925.04,
+   "h": 452.07,
+   "rotation": -3.31,
+   "turn": -3.31,
+   "shadow": {
+    "x": 3.87,
+    "y": 3.87,
+    "blur": 6.38,
+    "color": "#00000040"
+   },
+   "shadows": [
+    {
+     "x": 3.87,
+     "y": 3.87,
+     "blur": 6.38,
+     "color": "#00000040"
+    },
+    {
+     "x": 3.87,
+     "y": 3.87,
+     "blur": 111.57,
+     "color": "#00000040"
+    }
+   ]
+  },
+  "538:22081": {
+   "name": "Subtract",
+   "type": "BOOLEAN_OPERATION",
+   "parent": "538:22080",
+   "visible": true,
+   "x": 137.3,
+   "y": 1291,
+   "w": 925.04,
+   "h": 452.07,
+   "rotation": 0,
+   "turn": -3.31,
+   "fill": "#F14222",
+   "image": true,
+   "crop": [
+    [
+     0.88611,
+     0,
+     0.01481
+    ],
+    [
+     0,
+     0.49537,
+     0.25757
+    ]
+   ],
+   "images": [
+    {
+     "ref": "672fabf9c45f8efee0949d738aa2530b67ba6367",
+     "mode": "STRETCH",
+     "opacity": 0.73,
+     "blend": "SCREEN"
+    }
+   ]
+  },
+  "538:22082": {
+   "name": "Subtract",
+   "type": "BOOLEAN_OPERATION",
+   "parent": "538:22081",
+   "visible": true,
+   "x": 137.3,
+   "y": 1291,
+   "w": 925.04,
+   "h": 452.07,
+   "turn": -3.31,
+   "fill": "#F14222"
+  },
+  "538:22083": {
+   "name": "Rectangle 1",
+   "type": "RECTANGLE",
+   "parent": "538:22082",
+   "visible": true,
+   "x": 137.3,
+   "y": 1291,
+   "w": 925.04,
+   "h": 452.07,
+   "turn": -3.31,
+   "fill": "#F14222",
+   "radius": 16.97
+  },
+  "538:22084": {
+   "name": "Ellipse 2",
+   "type": "ELLIPSE",
+   "parent": "538:22081",
+   "visible": true,
+   "x": 961.43,
+   "y": 1318.53,
+   "w": 49.19,
+   "h": 46.04,
+   "turn": -3.31,
+   "fill": "#D9D9D9"
+  },
+  "538:22085": {
+   "name": "Group 2916",
+   "type": "GROUP",
+   "parent": "538:22080",
+   "visible": true,
+   "x": 185.54,
+   "y": 1337.49,
+   "w": 820.16,
+   "h": 362.83,
+   "turn": -3.31
+  },
+  "538:22086": {
+   "name": "Group 2913",
+   "type": "GROUP",
+   "parent": "538:22085",
+   "visible": true,
+   "x": 185.54,
+   "y": 1341.18,
+   "w": 752.31,
+   "h": 289.26,
+   "turn": -3.31
+  },
+  "538:22087": {
+   "name": "EXTRA 20% OFF",
+   "type": "TEXT",
+   "parent": "538:22086",
+   "visible": true,
+   "x": 185.54,
+   "y": 1341.18,
+   "w": 752.31,
+   "h": 289.26,
+   "turn": -3.31,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "EXTRA 20% OFF",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 166.05,
+    "lineHeight": 136.63,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22088": {
+   "name": "Group 2916",
+   "type": "GROUP",
+   "parent": "538:22085",
+   "visible": true,
+   "x": 203.2,
+   "y": 1622.45,
+   "w": 802.5,
+   "h": 77.8,
+   "turn": -3.31
+  },
+  "538:22089": {
+   "name": "CODE AUTUMN20",
+   "type": "TEXT",
+   "parent": "538:22088",
+   "visible": true,
+   "x": 203.2,
+   "y": 1643.46,
+   "w": 439.06,
+   "h": 56.23,
+   "turn": -3.31,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "CODE AUTUMN20",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 46.45,
+    "lineHeight": 44.5,
+    "letterSpacing": 4.65,
+    "align": "RIGHT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "runs": [
+     {
+      "from": 5,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700
+      }
+     }
+    ]
+   }
+  },
+  "538:22090": {
+   "name": "SHOP NOW >",
+   "type": "TEXT",
+   "parent": "538:22088",
+   "visible": true,
+   "x": 682.44,
+   "y": 1622.99,
+   "w": 323.25,
+   "h": 49.54,
+   "turn": -3.31,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "SHOP NOW >",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 46.45,
+    "lineHeight": 44.5,
+    "letterSpacing": 4.65,
+    "align": "RIGHT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22091": {
+   "name": "Line 1",
+   "type": "LINE",
+   "parent": "538:22088",
+   "visible": true,
+   "x": 661.2,
+   "y": 1643.16,
+   "w": 1.77,
+   "h": 30.61,
+   "rotation": 90,
+   "turn": 86.69
+  },
+  "538:22092": {
+   "name": "Group 3484",
+   "type": "GROUP",
+   "parent": "538:22079",
+   "visible": true,
+   "x": 78,
+   "y": 1804,
+   "w": 1044.19,
+   "h": 87.62
+  },
+  "538:22093": {
+   "name": "Group 3403",
+   "type": "GROUP",
+   "parent": "538:22092",
+   "visible": true,
+   "x": 78,
+   "y": 1804,
+   "w": 1044.19,
+   "h": 87.62
+  },
+  "538:22094": {
+   "name": "Brand Logo",
+   "type": "VECTOR",
+   "parent": "538:22093",
+   "visible": true,
+   "x": 78,
+   "y": 1806.35,
+   "w": 174.12,
+   "h": 76.61,
+   "fill": "#FFFFFF"
+  },
+  "538:22095": {
+   "name": "Mountain Hardwear",
+   "type": "INSTANCE",
+   "parent": "538:22093",
+   "visible": true,
+   "x": 719.37,
+   "y": 1804,
+   "w": 151.61,
+   "h": 82.93
+  },
+  "I538:22095;12701:3": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "538:22095",
+   "visible": true,
+   "x": 720.66,
+   "y": 1804.13,
+   "w": 15.08,
+   "h": 15.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:4": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "538:22095",
+   "visible": true,
+   "x": 785.12,
+   "y": 1804.13,
+   "w": 13,
+   "h": 15.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:5": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "538:22095",
+   "visible": true,
+   "x": 805.39,
+   "y": 1804.13,
+   "w": 12.43,
+   "h": 15.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:6": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "538:22095",
+   "visible": true,
+   "x": 822.99,
+   "y": 1804.13,
+   "w": 15.15,
+   "h": 15.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:7": {
+   "name": "Group",
+   "type": "GROUP",
+   "parent": "538:22095",
+   "visible": true,
+   "x": 719.37,
+   "y": 1804,
+   "w": 151.61,
+   "h": 82.93
+  },
+  "I538:22095;12701:8": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 743.5,
+   "y": 1804,
+   "w": 12.88,
+   "h": 15.97,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:9": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 845.16,
+   "y": 1804.13,
+   "w": 3.41,
+   "h": 15.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:10": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 764.21,
+   "y": 1804.13,
+   "w": 12.5,
+   "h": 15.84,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:11": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 857.68,
+   "y": 1804.13,
+   "w": 13,
+   "h": 15.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:12": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 720.66,
+   "y": 1804.13,
+   "w": 15.08,
+   "h": 15.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:13": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 785.12,
+   "y": 1804.13,
+   "w": 13,
+   "h": 15.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:14": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 805.39,
+   "y": 1804.13,
+   "w": 12.43,
+   "h": 15.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:15": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 822.99,
+   "y": 1804.13,
+   "w": 15.15,
+   "h": 15.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:16": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 743.5,
+   "y": 1804,
+   "w": 12.88,
+   "h": 15.97,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:17": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 845.16,
+   "y": 1804.13,
+   "w": 3.41,
+   "h": 15.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:18": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 764.21,
+   "y": 1804.13,
+   "w": 12.5,
+   "h": 15.84,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:19": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 857.68,
+   "y": 1804.13,
+   "w": 13,
+   "h": 15.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:20": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 719.37,
+   "y": 1825.99,
+   "w": 21.28,
+   "h": 28.91,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:21": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 763.7,
+   "y": 1825.99,
+   "w": 40.95,
+   "h": 29.11,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:22": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 739.86,
+   "y": 1825.77,
+   "w": 20.16,
+   "h": 29.36,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:23": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 746.02,
+   "y": 1857.99,
+   "w": 17.85,
+   "h": 28.2,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:24": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 719.59,
+   "y": 1858.16,
+   "w": 26.37,
+   "h": 27.84,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:25": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 785.17,
+   "y": 1857.49,
+   "w": 20.15,
+   "h": 29.14,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:26": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 762.46,
+   "y": 1857.66,
+   "w": 19.49,
+   "h": 28.65,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:27": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 820.68,
+   "y": 1836.6,
+   "w": 28.98,
+   "h": 29.71,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:28": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 826.88,
+   "y": 1842.86,
+   "w": 24.52,
+   "h": 25.15,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:29": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 810.33,
+   "y": 1825.95,
+   "w": 42.4,
+   "h": 43.49,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:30": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 854.68,
+   "y": 1827.9,
+   "w": 16.29,
+   "h": 38.62,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:31": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 847.7,
+   "y": 1864.78,
+   "w": 10.03,
+   "h": 10.06,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:32": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 840.97,
+   "y": 1858.05,
+   "w": 7.86,
+   "h": 7.91,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:33": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 856.59,
+   "y": 1873.67,
+   "w": 7.81,
+   "h": 7.86,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:34": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 844.6,
+   "y": 1877.56,
+   "w": 9.28,
+   "h": 9.37,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:35": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 835.71,
+   "y": 1868.69,
+   "w": 9.29,
+   "h": 9.33,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:36": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 851.54,
+   "y": 1852.65,
+   "w": 9.36,
+   "h": 9.43,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:37": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 860.42,
+   "y": 1861.56,
+   "w": 9.35,
+   "h": 9.38,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:38": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 865.18,
+   "y": 1881.06,
+   "w": 5.04,
+   "h": 5.05,
+   "fill": "#FFFFFF"
+  },
+  "I538:22095;12701:39": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22095;12701:7",
+   "visible": true,
+   "x": 866.85,
+   "y": 1882.23,
+   "w": 2.11,
+   "h": 2.61,
+   "fill": "#FFFFFF"
+  },
+  "538:22096": {
+   "name": "Patagonia",
+   "type": "INSTANCE",
+   "parent": "538:22093",
+   "visible": true,
+   "x": 353.12,
+   "y": 1819.02,
+   "w": 265.25,
+   "h": 72.6
+  },
+  "I538:22096;21584:46496": {
+   "name": "*Past season styles.",
+   "type": "TEXT",
+   "parent": "538:22096",
+   "visible": true,
+   "x": 388.1,
+   "y": 1873.85,
+   "w": 188.82,
+   "h": 17.98,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "Past season styles",
+    "family": "Sofia Pro",
+    "weight": 500,
+    "size": 21.11,
+    "lineHeight": 16.68,
+    "letterSpacing": -0.95,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "I538:22096;21584:46497": {
+   "name": "Patagonia",
+   "type": "INSTANCE",
+   "parent": "538:22096",
+   "visible": true,
+   "x": 353.12,
+   "y": 1819.02,
+   "w": 255.54,
+   "h": 48.35,
+   "rotation": 0
+  },
+  "I538:22096;21584:46497;876:3734": {
+   "name": "Patagonia / White",
+   "type": "VECTOR",
+   "parent": "I538:22096;21584:46497",
+   "visible": true,
+   "x": 353.12,
+   "y": 1819.02,
+   "w": 255.54,
+   "h": 48.35,
+   "fill": "#FFFFFF"
+  },
+  "538:22097": {
+   "name": "& More",
+   "type": "TEXT",
+   "parent": "538:22093",
+   "visible": true,
+   "x": 971.98,
+   "y": 1829.86,
+   "w": 150.21,
+   "h": 32.19,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "& More",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 45.48,
+    "lineHeight": 54.58,
+    "letterSpacing": -0.45,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "NONE",
+    "trim": true
+   }
+  },
+  "538:22098": {
+   "name": "out 2",
+   "type": "RECTANGLE",
+   "parent": "538:22079",
+   "visible": true,
+   "x": 1,
+   "y": 814,
+   "w": 1199,
+   "h": 110,
+   "image": true,
+   "images": [
+    {
+     "ref": "25db519bf3e0b3668fcbb8731232d527d4ab1109",
+     "mode": "FILL"
+    }
+   ]
+  },
+  "538:22099": {
+   "name": "SAC Email Body",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 1939,
+   "w": 1200,
+   "h": 511,
+   "fill": "#FFFFFF"
+  },
+  "538:22100": {
+   "name": "Frame 2200",
+   "type": "FRAME",
+   "parent": "538:22099",
+   "visible": true,
+   "x": 0,
+   "y": 1989,
+   "w": 1200,
+   "h": 166
+  },
+  "538:22101": {
+   "name": "Your sandals had a great run. Retire them with honor and take an extra 20% off boots, layers and cool-ready gear with code AUTUMN20.",
+   "type": "TEXT",
+   "parent": "538:22100",
+   "visible": true,
+   "x": 79,
+   "y": 1989,
+   "w": 1042,
+   "h": 166,
+   "fill": "#000000",
+   "text": {
+    "chars": "Your sandals had a great run. Retire them with honor and take an extra 20% off boots, layers and cool-ready gear with code AUTUMN20.",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 54,
+    "lineHeight": 64.8,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22102": {
+   "name": "Frame 2204",
+   "type": "FRAME",
+   "parent": "538:22099",
+   "visible": true,
+   "x": 365,
+   "y": 2230,
+   "w": 470,
+   "h": 120,
+   "fill": "#333333",
+   "radius": 30
+  },
+  "538:22103": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:22102",
+   "visible": true,
+   "x": 465,
+   "y": 2269,
+   "w": 270,
+   "h": 42,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 64,
+    "lineHeight": 76.8,
+    "letterSpacing": -0.64,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22104": {
+   "name": "SAC Email Header",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 2450,
+   "w": 1200,
+   "h": 198,
+   "fill": "#FFFFFF"
+  },
+  "538:22105": {
+   "name": "Your Top Picks Header",
+   "type": "FRAME",
+   "parent": "538:22104",
+   "visible": true,
+   "x": 0,
+   "y": 2450,
+   "w": 1199,
+   "h": 198,
+   "fill": "#F14222",
+   "image": true,
+   "crop": [
+    [
+     1.04261,
+     0,
+     -0.02174
+    ],
+    [
+     0,
+     0.2651,
+     0.37433
+    ]
+   ],
+   "images": [
+    {
+     "ref": "c4718d422f2b5abf2624402ba628a9422e693f27",
+     "mode": "STRETCH",
+     "opacity": 0.2,
+     "blend": "SCREEN"
+    }
+   ]
+  },
+  "538:22106": {
+   "name": "Group 3573",
+   "type": "GROUP",
+   "parent": "538:22105",
+   "visible": true,
+   "x": 345.79,
+   "y": 2492,
+   "w": 507.21,
+   "h": 115
+  },
+  "538:22107": {
+   "name": "Your Top Picks",
+   "type": "TEXT",
+   "parent": "538:22106",
+   "visible": true,
+   "x": 345.79,
+   "y": 2551,
+   "w": 507.21,
+   "h": 56,
+   "rotation": 0,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "4de890d214ac7d785d582b0cc28fc197df7c1921",
+     "mode": "FILL",
+     "opacity": 0.51,
+     "blend": "LINEAR_DODGE"
+    }
+   ],
+   "text": {
+    "chars": "Your Top Picks",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 85,
+    "lineHeight": 177.66,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22108": {
+   "name": "EXTRA 20% OFF",
+   "type": "TEXT",
+   "parent": "538:22106",
+   "visible": true,
+   "x": 404.08,
+   "y": 2492,
+   "w": 391.13,
+   "h": 35,
+   "rotation": 0,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "4de890d214ac7d785d582b0cc28fc197df7c1921",
+     "mode": "FILL",
+     "opacity": 0.51,
+     "blend": "LINEAR_DODGE"
+    }
+   ],
+   "text": {
+    "chars": "EXTRA 20% OFF",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 52.53,
+    "lineHeight": 177.66,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22109": {
+   "name": "SAC Bluecore SKUs",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 2648,
+   "w": 1200,
+   "h": 1510,
+   "fill": "#FFFFFF"
+  },
+  "538:22110": {
+   "name": "Spacer",
+   "type": "FRAME",
+   "parent": "538:22109",
+   "visible": true,
+   "x": 100,
+   "y": 2648,
+   "w": 1000,
+   "h": 10
+  },
+  "538:22111": {
+   "name": "Product Listings",
+   "type": "FRAME",
+   "parent": "538:22109",
+   "visible": true,
+   "x": 100,
+   "y": 2658,
+   "w": 1000,
+   "h": 1500
+  },
+  "538:22112": {
+   "name": "Product Listing 1",
+   "type": "FRAME",
+   "parent": "538:22111",
+   "visible": true,
+   "x": 100,
+   "y": 2663,
+   "w": 475,
+   "h": 695
+  },
+  "538:22113": {
+   "name": "Product Image",
+   "type": "FRAME",
+   "parent": "538:22112",
+   "visible": true,
+   "x": 100,
+   "y": 2663,
+   "w": 475,
+   "h": 475,
+   "image": true,
+   "images": [
+    {
+     "ref": "345302902cffaea91d8cb3aa85fc7f71c3cd817f",
+     "mode": "FILL",
+     "opacity": 0.5
+    }
+   ]
+  },
+  "538:22114": {
+   "name": "Brand Name",
+   "type": "TEXT",
+   "parent": "538:22112",
+   "visible": true,
+   "x": 100,
+   "y": 3168,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Brand Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:22115": {
+   "name": "Product Name",
+   "type": "TEXT",
+   "parent": "538:22112",
+   "visible": true,
+   "x": 100,
+   "y": 3223,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Product Name",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:22116": {
+   "name": "Price",
+   "type": "TEXT",
+   "parent": "538:22112",
+   "visible": true,
+   "x": 100,
+   "y": 3278,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "${Sale Price} ${Original Price}",
+    "family": "Tiempos Headline",
+    "weight": 800,
+    "size": 28,
+    "lineHeight": 33.94,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 13,
+      "to": 14,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 14,
+      "to": 31,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "textDecoration": "STRIKETHROUGH",
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     }
+    ]
+   }
+  },
+  "538:22117": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:22112",
+   "visible": true,
+   "x": 100,
+   "y": 3333,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:22118": {
+   "name": "Product Listing 2",
+   "type": "FRAME",
+   "parent": "538:22111",
+   "visible": true,
+   "x": 625,
+   "y": 2663,
+   "w": 475,
+   "h": 695
+  },
+  "538:22119": {
+   "name": "Product Image",
+   "type": "FRAME",
+   "parent": "538:22118",
+   "visible": true,
+   "x": 625,
+   "y": 2663,
+   "w": 475,
+   "h": 475,
+   "image": true,
+   "images": [
+    {
+     "ref": "aaff26ce5c3314d5753ea84c381fe8f0d201f9a6",
+     "mode": "FILL",
+     "opacity": 0.5
+    }
+   ]
+  },
+  "538:22120": {
+   "name": "Brand Name",
+   "type": "TEXT",
+   "parent": "538:22118",
+   "visible": true,
+   "x": 625,
+   "y": 3168,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Brand Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:22121": {
+   "name": "Product Name",
+   "type": "TEXT",
+   "parent": "538:22118",
+   "visible": true,
+   "x": 625,
+   "y": 3223,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Product Name",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:22122": {
+   "name": "Price",
+   "type": "TEXT",
+   "parent": "538:22118",
+   "visible": true,
+   "x": 625,
+   "y": 3278,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "${Sale Price} ${Original Price}",
+    "family": "Tiempos Headline",
+    "weight": 800,
+    "size": 28,
+    "lineHeight": 33.94,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 13,
+      "to": 14,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 14,
+      "to": 31,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "textDecoration": "STRIKETHROUGH",
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     }
+    ]
+   }
+  },
+  "538:22123": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:22118",
+   "visible": true,
+   "x": 625,
+   "y": 3333,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:22124": {
+   "name": "Product Listing 3",
+   "type": "FRAME",
+   "parent": "538:22111",
+   "visible": true,
+   "x": 100,
+   "y": 3458,
+   "w": 475,
+   "h": 695
+  },
+  "538:22125": {
+   "name": "Product Image",
+   "type": "FRAME",
+   "parent": "538:22124",
+   "visible": true,
+   "x": 100,
+   "y": 3458,
+   "w": 475,
+   "h": 475,
+   "image": true,
+   "images": [
+    {
+     "ref": "942c39e99428d0e4371e227581993553cd8b9c9c",
+     "mode": "FILL",
+     "opacity": 0.5
+    }
+   ]
+  },
+  "538:22126": {
+   "name": "Brand Name",
+   "type": "TEXT",
+   "parent": "538:22124",
+   "visible": true,
+   "x": 100,
+   "y": 3963,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Brand Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:22127": {
+   "name": "Product Name",
+   "type": "TEXT",
+   "parent": "538:22124",
+   "visible": true,
+   "x": 100,
+   "y": 4018,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Product Name",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:22128": {
+   "name": "Price",
+   "type": "TEXT",
+   "parent": "538:22124",
+   "visible": true,
+   "x": 100,
+   "y": 4073,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "${Sale Price} ${Original Price}",
+    "family": "Tiempos Headline",
+    "weight": 800,
+    "size": 28,
+    "lineHeight": 33.94,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 13,
+      "to": 14,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 14,
+      "to": 31,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "textDecoration": "STRIKETHROUGH",
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     }
+    ]
+   }
+  },
+  "538:22129": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:22124",
+   "visible": true,
+   "x": 100,
+   "y": 4128,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:22130": {
+   "name": "Product Listing 4",
+   "type": "FRAME",
+   "parent": "538:22111",
+   "visible": true,
+   "x": 625,
+   "y": 3458,
+   "w": 475,
+   "h": 695
+  },
+  "538:22131": {
+   "name": "Product Image",
+   "type": "FRAME",
+   "parent": "538:22130",
+   "visible": true,
+   "x": 625,
+   "y": 3458,
+   "w": 475,
+   "h": 475,
+   "image": true,
+   "images": [
+    {
+     "ref": "85507a6c9c62bfd499e813988e123a816af8187e",
+     "mode": "FILL",
+     "opacity": 0.5
+    }
+   ]
+  },
+  "538:22132": {
+   "name": "Brand Name",
+   "type": "TEXT",
+   "parent": "538:22130",
+   "visible": true,
+   "x": 625,
+   "y": 3963,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Brand Name",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:22133": {
+   "name": "Product Name",
+   "type": "TEXT",
+   "parent": "538:22130",
+   "visible": true,
+   "x": 625,
+   "y": 4018,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Product Name",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:22134": {
+   "name": "Price",
+   "type": "TEXT",
+   "parent": "538:22130",
+   "visible": true,
+   "x": 625,
+   "y": 4073,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "${Sale Price} ${Original Price}",
+    "family": "Tiempos Headline",
+    "weight": 800,
+    "size": 28,
+    "lineHeight": 33.94,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false,
+    "runs": [
+     {
+      "from": 0,
+      "to": 13,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 700,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 13,
+      "to": 14,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     },
+     {
+      "from": 14,
+      "to": 31,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400,
+       "textDecoration": "STRIKETHROUGH",
+       "fontSize": 28,
+       "lineHeightPx": 33.6,
+       "lineHeightPercent": 100,
+       "lineHeightUnit": "INTRINSIC_%"
+      }
+     }
+    ]
+   }
+  },
+  "538:22135": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:22130",
+   "visible": true,
+   "x": 625,
+   "y": 4128,
+   "w": 475,
+   "h": 25,
+   "fill": "#000000",
+   "text": {
+    "chars": "Shop Now",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 28,
+    "lineHeight": 33.6,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "538:22136": {
+   "name": "SAC Email CTA",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 4158,
+   "w": 1200,
+   "h": 250,
+   "fill": "#FFFFFF"
+  },
+  "538:22137": {
+   "name": "Button",
+   "type": "FRAME",
+   "parent": "538:22136",
+   "visible": true,
+   "x": 399.5,
+   "y": 4226.5,
+   "w": 401,
+   "h": 113,
+   "fill": "#333333",
+   "radius": 25
+  },
+  "538:22138": {
+   "name": "CTA Text",
+   "type": "TEXT",
+   "parent": "538:22137",
+   "visible": true,
+   "x": 499.5,
+   "y": 4266.5,
+   "w": 201,
+   "h": 33,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "See More",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 50,
+    "lineHeight": 60,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22139": {
+   "name": "SAC Email Header",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 4408,
+   "w": 1200,
+   "h": 140,
+   "fill": "#FFFFFF"
+  },
+  "538:22140": {
+   "name": "Your Top Picks Header",
+   "type": "FRAME",
+   "parent": "538:22139",
+   "visible": true,
+   "x": 0,
+   "y": 4408.12,
+   "w": 1199,
+   "h": 140,
+   "fill": "#F14222",
+   "image": true,
+   "crop": [
+    [
+     1.04261,
+     0,
+     -0.02174
+    ],
+    [
+     0,
+     0.18744,
+     0.40662
+    ]
+   ],
+   "images": [
+    {
+     "ref": "c4718d422f2b5abf2624402ba628a9422e693f27",
+     "mode": "STRETCH",
+     "opacity": 0.2,
+     "blend": "SCREEN"
+    }
+   ]
+  },
+  "538:22141": {
+   "name": "Bestselling Brands",
+   "type": "TEXT",
+   "parent": "538:22140",
+   "visible": true,
+   "x": 266.79,
+   "y": 4449.86,
+   "w": 664.21,
+   "h": 56,
+   "rotation": 0,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "4de890d214ac7d785d582b0cc28fc197df7c1921",
+     "mode": "FILL",
+     "opacity": 0.51,
+     "blend": "LINEAR_DODGE"
+    }
+   ],
+   "text": {
+    "chars": "Bestselling Brands",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 85,
+    "lineHeight": 177.66,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:22142": {
+   "name": "Frame 4752",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 4548,
+   "w": 1200,
+   "h": 1761,
+   "fill": "#FFFFFF"
+  },
+  "538:22143": {
+   "name": "Frame 4750",
+   "type": "FRAME",
+   "parent": "538:22142",
+   "visible": true,
+   "x": 48,
+   "y": 4600,
+   "w": 1103,
+   "h": 1657,
+   "fill": "#FFFFFF"
+  },
+  "538:22144": {
+   "name": "Group 3301",
+   "type": "GROUP",
+   "parent": "538:22143",
+   "visible": true,
+   "x": 48,
+   "y": 4600,
+   "w": 1103,
+   "h": 527,
+   "radius": 25
+  },
+  "538:22145": {
+   "name": "Frame 2211",
+   "type": "FRAME",
+   "parent": "538:22144",
+   "visible": true,
+   "x": 48,
+   "y": 4600,
+   "w": 527,
+   "h": 527,
+   "fill": "#EBEBEB",
+   "radius": 25
+  },
+  "538:22146": {
+   "name": "Vector 747",
+   "type": "VECTOR",
+   "parent": "538:22145",
+   "visible": true,
+   "x": -232,
+   "y": 3962,
+   "w": 3910.52,
+   "h": 1456.35,
+   "rotation": -5.57,
+   "turn": -5.57,
+   "fill": "#333333",
+   "image": true,
+   "crop": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0.46995,
+     0.26503
+    ]
+   ],
+   "images": [
+    {
+     "ref": "672fabf9c45f8efee0949d738aa2530b67ba6367",
+     "mode": "STRETCH",
+     "opacity": 0.96,
+     "blend": "LIGHTEN"
+    },
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.45,
+     "blend": "MULTIPLY"
+    }
+   ]
+  },
+  "538:22147": {
+   "name": "Patagonia",
+   "type": "INSTANCE",
+   "parent": "538:22145",
+   "visible": true,
+   "x": 94,
+   "y": 4815,
+   "w": 451,
+   "h": 123.44
+  },
+  "I538:22147;21584:46496": {
+   "name": "*Past season styles.",
+   "type": "TEXT",
+   "parent": "538:22147",
+   "visible": true,
+   "x": 153.49,
+   "y": 4908.23,
+   "w": 321.04,
+   "h": 30.58,
+   "fill": "#FFFFFF",
+   "text": {
+    "chars": "Past season styles",
+    "family": "Sofia Pro",
+    "weight": 500,
+    "size": 38.51,
+    "lineHeight": 30.43,
+    "letterSpacing": -1.73,
+    "align": "CENTER",
+    "valign": "CENTER",
+    "resize": "NONE",
+    "trim": false
+   }
+  },
+  "I538:22147;21584:46497": {
+   "name": "Patagonia",
+   "type": "INSTANCE",
+   "parent": "538:22147",
+   "visible": true,
+   "x": 94,
+   "y": 4815,
+   "w": 434.48,
+   "h": 82.22,
+   "rotation": 0
+  },
+  "I538:22147;21584:46497;876:3734": {
+   "name": "Patagonia / White",
+   "type": "VECTOR",
+   "parent": "I538:22147;21584:46497",
+   "visible": true,
+   "x": 94,
+   "y": 4815,
+   "w": 434.48,
+   "h": 82.22,
+   "fill": "#FFFFFF"
+  },
+  "538:22148": {
+   "name": "Polygon 1",
+   "type": "VECTOR",
+   "parent": "538:22145",
+   "visible": true,
+   "x": 376,
+   "y": 4514.51,
+   "w": 202.5,
+   "h": 75.16,
+   "rotation": -89.67,
+   "turn": -89.67
+  },
+  "538:22149": {
+   "name": "Frame 2212",
+   "type": "FRAME",
+   "parent": "538:22144",
+   "visible": true,
+   "x": 624,
+   "y": 4600,
+   "w": 527,
+   "h": 527,
+   "fill": "#EBEBEB",
+   "radius": 25
+  },
+  "538:22150": {
+   "name": "Vector 747",
+   "type": "VECTOR",
+   "parent": "538:22149",
+   "visible": true,
+   "x": 459,
+   "y": 3994,
+   "w": 3910.52,
+   "h": 1456.35,
+   "rotation": -5.57,
+   "turn": -5.57,
+   "fill": "#333333",
+   "image": true,
+   "crop": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0.46995,
+     0.26503
+    ]
+   ],
+   "images": [
+    {
+     "ref": "672fabf9c45f8efee0949d738aa2530b67ba6367",
+     "mode": "STRETCH",
+     "opacity": 0.96,
+     "blend": "LIGHTEN"
+    },
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.45,
+     "blend": "MULTIPLY"
+    }
+   ]
+  },
+  "538:22151": {
+   "name": "Mountain Hardwear",
+   "type": "INSTANCE",
+   "parent": "538:22149",
+   "visible": true,
+   "x": 738,
+   "y": 4782,
+   "w": 301,
+   "h": 164.64
+  },
+  "I538:22151;12701:3": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "538:22151",
+   "visible": true,
+   "x": 740.56,
+   "y": 4782.25,
+   "w": 29.95,
+   "h": 31.21,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:4": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "538:22151",
+   "visible": true,
+   "x": 868.54,
+   "y": 4782.25,
+   "w": 25.82,
+   "h": 31.21,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:5": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "538:22151",
+   "visible": true,
+   "x": 908.78,
+   "y": 4782.25,
+   "w": 24.69,
+   "h": 31.21,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:6": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "538:22151",
+   "visible": true,
+   "x": 943.73,
+   "y": 4782.25,
+   "w": 30.08,
+   "h": 31.21,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:7": {
+   "name": "Group",
+   "type": "GROUP",
+   "parent": "538:22151",
+   "visible": true,
+   "x": 738,
+   "y": 4782,
+   "w": 301,
+   "h": 164.64
+  },
+  "I538:22151;12701:8": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 785.91,
+   "y": 4782,
+   "w": 25.57,
+   "h": 31.71,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:9": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 987.73,
+   "y": 4782.25,
+   "w": 6.77,
+   "h": 31.21,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:10": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 827.01,
+   "y": 4782.25,
+   "w": 24.82,
+   "h": 31.46,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:11": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 1012.6,
+   "y": 4782.25,
+   "w": 25.82,
+   "h": 31.21,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:12": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 740.56,
+   "y": 4782.25,
+   "w": 29.95,
+   "h": 31.21,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:13": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 868.53,
+   "y": 4782.25,
+   "w": 25.82,
+   "h": 31.21,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:14": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 908.78,
+   "y": 4782.25,
+   "w": 24.69,
+   "h": 31.21,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:15": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 943.73,
+   "y": 4782.25,
+   "w": 30.08,
+   "h": 31.21,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:16": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 785.91,
+   "y": 4782,
+   "w": 25.57,
+   "h": 31.71,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:17": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 987.73,
+   "y": 4782.25,
+   "w": 6.77,
+   "h": 31.21,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:18": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 827.01,
+   "y": 4782.25,
+   "w": 24.82,
+   "h": 31.46,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:19": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 1012.6,
+   "y": 4782.25,
+   "w": 25.82,
+   "h": 31.21,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:20": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 738,
+   "y": 4825.66,
+   "w": 42.24,
+   "h": 57.4,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:21": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 826.02,
+   "y": 4825.66,
+   "w": 81.31,
+   "h": 57.79,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:22": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 778.69,
+   "y": 4825.22,
+   "w": 40.02,
+   "h": 58.3,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:23": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 790.92,
+   "y": 4889.19,
+   "w": 35.44,
+   "h": 55.99,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:24": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 738.44,
+   "y": 4889.53,
+   "w": 52.35,
+   "h": 55.27,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:25": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 868.64,
+   "y": 4888.21,
+   "w": 40,
+   "h": 57.85,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:26": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 823.55,
+   "y": 4888.54,
+   "w": 38.69,
+   "h": 56.88,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:27": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 939.15,
+   "y": 4846.73,
+   "w": 57.54,
+   "h": 58.98,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:28": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 951.45,
+   "y": 4859.15,
+   "w": 48.69,
+   "h": 49.93,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:29": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 918.6,
+   "y": 4825.57,
+   "w": 84.19,
+   "h": 86.34,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:30": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 1006.65,
+   "y": 4829.44,
+   "w": 32.35,
+   "h": 76.68,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:31": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 992.79,
+   "y": 4902.68,
+   "w": 19.91,
+   "h": 19.98,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:32": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 979.42,
+   "y": 4889.32,
+   "w": 15.6,
+   "h": 15.71,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:33": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 1010.43,
+   "y": 4920.33,
+   "w": 15.5,
+   "h": 15.61,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:34": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 986.64,
+   "y": 4928.04,
+   "w": 18.42,
+   "h": 18.6,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:35": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 968.99,
+   "y": 4910.44,
+   "w": 18.44,
+   "h": 18.52,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:36": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 1000.41,
+   "y": 4878.59,
+   "w": 18.57,
+   "h": 18.72,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:37": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 1018.04,
+   "y": 4896.29,
+   "w": 18.57,
+   "h": 18.63,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:38": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 1027.5,
+   "y": 4934.99,
+   "w": 10.01,
+   "h": 10.03,
+   "fill": "#FFFFFF"
+  },
+  "I538:22151;12701:39": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "I538:22151;12701:7",
+   "visible": true,
+   "x": 1030.8,
+   "y": 4937.31,
+   "w": 4.19,
+   "h": 5.19,
+   "fill": "#FFFFFF"
+  },
+  "538:22152": {
+   "name": "Group 3302",
+   "type": "GROUP",
+   "parent": "538:22143",
+   "visible": true,
+   "x": 48,
+   "y": 5165,
+   "w": 1103,
+   "h": 527,
+   "radius": 25
+  },
+  "538:22153": {
+   "name": "Frame 2211",
+   "type": "FRAME",
+   "parent": "538:22152",
+   "visible": true,
+   "x": 48,
+   "y": 5165,
+   "w": 527,
+   "h": 527,
+   "fill": "#EBEBEB",
+   "radius": 25
+  },
+  "538:22154": {
+   "name": "Vector 747",
+   "type": "VECTOR",
+   "parent": "538:22153",
+   "visible": true,
+   "x": -490,
+   "y": 4419,
+   "w": 3910.52,
+   "h": 1456.35,
+   "rotation": -5.57,
+   "turn": -5.57,
+   "fill": "#333333",
+   "image": true,
+   "crop": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0.46995,
+     0.26503
+    ]
+   ],
+   "images": [
+    {
+     "ref": "672fabf9c45f8efee0949d738aa2530b67ba6367",
+     "mode": "STRETCH",
+     "opacity": 0.96,
+     "blend": "LIGHTEN"
+    },
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.45,
+     "blend": "MULTIPLY"
+    }
+   ]
+  },
+  "538:22155": {
+   "name": "The North Face",
+   "type": "INSTANCE",
+   "parent": "538:22153",
+   "visible": true,
+   "x": 137,
+   "y": 5347,
+   "w": 350,
+   "h": 163.66
+  },
+  "I538:22155;10313:30540": {
+   "name": "The North Face/Standard/White",
+   "type": "VECTOR",
+   "parent": "538:22155",
+   "visible": true,
+   "x": 137,
+   "y": 5347,
+   "w": 350,
+   "h": 163.66,
+   "fill": "#FFFFFF"
+  },
+  "538:22156": {
+   "name": "Frame 2212",
+   "type": "FRAME",
+   "parent": "538:22152",
+   "visible": true,
+   "x": 624,
+   "y": 5165,
+   "w": 527,
+   "h": 527,
+   "fill": "#EBEBEB",
+   "radius": 25
+  },
+  "538:22157": {
+   "name": "Vector 747",
+   "type": "VECTOR",
+   "parent": "538:22156",
+   "visible": true,
+   "x": 427,
+   "y": 4655,
+   "w": 3910.52,
+   "h": 1456.35,
+   "rotation": -5.57,
+   "turn": -5.57,
+   "fill": "#333333",
+   "image": true,
+   "crop": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0.46995,
+     0.26503
+    ]
+   ],
+   "images": [
+    {
+     "ref": "672fabf9c45f8efee0949d738aa2530b67ba6367",
+     "mode": "STRETCH",
+     "opacity": 0.96,
+     "blend": "LIGHTEN"
+    },
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.45,
+     "blend": "MULTIPLY"
+    }
+   ]
+  },
+  "538:22158": {
+   "name": "Outdoor Research",
+   "type": "INSTANCE",
+   "parent": "538:22156",
+   "visible": true,
+   "x": 669,
+   "y": 5383,
+   "w": 438,
+   "h": 92.81
+  },
+  "I538:22158;876:3717": {
+   "name": "Outdoor Research / White / Main",
+   "type": "VECTOR",
+   "parent": "538:22158",
+   "visible": true,
+   "x": 669,
+   "y": 5383,
+   "w": 438,
+   "h": 92.81,
+   "fill": "#FFFFFF"
+  },
+  "538:22159": {
+   "name": "Group 3303",
+   "type": "GROUP",
+   "parent": "538:22143",
+   "visible": true,
+   "x": 48,
+   "y": 5730,
+   "w": 1103,
+   "h": 527,
+   "radius": 25
+  },
+  "538:22160": {
+   "name": "Frame 2211",
+   "type": "FRAME",
+   "parent": "538:22159",
+   "visible": true,
+   "x": 48,
+   "y": 5730,
+   "w": 527,
+   "h": 527,
+   "fill": "#EBEBEB",
+   "radius": 25
+  },
+  "538:22161": {
+   "name": "Vector 747",
+   "type": "VECTOR",
+   "parent": "538:22160",
+   "visible": true,
+   "x": -490,
+   "y": 4984,
+   "w": 3910.52,
+   "h": 1456.35,
+   "rotation": -5.57,
+   "turn": -5.57,
+   "fill": "#333333",
+   "image": true,
+   "crop": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0.46995,
+     0.26503
+    ]
+   ],
+   "images": [
+    {
+     "ref": "672fabf9c45f8efee0949d738aa2530b67ba6367",
+     "mode": "STRETCH",
+     "opacity": 0.96,
+     "blend": "LIGHTEN"
+    },
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.45,
+     "blend": "MULTIPLY"
+    }
+   ]
+  },
+  "538:22162": {
+   "name": "Columbia",
+   "type": "INSTANCE",
+   "parent": "538:22160",
+   "visible": true,
+   "x": 103,
+   "y": 5957,
+   "w": 417,
+   "h": 74.71
+  },
+  "I538:22162;775:4347": {
+   "name": "Columbia / White",
+   "type": "VECTOR",
+   "parent": "538:22162",
+   "visible": true,
+   "x": 103,
+   "y": 5957,
+   "w": 417,
+   "h": 74.71,
+   "fill": "#FFFFFF"
+  },
+  "538:22163": {
+   "name": "Frame 2212",
+   "type": "FRAME",
+   "parent": "538:22159",
+   "visible": true,
+   "x": 624,
+   "y": 5730,
+   "w": 527,
+   "h": 527,
+   "fill": "#EBEBEB",
+   "radius": 25
+  },
+  "538:22164": {
+   "name": "Vector 747",
+   "type": "VECTOR",
+   "parent": "538:22163",
+   "visible": true,
+   "x": 427,
+   "y": 5220,
+   "w": 3910.52,
+   "h": 1456.35,
+   "rotation": -5.57,
+   "turn": -5.57,
+   "fill": "#333333",
+   "image": true,
+   "crop": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0.46995,
+     0.26503
+    ]
+   ],
+   "images": [
+    {
+     "ref": "672fabf9c45f8efee0949d738aa2530b67ba6367",
+     "mode": "STRETCH",
+     "opacity": 0.96,
+     "blend": "LIGHTEN"
+    },
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.45,
+     "blend": "MULTIPLY"
+    }
+   ]
+  },
+  "538:22165": {
+   "name": "Rab",
+   "type": "INSTANCE",
+   "parent": "538:22163",
+   "visible": true,
+   "x": 669,
+   "y": 5931,
+   "w": 438,
+   "h": 126.79
+  },
+  "I538:22165;876:3882": {
+   "name": "Rab / White",
+   "type": "VECTOR",
+   "parent": "538:22165",
+   "visible": true,
+   "x": 669,
+   "y": 5931,
+   "w": 438,
+   "h": 126.79,
+   "fill": "#FFFFFF"
+  },
+  "538:22166": {
+   "name": "Footer",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 6309,
+   "w": 1200,
+   "h": 460.84,
+   "fill": "#F5F5F5"
+  },
+  "538:22167": {
+   "name": "Logo",
+   "type": "VECTOR",
+   "parent": "538:22166",
+   "visible": true,
+   "x": 65.32,
+   "y": 6355.02,
+   "w": 395.01,
+   "h": 179.72,
+   "fill": "#000000"
+  },
+  "538:22168": {
+   "name": "Facebook Logo",
+   "type": "VECTOR",
+   "parent": "538:22166",
+   "visible": true,
+   "x": 986.01,
+   "y": 6354.44,
+   "w": 59.44,
+   "h": 59.2,
+   "fill": "#000000"
+  },
+  "538:22169": {
+   "name": "Instagram Logo",
+   "type": "VECTOR",
+   "parent": "538:22166",
+   "visible": true,
+   "x": 1066.43,
+   "y": 6354.32,
+   "w": 59.44,
+   "h": 59.44,
+   "fill": "#000000"
+  },
+  "538:22170": {
+   "name": "Unsubscribe",
+   "type": "TEXT",
+   "parent": "538:22166",
+   "visible": true,
+   "x": 1025.26,
+   "y": 6638.23,
+   "w": 128,
+   "h": 30,
+   "fill": "#000000",
+   "text": {
+    "chars": "Unsubscribe",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 25,
+    "lineHeight": 30,
+    "letterSpacing": 0,
+    "align": "RIGHT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:22171": {
+   "name": "Talk to a Gearhead",
+   "type": "TEXT",
+   "parent": "538:22166",
+   "visible": true,
+   "x": 962.05,
+   "y": 6672.5,
+   "w": 191,
+   "h": 30,
+   "fill": "#000000",
+   "text": {
+    "chars": "Talk to a Gearhead",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 25,
+    "lineHeight": 30,
+    "letterSpacing": 0,
+    "align": "RIGHT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": false
+   }
+  },
+  "538:22172": {
+   "name": "Physical Address",
+   "type": "TEXT",
+   "parent": "538:22166",
+   "visible": true,
+   "x": 65.04,
+   "y": 6638.23,
+   "w": 611.89,
+   "h": 30,
+   "fill": "#000000",
+   "text": {
+    "chars": "2607 South 3200 West, Suite A, salt Lake City, UT",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 25,
+    "lineHeight": 30,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "HEIGHT",
+    "trim": false
+   }
+  },
+  "538:22173": {
+   "name": "Copyright",
+   "type": "TEXT",
+   "parent": "538:22166",
+   "visible": true,
+   "x": 65.04,
+   "y": 6672.5,
+   "w": 611.89,
+   "h": 30,
+   "fill": "#000000",
+   "text": {
+    "chars": "© 2024 SteepandCheap.com. All rights reserved",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 25,
+    "lineHeight": 30,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "HEIGHT",
+    "trim": false
+   }
+  }
+ },
+ "assets": {
+  "672fabf9c45f8efee0949d738aa2530b67ba6367": {
+   "src": "/figma-assets/672fabf9c45f8efee0949d738aa2530b67ba6367.jpg",
+   "w": 1200,
+   "h": 895
+  },
+  "25db519bf3e0b3668fcbb8731232d527d4ab1109": {
+   "src": "/figma-assets/25db519bf3e0b3668fcbb8731232d527d4ab1109.png",
+   "w": 1199,
+   "h": 110
+  },
+  "c4718d422f2b5abf2624402ba628a9422e693f27": {
+   "src": "/figma-assets/c4718d422f2b5abf2624402ba628a9422e693f27.jpg",
+   "w": 1200,
+   "h": 779
+  },
+  "4de890d214ac7d785d582b0cc28fc197df7c1921": {
+   "src": "/figma-assets/4de890d214ac7d785d582b0cc28fc197df7c1921.jpg",
+   "w": 1200,
+   "h": 797
+  },
+  "345302902cffaea91d8cb3aa85fc7f71c3cd817f": {
+   "src": "/figma-assets/345302902cffaea91d8cb3aa85fc7f71c3cd817f.png",
+   "w": 440,
+   "h": 440
+  },
+  "aaff26ce5c3314d5753ea84c381fe8f0d201f9a6": {
+   "src": "/figma-assets/aaff26ce5c3314d5753ea84c381fe8f0d201f9a6.png",
+   "w": 440,
+   "h": 440
+  },
+  "942c39e99428d0e4371e227581993553cd8b9c9c": {
+   "src": "/figma-assets/942c39e99428d0e4371e227581993553cd8b9c9c.png",
+   "w": 440,
+   "h": 440
+  },
+  "85507a6c9c62bfd499e813988e123a816af8187e": {
+   "src": "/figma-assets/85507a6c9c62bfd499e813988e123a816af8187e.png",
+   "w": 440,
+   "h": 440
+  },
+  "05631e129c31da42d3d954c5718d6f692edd363c": {
+   "src": "/figma-assets/05631e129c31da42d3d954c5718d6f692edd363c.png",
+   "w": 612,
+   "h": 408
+  }
+ }
+}

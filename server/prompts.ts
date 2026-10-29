@@ -247,3 +247,19 @@ Rules for the operations themselves:
 - Work from the boxes. If you move an element to clear another, use their actual coordinates so it ends up clear, and keep it inside the frame.
 - Prefer the smallest change that resolves the problem. A 40px nudge beats a redesign.
 - Return an empty ops array rather than inventing work. Leaving something alone and saying why in cannotFix is a good answer.`;
+
+/** The second look for a photo the on-device detectors found nothing in
+ *  (src/model/analysePhoto.ts). Asked once per photo, on a small copy, and
+ *  cached -- so it costs a hundred-odd tokens per photo that needs it, ever. */
+export const LOCATE = (file: string) =>
+  `Read the image at ${file}. It is a photograph for an outdoor-gear email or ad; text will be placed over the empty parts of it.
+
+Find where the people and the main subject are. Answer with ONE line of JSON and nothing else. No prose, no fence.
+
+{"p":[[x,y,w,h]],"h":[[x,y,w,h]],"s":[x,y,w,h]}
+
+- Every box is [left, top, width, height] as fractions 0-1 of the image width and height, 2 decimals.
+- "p": one box per person, animal, or piece of gear someone is using (bike, skis, boat, tent), each including what they hold. [] if none.
+- "h": one box per visible head or face. [] if none.
+- "s": the one main subject that text must not cover (a peak, a tent, a person), or null if the whole image is even texture (sky, water, snow) with no subject.
+- Keep the reply under 120 tokens.`;

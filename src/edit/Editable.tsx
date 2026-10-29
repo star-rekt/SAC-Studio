@@ -5,6 +5,7 @@
  *  the field useless for the thing it is mainly for. */
 import { useRef, type CSSProperties, type ReactNode } from 'react';
 import { useEdits, textOf, moveOf, sizeOf, paintOf, picOf } from './store';
+import type { Contract } from '../model/textContracts';
 
 /** Shift/cmd-click toggles group membership instead of the usual single
  *  select -- the same modifiers a plain drag already answers to, but a click
@@ -37,8 +38,11 @@ export const canvasZoom = (element: Element) => {
   return scaler ? Number.parseFloat(getComputedStyle(scaler).zoom) || 1 : 1;
 };
 
-export function Editable({ id, children, style, as = 'div' }: {
+export function Editable({ id, children, style, as = 'div', fit }: {
   id: string; children: string; style?: CSSProperties; as?: 'div' | 'span' | 'h1' | 'h2' | 'p';
+  /** The text contract this run's size came from (fitText / measureAndFit),
+   *  so Copy fit can report how much text it holds. */
+  fit?: Contract;
 }) {
   const api = useEdits();
   const ref = useRef<HTMLElement>(null);
@@ -73,13 +77,24 @@ export function Editable({ id, children, style, as = 'div' }: {
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
   };
 
+  // A transform is ignored on an inline <span> (CODE / its value), so a
+  // move there was saved but never drawn -- relative offsets do work inline,
+  // and leave the space between the two runs exactly as it was.
+  const inline = as === 'span' && !st.display && !st.position;
   const Tag = as as 'div';
   return (
     <Tag
       ref={ref as never}
       className={'ed' + (on ? ' on' : '') + (picked ? ' picked' : '') + (grouped ? ' in-group' : '')}
       data-id={id}
-      style={{ ...st, transform: `translate(${mv.dx}px, ${mv.dy}px)` }}
+      data-fit={fit ? JSON.stringify(fit) : undefined}
+      // The template's own text, so Copy fit knows how many lines it was designed to take.
+      data-default={children}
+      // Clickable even inside a layout box that passes clicks through (a
+      // compiled template's text anchors and rows do): the box must never
+      // hide the run from selection.
+      style={inline ? { pointerEvents: 'auto', ...st, position: 'relative', left: mv.dx, top: mv.dy }
+        : { pointerEvents: 'auto', ...st, transform: `translate(${mv.dx}px, ${mv.dy}px)` }}
       contentEditable={on}
       suppressContentEditableWarning
       spellCheck={false}
@@ -144,7 +159,7 @@ export function Ground({ id, style, className, children, ...rest }: {
   return (
     <div {...rest} data-id={id} className={[className, 'gr', on && 'on', picked && 'picked',
         grouped && 'in-group'].filter(Boolean).join(' ')}
-      style={{ ...style, ...sized, transform: moved, ...(paint.bg ? { background: paint.bg } : null),
+      style={{ pointerEvents: 'auto', ...style, ...sized, transform: moved, ...(paint.bg ? { background: paint.bg } : null),
         ...(texture ? { backgroundImage: `url(${texture})`, backgroundSize: 'cover',
                          backgroundPosition: 'center' } : null) }}
       onMouseDown={drag}
@@ -181,7 +196,7 @@ export function Movable({ id, children, style }: {
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
   };
   return <div className={'mv' + (on ? ' on' : '')} data-id={id}
-      style={{ ...style, ...(paint.bg ? { background: paint.bg } : null),
+      style={{ pointerEvents: 'auto', ...style, ...(paint.bg ? { background: paint.bg } : null),
                transform: `translate(${mv.dx}px, ${mv.dy}px)` }}
       onMouseDown={drag}>{children}</div>;
 }

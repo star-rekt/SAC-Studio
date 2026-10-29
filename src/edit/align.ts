@@ -90,7 +90,7 @@ function edgesOf(id: string): { left: number; right: number; top: number; bottom
            canvasWidth: c.width / zoom, canvas };
 }
 
-type Edge = NonNullable<ReturnType<typeof edgesOf>>;
+export type Edge = NonNullable<ReturnType<typeof edgesOf>>;
 
 /** Union-find over vertical CENTRE proximity, not raw range overlap.
  *
@@ -135,15 +135,28 @@ function clusters(edges: { id: string; box: Edge }[]): { id: string; box: Edge }
 export function alignGroup(ids: string[], align: Align, edits: Edits,
                             nudge: (id: string, dx: number, dy: number) => void,
                             block = false) {
+  for (const { id, shift } of alignShifts(ids, align, block)) {
+    const { dx, dy } = moveOf(edits, id);
+    nudge(id, dx + shift, dy);
+  }
+}
+
+/** What alignGroup would do, without doing it: each measurable id's current
+ *  edges (authored px, relative to its canvas) and the horizontal shift that
+ *  aligning would add -- so smart placement can try left, centre and right
+ *  and only apply the one that frames the photo best. */
+export function alignShifts(ids: string[], align: Align, block = false):
+  { id: string; shift: number; box: Edge }[] {
+  const out: { id: string; shift: number; box: Edge }[] = [];
   const all = ids.map(id => ({ id, box: edgesOf(id) }))
     .filter((e): e is { id: string; box: Edge } => e.box !== null);
-  if (!all.length) return;
+  if (!all.length) return out;
   // Belt and braces alongside the same check at click-time (`pick` in
   // Editable.tsx): never align one element against another asset's canvas.
   // The first measured id's canvas is the group's.
   const canvas = all[0].box.canvas;
   const edges = all.filter(e => e.box.canvas === canvas);
-  if (!edges.length) return;
+  if (!edges.length) return out;
 
   // Every member shares one canvas in practice (one asset edited at a time);
   // the first one measured stands for the whole selection.
@@ -158,11 +171,9 @@ export function alignGroup(ids: string[], align: Align, edits: Edits,
     const left = Math.min(...member.map(m => m.box.left));
     const right = Math.max(...member.map(m => m.box.right));
     const shift = target(right - left) - left;
-    for (const { id } of member) {
-      const { dx, dy } = moveOf(edits, id);
-      nudge(id, dx + shift, dy);
-    }
+    for (const { id, box } of member) out.push({ id, shift, box });
   }
+  return out;
 }
 
 /** A short, readable label for the layer list -- the last two path segments

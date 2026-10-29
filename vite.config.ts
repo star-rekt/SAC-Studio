@@ -6,6 +6,10 @@ import react from '@vitejs/plugin-react';
 // panel says so rather than the page half-working.
 export default defineConfig({
   plugins: [react()],
+  // Already one ESM bundle. Left to the dep optimizer it is only discovered
+  // when smart placement first dynamic-imports it, which re-optimizes and
+  // fails that very import -- so the detectors silently never loaded.
+  optimizeDeps: { exclude: ['@mediapipe/tasks-vision'] },
   server: {
     // strictPort because the alternative is worse than failing: Vite's default
     // is to hunt for a free port, and the next one up is the connector's. It

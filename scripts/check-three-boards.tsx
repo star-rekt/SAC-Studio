@@ -137,7 +137,7 @@ for (const selected of TEMPLATES) {
   const oldSpooky = { ...spooky, v: 5, assets: spooky.assets.map(asset => ({ ...asset,
     copy: { ...asset.copy, offer: '50% OFF' } })) };
   const migrated = migrateSheet(oldSpooky);
-  assert.equal(migrated.v, 8);
+  assert.equal(migrated.v, 10);
   assert.ok(migrated.assets.every(asset => asset.copy.offer !== '50% OFF'),
     `${selected.id}: saved campaign did not repair stale copy`);
   const migrated7 = migrateSheet({ ...spooky, v: 7,
@@ -184,7 +184,7 @@ for (const selected of TEMPLATES) {
     `${selected.id}: custom text used an off-brand font`);
   assert.match(customHtml, /background:#f0e0c0/);
   assert.match(customHtml, /custom-text\/intro/);
-  assert.doesNotMatch(customHtml, /bump-window|autumn-ticket|flash-social-brush/,
+  assert.doesNotMatch(customHtml, /bump-window|flash-social-brush/,
     `${selected.id}: custom board imported unrelated template artwork`);
   assert.deepEqual(countedSheet.assets.filter(asset => asset.format === 'cb')
     .map(asset => asset.copy.body), counted.deliverables![0].messages,

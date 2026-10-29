@@ -10,6 +10,8 @@
  *  up the same rule, and so the brief-reading prompt can tell Claude the
  *  budget *before* it writes a line, rather than us shrinking it after.
  */
+import type { Contract } from '../../../model/textContracts';
+import type { FigmaLayer } from '../../figma/layout';
 
 export type Overflow = 'shrink' | 'wrap' | 'truncate' | 'suppress' | 'none';
 
@@ -38,7 +40,8 @@ export const CONTRACTS = {
     fontMax: 105, fontMin: 40, widthBudget: 760, charFactor: 0.65 },
   'hero.offer': { maxWords: 3, maxChars: 14, wrap: 'nowrap', onOverflow: 'shrink',
     fontMax: 186, fontMin: 72, widthBudget: 820, charFactor: 0.55 },
-  'hero.qualifier': { maxWords: 8, maxChars: 42, wrap: 'nowrap', onOverflow: 'suppress',
+  // Contracts like every other run (it used to vanish past 42 characters).
+  'hero.qualifier': { maxWords: 8, maxChars: 42, wrap: 'nowrap', onOverflow: 'shrink',
     fontMax: 57, fontMin: 40, widthBudget: 650, charFactor: 0.5 },
   'hero.dates': { maxWords: 4, maxChars: 20, wrap: 'nowrap', onOverflow: 'shrink',
     fontMax: 34, fontMin: 20, widthBudget: 400, charFactor: 0.5 },
@@ -76,8 +79,13 @@ export type ContractRole = keyof typeof CONTRACTS;
  *  more exact than the contract's own calibrated default (e.g. a box whose
  *  width is the asset's own, not a constant). */
 export function fitText(text: string, role: ContractRole,
-  override?: { widthBudget?: number; charFactor?: number; fontMax?: number; fontMin?: number }): { text: string; fontSize?: number } {
+  override?: { widthBudget?: number; charFactor?: number; fontMax?: number; fontMin?: number }): { text: string; fontSize?: number; contract?: Contract } {
   const c: TextContract = { ...CONTRACTS[role], ...override };
+  // What Copy fit reads off the element: only a field that shrinks has a
+  // budget to report against.
+  const contract: Contract | undefined = c.onOverflow === 'shrink' && c.fontMax != null
+    ? { key: role, budget: override?.widthBudget ?? c.widthBudget ?? 1000, designSize: c.fontMax,
+        minSize: c.fontMin ?? c.fontMax, charFactor: c.charFactor ?? 0.58 } : undefined;
   const over = text.length > c.maxChars;
   if (c.onOverflow === 'suppress') return over ? { text: '' } : { text, fontSize: c.fontMax };
   if (c.onOverflow === 'truncate' && over)
@@ -86,9 +94,22 @@ export function fitText(text: string, role: ContractRole,
     const widthBudget = override?.widthBudget ?? c.widthBudget ?? 1000;
     const fontSize = Math.round(Math.max(c.fontMin ?? c.fontMax, Math.min(c.fontMax,
       widthBudget / (Math.max(1, text.length) * (c.charFactor ?? 0.58)))));
-    return { text, fontSize };
+    return { text, fontSize, contract };
   }
-  return { text, fontSize: c.fontMax };
+  return { text, fontSize: c.fontMax, contract };
+}
+
+/** A run's contract straight from its board layer (a compiled Figma text
+ *  layer): designed at the board's size, with the board text's own width as
+ *  its room and the board text's own average character width. The board's
+ *  copy is then exactly the ideal count -- "3 DAYS ONLY" is 11 on every send
+ *  of that design -- and longer copy contracts, the same rule on every run.
+ *  `room` widens the space where the board text doesn't fill its slot (a
+ *  category label before its arrow). */
+export function boardFit(text: string, role: ContractRole, layer: FigmaLayer, room = layer.w) {
+  const t = layer.text!;
+  const chars = Math.max(1, ...t.chars.split(/[\n\u2028]/).map(l => l.trimEnd().length));
+  return fitText(text, role, { fontMax: t.size, widthBudget: room, charFactor: layer.w / (chars * t.size) });
 }
 
 /** The actual rendered width of a line, not a guessed length*factor formula

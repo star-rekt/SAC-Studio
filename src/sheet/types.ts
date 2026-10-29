@@ -38,6 +38,12 @@ export type Copy = {
   cta?: string;
   body?: string;
   marquee?: string;
+  /** A send's phase as a short urgency line: 'ENDS TODAY', 'ENDS TOMORROW',
+   *  else the campaign's duration ('4 DAYS ONLY'). */
+  urgency?: string;
+  /** The brief itself writes this send's body copy (not the offer line
+   *  stood in for it). */
+  bodyStated?: boolean;
 };
 
 export type SheetAsset = {
@@ -61,7 +67,7 @@ export type SheetAsset = {
 };
 
 export type Sheet = {
-  v: 8;
+  v: 10;
   id: string;
   createdAt: string;
   updatedAt: string;

@@ -1,4 +1,4 @@
-/** Bump — cream and collage
+/** Bump — orange ticket
 
  *  One template, one file. Everything here is a choice over the vocabulary in
  *  ../schema.ts; a value outside it stops the registry with the field named.
@@ -12,7 +12,7 @@
 import type { TemplateSpec } from '../schema';
 
 const spec: TemplateSpec = {
-  id: 'sc26_0060', name: 'Bump — cream and collage', type: 'bump',
+  id: 'sc26_0060', name: 'Bump — orange ticket', type: 'bump',
   aliases: ['CHILLY20'],
   groundedIn: 'SC26_0060 Wk35-36 Bump',
   figma: { fileKey: 'ioB3sP8LwBiTUPQN7jlF81', nodeId: '538:15528' },

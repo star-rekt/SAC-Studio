@@ -73,7 +73,7 @@ export function Media({ id, src, alt, style, title, fill }: {
   if (pic.hidden) return on ? <span data-id={id}
     className={'pic media removed' + (api.selected === id ? ' picked' : '')
       + (api.selectedGroup.includes(id) ? ' in-group' : '')}
-    style={sized} title="Image removed · click to restore from the editor"
+    style={{ pointerEvents: 'auto', ...sized }} title="Image removed · click to restore from the editor"
     onClick={e => { e.stopPropagation(); pick(api, id, e); }}>Image removed</span> : null;
   const url = pic.url || src;
   // A mark drawn as <img> can never be recoloured -- an external bitmap or
@@ -90,7 +90,7 @@ export function Media({ id, src, alt, style, title, fill }: {
         data-clip-shape={shape}
         className={'pic media vector' + (on ? ' on' : '') + (api.selected === id ? ' picked' : '')
           + (api.selectedGroup.includes(id) ? ' in-group' : '')}
-        style={{ ...sized, transform: moved,
+        style={{ pointerEvents: 'auto', ...sized, transform: moved,
           background: paint.bg ?? fill ?? MARK_SHAPES[shape as keyof typeof MARK_SHAPES].fill,
           WebkitMaskImage: `url(${url})`, maskImage: `url(${url})`,
           WebkitMaskSize: '100% 100%', maskSize: '100% 100%',
@@ -109,7 +109,7 @@ export function Media({ id, src, alt, style, title, fill }: {
       draggable={false}
       className={'pic media' + (on ? ' on' : '') + (api.selected === id ? ' picked' : '')
         + (api.selectedGroup.includes(id) ? ' in-group' : '')}
-      style={{ ...sized, transform: moved }}
+      style={{ pointerEvents: 'auto', ...sized, transform: moved }}
       title={on ? (title ?? 'Click to replace from the library · Alt-drag to move it · Shift-click to add to an alignment group') : undefined}
       onMouseDown={drag}
       onClick={e => { if (!on) return; e.stopPropagation(); pick(api, id, e); }}
@@ -131,12 +131,46 @@ export const mediaSrc = (edits: Parameters<typeof picOf>[0], id: string, fallbac
  *  public/, so a blob: src found no file and the picture was dropped from the
  *  bundle without a word. The bytes travel with the edit now.
  */
-export const asDataUrl = (f: File) => new Promise<string>((ok, no) => {
+const readAsDataUrl = (f: Blob) => new Promise<string>((ok, no) => {
   const r = new FileReader();
   r.onload = () => ok(String(r.result));
   r.onerror = () => no(r.error ?? new Error('could not read that file'));
   r.readAsDataURL(f);
 });
+
+// Longer than any template frame needs (the biggest is 1440 wide, 1920
+// tall) with room left to zoom in, and small enough that an original camera
+// file doesn't blow past the server's upload limit or bloat every campaign
+// that carries it.
+const MAX_EDGE = 3200;
+
+/** Whether any pixel is see-through, sampled on a 64px copy -- a PNG photo
+ *  has none and is far smaller re-encoded as JPEG; a cut-out logo keeps PNG. */
+const hasAlpha = (canvas: HTMLCanvasElement) => {
+  const probe = document.createElement('canvas');
+  probe.width = 64; probe.height = Math.max(1, Math.round(64 * canvas.height / canvas.width));
+  const ctx = probe.getContext('2d', { willReadFrequently: true })!;
+  ctx.drawImage(canvas, 0, 0, probe.width, probe.height);
+  const px = ctx.getImageData(0, 0, probe.width, probe.height).data;
+  for (let i = 3; i < px.length; i += 4) if (px[i] < 250) return true;
+  return false;
+};
+
+/** An upload as a data URL -- a raster photo larger than MAX_EDGE or 4 MB is
+ *  downscaled (JPEG, or PNG when it has transparency) first. SVGs and small
+ *  files go through untouched. */
+export const asDataUrl = async (f: File): Promise<string> => {
+  if (!/^image\/(jpeg|png|webp)$/.test(f.type)) return readAsDataUrl(f);
+  const bitmap = await createImageBitmap(f).catch(() => null);
+  if (!bitmap) return readAsDataUrl(f);
+  const k = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
+  if (k === 1 && f.size <= 4_000_000) { bitmap.close(); return readAsDataUrl(f); }
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(bitmap.width * k); canvas.height = Math.round(bitmap.height * k);
+  canvas.getContext('2d')!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close();
+  return canvas.toDataURL(f.type === 'image/png' && hasAlpha(canvas) ? 'image/png' : 'image/jpeg', 0.9);
+};
 
 /** The selected slot's own controls — how big, what colour, and back to the
  *  template. The LIBRARY is a separate section with its own button; browsing
