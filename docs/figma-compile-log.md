@@ -970,3 +970,14 @@ Not yet: textures, shadows, blurs and blend modes (step 37's list).
 Rollback: `git revert <sha>`.
 
 sha: ff864f8
+
+## Step 40: shaped clips mask inside a group
+In testing, rectangular clips (banners, E4) came out right, but E1-E3's photos filled their
+whole rectangular box. Figma applies a mask only inside a group; a mask placed straight in a
+frame cuts nothing. A shaped clip's frame now holds a group of its mask ("shape"), and the
+clip's contents go into that group, above the mask (`contentOf`). Children of a group are
+placed in the frame's px, so placement is unchanged. Plugin `BUILD`: `clips-2`.
+
+Rollback: `git revert <sha>`.
+
+sha: 63b644f

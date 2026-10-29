@@ -25,7 +25,7 @@ figma.showUI(__html__, { width: 400, height: 520, themeColors: true });
  *  build or is still running a cached one -- the error text itself is
  *  otherwise identical either way and that ambiguity already cost a round
  *  trip once. */
-const BUILD = 'clips-1';
+const BUILD = 'clips-2';
 
 const rgb = (h: string) => ({
   r: parseInt(h.slice(1, 3), 16) / 255,
@@ -115,8 +115,12 @@ function makeNode(l: Layer, images: Record<string, string>, vectors: Record<stri
                   have: FontName[]): SceneNode {
   if (l.type === 'clip') {
     // A container that cuts what's put in it: its box (and rounded corners),
-    // and where it isn't a rectangle, its outline as the first child with
-    // isMask, which cuts everything above it in the container.
+    // and where it isn't a rectangle, its outline as a mask. Figma masks only
+    // inside a group -- a mask placed straight in a frame cuts nothing, and
+    // the photo filled the whole box -- so the frame holds a group of the
+    // mask, and what's inside goes into that group, above the mask
+    // (contentOf). A group's children are placed in the frame's own px, so
+    // nothing else changes.
     const f = figma.createFrame();
     f.resize(Math.max(1, l.width), Math.max(1, l.height));
     f.fills = [];
@@ -126,6 +130,7 @@ function makeNode(l: Layer, images: Record<string, string>, vectors: Record<stri
       const mask = cutout(l.path, l.width, l.height, '#000000');
       mask.name = 'mask';
       f.appendChild(mask);
+      figma.group([mask], f).name = 'shape';
       mask.isMask = true;
     }
     return f;
@@ -275,8 +280,13 @@ function groupRuns(nodes: SceneNode[], layers: Layer[]) {
   }
 }
 
-/** A container's centre and turn in the frame's px, and its size. */
-type Holder = { node: FrameNode; cx: number; cy: number; rot: number; w: number; h: number };
+/** A container's centre and turn in the frame's px, and its size; `into` is
+ *  where its contents go -- the frame, or the masked group in it. */
+type Holder = { node: FrameNode; into: FrameNode | GroupNode; cx: number; cy: number; rot: number; w: number; h: number };
+
+/** Where a clip container's contents go: its masked group when it has one. */
+const contentOf = (f: FrameNode): FrameNode | GroupNode =>
+  f.children.find((c): c is GroupNode => c.type === 'GROUP' && c.name === 'shape') ?? f;
 
 /** Puts a node of size w x h with its centre at `at` (frame px), turned
  *  `at.rot` degrees, into its container's own px: the centre moved into the
@@ -349,7 +359,7 @@ async function build(doc: Doc): Promise<{ frames: number; page: string }> {
       for (const l of v.layers) {
         const node = makeNode(l, images, doc.vectors || {}, have);
         const holder = l.parent !== undefined ? clips.get(l.parent) : undefined;
-        (holder?.node ?? frame).appendChild(node);
+        (holder?.into ?? frame).appendChild(node);
         node.name = l.name;
         const w = node.width, h = node.height;
         let left = l.x, top = l.y;
@@ -363,13 +373,13 @@ async function build(doc: Doc): Promise<{ frames: number; page: string }> {
         const at = { cx: left + w / 2, cy: top + h / 2, rot: l.rotation ?? 0 };
         place(node, at, w, h, holder);
         if (l.type === 'clip' && node.type === 'FRAME') {
-          clips.set(l.n, { node, ...at, w, h });
+          clips.set(l.n, { node, into: contentOf(node), ...at, w, h });
           // The outline goes beside the container, not in it: its mask would
           // cut away the outer half of the stroke.
           if (l.stroke && l.path) {
             const line = cutout(l.path, w, h, 'none', l.stroke, l.strokeWidth);
             line.name = 'outline';
-            const into = node.parent as FrameNode;
+            const into = node.parent as FrameNode | GroupNode;
             into.insertChild(into.children.indexOf(node) + 1, line);
             line.relativeTransform = node.relativeTransform;
           }

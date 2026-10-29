@@ -22,7 +22,7 @@
 
   // src/main.ts
   figma.showUI(__html__, { width: 400, height: 520, themeColors: true });
-  var BUILD = "clips-1";
+  var BUILD = "clips-2";
   var rgb = (h) => ({
     r: parseInt(h.slice(1, 3), 16) / 255,
     g: parseInt(h.slice(3, 5), 16) / 255,
@@ -86,6 +86,7 @@ If that's meant to be it, tell Claude these exact names.
         const mask = cutout(l.path, l.width, l.height, "#000000");
         mask.name = "mask";
         f.appendChild(mask);
+        figma.group([mask], f).name = "shape";
         mask.isMask = true;
       }
       return f;
@@ -203,6 +204,10 @@ If that's meant to be it, tell Claude these exact names.
       figma.group(r, into, into.children.indexOf(r[0])).name = layers[nodes.indexOf(r[0])].group;
     }
   }
+  var contentOf = (f) => {
+    var _a;
+    return (_a = f.children.find((c) => c.type === "GROUP" && c.name === "shape")) != null ? _a : f;
+  };
   function place(node, at, w, h, holder) {
     let x = at.cx, y = at.cy, rot = at.rot;
     if (holder) {
@@ -256,7 +261,7 @@ If that's meant to be it, tell Claude these exact names.
         for (const l of v.layers) {
           const node = makeNode(l, images, doc.vectors || {}, have);
           const holder = l.parent !== void 0 ? clips.get(l.parent) : void 0;
-          ((_a = holder == null ? void 0 : holder.node) != null ? _a : frame).appendChild(node);
+          ((_a = holder == null ? void 0 : holder.into) != null ? _a : frame).appendChild(node);
           node.name = l.name;
           const w = node.width, h = node.height;
           let left = l.x, top = l.y;
@@ -268,7 +273,7 @@ If that's meant to be it, tell Claude these exact names.
           const at = { cx: left + w / 2, cy: top + h / 2, rot: (_b = l.rotation) != null ? _b : 0 };
           place(node, at, w, h, holder);
           if (l.type === "clip" && node.type === "FRAME") {
-            clips.set(l.n, __spreadProps(__spreadValues({ node }, at), { w, h }));
+            clips.set(l.n, __spreadProps(__spreadValues({ node, into: contentOf(node) }, at), { w, h }));
             if (l.stroke && l.path) {
               const line = cutout(l.path, w, h, "none", l.stroke, l.strokeWidth);
               line.name = "outline";
