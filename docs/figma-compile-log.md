@@ -981,3 +981,16 @@ placed in the frame's px, so placement is unchanged. Plugin `BUILD`: `clips-2`.
 Rollback: `git revert <sha>`.
 
 sha: 63b644f
+
+## Step 41: shaped clips cut their contents (the documented mask rule)
+Step 40 still let E1-E3's photos fill their windows' boxes. The structure was as intended: the
+`shape` group held the mask, then the photo above it. Figma's Masks help says a mask applies to
+the siblings above it "until it reaches ... a frame or component with clip content on". Every
+picture is built as a frame with clip content on (it crops to its own box), so the mask stopped
+right before it. A shaped clip's contents now go into one plain group (`content`) above the
+mask, made with the first of them, since a group can't be empty. The mask cuts that group whole,
+clipping frames inside it included. Plugin `BUILD`: `clips-3`.
+
+Rollback: `git revert <sha>`.
+
+sha: 19096b8

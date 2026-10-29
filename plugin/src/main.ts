@@ -25,7 +25,7 @@ figma.showUI(__html__, { width: 400, height: 520, themeColors: true });
  *  build or is still running a cached one -- the error text itself is
  *  otherwise identical either way and that ambiguity already cost a round
  *  trip once. */
-const BUILD = 'clips-2';
+const BUILD = 'clips-3';
 
 const rgb = (h: string) => ({
   r: parseInt(h.slice(1, 3), 16) / 255,
@@ -115,12 +115,14 @@ function makeNode(l: Layer, images: Record<string, string>, vectors: Record<stri
                   have: FontName[]): SceneNode {
   if (l.type === 'clip') {
     // A container that cuts what's put in it: its box (and rounded corners),
-    // and where it isn't a rectangle, its outline as a mask. Figma masks only
-    // inside a group -- a mask placed straight in a frame cuts nothing, and
-    // the photo filled the whole box -- so the frame holds a group of the
-    // mask, and what's inside goes into that group, above the mask
-    // (contentOf). A group's children are placed in the frame's own px, so
-    // nothing else changes.
+    // and where it isn't a rectangle, its outline as a mask in a group
+    // ("shape"). A mask cuts the siblings above it only "until it reaches a
+    // frame ... with clip content on" (Figma's Masks help) -- and every
+    // picture is such a frame (it crops to its own box), so a photo placed
+    // beside the mask was never cut. What's inside therefore goes into one
+    // plain group ("content") above the mask: the mask cuts that group
+    // whole, clipping frames and all. Group children are placed in the
+    // frame's own px, so placement is unchanged.
     const f = figma.createFrame();
     f.resize(Math.max(1, l.width), Math.max(1, l.height));
     f.fills = [];
@@ -281,8 +283,11 @@ function groupRuns(nodes: SceneNode[], layers: Layer[]) {
 }
 
 /** A container's centre and turn in the frame's px, and its size; `into` is
- *  where its contents go -- the frame, or the masked group in it. */
-type Holder = { node: FrameNode; into: FrameNode | GroupNode; cx: number; cy: number; rot: number; w: number; h: number };
+ *  where its contents go -- the frame, or the masked group in it, where they
+ *  are gathered in one `content` group (made with the first of them: a
+ *  group can't be empty). */
+type Holder = { node: FrameNode; into: FrameNode | GroupNode; content?: GroupNode;
+  cx: number; cy: number; rot: number; w: number; h: number };
 
 /** Where a clip container's contents go: its masked group when it has one. */
 const contentOf = (f: FrameNode): FrameNode | GroupNode =>
@@ -359,7 +364,7 @@ async function build(doc: Doc): Promise<{ frames: number; page: string }> {
       for (const l of v.layers) {
         const node = makeNode(l, images, doc.vectors || {}, have);
         const holder = l.parent !== undefined ? clips.get(l.parent) : undefined;
-        (holder?.into ?? frame).appendChild(node);
+        (holder?.content ?? holder?.into ?? frame).appendChild(node);
         node.name = l.name;
         const w = node.width, h = node.height;
         let left = l.x, top = l.y;
@@ -372,6 +377,10 @@ async function build(doc: Doc): Promise<{ frames: number; page: string }> {
         }
         const at = { cx: left + w / 2, cy: top + h / 2, rot: l.rotation ?? 0 };
         place(node, at, w, h, holder);
+        if (holder && !holder.content && holder.into.type === 'GROUP') {
+          holder.content = figma.group([node], holder.into);
+          holder.content.name = 'content';
+        }
         if (l.type === 'clip' && node.type === 'FRAME') {
           clips.set(l.n, { node, into: contentOf(node), ...at, w, h });
           // The outline goes beside the container, not in it: its mask would
