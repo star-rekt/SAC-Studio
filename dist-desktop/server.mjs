@@ -939,7 +939,7 @@ function bundledImage(layer, want) {
     return layer;
   const web = layer.src;
   const relative2 = web.replace(/^\/+/, "");
-  if (!/^(photos|reference|logos|graphics)\//.test(relative2))
+  if (!/^(photos|reference|logos|graphics|figma-assets)\//.test(relative2))
     throw Error(`Cannot export image outside the media library: ${web}`);
   const bundled = `media/${relative2}`;
   want?.set(bundled, web);
@@ -1366,7 +1366,7 @@ var server = createServer(async (req, res) => {
     }
     if (url.pathname.startsWith("/api/export-file/") && req.method === "GET") {
       const rel = normalize(decodeURIComponent(url.pathname.slice("/api/export-file/".length)));
-      if (!/^(media\/(photos|reference|logos|graphics)|photographs|logos|graphics)\//.test(rel) || rel.includes(".."))
+      if (!/^(media\/(photos|reference|logos|graphics|figma-assets)|photographs|logos|graphics)\//.test(rel) || rel.includes(".."))
         return send(400, { error: "only exported media" });
       const leaf = rel.split("/").pop();
       const source = rel.startsWith("media/") ? rel.slice("media/".length) : `${rel.startsWith("photographs/") ? "photos" : rel.split("/")[0]}/${leaf}`;

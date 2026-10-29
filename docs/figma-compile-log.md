@@ -879,3 +879,19 @@ prompt now lives in the studio, which content updates replace, so every installe
 Rollback: `git revert <sha>`.
 
 sha: 5a91773
+
+## Step 36: exports carry the compiled templates' own board images
+Export refused any image outside four library folders (photos, reference, logos, graphics):
+"Cannot export image outside the media library: /figma-assets/….png". The compiled templates draw
+their default pictures from `/figma-assets/` (Bump 2's photos and textures; Bump's and Flash's board
+images too), so exporting a design left on its default images failed. This hit anyone without a
+Figma token or uploads.
+
+`figma-assets/` is now exported like the library folders. It is bundled into the export folder
+(`bundledImage`, `server/export.ts`) and served to the Figma plugin (`/api/export-file`,
+`server/index.ts`), from the same public folder as the rest. Paths are still checked: `..` is
+refused. `check:export` now embeds a board image.
+
+Rollback: `git revert <sha>`.
+
+sha: a2823fc

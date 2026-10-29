@@ -6,6 +6,8 @@ const paths = [
   '/photos/hike-07.jpg',
   '/logos/sac-logo.png',
   '/graphics/circle-1.svg',
+  // A compiled template's own board image (Bump 2's default photo).
+  '/figma-assets/345302902cffaea91d8cb3aa85fc7f71c3cd817f.png',
 ];
 const layers = paths.map(src => bundledImage({ type: 'image', src }));
 assert.deepEqual(layers.map(l => l.src), paths.map(src => `media${src}`));

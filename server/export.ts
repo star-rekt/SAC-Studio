@@ -40,7 +40,9 @@ export function bundledImage(layer: Record<string, unknown>, want?: Map<string, 
     return layer;
   const web = layer.src;
   const relative = web.replace(/^\/+/, '');
-  if (!/^(photos|reference|logos|graphics)\//.test(relative))
+  // figma-assets: the images the compiled templates take from their boards
+  // (Bump 2's photos and textures, say) -- a default design's own pictures.
+  if (!/^(photos|reference|logos|graphics|figma-assets)\//.test(relative))
     throw Error(`Cannot export image outside the media library: ${web}`);
   const bundled = `media/${relative}`;
   want?.set(bundled, web);
