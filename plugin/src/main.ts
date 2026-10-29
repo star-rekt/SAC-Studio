@@ -25,7 +25,7 @@ figma.showUI(__html__, { width: 400, height: 520, themeColors: true });
  *  build or is still running a cached one -- the error text itself is
  *  otherwise identical either way and that ambiguity already cost a round
  *  trip once. */
-const BUILD = 'clips-3';
+const BUILD = 'clips-4';
 
 const rgb = (h: string) => ({
   r: parseInt(h.slice(1, 3), 16) / 255,
@@ -282,6 +282,17 @@ function groupRuns(nodes: SceneNode[], layers: Layer[]) {
   }
 }
 
+/** The layer's opacity, blur and shadows, as Figma effects. */
+function look(node: SceneNode, l: Layer) {
+  if (l.fade !== undefined && 'opacity' in node) node.opacity = l.fade;
+  const effects: Effect[] = [];
+  for (const s of l.shadows ?? []) effects.push({ type: s.inner ? 'INNER_SHADOW' : 'DROP_SHADOW',
+    color: { ...rgb(s.color), a: s.alpha }, offset: { x: s.x, y: s.y }, radius: s.blur, spread: s.spread ?? 0,
+    visible: true, blendMode: 'NORMAL' });
+  if (l.blur) effects.push({ type: 'LAYER_BLUR', blurType: 'NORMAL', radius: l.blur, visible: true });
+  if (effects.length && 'effects' in node) node.effects = effects;
+}
+
 /** A container's centre and turn in the frame's px, and its size; `into` is
  *  where its contents go -- the frame, or the masked group in it, where they
  *  are gathered in one `content` group (made with the first of them: a
@@ -393,6 +404,7 @@ async function build(doc: Doc): Promise<{ frames: number; page: string }> {
             line.relativeTransform = node.relativeTransform;
           }
         }
+        look(node, l);
         node.setPluginData('sac-layer', String(l.n));
         nodes.push(node);
       }

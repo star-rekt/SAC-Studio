@@ -9,8 +9,13 @@
 export type Clip = { path: string; view: [number, number];
                      stroke?: string; strokeWidth?: number };
 
+/** How a layer is drawn besides its paint, in Figma's terms: opacity
+ *  (`fade`), a layer blur radius, shadows. */
+export type Look = { fade?: number; blur?: number;
+  shadows?: { x: number; y: number; blur: number; spread?: number; color: string; alpha: number; inner?: boolean }[] };
+
 /** `parent`: the clip layer (its `n`) this layer is drawn inside and cut by. */
-export type Layer = ({ parent?: number } & (
+export type Layer = ({ parent?: number } & Look & (
   | { n: number; name: string; group?: string; type: 'clip';
       /** An element that cuts what's inside it. Its true box and turn, its
        *  corners, and its outline when it isn't a rectangle. */

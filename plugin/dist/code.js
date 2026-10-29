@@ -22,7 +22,7 @@
 
   // src/main.ts
   figma.showUI(__html__, { width: 400, height: 520, themeColors: true });
-  var BUILD = "clips-3";
+  var BUILD = "clips-4";
   var rgb = (h) => ({
     r: parseInt(h.slice(1, 3), 16) / 255,
     g: parseInt(h.slice(3, 5), 16) / 255,
@@ -204,6 +204,22 @@ If that's meant to be it, tell Claude these exact names.
       figma.group(r, into, into.children.indexOf(r[0])).name = layers[nodes.indexOf(r[0])].group;
     }
   }
+  function look(node, l) {
+    var _a, _b;
+    if (l.fade !== void 0 && "opacity" in node) node.opacity = l.fade;
+    const effects = [];
+    for (const s of (_a = l.shadows) != null ? _a : []) effects.push({
+      type: s.inner ? "INNER_SHADOW" : "DROP_SHADOW",
+      color: __spreadProps(__spreadValues({}, rgb(s.color)), { a: s.alpha }),
+      offset: { x: s.x, y: s.y },
+      radius: s.blur,
+      spread: (_b = s.spread) != null ? _b : 0,
+      visible: true,
+      blendMode: "NORMAL"
+    });
+    if (l.blur) effects.push({ type: "LAYER_BLUR", blurType: "NORMAL", radius: l.blur, visible: true });
+    if (effects.length && "effects" in node) node.effects = effects;
+  }
   var contentOf = (f) => {
     var _a;
     return (_a = f.children.find((c) => c.type === "GROUP" && c.name === "shape")) != null ? _a : f;
@@ -286,6 +302,7 @@ If that's meant to be it, tell Claude these exact names.
               line.relativeTransform = node.relativeTransform;
             }
           }
+          look(node, l);
           node.setPluginData("sac-layer", String(l.n));
           nodes.push(node);
         }

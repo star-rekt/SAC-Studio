@@ -15,9 +15,17 @@
  *  opinion about any of those is a second renderer waiting to drift.
  */
 
+/** How a layer is drawn, besides its paint: its opacity (`fade`, the
+ *  element's own, times any wrapper's up to its container), a layer blur and
+ *  shadows -- each in Figma's terms. */
+export type Look = { fade?: number; blur?: number;
+  shadows?: { x: number; y: number; blur: number; spread?: number; color: string; alpha: number; inner?: boolean;
+    /** A box-shadow: cast by the element's box, so not by its type. */
+    box?: true }[] };
+
 /** Every layer may sit inside a clip (`parent`: that clip layer's `n`): it
  *  is drawn inside it and cut by it, as the browser cuts it. */
-export type Layer = ({ parent?: number } & (
+export type Layer = ({ parent?: number } & Look & (
   | { n: number; name: string; type: 'clip';
       /** An element that cuts what's inside it: overflow that hides
        *  something, a CSS clip-path, a named shape. Its true box (unrotated)
@@ -190,6 +198,43 @@ const SHAPES: Record<string, { path: string; width: number; height: number }> = 
   'bump2-window': BUMP2_WINDOW,
 };
 
+/** Splits a CSS list on its top-level commas (not those inside rgba()). */
+const topLevel = (v: string) => {
+  const out: string[] = [];
+  let depth = 0, from = 0;
+  for (let i = 0; i < v.length; i++) {
+    if (v[i] === '(') depth++;
+    else if (v[i] === ')') depth--;
+    else if (v[i] === ',' && !depth) { out.push(v.slice(from, i).trim()); from = i + 1; }
+  }
+  return [...out, v.slice(from).trim()].filter(Boolean);
+};
+
+/** An element's own blur and shadows (its filter and box-shadow), in
+ *  Figma's terms: Figma's blur radius is twice a CSS blur() or
+ *  drop-shadow() radius -- the compiled templates halve Figma's to set them
+ *  -- and equal to a box-shadow's. `k` is the element's scale. */
+function effectsOf(cs: CSSStyleDeclaration, k: number): Pick<Look, 'blur' | 'shadows'> {
+  const shadows: NonNullable<Look['shadows']> = [];
+  const colour = (s: string) => hex(s.match(/rgba?\([^)]*\)|#[0-9a-f]{3,8}/i)?.[0] ?? 'rgba(0, 0, 0, 0.25)');
+  const lengths = (s: string) => [...s.replace(/rgba?\([^)]*\)/g, '').matchAll(/(-?[\d.]+)px/g)].map(m => parseFloat(m[1]) * k);
+  let blur: number | undefined;
+  if (cs.filter && cs.filter !== 'none') {
+    const b = cs.filter.match(/blur\(([\d.]+)px\)/);
+    if (b && parseFloat(b[1]) > 0) blur = r1(parseFloat(b[1]) * 2 * k);
+    for (const m of cs.filter.matchAll(/drop-shadow\(((?:[^()]|\([^)]*\))*)\)/g)) {
+      const [x = 0, y = 0, r = 0] = lengths(m[1]), c = colour(m[1]);
+      if (c) shadows.push({ x: r1(x), y: r1(y), blur: r1(r * 2), color: c.fill, alpha: c.opacity });
+    }
+  }
+  if (cs.boxShadow && cs.boxShadow !== 'none') for (const one of topLevel(cs.boxShadow)) {
+    const [x = 0, y = 0, r = 0, spread = 0] = lengths(one), c = colour(one);
+    if (c) shadows.push({ x: r1(x), y: r1(y), blur: r1(r), spread: spread ? r1(spread) : undefined,
+      color: c.fill, alpha: c.opacity, inner: /\binset\b/.test(one) || undefined, box: true });
+  }
+  return { blur, shadows: shadows.length ? shadows : undefined };
+}
+
 /** Whether an element cuts what's inside it, and to what: the clip a layer
  *  container in Figma has to reproduce. Read off the computed style, so it
  *  holds for any template:
@@ -294,11 +339,14 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
   const name = (el: Element, fallback: string) =>
     el.getAttribute('data-id')?.split('/').slice(-2).join('/') ?? fallback;
 
-  const walk = (el: Element, parent?: number) => {
+  const walk = (el: Element, parent?: number, fade = 1) => {
     const cs = getComputedStyle(el);
     if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') return;
     const b = el.getBoundingClientRect();
     const k = scaleOf(el, root);
+    // Its opacity, times any wrapper's since its container (a container
+    // carries its own, and Figma multiplies it down to what's inside).
+    fade *= Number(cs.opacity) || 1;
     if (b.width < 1 || b.height < 1) {
       // A position:absolute box with no explicit height and ONLY
       // absolutely-positioned children collapses to zero in its OWN box --
@@ -306,9 +354,10 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
       // size -- while those children still paint at real, visible positions.
       // There is nothing of this element's own to draw (and it cuts
       // nothing), but its children are not empty.
-      for (const kid of Array.from(el.children)) walk(kid, parent);
+      for (const kid of Array.from(el.children)) walk(kid, parent, fade);
       return;
     }
+    let look: Look = { fade: fade < 0.999 ? r1(fade * 100) / 100 : undefined, ...effectsOf(cs, k) };
 
     // An element that cuts what's inside it becomes a container: its own
     // paint and everything inside it are drawn in it and cut by it. A
@@ -319,12 +368,14 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
     if (shape) {
       const spin = rotationOf(el, root);
       const box = spin || k !== 1 ? trueBox(b, cs, k) : b;
-      layers.push({ n: ++n, parent, name: name(el, 'clip'), type: 'clip',
+      layers.push({ n: ++n, parent, ...look, name: name(el, 'clip'), type: 'clip',
         x: r1(box.left - base.left), y: r1(box.top - base.top), width: r1(box.width), height: r1(box.height),
         radius: parseFloat(cs.borderTopLeftRadius) * k || undefined, rotation: spin || undefined,
         path: shape.path ? { path: shape.path, view: shape.view! } : undefined,
         stroke: shape.stroke, strokeWidth: shape.strokeWidth });
-      parent = n;
+      // Its own paint and contents are inside it: opacity and effects are
+      // the container's now.
+      parent = n; fade = 1; look = {};
     }
 
     if (el instanceof HTMLImageElement) {
@@ -342,7 +393,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
       const dw = Number.isNaN(fit) ? box.width : nw * fit, dh = Number.isNaN(fit) ? box.height : nh * fit;
       const bx = r1(box.left - base.left), by = r1(box.top - base.top);
       const bright = Number(cs.filter.match(/brightness\(([\d.]+)\)/)?.[1] ?? 1);
-      layers.push({ n: ++n, parent, name: name(el, 'image'), type: 'image',
+      layers.push({ n: ++n, parent, ...look, name: name(el, 'image'), type: 'image',
         src: srcOf(el),
         x: bx, y: by, width: r1(box.width), height: r1(box.height),
         radius: parseFloat(cs.borderTopLeftRadius) * k || undefined,
@@ -377,7 +428,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
       const box = spin ? trueBox(b, cs, k) : { left: b.left, top: b.top, width: b.width, height: b.height };
       const markShape = el.getAttribute('data-clip-shape');
       const mark = markShape && (MARK_SHAPES as Record<string, { path: string; width: number; height: number }>)[markShape];
-      layers.push({ n: ++n, parent, name: name(el, 'block'), type: 'rect',
+      layers.push({ n: ++n, parent, ...look, name: name(el, 'block'), type: 'rect',
         fill: bg.fill, opacity: bg.opacity < 1 ? bg.opacity : undefined,
         radius: parseFloat(cs.borderTopLeftRadius) * k || undefined,
         rotation: spin || undefined,
@@ -412,7 +463,9 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
         const inR = (parseFloat(cs.paddingRight) + parseFloat(cs.borderRightWidth)) * k;
         const inT = (parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth)) * k;
         const inB = (parseFloat(cs.paddingBottom) + parseFloat(cs.borderBottomWidth)) * k;
-        layers.push({ n: ++n, parent, name: name(el, 'text'), type: 'text', text,
+        const typeShadows = look.shadows?.filter(s => !s.box);
+        layers.push({ n: ++n, parent, ...look, shadows: typeShadows?.length ? typeShadows : undefined,
+          name: name(el, 'text'), type: 'text', text,
           font, weight: Number(cs.fontWeight) || 400, size: r1(parseFloat(cs.fontSize) * k),
           lineHeight: lead,
           letterSpacing: cs.letterSpacing === 'normal' ? 0 : r1(parseFloat(cs.letterSpacing) * k),
@@ -429,7 +482,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
       return;
     }
 
-    for (const kid of Array.from(el.children)) walk(kid, parent);
+    for (const kid of Array.from(el.children)) walk(kid, parent, fade);
   };
 
   for (const kid of Array.from(root.children)) walk(kid);

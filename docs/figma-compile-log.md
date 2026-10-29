@@ -1008,3 +1008,25 @@ mirror already carried it. It is now tracked here too.
 Rollback: `git revert <sha>`.
 
 sha: 1db4280
+
+## Step 43: Figma export carries opacity, blur and shadows; no brand names set as type
+- **The box behind E2's copy.** Flash's E2 hero imported with a solid grey box behind its copy.
+  In the studio it is a soft glow: a slate rectangle at 72% opacity, blurred. The export carried
+  neither an element's own opacity nor its blur. Every layer now carries a `Look`, and the plugin
+  applies it as Figma opacity and effects (`look`):
+  - `fade`: the element's opacity times any wrapper's since its container (a container carries
+    its own, multiplied down by Figma);
+  - `blur`: from `filter: blur()`, Figma radius = 2x CSS, as the compiled templates halve it;
+  - `shadows`: from `filter: drop-shadow()` (2x) and `box-shadow`, inset included. Type doesn't
+    cast its box's box-shadow.
+
+  The glow now exports at 72% opacity with Figma's own 197px blur. Plugin `BUILD`: `clips-4`.
+- **Brand names as type.** A brief's brand that the library didn't stock was drawn as its name in
+  type, in the shared "Shop By Brand" tiles (`Email.tsx`, used by Flash's email body). It is now a
+  placeholder logo to swap from the library (`BrandMark`), as every other brand slot already is.
+- **Still open.** A shadow cast by a wrapper with no paint of its own (Flash's and Bump's cards)
+  has no layer to sit on and is lost; so are textures and blend modes.
+
+Rollback: `git revert <sha>`.
+
+sha: fb94336

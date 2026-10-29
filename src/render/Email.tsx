@@ -6,7 +6,11 @@ import { BRAND, type as ts, stack, photoFor, ZONE_LIST,
 import { copyFor } from '../model/copy';
 import { Picture } from '../edit/Picture';
 import { Media } from '../edit/Media';
-import { LIBRARY, find as findMedia } from '../model/media';
+import { LIBRARY } from '../model/media';
+import { BrandMark } from './templates/BrandMark';
+
+/** Library logos that stand in for a brand it doesn't stock yet. */
+const PLACEHOLDER_LOGOS = ['patagonia', 'the-north-face', 'mountain-hardwear', 'osprey', 'outdoor-research', 'smartwool'];
 import { Editable, Movable, Ground } from '../edit/Editable';
 import { placeOn } from '../model/safe';
 import { directionsFor, type Direction } from '../templates/directions';
@@ -481,17 +485,14 @@ export function SectionView({ sec, k, pursuit, body, brief, accent, templateId, 
         <White pad={40}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
             {list.map((it, n) => {
-              const brand = findMedia(it.name);
+              // A brand the library doesn't stock yet keeps a real placeholder
+              // logo to swap from the library, as every other brand slot does
+              // -- never the brand's name set as type in a logo's place.
               return <div key={n} style={{ height: 515, background: '#303030',
                 borderRadius: 22, display: 'grid', placeItems: 'center' }}>
-                {brand?.kind === 'brand'
-                  ? <Media id={`${k}/brand/${n}`} src={brand.file} alt={brand.name}
-                      style={{ width: 350, height: 300, objectFit: 'contain' }} />
-                  : (() => { const live = textOf(edits, `${k}/brand-name/${n}`, it.name);
-                      const fit = fitText(live, 'brand.fallbackName', { widthBudget: 480 });
-                      const { fontSize } = fit;
-                      return <Editable id={`${k}/brand-name/${n}`} fit={fit.contract} style={font('Display/L', {
-                        color: '#fff', fontSize })}>{it.name}</Editable>; })()}
+                <BrandMark id={`${k}/brand/${n}`} name={it.name}
+                  fallback={`/logos/brand-${PLACEHOLDER_LOGOS[n % PLACEHOLDER_LOGOS.length]}.svg`}
+                  style={{ width: 350, height: 300, objectFit: 'contain' }} />
               </div>;
             })}
           </div>
