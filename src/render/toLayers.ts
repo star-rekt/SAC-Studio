@@ -23,6 +23,9 @@ export type Layer =
        *  the signature window arrives in Figma as a rectangular photograph
        *  and the staircase that makes the design is simply gone. */
       clip?: { path: string; view: [number, number]; stroke?: string; strokeWidth?: number };
+      /** A CSS brightness() the studio draws it with (a white brand logo
+       *  shown charcoal): Figma gets the artwork's colours scaled by it. */
+      brightness?: number;
       /** Where to draw the image so it covers that box at its true aspect.
        *  Given explicitly because 'cover' leaves the crop to be rediscovered,
        *  and whoever rediscovers it gets a different answer. */
@@ -37,6 +40,9 @@ export type Layer =
   | { n: number; name: string; type: 'text'; text: string; font: string;
       weight: number; size: number; lineHeight: number; letterSpacing: number;
       colour: string; align: string; underline?: boolean; rotation?: number;
+      /** Character ranges set differently from the rest (a paragraph's bold,
+       *  green code word), as [from, to) offsets into `text`. */
+      runs?: { from: number; to: number; weight?: number; colour?: string }[];
       x: number; y: number; width: number; height: number };
 
 const hex = (c: string): { fill: string; opacity: number } | null => {
@@ -132,8 +138,16 @@ const srcOf = (el: HTMLImageElement) => {
  *
  *  Per word, because a soft break only happens at a break opportunity, and a
  *  hard <br> reads the same way: the next word simply starts at a new top.
+ *
+ *  `turn` (degrees): text set on a slant (a tilted tag) climbs word by word
+ *  on the page, which read as a break after every word -- "EXTRA 20% OFF"
+ *  arrived in Figma as three lines. Each word's height is taken across the
+ *  text's own direction instead.
  */
-function broken(el: HTMLElement, leading: number): string {
+function broken(el: HTMLElement, leading: number, turn = 0): string {
+  const a = turn * Math.PI / 180;
+  const across = (box: DOMRect) =>
+    -Math.sin(a) * (box.left + box.width / 2) + Math.cos(a) * (box.top + box.height / 2);
   const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
   const r = document.createRange();
   const lines: string[] = [];
@@ -145,8 +159,9 @@ function broken(el: HTMLElement, leading: number): string {
       if (!box.width && !box.height) continue;   // hidden; innerText skipped it too
       // Half the leading, so a word set on a different baseline within the
       // same line -- a superscript, a smaller unit -- is not read as a break.
-      if (Math.abs(box.top - top) < leading / 2) lines[lines.length - 1] += ' ' + m[0];
-      else { lines.push(m[0]); top = box.top; }
+      const at = turn ? across(box) : box.top;
+      if (Math.abs(at - top) < leading / 2) lines[lines.length - 1] += ' ' + m[0];
+      else { lines.push(m[0]); top = at; }
     }
   }
   return lines.join('\n');
@@ -164,6 +179,60 @@ const SHAPES: Record<string, { path: string; width: number; height: number }> = 
   'stepped-window': STEP,
   'bump2-window': BUMP2_WINDOW,
 };
+
+/** A box cut to its own CSS outline (`clip-path: path(…)`: Bump 2's stepped
+ *  windows), in that box's own px. */
+function cssClipOf(holder: Element | null) {
+  if (!(holder instanceof HTMLElement)) return undefined;
+  const path = holder.style.clipPath.match(/^path\("(.+)"\)$/)?.[1];
+  return path ? { path, view: [holder.clientWidth, holder.clientHeight] as [number, number] } : undefined;
+}
+
+/** A paragraph set as inline runs (a body copy with its code word in bold
+ *  green, three spans): the whole of it as one text with its breaks, and
+ *  the runs whose weight or colour differ from the paragraph's. Only for a
+ *  paragraph that wraps -- a one-line pair of runs ("CODE" + the code) is
+ *  exported as two placed runs, which lines up already; a wrapped one as
+ *  three boxes overlapped in Figma. Words in adjacent runs with no space
+ *  between them ("SPOOKY20" + ".") stay joined. */
+function paragraphRuns(el: HTMLElement, cs: CSSStyleDeclaration, lead: number) {
+  const kids = Array.from(el.children) as HTMLElement[];
+  if (kids.length < 2 || Array.from(el.childNodes).some(k => k.nodeType === 3 && k.textContent!.trim())
+      || kids.some(k => getComputedStyle(k).display !== 'inline' || k.children.length)
+      || el.getBoundingClientRect().height < lead * 1.5) return null;
+  const r = document.createRange();
+  const lines: string[] = [];
+  const spans: { kid: HTMLElement; from: number; to: number }[] = [];
+  let top = NaN, length = 0, glued = false;
+  for (const kid of kids) {
+    const data = kid.textContent ?? '';
+    const node = kid.firstChild;
+    for (const m of data.matchAll(/\S+/g)) {
+      if (!node) break;
+      r.setStart(node, m.index); r.setEnd(node, m.index + m[0].length);
+      const box = r.getBoundingClientRect();
+      if (!box.width && !box.height) continue;
+      const join = m.index === 0 && glued && lines.length && Math.abs(box.top - top) < lead / 2;
+      if (join) lines[lines.length - 1] += m[0];
+      else if (lines.length && Math.abs(box.top - top) < lead / 2) lines[lines.length - 1] += ' ' + m[0];
+      else { lines.push(m[0]); top = box.top; }
+      const end = lines.join('\n').length;
+      spans.push({ kid, from: end - m[0].length, to: end });
+    }
+    glued = !!data && !/\s$/.test(data);
+  }
+  const base = { weight: Number(cs.fontWeight) || 400, colour: hex(cs.color)?.fill };
+  const runs: { from: number; to: number; weight?: number; colour?: string }[] = [];
+  for (const kid of kids) {
+    const own = spans.filter(s => s.kid === kid);
+    if (!own.length) continue;
+    const ks = getComputedStyle(kid), weight = Number(ks.fontWeight) || 400, colour = hex(ks.color)?.fill;
+    if (weight === base.weight && colour === base.colour) continue;
+    runs.push({ from: own[0].from, to: own.at(-1)!.to,
+      ...(weight !== base.weight ? { weight } : null), ...(colour !== base.colour ? { colour } : null) });
+  }
+  return { text: lines.join('\n'), runs };
+}
 
 /** The shape this element is cut to, if an ancestor says it is cut at all. */
 function clipOf(el: Element, root: HTMLElement) {
@@ -266,7 +335,9 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
         x: bx, y: by, width: r1(box.width), height: r1(box.height),
         radius: parseFloat((clips ? getComputedStyle(parent!) : cs).borderTopLeftRadius) || undefined,
         rotation: rotation || undefined,
-        clip: clipOf(el, root),
+        clip: clipOf(el, root) ?? cssClipOf(clips ? parent : el),
+        brightness: Number(cs.filter.match(/brightness\(([\d.]+)\)/)?.[1] ?? 1) !== 1
+          ? Number(cs.filter.match(/brightness\(([\d.]+)\)/)![1]) : undefined,
         draw: { x: draw.x, y: draw.y, width: draw.w, height: draw.h } });
       return;
     }
@@ -305,9 +376,11 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
         width: r1(box.width), height: r1(box.height) });
     }
 
-    if (isText) {
+    const paragraph = !isText && el instanceof HTMLElement
+      ? paragraphRuns(el, cs, (parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.2)) : null;
+    if (isText || paragraph) {
       const lead = r1((parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.2) * k);
-      const text = broken(el as HTMLElement, lead);
+      const text = paragraph ? paragraph.text : broken(el as HTMLElement, lead, rotationOf(el, root));
       if (text) {
         const font = faceName(cs.fontFamily);
         const colour = hex(cs.color) ?? { fill: '#000000', opacity: 1 };
@@ -339,6 +412,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
           // link (Unsubscribe, Talk to a Gearhead, GT/CB/text-link copy)
           // exported as plain type.
           underline: cs.textDecorationLine.includes('underline') || undefined,
+          runs: paragraph?.runs.length ? paragraph.runs : undefined,
           x: r1(tx + inL), y: r1(ty + inT),
           width: r1(box.width - inL - inR), height: r1(box.height - inT - inB) });
       }
@@ -356,7 +430,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
   const W = base.width, H = base.height;
   const inside = layers.filter(l => l.x < W && l.y < H
                                  && l.x + l.width > 0 && l.y + l.height > 0);
-  const fonts = [...new Set(inside.filter(l => l.type === 'text')
-    .map(l => `${l.font} ${l.weight}`))].sort();
+  const fonts = [...new Set(inside.flatMap(l => l.type === 'text'
+    ? [`${l.font} ${l.weight}`, ...(l.runs ?? []).filter(r => r.weight).map(r => `${l.font} ${r.weight}`)] : []))].sort();
   return { layers: inside.map((l, i) => ({ ...l, n: i + 1 })), fonts };
 }

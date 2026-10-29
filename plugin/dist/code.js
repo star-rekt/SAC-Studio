@@ -1,5 +1,25 @@
 "use strict";
 (() => {
+  var __defProp = Object.defineProperty;
+  var __defProps = Object.defineProperties;
+  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __propIsEnum = Object.prototype.propertyIsEnumerable;
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __spreadValues = (a, b) => {
+    for (var prop in b || (b = {}))
+      if (__hasOwnProp.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    if (__getOwnPropSymbols)
+      for (var prop of __getOwnPropSymbols(b)) {
+        if (__propIsEnum.call(b, prop))
+          __defNormalProp(a, prop, b[prop]);
+      }
+    return a;
+  };
+  var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+
   // src/main.ts
   figma.showUI(__html__, { width: 400, height: 520, themeColors: true });
   var BUILD = "facefor-6";
@@ -55,7 +75,7 @@ If that's meant to be it, tell Claude these exact names.
     return found;
   }
   function makeNode(l, images, vectors, have) {
-    var _a, _b;
+    var _a, _b, _c;
     if (l.type === "text") {
       const t = figma.createText();
       const fn = faceFor(l.font, l.weight, have);
@@ -67,6 +87,13 @@ If that's meant to be it, tell Claude these exact names.
       t.letterSpacing = { unit: "PIXELS", value: l.letterSpacing };
       t.fills = [{ type: "SOLID", color: rgb(l.colour) }];
       if (l.underline) t.textDecoration = "UNDERLINE";
+      for (const run of (_a = l.runs) != null ? _a : []) {
+        if (run.weight) {
+          const face = faceFor(l.font, run.weight, have);
+          if (face) t.setRangeFontName(run.from, run.to, face);
+        }
+        if (run.colour) t.setRangeFills(run.from, run.to, [{ type: "SOLID", color: rgb(run.colour) }]);
+      }
       t.textAutoResize = "WIDTH_AND_HEIGHT";
       t.textAlignHorizontal = (l.align || "left").toUpperCase();
       return t;
@@ -81,6 +108,7 @@ If that's meant to be it, tell Claude these exact names.
       if (svg) {
         const art2 = figma.createNodeFromSvg(svg);
         art2.name = l.name;
+        if (l.brightness !== void 0) dim(art2, l.brightness);
         art2.resize(l.draw.width, l.draw.height);
         art2.x = l.draw.x - l.x;
         art2.y = l.draw.y - l.y;
@@ -119,14 +147,20 @@ If that's meant to be it, tell Claude these exact names.
     if (l.clip) {
       const shape = cutout(l.clip, l.width, l.height, l.fill);
       shape.name = l.name;
-      shape.opacity = (_a = l.opacity) != null ? _a : 1;
+      shape.opacity = (_b = l.opacity) != null ? _b : 1;
       return shape;
     }
     const r = figma.createRectangle();
     r.resize(l.width, l.height);
-    r.fills = [{ type: "SOLID", color: rgb(l.fill), opacity: (_b = l.opacity) != null ? _b : 1 }];
+    r.fills = [{ type: "SOLID", color: rgb(l.fill), opacity: (_c = l.opacity) != null ? _c : 1 }];
     if (l.radius) r.cornerRadius = Math.min(l.radius, Math.min(l.width, l.height) / 2);
     return r;
+  }
+  function dim(node, k) {
+    const scale = (paints) => paints.map((p) => p.type === "SOLID" ? __spreadProps(__spreadValues({}, p), { color: { r: p.color.r * k, g: p.color.g * k, b: p.color.b * k } }) : p);
+    if ("fills" in node && Array.isArray(node.fills)) node.fills = scale(node.fills);
+    if ("strokes" in node && Array.isArray(node.strokes)) node.strokes = scale(node.strokes);
+    if ("children" in node) for (const kid of node.children) dim(kid, k);
   }
   function cutout(c, w, h, fill, stroke, weight) {
     const n = figma.createNodeFromSvg(

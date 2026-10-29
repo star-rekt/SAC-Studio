@@ -50,7 +50,10 @@ export function Bump2Hero({ asset }: { asset: SheetAsset }) {
     boardFit(textOf(edits, `${id}/${part}`, text), key, L(map[part]));
 
   const urgency = asset.copy.marquee || asset.copy.eyebrow || P.eyebrow;
-  const offer = asset.copy.offer || 'EXTRA 20% OFF';
+  // The board's one line, "EXTRA 20% OFF": the brief's lead word and its
+  // offer (a brief writes them apart: lead 'EXTRA', offer '20% OFF').
+  const lead = asset.copy.lead?.trim(), amount = asset.copy.offer || '20% OFF';
+  const offer = lead && !amount.toUpperCase().startsWith(lead.toUpperCase()) ? `${lead} ${amount}` : amount;
   const cta = asset.copy.cta || 'Shop Now';
   const urgencyFit = fit('urgency', urgency, 'hero.urgency');
   const offerFit = fit('offer', offer, 'hero.offer');

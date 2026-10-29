@@ -124,6 +124,13 @@ function makeNode(l: Layer, images: Record<string, string>, vectors: Record<stri
     t.letterSpacing = { unit: 'PIXELS', value: l.letterSpacing };
     t.fills = [{ type: 'SOLID', color: rgb(l.colour) }];
     if (l.underline) t.textDecoration = 'UNDERLINE';
+    for (const run of l.runs ?? []) {
+      if (run.weight) {
+        const face = faceFor(l.font, run.weight, have);
+        if (face) t.setRangeFontName(run.from, run.to, face);
+      }
+      if (run.colour) t.setRangeFills(run.from, run.to, [{ type: 'SOLID', color: rgb(run.colour) }]);
+    }
     // The frame hugs its type rather than being resized to the measured box.
     //
     //   A fixed-width frame is re-broken by Figma's own shaping, and a line
@@ -151,6 +158,7 @@ function makeNode(l: Layer, images: Record<string, string>, vectors: Record<stri
     if (svg) {
       const art = figma.createNodeFromSvg(svg);
       art.name = l.name;
+      if (l.brightness !== undefined) dim(art, l.brightness);
       art.resize(l.draw.width, l.draw.height);
       art.x = l.draw.x - l.x; art.y = l.draw.y - l.y;
       box.appendChild(art);
@@ -207,6 +215,16 @@ function makeNode(l: Layer, images: Record<string, string>, vectors: Record<stri
   r.fills = [{ type: 'SOLID', color: rgb(l.fill), opacity: l.opacity ?? 1 }];
   if (l.radius) r.cornerRadius = Math.min(l.radius, Math.min(l.width, l.height) / 2);
   return r;
+}
+
+/** CSS brightness() on vector artwork: every solid fill and stroke's colour
+ *  scaled by it, so a white logo the studio shows charcoal arrives charcoal. */
+function dim(node: SceneNode, k: number) {
+  const scale = (paints: readonly Paint[]) => paints.map(p => p.type === 'SOLID'
+    ? { ...p, color: { r: p.color.r * k, g: p.color.g * k, b: p.color.b * k } } : p);
+  if ('fills' in node && Array.isArray(node.fills)) node.fills = scale(node.fills);
+  if ('strokes' in node && Array.isArray(node.strokes)) node.strokes = scale(node.strokes);
+  if ('children' in node) for (const kid of node.children) dim(kid, k);
 }
 
 /** The clip's path as a node the size of the box it cuts. */

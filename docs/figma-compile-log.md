@@ -895,3 +895,36 @@ refused. `check:export` now embeds a board image.
 Rollback: `git revert <sha>`.
 
 sha: a2823fc
+
+## Step 37: Figma export of Bump 2: window crops, logo colour, paragraph runs, tilted tags
+Bump 2 imported into Figma wrongly in four ways, and its desktop hero lost a word.
+- **Window crops.** Photos spilled out of their stepped windows: the export read only overflow
+  clipping and named shapes, not a CSS `clip-path: path(…)`. `toLayers` now hands that outline
+  to the plugin's existing mask (`cssClipOf`).
+- **Logo colour.** Brand logos arrived white. They are white artwork the studio shows charcoal
+  with CSS `brightness(0.2)`. The image layer now carries `brightness`, and the plugin scales the
+  logo's vector colours by it (`dim`), so they arrive charcoal and stay editable.
+- **Paragraph runs.** The body copy overlapped ("with ALPINE20 code."): a wrapping paragraph of
+  inline runs (the code word in bold green) went out as three overlapping boxes. It is now one
+  text with styled ranges (`paragraphRuns`; plugin `setRangeFontName` / `setRangeFills`). Only
+  wrapping paragraphs: one-line run pairs ("CODE" + the code) already lined up.
+- **Tilted tags.** The tilted "EXTRA 20% OFF" banner tags arrived as three lines. The line-break
+  reader took each word's rise on the page for a new line; slanted text is now read along its own
+  direction (`broken`, `turn`).
+- **Desktop hero.** The hero desktop read "20% OFF": it set the brief's offer alone, but a brief
+  writes the lead ("EXTRA") apart. It now sets "EXTRA 20% OFF".
+
+**Found while checking every template for the same gaps; not fixed here.**
+- **Paper textures and blends.** Bump 2's paper, Bump's tiles and bands, Flash's photo bands, the
+  generic templates' grain.
+- **Drop shadows.** Bump's tilted cards, Flash's cards, the generic email card.
+- **Blurs.** Flash.
+- **Masks in the generic email.** Fade, ticket punch.
+- **The "notch" design direction's polygon clip.**
+- **Photo brightness, contrast and saturation edits.**
+
+All of these come out flat in Figma.
+
+Rollback: `git revert <sha>`.
+
+sha: 9964703

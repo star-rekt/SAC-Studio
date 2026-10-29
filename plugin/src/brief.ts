@@ -16,6 +16,8 @@ export type Layer =
        *  the signature window arrives in Figma as a rectangular photograph
        *  and the staircase that makes the design is simply gone. */
       clip?: Clip;
+      /** CSS brightness() the studio draws it with: a white logo shown charcoal. */
+      brightness?: number;
       draw: { x: number; y: number; width: number; height: number } }
   | { n: number; name: string; group?: string; type: 'rect'; fill: string;
       opacity?: number; radius?: number; rotation?: number;
@@ -27,6 +29,8 @@ export type Layer =
       font: string; weight: number; size: number; lineHeight: number;
       letterSpacing: number; colour: string; align: string; underline?: boolean;
       rotation?: number;
+      /** Ranges of `text` set differently (a paragraph's bold green code word). */
+      runs?: { from: number; to: number; weight?: number; colour?: string }[];
       x: number; y: number; width: number; height: number };
 
 export type Variant = {
