@@ -23,7 +23,13 @@ export function FigmaGallery({ onPick }: { onPick: (url: string) => void }) {
   const [chip, setChip] = useState<string | null>(null);
   const [query, setQuery] = useState('');
   const [busy, setBusy] = useState<string | null>(null);
-  useEffect(() => { loadGallery().then(setItems, e => setError(String(e.message ?? e))); }, []);
+  useEffect(() => {
+    const load = () => { setError(null); loadGallery().then(setItems, e => setError(String(e.message ?? e))); };
+    load();
+    // A token saved while the gallery said it needed one: try again.
+    window.addEventListener('sac:figma-token-saved', load);
+    return () => window.removeEventListener('sac:figma-token-saved', load);
+  }, []);
 
   const pick = async (item: GalleryItem) => {
     setBusy(item.id);
@@ -36,7 +42,8 @@ export function FigmaGallery({ onPick }: { onPick: (url: string) => void }) {
     finally { setBusy(null); }
   };
 
-  if (error) return <p className="muted">Figma gallery: {error}</p>;
+  if (error) return <p className="muted">Figma gallery: {error}{' '}
+    {/token/i.test(error) && <button onClick={() => window.dispatchEvent(new Event('sac:figma-token'))}>Add Figma token</button>}</p>;
   if (!items) return <p className="muted">Loading the Figma gallery…</p>;
   const chips = [...new Set(items.flatMap(i => i.pursuits))].sort();
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);

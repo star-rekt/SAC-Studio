@@ -7,19 +7,32 @@
  *  long edge) on demand. Everything is cached under DATA/figma-gallery and
  *  the listing is only rebuilt when the Figma file's version changes.
  *
- *  The token comes from FIGMA_TOKEN: in the desktop app, the .env its Figma Token menu writes
- *  (SAC_STUDIO_ENV, in the app's settings folder); in development, a gitignored .env in
- *  sac-email-studio/ or the workspace above it. It is never written anywhere by this module
- *  and never sent to the studio. Without one, only the gallery is off. */
-import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
+ *  The token comes from FIGMA_TOKEN: in the desktop app, a .env in the app's settings folder
+ *  (written by the studio's Figma token dialog, or the app menu's Figma Token…); in development,
+ *  a gitignored .env in sac-email-studio/ or the workspace above it. The studio can save or
+ *  remove it (saveToken / removeToken) but never reads it back -- only whether one is saved
+ *  and its last four characters. Without one, only the gallery is off. */
+import { readFile, writeFile, mkdir, rename, chmod } from 'node:fs/promises';
 import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { homedir } from 'node:os';
+import { join, dirname } from 'node:path';
 import { DATA, ROOT } from './paths.ts';
 
-// The desktop app's own .env, then sac-email-studio/.env, then the
-// workspace's own .env one level up. Any may hold FIGMA_TOKEN=…, or just the
-// bare figd_… token on a line of its own.
-for (const file of [process.env.SAC_STUDIO_ENV, join(ROOT, '.env'), join(ROOT, '..', '.env')].filter(Boolean) as string[]) {
+/** Where the token is saved: in the desktop app, its settings folder (the
+ *  shell names it in SAC_STUDIO_ENV; an older shell doesn't, but its
+ *  settings folder is always <app data>/SAC Studio) -- outside the content
+ *  clone that updates replace, and never in a repo. In development,
+ *  sac-email-studio/.env. */
+const appData = () => process.platform === 'darwin' ? join(homedir(), 'Library', 'Application Support')
+  : process.platform === 'win32' ? process.env.APPDATA ?? join(homedir(), 'AppData', 'Roaming')
+  : process.env.XDG_CONFIG_HOME ?? join(homedir(), '.config');
+const envFile = () => process.env.SAC_STUDIO_ENV
+  ?? (process.env.SAC_STUDIO_DESKTOP === '1' ? join(appData(), 'SAC Studio', '.env') : join(ROOT, '.env'));
+
+// The saved .env, then sac-email-studio/.env, then the workspace's own .env
+// one level up. Any may hold FIGMA_TOKEN=…, or just the bare figd_… token on
+// a line of its own.
+for (const file of [...new Set([envFile(), join(ROOT, '.env'), join(ROOT, '..', '.env')])]) {
   try { process.loadEnvFile(file); } catch { /* not there: FIGMA_TOKEN may come from the shell */ }
   if (!process.env.FIGMA_TOKEN && existsSync(file)) {
     const bare = readFileSync(file, 'utf8').split(/\r?\n/).map(l => l.trim()).find(l => /^figd_[\w-]+$/.test(l));
@@ -43,14 +56,42 @@ type Index = { version: string; items: GalleryItem[] };
 
 export class NoToken extends Error {}
 
+/** Whether a token is in use, and its last four characters -- never the token. */
+export const tokenStatus = () => {
+  const t = process.env.FIGMA_TOKEN?.trim();
+  return { saved: !!t, tail: t ? t.slice(-4) : '' };
+};
+
+/** The .env's other lines, with FIGMA_TOKEN (or a bare token line) taken out. */
+const othersIn = async (file: string) => (await readFile(file, 'utf8').catch(() => ''))
+  .split(/\r?\n/).filter(l => l.trim() && !/^\s*FIGMA_TOKEN\s*=/.test(l) && !/^figd_[\w-]+$/.test(l.trim()));
+
+/** Saves the token (owner-only), uses it at once, and asks Figma whose it is:
+ *  a wrong one is still saved, but the studio says so. */
+export async function saveToken(value: string) {
+  const token = value.trim();
+  if (!/^[\w-]{20,}$/.test(token)) return { saved: false, valid: false, message: 'That doesn\u2019t look like a Figma token (figd_…).' };
+  const file = envFile();
+  await mkdir(dirname(file), { recursive: true });
+  await writeFile(file, [...await othersIn(file), `FIGMA_TOKEN=${token}`].join('\n') + '\n', { mode: 0o600 });
+  await chmod(file, 0o600); // `mode` only applies to a new file
+  process.env.FIGMA_TOKEN = token;
+  const me = await fetch('https://api.figma.com/v1/me', { headers: { 'X-Figma-Token': token } })
+    .then(r => r.ok ? r.json() as Promise<{ handle?: string; email?: string }> : null, () => undefined);
+  if (me === undefined) return { saved: true, valid: null, message: 'Saved. Figma couldn\u2019t be reached to check it; it\u2019ll be used when you\u2019re online.' };
+  if (!me) return { saved: true, valid: false, message: 'Saved, but Figma rejected it. Check the token and save again.' };
+  return { saved: true, valid: true, message: `Saved: connected to Figma as ${me.handle || me.email}.` };
+}
+
+export async function removeToken() {
+  const file = envFile(), others = await othersIn(file);
+  if (existsSync(file)) await writeFile(file, others.length ? others.join('\n') + '\n' : '', { mode: 0o600 });
+  delete process.env.FIGMA_TOKEN;
+}
+
 const token = () => {
   const t = process.env.FIGMA_TOKEN?.trim();
-  // SAC_STUDIO_ENV is set only by a desktop shell that has the Figma Token menu.
-  if (!t) throw new NoToken(process.env.SAC_STUDIO_ENV
-    ? 'The Figma gallery needs a Figma token: add one from the SAC Studio menu → Figma Token…. The default library and your own uploads work without it.'
-    : process.env.SAC_STUDIO_DESKTOP === '1'
-    ? 'The Figma gallery needs a Figma token. The default library and your own uploads work without it.'
-    : 'Add FIGMA_TOKEN=… to a .env in sac-email-studio/ or the workspace root, then restart the studio.');
+  if (!t) throw new NoToken('The Figma gallery needs a Figma token. The default library and your own uploads work without it.');
   return t;
 };
 

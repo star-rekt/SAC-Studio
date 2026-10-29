@@ -765,10 +765,13 @@ async function put2(hash, analysis) {
 }
 
 // server/figmaGallery.ts
-import { readFile as readFile5, writeFile as writeFile4, mkdir as mkdir4, rename as rename3 } from "node:fs/promises";
+import { readFile as readFile5, writeFile as writeFile4, mkdir as mkdir4, rename as rename3, chmod } from "node:fs/promises";
 import { existsSync as existsSync2, readFileSync as readFileSync2 } from "node:fs";
-import { join as join7 } from "node:path";
-for (const file2 of [process.env.SAC_STUDIO_ENV, join7(ROOT, ".env"), join7(ROOT, "..", ".env")].filter(Boolean)) {
+import { homedir } from "node:os";
+import { join as join7, dirname as dirname4 } from "node:path";
+var appData = () => process.platform === "darwin" ? join7(homedir(), "Library", "Application Support") : process.platform === "win32" ? process.env.APPDATA ?? join7(homedir(), "AppData", "Roaming") : process.env.XDG_CONFIG_HOME ?? join7(homedir(), ".config");
+var envFile = () => process.env.SAC_STUDIO_ENV ?? (process.env.SAC_STUDIO_DESKTOP === "1" ? join7(appData(), "SAC Studio", ".env") : join7(ROOT, ".env"));
+for (const file2 of [.../* @__PURE__ */ new Set([envFile(), join7(ROOT, ".env"), join7(ROOT, "..", ".env")])]) {
   try {
     process.loadEnvFile(file2);
   } catch {
@@ -806,9 +809,32 @@ var PURSUITS = [
 ];
 var NoToken = class extends Error {
 };
+var tokenStatus = () => {
+  const t = process.env.FIGMA_TOKEN?.trim();
+  return { saved: !!t, tail: t ? t.slice(-4) : "" };
+};
+var othersIn = async (file2) => (await readFile5(file2, "utf8").catch(() => "")).split(/\r?\n/).filter((l) => l.trim() && !/^\s*FIGMA_TOKEN\s*=/.test(l) && !/^figd_[\w-]+$/.test(l.trim()));
+async function saveToken(value) {
+  const token2 = value.trim();
+  if (!/^[\w-]{20,}$/.test(token2)) return { saved: false, valid: false, message: "That doesn\u2019t look like a Figma token (figd_\u2026)." };
+  const file2 = envFile();
+  await mkdir4(dirname4(file2), { recursive: true });
+  await writeFile4(file2, [...await othersIn(file2), `FIGMA_TOKEN=${token2}`].join("\n") + "\n", { mode: 384 });
+  await chmod(file2, 384);
+  process.env.FIGMA_TOKEN = token2;
+  const me = await fetch("https://api.figma.com/v1/me", { headers: { "X-Figma-Token": token2 } }).then((r) => r.ok ? r.json() : null, () => void 0);
+  if (me === void 0) return { saved: true, valid: null, message: "Saved. Figma couldn\u2019t be reached to check it; it\u2019ll be used when you\u2019re online." };
+  if (!me) return { saved: true, valid: false, message: "Saved, but Figma rejected it. Check the token and save again." };
+  return { saved: true, valid: true, message: `Saved: connected to Figma as ${me.handle || me.email}.` };
+}
+async function removeToken() {
+  const file2 = envFile(), others = await othersIn(file2);
+  if (existsSync2(file2)) await writeFile4(file2, others.length ? others.join("\n") + "\n" : "", { mode: 384 });
+  delete process.env.FIGMA_TOKEN;
+}
 var token = () => {
   const t = process.env.FIGMA_TOKEN?.trim();
-  if (!t) throw new NoToken(process.env.SAC_STUDIO_ENV ? "The Figma gallery needs a Figma token: add one from the SAC Studio menu \u2192 Figma Token\u2026. The default library and your own uploads work without it." : process.env.SAC_STUDIO_DESKTOP === "1" ? "The Figma gallery needs a Figma token. The default library and your own uploads work without it." : "Add FIGMA_TOKEN=\u2026 to a .env in sac-email-studio/ or the workspace root, then restart the studio.");
+  if (!t) throw new NoToken("The Figma gallery needs a Figma token. The default library and your own uploads work without it.");
   return t;
 };
 async function api(path) {
@@ -902,7 +928,7 @@ async function image(id, kind) {
 // server/export.ts
 import { mkdir as mkdir5, mkdtemp, writeFile as writeFile5, copyFile, rm, readdir as readdir2 } from "node:fs/promises";
 import { existsSync as existsSync3 } from "node:fs";
-import { join as join8, dirname as dirname4 } from "node:path";
+import { join as join8, dirname as dirname5 } from "node:path";
 import { tmpdir as tmpdir2 } from "node:os";
 import { execFile } from "node:child_process";
 import { readFile as readFile6 } from "node:fs/promises";
@@ -1032,7 +1058,7 @@ async function exportCampaign(session, name, assets, origin, onProgress, revisio
   for (const [to, web] of want) {
     const from = join8(PUBLIC, web.replace(/^\//, ""));
     if (existsSync3(from)) {
-      await mkdir5(dirname4(join8(dir, to)), { recursive: true });
+      await mkdir5(dirname5(join8(dir, to)), { recursive: true });
       await copyFile(from, join8(dir, to));
     } else missing.push(web);
   }
@@ -1119,7 +1145,7 @@ var zipUp = (dir) => new Promise((res, rej) => {
   execFile(
     "zip",
     ["-r", "-q", out, dir.split("/").pop()],
-    { cwd: dirname4(dir), timeout: 12e4 },
+    { cwd: dirname5(dir), timeout: 12e4 },
     (e) => e ? rej(e) : res(out)
   );
 });
@@ -1367,6 +1393,17 @@ var server = createServer(async (req, res) => {
       }
       if (req.method === "DELETE")
         return send(200, { ok: await remove2(id) });
+    }
+    if (url.pathname === "/api/figma-token") {
+      if (req.method === "GET") return send(200, tokenStatus());
+      if (req.method === "PUT") {
+        const { token: token2 } = JSON.parse(await body(req, 4e3));
+        return send(200, await saveToken(String(token2 ?? "")));
+      }
+      if (req.method === "DELETE") {
+        await removeToken();
+        return send(200, tokenStatus());
+      }
     }
     if (url.pathname === "/api/figma-gallery" && req.method === "GET") {
       try {

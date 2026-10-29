@@ -28,6 +28,8 @@
  *    GET    /api/brief/:id   the same manifest, for the Figma plugin to build
  *    GET    /api/export-file/:path  one image the manifest names
  *    GET    /api/figma/:id    the campaign as one .figma.json for the plugin
+ *    GET    /api/figma-token   whether a Figma token is saved (and its last 4 characters)
+ *    PUT    /api/figma-token {token}  save it (checked with Figma); DELETE  remove it
  *    GET    /api/figma-gallery              the Figma photo gallery (thumbnails listed)
  *    GET    /api/figma-gallery/thumb/:node  a ~240px thumbnail
  *    GET    /api/figma-gallery/full/:node   the full image, fetched on first pick
@@ -281,6 +283,15 @@ const server = createServer(async (req, res) => {
       }
       if (req.method === 'DELETE')
         return send(200, { ok: await media.remove(id) });
+    }
+
+    if (url.pathname === '/api/figma-token') {
+      if (req.method === 'GET') return send(200, gallery.tokenStatus());
+      if (req.method === 'PUT') {
+        const { token } = JSON.parse(await body(req, 4_000)) as { token?: string };
+        return send(200, await gallery.saveToken(String(token ?? '')));
+      }
+      if (req.method === 'DELETE') { await gallery.removeToken(); return send(200, gallery.tokenStatus()); }
     }
 
     if (url.pathname === '/api/figma-gallery' && req.method === 'GET') {

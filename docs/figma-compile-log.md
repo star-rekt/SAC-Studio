@@ -857,3 +857,25 @@ sha: f669c7c
 Rollback: `git revert <sha>`.
 
 sha: 7bfa07d
+
+## Step 35: the Figma token prompt in the studio itself (no reinstall)
+The Figma Token menu (step 34) lives in the desktop shell, which only a new installer replaces. The
+prompt now lives in the studio, which content updates replace, so every installed app gets it.
+- **On start.** When no token is saved and nobody has skipped it, the studio asks once: a "Figma
+  token (optional)" dialog with Save, or Skip (remembered). The Figma gallery's no-token message
+  has an "Add Figma token" button that opens it again. An open gallery retries once a token is
+  saved.
+- **The server.** `GET/PUT/DELETE /api/figma-token` (`server/figmaGallery.ts`). Saving writes
+  `FIGMA_TOKEN=…` (owner-only, other lines kept) to the app's settings-folder `.env`: the shell
+  names it in `SAC_STUDIO_ENV`; under an older shell it is `<app data>/SAC Studio/.env`, the
+  same folder. In development it is `sac-email-studio/.env`. The token is used at once, checked
+  with Figma, and never sent back to the page, only whether one is saved and its last four
+  characters. The server's existing origin check refuses other sites (403).
+- **Without a token.** The studio runs as before on the default library and local uploads.
+- **Fix.** `src/model/textContracts.ts` imports `../fonts.ts` with its extension (`tsconfig`:
+  `allowImportingTsExtensions`). The dev AI server runs that file in Node, which needs it; since
+  step 31 a restart of `npm run dev`'s server failed on it. The desktop bundle was unaffected.
+
+Rollback: `git revert <sha>`.
+
+sha: 5a91773

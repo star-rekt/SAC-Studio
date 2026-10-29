@@ -13,7 +13,8 @@
  *  whose rendered glyphs are measurably wider than the source string) --
  *  it measures the real string against the real font via a canvas 2D
  *  context instead of guessing from character count. */
-import { stack } from '../fonts';
+// The extension: the dev server runs this file in Node, which needs it.
+import { stack } from '../fonts.ts';
 
 const DEFAULT_FONT_MAX = 60, DEFAULT_FONT_MIN = 14, DEFAULT_CHAR_FACTOR = 0.55;
 

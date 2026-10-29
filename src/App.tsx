@@ -32,7 +32,7 @@ import { listSessions, loadSession, saveSession, useAutosave, exportForFigma, do
          type ExportReport } from './session/store';
 import { readBriefWithAi } from './ai/client';
 import { CopyPanel } from './edit/CopyFit';
-import { OpenDialog, NewDialog } from './session/Dialogs';
+import { OpenDialog, NewDialog, FigmaTokenDialog, TOKEN_SKIPPED } from './session/Dialogs';
 import TYPE from './data/typography.json';
 import BRIEF_TEXT from './data/brief.txt?raw';
 import { EMAIL_VARIANTS, SITE_VARIANTS, emailVariant } from './templates/variants';
@@ -73,9 +73,21 @@ export default function App() {
   /** Whether this campaign is actually on disk. Until it is, the badge must
    *  not say 'saved' -- which is what it said when the connector was down. */
   const [onDisk, setOnDisk] = useState(false);
-  const [dialog, setDialog] = useState<'open' | 'new' | null>(null);
+  const [dialog, setDialog] = useState<'open' | 'new' | 'token' | null>(null);
   const [library, setLibrary] = useState<UserMedia[]>([]);
   const [customName, setCustomName] = useState('');
+
+  // The optional Figma token: asked for once at start when none is saved and
+  // the designer hasn't skipped it; the Figma gallery can ask again.
+  useEffect(() => {
+    let skipped = false;
+    try { skipped = localStorage.getItem(TOKEN_SKIPPED) === '1'; } catch { /* private window */ }
+    if (!skipped) void fetch('/api/figma-token').then(r => r.ok ? r.json() : null)
+      .then(s => { if (s && !s.saved) setDialog(d => d ?? 'token'); }, () => {});
+    const ask = () => setDialog('token');
+    window.addEventListener('sac:figma-token', ask);
+    return () => window.removeEventListener('sac:figma-token', ask);
+  }, []);
 
   useEffect(() => {
     let live = true;
@@ -510,6 +522,7 @@ export default function App() {
             setSheet(s); setTemplateId(s.templateId); setJudging(null); setOnDisk(true);
           })} />
       )}
+      {dialog === 'token' && <FigmaTokenDialog onClose={() => setDialog(null)} />}
       {dialog === 'new' && (
         <NewDialog onClose={() => setDialog(null)}
           onCreate={(brief, html, tid, name, ai) => {
