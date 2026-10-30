@@ -18,7 +18,7 @@ const byId = new Map(ZONE_LIST.map(z => [z.id, z]));
 export const SuggestedImage = createContext<string | undefined>(undefined);
 
 export function Picture({ id, zone, style, label, focus, initialSrc,
-  initialScale = 1, initialRotate = 0, zoomOrigin, slot }: {
+  initialScale = 1, initialRotate = 0, zoomOrigin, slot, initialCrop }: {
   id: string; zone: Zone; style?: React.CSSProperties; label?: string;
   /** A shaped slot (a stepped window, a collage tile, a banner): smart
    *  placement frames the photo within the slot's own visible shape rather
@@ -32,6 +32,11 @@ export function Picture({ id, zone, style, label, focus, initialSrc,
   /** A board photo turned inside its frame (degrees): applies to that photo
    *  only -- a swapped-in or uploaded one starts upright. */
   initialRotate?: number;
+  /** The board's own placement of its photo (Figma's imageTransform: the
+   *  box, 0..1, onto the image, 0..1), shown exactly while that photo is
+   *  untouched -- including a placement that doesn't fill the box, which a
+   *  cover crop can't draw. A swap, a pan or a zoom returns to the cover crop. */
+  initialCrop?: number[][];
   /** Where to sit the crop before anyone has dragged it. Square slots take
    *  the middle; a shaped one says so, because the part of a photograph a
    *  mask keeps is not the part a centred crop shows. */
@@ -88,6 +93,17 @@ export function Picture({ id, zone, style, label, focus, initialSrc,
   //    nobody has touched yet.
   // Any hand crop clears `auto`, so a designer's crop is never redone.
   const untouched = !api.edits.pic[id];
+  // The board's exact placement, while its own photo is untouched: the
+  // inverse of the image transform carries a box-size image (stretched to
+  // the box) to where the board puts it.
+  const exact = (() => {
+    if (!initialCrop || src !== initialSrc || !untouched || !bw || !bh) return null;
+    const [[a, b, tx], [c, d, ty]] = initialCrop, det = a * d - b * c;
+    if (!det) return null;
+    const m00 = d / det, m01 = -b / det, m10 = -c / det, m11 = a / det;
+    const m02 = -(m00 * tx + m01 * ty), m12 = -(m10 * tx + m11 * ty);
+    return `matrix(${m00}, ${m10 * bh / bw}, ${m01 * bw / bh}, ${m11}, ${bw * m02}, ${bh * m12})`;
+  })();
   const briefPhoto = untouched && primary && src !== initialSrc;
   useEffect(() => {
     if (!SMART_PLACEMENT || !natural || !box.current || zoomOrigin) return;
@@ -121,11 +137,22 @@ export function Picture({ id, zone, style, label, focus, initialSrc,
     // above are already in that same authored space.
     const screenZoom = canvasZoom(e.currentTarget);
     const overflowX = geometry?.overflowX, overflowY = geometry?.overflowY;
+    // A photo in a mirrored or turned box (a board's flipped hero) is panned
+    // in its own px: the screen's drag turned and flipped back by the box's
+    // own orientation (its transforms and its ancestors', scale left out), so
+    // dragging right still moves the picture right.
+    let [a, b, c, d] = [1, 0, 0, 1];
+    for (let el: Element | null = e.currentTarget; el && el !== document.body; el = el.parentElement) {
+      const m = getComputedStyle(el).transform.match(/^matrix\(([^)]+)\)/)?.[1].split(',').map(Number);
+      if (m) [a, b, c, d] = [m[0] * a + m[2] * b, m[1] * a + m[3] * b, m[0] * c + m[2] * d, m[1] * c + m[3] * d];
+    }
+    const det = a * d - b * c, k = Math.sqrt(Math.abs(det)) || 1;
+    const local = (x: number, y: number) => det ? [(d * x - c * y) * k / det, (-b * x + a * y) * k / det] : [x, y];
     const move = (m: MouseEvent) => {
       // A normal click can produce a sub-pixel mousemove before mouseup.
       // Selecting a photograph must not silently create a crop edit.
       if (Math.hypot(m.clientX - x0, m.clientY - y0) < 3) return;
-      const dx = (m.clientX - x0) / screenZoom, dy = (m.clientY - y0) / screenZoom;
+      const [dx, dy] = local((m.clientX - x0) / screenZoom, (m.clientY - y0) / screenZoom);
       api.setPic(id, {
         x: !overflowX ? px : Math.max(0, Math.min(100, px - (dx / overflowX) * 100)),
         y: !overflowY ? py : Math.max(0, Math.min(100, py - (dy / overflowY) * 100)), auto: false });
@@ -161,7 +188,10 @@ export function Picture({ id, zone, style, label, focus, initialSrc,
            onError={() => setMissing(true)}
            onLoad={e => { setMissing(false);
              setNatural({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight }); }}
-           style={zoomOrigin ? {
+           style={exact ? {
+             position: 'absolute', left: 0, top: 0, width: bw, height: bh, objectFit: 'fill',
+             transformOrigin: '0 0', transform: exact, filter, opacity: missing ? 0 : 1,
+           } : zoomOrigin ? {
              // An anchor-pinned crop (e.g. a social format zoomed from its
              // bottom edge) is a deliberately different, non-pannable zoom:
              // left as object-position + a fixed transform-origin.

@@ -11,6 +11,10 @@ const q = new URLSearchParams(location.search);
 const shot = q.get('shot'), session = q.get('s');
 if (shot) document.body.classList.add('shot');
 
+// The board fonts the Adobe kit lacks (public/fonts/): Quiet Sans 600 and 800,
+// Tiempos Headline, PestoFresco -- shipped with the app, which is internal.
+document.head.appendChild(Object.assign(document.createElement('link'), { rel: 'stylesheet', href: '/fonts/fonts.css' }));
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     {shot && session ? <Shot id={shot} session={session} /> : <App />}

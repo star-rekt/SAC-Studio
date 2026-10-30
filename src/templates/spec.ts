@@ -16,6 +16,7 @@ import { faults, BAR, classOf, type TemplateSpec, type Outlook } from './schema'
 import sc26_0021 from './specs/sc26_0021';
 import sc26_0060 from './specs/sc26_0060';
 import sc26_bump2 from './specs/sc26_bump2';
+import named_sale from './specs/named_sale';
 
 export * from './schema';
 
@@ -23,6 +24,7 @@ export const SPECS: TemplateSpec[] = [
   sc26_0021,
   sc26_0060,
   sc26_bump2,
+  named_sale,
 ];
 
 const broken = SPECS.flatMap(faults);

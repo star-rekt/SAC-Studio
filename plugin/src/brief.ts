@@ -12,6 +12,8 @@ export type Clip = { path: string; view: [number, number];
 /** How a layer is drawn besides its paint, in Figma's terms: opacity
  *  (`fade`), a layer blur radius, shadows. */
 export type Look = { fade?: number; blur?: number;
+  /** A blend mode, as CSS names it (multiply, screen, darken, …). */
+  blend?: string;
   shadows?: { x: number; y: number; blur: number; spread?: number; color: string; alpha: number; inner?: boolean }[] };
 
 /** `parent`: the clip layer (its `n`) this layer is drawn inside and cut by. */
@@ -29,7 +31,9 @@ export type Layer = ({ parent?: number } & Look & (
       clip?: Clip;
       /** CSS brightness() the studio draws it with: a white logo shown charcoal. */
       brightness?: number;
-      draw: { x: number; y: number; width: number; height: number } }
+      draw: { x: number; y: number; width: number; height: number };
+      /** Mirrored left for right (a flipped board section's photo). */
+      flip?: boolean }
   | { n: number; name: string; group?: string; type: 'rect'; fill: string;
       opacity?: number; radius?: number; rotation?: number;
       /** A mark from the graphics library, cut to its own path rather than
@@ -39,6 +43,8 @@ export type Layer = ({ parent?: number } & Look & (
   | { n: number; name: string; group?: string; type: 'text'; text: string;
       font: string; weight: number; size: number; lineHeight: number;
       letterSpacing: number; colour: string; align: string; underline?: boolean;
+      /** Trimmed to its capitals (Figma's cap-height leading trim). */
+      trim?: boolean;
       rotation?: number;
       /** Ranges of `text` set differently (a paragraph's bold green code word). */
       runs?: { from: number; to: number; weight?: number; colour?: string }[];

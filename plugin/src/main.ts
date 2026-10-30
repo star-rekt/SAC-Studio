@@ -25,7 +25,7 @@ figma.showUI(__html__, { width: 400, height: 520, themeColors: true });
  *  build or is still running a cached one -- the error text itself is
  *  otherwise identical either way and that ambiguity already cost a round
  *  trip once. */
-const BUILD = 'clips-4';
+const BUILD = 'flip-1';
 
 const rgb = (h: string) => ({
   r: parseInt(h.slice(1, 3), 16) / 255,
@@ -165,6 +165,8 @@ function makeNode(l: Layer, images: Record<string, string>, vectors: Record<stri
     //   the measured one by its alignment.
     t.textAutoResize = 'WIDTH_AND_HEIGHT';
     t.textAlignHorizontal = (l.align || 'left').toUpperCase() as TextNode['textAlignHorizontal'];
+    // Its box the capitals, as the studio sets it: the studio measured that box.
+    if (l.trim) t.leadingTrim = 'CAP_HEIGHT';
     return t;
   }
 
@@ -197,8 +199,10 @@ function makeNode(l: Layer, images: Record<string, string>, vectors: Record<stri
     art.resize(l.draw.width, l.draw.height);
     art.x = l.draw.x - l.x; art.y = l.draw.y - l.y;
     const hash = images[l.src];
+    // A mirrored photo: the same picture, its fill flipped left for right.
     art.fills = hash
-      ? [{ type: 'IMAGE', imageHash: hash, scaleMode: 'FILL' }]
+      ? [l.flip ? { type: 'IMAGE', imageHash: hash, scaleMode: 'CROP', imageTransform: [[-1, 0, 1], [0, 1, 0]] }
+        : { type: 'IMAGE', imageHash: hash, scaleMode: 'FILL' }]
       : [{ type: 'SOLID', color: { r: 0.85, g: 0.85, b: 0.85 } }];
     box.appendChild(art);
 
@@ -291,6 +295,9 @@ function look(node: SceneNode, l: Layer) {
     visible: true, blendMode: 'NORMAL' });
   if (l.blur) effects.push({ type: 'LAYER_BLUR', blurType: 'NORMAL', radius: l.blur, visible: true });
   if (effects.length && 'effects' in node) node.effects = effects;
+  // A shadow that multiplies over a photo, a texture that screens: Figma's
+  // own name for the CSS one ('color-burn' -> 'COLOR_BURN').
+  if (l.blend && 'blendMode' in node) node.blendMode = l.blend.toUpperCase().replace(/-/g, '_') as BlendMode;
 }
 
 /** A container's centre and turn in the frame's px, and its size; `into` is

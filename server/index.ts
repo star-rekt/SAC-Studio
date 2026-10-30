@@ -33,6 +33,9 @@
  *    GET    /api/figma-gallery              the Figma photo gallery (thumbnails listed)
  *    GET    /api/figma-gallery/thumb/:node  a ~240px thumbnail
  *    GET    /api/figma-gallery/full/:node   the full image, fetched on first pick
+ *    GET    /api/figma-logos              the Figma vendor logo library (every variant listed)
+ *    GET    /api/figma-logos/thumb/:node  a ~240px PNG, rendered when a search shows it
+ *    GET    /api/figma-logos/full/:node   the logo as SVG, fetched on first pick
  *    POST   /ai/photo {image}  where the people/subject are, for a photo the
  *                              on-device detectors found nothing in (small JPEG)
  *    GET    /api/photo-analysis        every cached photo analysis, by src hash
@@ -53,6 +56,7 @@ import * as sessions from './sessions.ts';
 import * as media from './media.ts';
 import * as photoAnalysis from './photoAnalysis.ts';
 import * as gallery from './figmaGallery.ts';
+import * as logos from './figmaLogos.ts';
 import { exportCampaign, briefOnly, figmaDocument } from './export.ts';
 
 const PORT = Number(process.env.SAC_AI_PORT ?? 5179);
@@ -310,6 +314,26 @@ const server = createServer(async (req, res) => {
       const bytes = await gallery.image(id, pictured[1] as 'thumb' | 'full');
       if (!bytes) return send(404, { error: 'not in the Figma gallery' });
       res.writeHead(200, { 'content-type': 'image/jpeg', 'cache-control': 'private, max-age=86400' });
+      return res.end(bytes);
+    }
+
+    if (url.pathname === '/api/figma-logos' && req.method === 'GET') {
+      try {
+        const { items } = await logos.list();
+        return send(200, { items });
+      } catch (e) {
+        if (e instanceof gallery.NoToken) return send(503, { error: e.message });
+        throw e;
+      }
+    }
+    const logo = url.pathname.match(/^\/api\/figma-logos\/(thumb|full)\/([^/]+)$/);
+    if (logo && req.method === 'GET') {
+      const id = decodeURIComponent(logo[2]);
+      if (!logos.validId(id)) return send(400, { error: 'invalid node id' });
+      const bytes = await logos.image(id, logo[1] as 'thumb' | 'full');
+      if (!bytes) return send(404, { error: 'not in the Figma logo library' });
+      res.writeHead(200, { 'content-type': logo[1] === 'full' ? 'image/svg+xml' : 'image/png',
+        'cache-control': 'private, max-age=86400' });
       return res.end(bytes);
     }
 

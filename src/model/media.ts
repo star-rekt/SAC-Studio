@@ -13,6 +13,7 @@
  */
 
 import { ZONE_LIST, photoUrl } from './compose';
+import NAMED_SALE_MARKS from '../render/templates/named-sale/marks.json';
 
 export type Kind = 'photo' | 'product' | 'brand' | 'wordmark' | 'social' | 'mark' | 'texture';
 
@@ -68,6 +69,8 @@ const MARKS: [string, string][] = [
   ['bump2-email-1-window', 'Stepped window, Bump 2 email 1'], ['bump2-email-2-window', 'Stepped window, Bump 2 email 2'],
   ['bump2-email-3-window', 'Stepped window, Bump 2 email 3'], ['bump2-email-4-window', 'Stepped cut-out, Bump 2 email 4'],
   ['bump2-arrow', 'Brush arrow, Bump 2'],
+  // Named Sale's pills and art, cut from its board by the template lab.
+  ...NAMED_SALE_MARKS as [string, string][],
 ];
 
 /** The photographs, with the band a person reviewed by eye.

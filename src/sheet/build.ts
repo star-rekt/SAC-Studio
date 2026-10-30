@@ -14,6 +14,8 @@ import { readBrief, type Brief } from '../model/brief';
 import { readSends, impliedSend, type Send } from '../model/sections';
 import { copyFor, copyFromAi } from '../model/copy';
 import { templateById, type Template, type FormatSpec } from '../templates/registry';
+import { DESIGNS as NAMED_SALE } from '../render/templates/named-sale/designs';
+import { phaseOf, endsOf, phasesOf, namedCopy } from '../model/namedSale';
 import { photoFor, pursuitOf } from '../model/compose';
 import { assetId, type Sheet, type SheetAsset, type Scope, type Copy } from './types';
 import { EMPTY } from '../edit/store';
@@ -100,7 +102,8 @@ function scopesFor(f: FormatSpec, b: Brief, sends: Send[],
   return Array.from({ length: quantity }, (_, i) => {
     const rawTopic = b.deliverableMessages?.[f.format]?.[i];
     const topic = rawTopic && !genericLabels.has(rawTopic.trim().toLowerCase()) ? rawTopic : undefined;
-    const phase = quantity > 1 ? named[i] : named.length === 1 ? named[0] : undefined;
+    const phase = (b.type === 'named-sale' && topic ? phaseFor(named, topic) : undefined)
+      ?? (quantity > 1 ? named[i] : named.length === 1 ? named[0] : undefined);
     return {
       scope: { ...(topic ? { topic } : {}), ...(phase ? { phase } : {}),
         ...(i ? { instance: i + 1 } : {}) },
@@ -109,7 +112,7 @@ function scopesFor(f: FormatSpec, b: Brief, sends: Send[],
   });
 }
 
-function initialEmailVariant(templateId: string, send?: Send): string {
+function initialEmailVariant(templateId: string, b: Brief, send?: Send): string {
   if (!send) return 'base';
   const angle = `${send.label} ${send.tb}`.toLowerCase();
   const hero = send.sections.find(section => section.kind === 'hero');
@@ -127,7 +130,28 @@ function initialEmailVariant(templateId: string, send?: Send): string {
       : /ends?\s+today|last\s+day/.test(angle) ? 'design-1'
       : /ends?\s+tomorrow/.test(angle) ? 'design-4'
       : /ends?\s+soon/.test(angle) ? 'design-3' : 'design-2';
+  // Named Sale: the email design drawn for the send's phase.
+  if (templateId === 'named_sale') return namedDesign('email-body', angle, b);
   return 'base';
+}
+
+/** A named sale's phase for a deliverable's topic, by its words, not its
+ *  place in the list: "New Brands Added" is the refresh, "Bump - Ends Today"
+ *  the last bump, "Flash Sale" the flash -- whatever order they're asked in. */
+function phaseFor(named: string[], topic: string) {
+  const same = named.filter(p => phaseOf(p) === phaseOf(topic));
+  return endsOf(topic) ? same.at(-1) : same[0];
+}
+
+/** A named sale's board design for an asset: the first drawn for its phase,
+ *  the last day's where its words say so; else the format's first. Words
+ *  naming no phase, on a brief with a code, want a design with a code line
+ *  (a bump's) -- the main campaign's has none. */
+function namedDesign(format: string, words: string, b: Brief) {
+  const list = NAMED_SALE.filter(d => d.format === format);
+  const said = phaseOf(words), ends = endsOf(words);
+  const phase = said === 'main' && b.code && !b.noCode ? 'bump' : said;
+  return (list.find(d => d.phase === phase && d.ends === ends) ?? list.find(d => d.phase === phase))?.id ?? 'base';
 }
 
 /** What this asset says. The brief supplies the numbers; the send's own angle
@@ -353,11 +377,19 @@ export function buildSheet(briefText: string, templateId: string, name?: string,
       ground: { role: 'custom' }, elements: [], phases: [], basis: 'standard' });
   }
 
+  // A named sale's phases, each with its own offer (src/model/namedSale.ts).
+  const phases = brief.type === 'named-sale' ? phasesOf(briefText, brief) : undefined;
+
   const assets: SheetAsset[] = [];
   for (const f of building) {
     const scopes = scopesFor(f, brief, sends, plan);
     scopes.forEach((s, i) => {
-      const { copy, because: why } = copyFor_(f, s.scope, brief, sends, aiById);
+      const made = copyFor_(f, s.scope, brief, sends, aiById), why = made.because;
+      const sentBy = s.scope.send ? sends.find(x => x.id === s.scope.send) : undefined;
+      // What this asset is about, for a named sale's phase: its topic, phase,
+      // concept, or its send's angle. A category tile keeps its own copy.
+      const words = [s.scope.topic, s.scope.phase, s.scope.concept, sentBy && `${sentBy.label} ${sentBy.tb}`].filter(Boolean).join(' ');
+      const copy = phases && !s.scope.category ? { ...made.copy, ...namedCopy(words, phases, brief) } : made.copy;
       const because = s.scope.send && twice.has(s.scope.send)
         ? `${why} (the brief gives this number to more than one send)`
         : why;
@@ -388,7 +420,8 @@ export function buildSheet(briefText: string, templateId: string, name?: string,
         format: f.format, size: plan?.customSizes?.[id] ?? f.size,
         custom: t.formats.some(known => known.format === f.format) ? undefined : true,
         scope: s.scope, label: s.label,
-        variant: /^email-/.test(f.format) ? initialEmailVariant(t.id, send) : 'base',
+        variant: /^email-/.test(f.format) ? initialEmailVariant(t.id, brief, send)
+          : t.id === 'named_sale' && NAMED_SALE.some(d => d.format === f.format) ? namedDesign(f.format, words, brief) : 'base',
         copy: { ...copy, title: brief.name, dates: brief.dates },
         media: { ...(photo ? { photo } : {}), brands: brief.brands },
         sections: f.format === 'email-body' ? send?.sections : undefined,

@@ -5,10 +5,10 @@
  *  mapping lives here rather than being sprinkled through the renderer.
  *
  *  The kit carries sofia-pro-variable across 100-900, and quiet-sans at 400
- *  and 700 only. The type scale asks for ExtraBold (800) on Display/XL and
- *  Display/L -- the ticket type -- so until those weights are added to the kit
- *  every display line renders a weight light. That is a real difference from
- *  the reference boards and the studio says so instead of hiding it. */
+ *  and 700 only. The app ships Quiet Sans's other weights itself
+ *  (public/fonts/, declared under the kit's own name, so 600 and 800 join
+ *  it), with Tiempos Headline and PestoFresco; the check below counts every
+ *  declared face, so it reads them too. */
 
 const KIT: Record<string, string> = {
   'Quiet Sans': 'quiet-sans',

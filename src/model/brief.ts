@@ -146,11 +146,14 @@ const TYPE_WORDS: [CampaignType, RegExp][] = [
   // each other is prose -- 'spend less, save more' is any sale's copy -- so it
   // takes money or the mechanic's own name.
   ['spend-save', /\bspend\s*\$?\s*\d|\bspend\s*(&|and)\s*save\b|\bsave\s*\$\s*\d{2,4}\b[\s\S]{0,40}?\bspend\b/i],
+  // A sale named for its occasion is a named sale, whatever else it says: a
+  // Memorial Day brief says 'extra 20%' and carries a code too, which made it a
+  // bump. The occasion itself, not 'holiday' or 'anniversary' in passing.
+  ['named-sale', /\b(memorial|labou?r|presidents?'?|veterans|independence)\s+day\b|\bblack\s*friday\b|\bcyber\s*monday\b|\b(holiday|anniversary)\s+sale\b/i],
   // A bundle promotion is a bump: an extra percentage off, applied in cart.
   ['bump', /\bbuy\s*\d\+?\b[\s\S]{0,40}?\bsave\b|\bbundle\s*(&|and)\s*save\b/i],
   ['bump', /\bbump\b|\bextra\s+\d+%|\bcode\s*[:\-]?\s*[A-Z0-9]{4,}\b[\s\S]{0,60}\bextra\b/i],
   ['flash-sale', /\bflash\s*sale\b|\bflash\b/i],
-  ['named-sale', /\b(memorial|labor|labour|presidents?|black\s*friday|cyber|christmas|holiday|anniversary)\b[\s\S]{0,20}\b(day|weekend|sale)?\b/i],
 ];
 
 /** Format by vocabulary, mapped to the names the reference boards use. */

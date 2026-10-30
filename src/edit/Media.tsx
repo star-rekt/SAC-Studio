@@ -15,6 +15,7 @@ import { useEdits, picOf, sizeOf, paintOf, moveOf } from './store';
 import { Swatches, SizeRow, PositionRow } from './Controls';
 import { offeredFor, isMediaSlot, byKind, LIBRARY, PHOTOS,
          type Item, type Kind } from '../model/media';
+import { FigmaLogos } from './FigmaLogos';
 import { tagsFromFilename, type UserMedia } from '../model/userMedia';
 import { canvasZoom, pick } from './Editable';
 import MARK_SHAPES from '../data/mark-shapes.json';
@@ -241,6 +242,12 @@ function UserTags({ item }: { item: UserMedia }) {
   </div>;
 }
 
+/** The brand a brand slot shows now, by its logo's alt text ('Brand' when unnamed). */
+const brandOf = (slot: string) => {
+  const alt = document.querySelector(`[data-id="${CSS.escape(slot)}"]`)?.getAttribute('alt') ?? '';
+  return alt && alt !== 'Brand' ? alt : '';
+};
+
 export function LibraryPanel({ selected, assets }: { selected: string | null;
   assets: { id: string; label: string; size: [number, number]; custom?: boolean }[] }) {
   const api = useEdits();
@@ -319,7 +326,11 @@ export function LibraryPanel({ selected, assets }: { selected: string | null;
         </select>
       </label>}
       {slot ? <><p className="muted">Replacing <code>{slot}</code></p>
-        {grid(offered, `${offered.length} to choose from`)}</>
+        {grid(offered, `${offered.length} to choose from`)}
+        {/* A brand slot can also take any logo from the Figma vendor library,
+            searched from the brand it shows now. */}
+        {offeredFor(slot)[0]?.kind === 'brand' && <FigmaLogos key={slot} brand={brandOf(slot)}
+          onPick={url => api.setPic(slot, { url, zone: undefined, hidden: false })} />}</>
       : <p className="muted">Select an image or graphic on the artwork to replace it,
           or add an image below for later use.</p>}
       <h4>Add your own image</h4>

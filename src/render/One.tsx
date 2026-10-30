@@ -24,6 +24,7 @@ import { BumpSocial1x1 as Bump2Social1x1 } from './templates/bump2/BumpSocial1x1
 import { BumpSocial4x5 as Bump2Social4x5 } from './templates/bump2/BumpSocial4x5';
 import { BumpSocial9x16 as Bump2Social9x16 } from './templates/bump2/BumpSocial9x16';
 import { Bump2EmailBody, Bump2EmailHero, type Design as Bump2Design } from './templates/bump2/EmailBody';
+import { NamedSale, namedSaleHas } from './templates/named-sale/NamedSale';
 import { emailVariant } from '../templates/variants';
 import { BadgingMock, CampaignBanner, GlobalText } from './templates/SiteCommerce';
 import { BoardHero } from './templates/BoardHero';
@@ -132,6 +133,9 @@ function OneBase({ asset, doc, template, outlook, treatment }: Props & { treatme
   if (asset.custom) return <CustomBoard asset={asset} />;
   const i = asset.scope.send ? doc.sends.findIndex(s => s.id === asset.scope.send) : -1;
   if (asset.format === 'email-body' && i >= 0) {
+    // Named Sale's fifteen email designs are whole emails (hero to footer).
+    if (outlook.id === 'named_sale')
+      return <NamedSale asset={asset} design={emailVariant('named_sale', asset.variant, i)?.id} />;
     const heroSpec = template.formats.find(f => f.format === 'email-hero');
     const heroAsset: SheetAsset = heroSpec ? {
       ...asset, id: `${asset.id}/hero`, format: 'email-hero', size: heroSpec.size,
@@ -157,6 +161,9 @@ function OneBase({ asset, doc, template, outlook, treatment }: Props & { treatme
   }
   if (asset.format === 'email-hero' && i >= 0 && outlook.id === 'sc26_0060')
     return bumpEmailHero(asset, i);
+  // Named Sale's email hero: the send's email design's own hero section.
+  if (asset.format === 'email-hero' && i >= 0 && outlook.id === 'named_sale')
+    return <NamedSale asset={asset} design={emailVariant('named_sale', asset.variant, i)?.id} />;
   // A brief that asks for an email hero on its own gets the chosen design's hero.
   if (asset.format === 'email-hero' && i >= 0 && outlook.id === 'sc26_bump2')
     return <Bump2EmailHero asset={asset} design={bump2Design(asset, i)} />;
@@ -168,6 +175,9 @@ function OneBase({ asset, doc, template, outlook, treatment }: Props & { treatme
     return bump2Social(asset);
   if (outlook.id === 'sc26_0021' && asset.format.startsWith('paid-social-'))
     return <FlashSocial asset={asset} />;
+  // Named Sale's hero and socials, each the board design chosen for the asset.
+  if (outlook.id === 'named_sale' && namedSaleHas(asset.format))
+    return <NamedSale asset={asset} design={asset.variant} />;
   if (asset.format === 'hero-desktop')
     return <BoardHero asset={asset} templateId={outlook.id} />;
   if (outlook.id === 'sc26_0060' && asset.format === 'cplp-tile')

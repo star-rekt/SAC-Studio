@@ -1,0 +1,326 @@
+{
+ "source": {
+  "file": "ioB3sP8LwBiTUPQN7jlF81",
+  "node": "538:38878",
+  "name": "Frame 4632"
+ },
+ "size": [
+  1200,
+  1694
+ ],
+ "frame": {},
+ "layers": {
+  "538:38879": {
+   "name": "image 3731",
+   "type": "RECTANGLE",
+   "parent": null,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "w": 1200,
+   "h": 1694,
+   "image": true,
+   "crop": [
+    [
+     0.90269,
+     0,
+     0.04866
+    ],
+    [
+     0,
+     0.94444,
+     0.05556
+    ]
+   ],
+   "images": [
+    {
+     "ref": "f03185b9b9c30aa4e23d5b94afcd8da0868fc278",
+     "mode": "STRETCH"
+    }
+   ],
+   "shade": "linear-gradient(-151.19deg, rgba(117, 140, 180, 1) -1.55%, rgba(117, 140, 180, 0) 15.95%)",
+   "paints": [
+    {
+     "type": "IMAGE",
+     "ref": "f03185b9b9c30aa4e23d5b94afcd8da0868fc278",
+     "mode": "STRETCH",
+     "crop": [
+      [
+       0.90269,
+       0,
+       0.04866
+      ],
+      [
+       0,
+       0.94444,
+       0.05556
+      ]
+     ]
+    },
+    {
+     "type": "GRADIENT",
+     "css": "linear-gradient(-151.19deg, rgba(117, 140, 180, 1) -1.55%, rgba(117, 140, 180, 0) 15.95%)"
+    }
+   ]
+  },
+  "538:38880": {
+   "name": "CTA",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 336,
+   "y": 646,
+   "w": 528,
+   "h": 120,
+   "fill": "#F14222",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#F14222"
+    }
+   ],
+   "clips": true,
+   "radius": 30
+  },
+  "538:38881": {
+   "name": "Shop & Save",
+   "type": "TEXT",
+   "parent": "538:38880",
+   "visible": true,
+   "x": 436,
+   "y": 685,
+   "w": 328,
+   "h": 42,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "text": {
+    "chars": "Shop & Save",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 64,
+    "lineHeight": 76.8,
+    "letterSpacing": -0.64,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:38882": {
+   "name": "Group 3435",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 198,
+   "y": 100,
+   "w": 804.62,
+   "h": 458
+  },
+  "538:38883": {
+   "name": "EXTRA",
+   "type": "TEXT",
+   "parent": "538:38882",
+   "visible": true,
+   "x": 198,
+   "y": 100,
+   "w": 112,
+   "h": 354.46,
+   "rotation": -90,
+   "turn": -90,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "shadow": {
+    "x": 2.85,
+    "y": 7.59,
+    "blur": 30.26,
+    "color": "#00000040"
+   },
+   "text": {
+    "chars": "EXTRA",
+    "family": "PestoFresco",
+    "weight": 100,
+    "size": 160.64,
+    "lineHeight": 309.98,
+    "letterSpacing": 0,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:38884": {
+   "name": "20",
+   "type": "TEXT",
+   "parent": "538:38882",
+   "visible": true,
+   "x": 331.37,
+   "y": 106.35,
+   "w": 470.41,
+   "h": 341,
+   "rotation": 0,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "shadow": {
+    "x": 6.15,
+    "y": 16.41,
+    "blur": 65.42,
+    "color": "#00000040"
+   },
+   "text": {
+    "chars": "20",
+    "family": "PestoFresco",
+    "weight": 100,
+    "size": 486.65,
+    "lineHeight": 429.32,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:38885": {
+   "name": "%",
+   "type": "TEXT",
+   "parent": "538:38882",
+   "visible": true,
+   "x": 790.78,
+   "y": 109.71,
+   "w": 211.84,
+   "h": 203,
+   "rotation": 0,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "shadow": {
+    "x": 3.66,
+    "y": 9.77,
+    "blur": 38.95,
+    "color": "#00000040"
+   },
+   "text": {
+    "chars": "%",
+    "family": "PestoFresco",
+    "weight": 100,
+    "size": 289.75,
+    "lineHeight": 255.62,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:38886": {
+   "name": "OFF",
+   "type": "TEXT",
+   "parent": "538:38882",
+   "visible": true,
+   "x": 799.1,
+   "y": 344.16,
+   "w": 196.41,
+   "h": 100,
+   "rotation": 0,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "shadow": {
+    "x": 1.8,
+    "y": 4.81,
+    "blur": 19.16,
+    "color": "#00000040"
+   },
+   "text": {
+    "chars": "OFF",
+    "family": "PestoFresco",
+    "weight": 100,
+    "size": 142.55,
+    "lineHeight": 125.76,
+    "letterSpacing": 0,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true
+   }
+  },
+  "538:38887": {
+   "name": "CODE CAMPOUT20",
+   "type": "TEXT",
+   "parent": "538:38882",
+   "visible": true,
+   "x": 198,
+   "y": 497,
+   "w": 795,
+   "h": 61,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "shadow": {
+    "x": 1.8,
+    "y": 4.81,
+    "blur": 19.16,
+    "color": "#00000040"
+   },
+   "text": {
+    "chars": "CODE CAMPOUT20",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 92.76,
+    "lineHeight": 145.67,
+    "letterSpacing": -1.86,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "runs": [
+     {
+      "from": 0,
+      "to": 4,
+      "style": {
+       "fontFamily": "Quiet Sans",
+       "fontPostScriptName": "QuietSans-Regular",
+       "fontStyle": "Regular",
+       "fontWeight": 400
+      }
+     }
+    ],
+    "case": "TITLE"
+   }
+  }
+ },
+ "assets": {
+  "f03185b9b9c30aa4e23d5b94afcd8da0868fc278": {
+   "src": "/figma-assets/named-sale/f03185b9b9c30aa4e23d5b94afcd8da0868fc278.jpg",
+   "w": 1778,
+   "h": 2400
+  }
+ }
+}

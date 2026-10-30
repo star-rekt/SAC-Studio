@@ -1,3 +1,5 @@
+import { DESIGNS as NAMED_SALE } from '../render/templates/named-sale/designs';
+
 /** Board-authored alternatives. Counts always come from the brief or manual plan;
  *  these are choices for each instance, never instructions to create instances. */
 export type DesignVariant = { id: string; name: string; height: number; node: string;
@@ -27,6 +29,10 @@ export const EMAIL_VARIANTS: Record<string, DesignVariant[]> = {
     { id: 'design-4', name: 'Design 4 · ends tomorrow, framed photo', height: 6733, heroHeight: 1526, node: '585:13' },
     { id: 'design-5', name: 'Design 5 · last chance, bestsellers', height: 6381, heroHeight: 1329, node: '585:14' },
   ],
+  // The Memorial Day board's fifteen whole emails, as the template lab compiled them.
+  named_sale: NAMED_SALE.filter(d => d.format === 'email-body')
+    .map(d => ({ id: d.id, name: d.name, height: Math.round(d.size[1]), node: d.node,
+      heroHeight: (h => h && Math.round(h.size[1]))(NAMED_SALE.find(h => h.format === 'email-hero' && h.id === d.id)) })),
 };
 
 /** Independent board examples inside a non-email asset type. Selecting one
@@ -36,6 +42,7 @@ export const SITE_VARIANTS: Record<string, Record<string, { id: string; name: st
     { id: 'launch', name: 'Launch banner' },
     { id: 'ends-today', name: 'Ends-today banner' },
   ] },
+  named_sale: { 'hero-desktop': NAMED_SALE.filter(d => d.format === 'hero-desktop').map(d => ({ id: d.id, name: d.name })) },
 
 };
 

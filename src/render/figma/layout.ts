@@ -18,7 +18,16 @@ export type FigmaText = {
   /** Characters styled apart from the run, [from, to) -- hand kerning, a
    *  tightened space. An editable run can't carry these. */
   runs?: { from: number; to: number; style: Record<string, unknown> }[];
+  /** Full-detail compiles only (figma-pull FIGMA_PULL_FULL): text case,
+   *  decoration and italic. */
+  case?: 'UPPER' | 'LOWER' | 'TITLE'; decoration?: 'UNDERLINE' | 'STRIKETHROUGH'; italic?: boolean;
 };
+/** One fill, in a full-detail compile: a colour, a gradient (as CSS) or an
+ *  image (its own crop, scale mode, opacity, blend). */
+export type FigmaPaint = { type: 'SOLID'; color: string; blend?: string }
+  | { type: 'GRADIENT'; css: string; blend?: string }
+  | { type: 'IMAGE'; ref: string; mode: string; crop?: number[][]; opacity?: number; blend?: string;
+      /** A tile's size, as a fraction of the image's own. */ scale?: number };
 export type FigmaLayer = {
   name: string; type: string; parent: string | null; visible: boolean;
   /** The box, relative to the frame's top left -- for a rotated layer, the
@@ -27,6 +36,9 @@ export type FigmaLayer = {
   /** Its own rotation, and (`turn`) its whole rotation on the page, its
    *  ancestors' included -- degrees, as CSS rotate() takes them. */
   rotation?: number; turn?: number;
+  /** Mirrored on the page (left for right): Figma reports a flip as a 180°
+   *  turn; the compiler keeps the two apart (FULL). */
+  mirror?: boolean;
   /** A vector's outline (Figma's fillGeometry, in its own px), and its stroke. */
   path?: string; stroke?: { color?: string; weight: number; align: string; path?: string }; radius?: number; text?: FigmaText;
   /** Layer opacity, layer blur radius and drop shadow, as Figma sets them. */
@@ -40,6 +52,11 @@ export type FigmaLayer = {
   /** A layer only Figma can draw (a custom effect): Figma's render of it,
    *  `ref` in the layout's assets, covering this box (frame px). */
   render?: { ref: string; x: number; y: number; w: number; h: number };
+  /** Full-detail compiles only: every visible fill in order, whether it
+   *  clips its contents, and an outline's fill rule. */
+  paints?: FigmaPaint[]; clips?: boolean; evenodd?: boolean;
+  /** Regions of a vector coloured apart from its fill (Figma's fill overrides). */
+  regions?: { path: string; fill?: string }[];
 } & Fill;
 type Shadow = { x: number; y: number; blur: number; color?: string };
 
@@ -50,8 +67,9 @@ type Fill = { fill?: string; image?: boolean; crop?: number[][];
 export type FigmaLayout = {
   source: { file: string; node: string; name: string };
   size: [number, number];
-  /** The frame's own fill: a colour, or the photo filling it. */
-  frame: Fill;
+  /** The frame's own fill: a colour, or the photo filling it (and, in a
+   *  full-detail compile, every visible fill). */
+  frame: Fill & { paints?: FigmaPaint[] };
   layers: Record<string, FigmaLayer>;
   /** The frame's image fills, saved under public/ by figma:pull. */
   assets?: Record<string, { src: string; w: number; h: number }>;
@@ -172,16 +190,24 @@ export function ownBox(l: FigmaLayer) {
  *  unrotated px, turned by what it adds to the parent's turn -- for a
  *  layer nested in a rotated group (a tilted ticket card's text). */
 export function placeIn(l: FigmaLayer, parent: FigmaLayer | null): CSSProperties {
-  const me = ownBox(l), turn = (l.turn ?? 0) - (parent?.turn ?? 0);
+  // Inside a mirrored parent its own turn reads the other way, and it's
+  // mirrored itself where its flips and its parent's differ.
+  const rel = (l.turn ?? 0) - (parent?.turn ?? 0), turn = parent?.mirror ? -rel : rel;
+  const flipped = !!l.mirror !== !!parent?.mirror;
+  const me = ownBox(l);
   let cx = me.cx, cy = me.cy;
   if (parent) {
     const p = ownBox(parent), a = -(parent.turn ?? 0) * Math.PI / 180;
     const dx = me.cx - p.cx, dy = me.cy - p.cy;
     cx = dx * Math.cos(a) - dy * Math.sin(a) + p.w / 2;
     cy = dx * Math.sin(a) + dy * Math.cos(a) + p.h / 2;
+    // In the parent's own px: a mirrored parent's left is the page's right.
+    if (parent.mirror) cx = p.w - cx;
   }
+  const how = [Math.abs(((turn % 360) + 360) % 360) > 0.01 && Math.abs(((turn % 360) + 360) % 360 - 360) > 0.01 ? `rotate(${turn}deg)` : '',
+    flipped ? 'scaleX(-1)' : ''].filter(Boolean).join(' ');
   return { position: 'absolute', left: cx - me.w / 2, top: cy - me.h / 2, width: me.w, height: me.h,
-    ...(Math.abs(turn) > 0.01 ? { transform: `rotate(${turn}deg)` } : null) };
+    ...(how ? { transform: how } : null) };
 }
 
 /** Where brand `n` of a row goes, given the board's logo slots left to right.

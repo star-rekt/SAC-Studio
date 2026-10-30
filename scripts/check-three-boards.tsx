@@ -131,7 +131,11 @@ for (const selected of TEMPLATES) {
   const spookyHtml = renderToStaticMarkup(<Ctx.Provider value={preview}>
     <One asset={spookyHero} doc={spookyDoc} template={template} outlook={outlook} />
   </Ctx.Provider>);
-  assert.match(spookyHtml, /20% OFF/, `${selected.id}: email lost the primary offer`);
+  // The words as read, not the markup: a board-compiled design sets an offer as
+  // separate layers ("20", "%", "OFF"), which read as one line.
+  const spookyText = spookyHtml.replace(/<div aria-hidden[^>]*color:transparent[^>]*>[\s\S]*?<\/div>/g, '')
+    .replace(/<[^>]+>/g, ' ').replace(/\s+/g, '');
+  assert.match(spookyText, /20%OFF/i, `${selected.id}: email lost the primary offer`);
   assert.match(spookyHtml, /SPOOKY20/, `${selected.id}: email lost the promo code`);
   assert.doesNotMatch(spookyHtml, /50% OFF/, `${selected.id}: email used brand markdown`);
   const oldSpooky = { ...spooky, v: 5, assets: spooky.assets.map(asset => ({ ...asset,
@@ -203,7 +207,13 @@ for (const selected of TEMPLATES) {
   const emailHtml = renderToStaticMarkup(<Ctx.Provider value={preview}>
     <One asset={emailHero} doc={emailDoc} template={template} outlook={outlook} />
   </Ctx.Provider>);
-  assert.match(emailHtml, /Buy 3\+ Socks, Save an Extra 20%/,
+  // Named Sale's board lockups set the offer's number into their own shape
+  // ("EXTRA" / "20" / "%" / "OFF") rather than carry a headline line.
+  if (selected.id === 'named_sale')
+    assert.match(emailHtml.replace(/<div aria-hidden[^>]*color:transparent[^>]*>[\s\S]*?<\/div>/g, '')
+      .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ''), /20%OFF/,
+      `${selected.id}: email did not carry the brief's offer`);
+  else assert.match(emailHtml, /Buy 3\+ Socks, Save an Extra 20%/,
     `${selected.id}: email did not render Claude's brief headline`);
   assert.doesNotMatch(emailHtml, /Summer is not done/,
     `${selected.id}: email retained old campaign copy`);

@@ -1,0 +1,675 @@
+{
+ "source": {
+  "file": "ioB3sP8LwBiTUPQN7jlF81",
+  "node": "585:2723",
+  "name": "SC/v1/Board/SC26_0027 Memorial Day Sale/hero-desktop/3"
+ },
+ "size": [
+  1418,
+  905.94
+ ],
+ "frame": {
+  "fill": "#7A7A7A",
+  "image": true,
+  "crop": [
+   [
+    0.71113,
+    -0.03314,
+    0.23469
+   ],
+   [
+    0.07776,
+    0.68117,
+    0.19239
+   ]
+  ],
+  "images": [
+   {
+    "ref": "e0a7994e286e28830c4ced20de50d8e8f88062e9",
+    "mode": "STRETCH"
+   }
+  ],
+  "paints": [
+   {
+    "type": "IMAGE",
+    "ref": "e0a7994e286e28830c4ced20de50d8e8f88062e9",
+    "mode": "STRETCH",
+    "crop": [
+     [
+      0.71113,
+      -0.03314,
+      0.23469
+     ],
+     [
+      0.07776,
+      0.68117,
+      0.19239
+     ]
+    ]
+   },
+   {
+    "type": "GRADIENT",
+    "css": "linear-gradient(155.38deg, rgba(47, 28, 9, 0) 43.71%, rgba(47, 28, 9, 0.56) 104.22%)",
+    "blend": "MULTIPLY"
+   }
+  ]
+ },
+ "layers": {
+  "538:37596": {
+   "name": "Rectangle 3",
+   "type": "RECTANGLE",
+   "parent": null,
+   "visible": true,
+   "x": 823.67,
+   "y": 353.85,
+   "w": 537.33,
+   "h": 122.79,
+   "fill": "#281605",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#281605"
+    }
+   ],
+   "opacity": 0.37,
+   "blur": 60.13,
+   "blend": "MULTIPLY",
+   "radius": 26.24
+  },
+  "538:37597": {
+   "name": "Rectangle 5",
+   "type": "RECTANGLE",
+   "parent": null,
+   "visible": true,
+   "x": 859,
+   "y": 653,
+   "w": 495,
+   "h": 44,
+   "fill": "#281605",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#281605"
+    }
+   ],
+   "opacity": 0.32,
+   "blur": 60.13,
+   "blend": "MULTIPLY",
+   "radius": 9.45
+  },
+  "538:37598": {
+   "name": "Rectangle 4",
+   "type": "RECTANGLE",
+   "parent": null,
+   "visible": true,
+   "x": 661,
+   "y": 500.78,
+   "w": 698.95,
+   "h": 125.94,
+   "fill": "#281605",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#281605"
+    }
+   ],
+   "opacity": 0.37,
+   "blur": 60.13,
+   "blend": "MULTIPLY",
+   "radius": 26.24
+  },
+  "538:37599": {
+   "name": "Group 3398",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 661,
+   "y": 361.1,
+   "w": 700,
+   "h": 335.89
+  },
+  "538:37600": {
+   "name": "Group 3385",
+   "type": "GROUP",
+   "parent": "538:37599",
+   "visible": true,
+   "x": 661,
+   "y": 503.88,
+   "w": 700,
+   "h": 115
+  },
+  "538:37601": {
+   "name": "Group 3173",
+   "type": "GROUP",
+   "parent": "538:37600",
+   "visible": true,
+   "x": 661,
+   "y": 503.88,
+   "w": 700,
+   "h": 115
+  },
+  "538:37602": {
+   "name": "20% OFF",
+   "type": "TEXT",
+   "parent": "538:37601",
+   "visible": true,
+   "x": 661,
+   "y": 503.88,
+   "w": 700,
+   "h": 115,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    },
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.36918,
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.36918,
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "shadow": {
+    "x": 2.44,
+    "y": 4.87,
+    "blur": 14.26,
+    "color": "#00000024"
+   },
+   "text": {
+    "chars": "20% OFF",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 174.36,
+    "lineHeight": 169.22,
+    "letterSpacing": -3.49,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:37603": {
+   "name": "CODE GEARUP20",
+   "type": "TEXT",
+   "parent": "538:37599",
+   "visible": true,
+   "x": 859,
+   "y": 652.98,
+   "w": 501,
+   "h": 44,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "shadow": {
+    "x": 3.79,
+    "y": 7.59,
+    "blur": 22.19,
+    "color": "#00000024"
+   },
+   "text": {
+    "chars": "CODE GEARUP20",
+    "family": "Sofia Pro",
+    "weight": 500,
+    "size": 64.07,
+    "lineHeight": 263.38,
+    "letterSpacing": -1.28,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "runs": [
+     {
+      "from": 5,
+      "to": 13,
+      "style": {
+       "fontFamily": "Sofia Pro",
+       "fontPostScriptName": "SofiaPro-Bold",
+       "fontStyle": "Bold",
+       "fontWeight": 800
+      }
+     }
+    ]
+   }
+  },
+  "538:37604": {
+   "name": "EXTRA",
+   "type": "TEXT",
+   "parent": "538:37599",
+   "visible": true,
+   "x": 829.66,
+   "y": 361.1,
+   "w": 523,
+   "h": 115,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    },
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.36918,
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.36918,
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "shadow": {
+    "x": 2.44,
+    "y": 4.87,
+    "blur": 14.26,
+    "color": "#00000024"
+   },
+   "text": {
+    "chars": "EXTRA ",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 174.36,
+    "lineHeight": 169.22,
+    "letterSpacing": -3.49,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:37605": {
+   "name": "Frame 2203",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 999,
+   "y": 762,
+   "w": 355,
+   "h": 88.98,
+   "fill": "#F14222",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#F14222"
+    }
+   ],
+   "clips": true,
+   "radius": 21.72
+  },
+  "538:37606": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:37605",
+   "visible": true,
+   "x": 1071.5,
+   "y": 790.08,
+   "w": 210,
+   "h": 32,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "text": {
+    "chars": "Shop Now",
+    "family": "Sofia Pro",
+    "weight": 800,
+    "size": 46.33,
+    "lineHeight": 53.28,
+    "letterSpacing": -0.46,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:37607": {
+   "name": "Vector 742",
+   "type": "VECTOR",
+   "parent": null,
+   "visible": true,
+   "x": -12,
+   "y": -74,
+   "w": 74,
+   "h": 997,
+   "rotation": 90,
+   "turn": 90,
+   "fill": "#F14222",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "blend": "DARKEN"
+    }
+   ],
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#F14222"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.36918,
+     "blend": "DARKEN"
+    }
+   ],
+   "path": "M2.51353 60.2098L17.6285 9.59278C18.4475 6.85011 20.9299 4.93938 23.7908 4.84952L100.432 2.44224L310.712 2.44224L451.945 0L728.134 2.44224L773.414 0.524823L842.167 2.44224L985.897 2.44224C990.922 2.44224 994.131 7.80059 991.759 12.2299L988.372 18.5559C987.855 19.5213 987.584 20.5994 987.584 21.6945L987.584 62.1553C987.584 65.7575 984.716 68.7046 981.115 68.8019L788.812 74L628.127 70.5886L353.605 74L8.78354 68.7605C4.37572 68.6936 1.25217 64.4338 2.51353 60.2098Z",
+   "stroke": {
+    "color": "#F14222",
+    "weight": 0,
+    "align": "CENTER"
+   },
+   "radius": 6.65
+  },
+  "538:37608": {
+   "name": "Group 3400",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 20,
+   "y": -15,
+   "w": 22.02,
+   "h": 1017,
+   "rotation": -90,
+   "turn": -90
+  },
+  "538:37609": {
+   "name": "Group 3399",
+   "type": "GROUP",
+   "parent": "538:37608",
+   "visible": true,
+   "x": 20,
+   "y": -15,
+   "w": 22.02,
+   "h": 1017,
+   "turn": -90
+  },
+  "538:37610": {
+   "name": "MEMORIAL DAY DEAL",
+   "type": "TEXT",
+   "parent": "538:37609",
+   "visible": true,
+   "x": 20,
+   "y": 683,
+   "w": 22,
+   "h": 319,
+   "rotation": 0,
+   "turn": -90,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "text": {
+    "chars": "MEMORIAL DAY DEAL",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 32.99,
+    "lineHeight": 83.83,
+    "letterSpacing": -0.66,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:37611": {
+   "name": "MEMORIAL DAY DEAL",
+   "type": "TEXT",
+   "parent": "538:37609",
+   "visible": true,
+   "x": 20,
+   "y": 334,
+   "w": 22,
+   "h": 319,
+   "rotation": 0,
+   "turn": -90,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "text": {
+    "chars": "MEMORIAL DAY DEAL",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 32.99,
+    "lineHeight": 83.83,
+    "letterSpacing": -0.66,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:37612": {
+   "name": "MEMORIAL DAY DEAL",
+   "type": "TEXT",
+   "parent": "538:37609",
+   "visible": true,
+   "x": 20,
+   "y": -15,
+   "w": 22,
+   "h": 319,
+   "rotation": 0,
+   "turn": -90,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "text": {
+    "chars": "MEMORIAL DAY DEAL",
+    "family": "Quiet Sans",
+    "weight": 700,
+    "size": 32.99,
+    "lineHeight": 83.83,
+    "letterSpacing": -0.66,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:37613": {
+   "name": "Line 1",
+   "type": "LINE",
+   "parent": "538:37609",
+   "visible": true,
+   "x": 20,
+   "y": 668,
+   "w": 22.02,
+   "h": 0,
+   "rotation": 90,
+   "stroke": {
+    "color": "#FFFFFF",
+    "weight": 3.15,
+    "align": "CENTER",
+    "path": "M0 -1.57264L0 0L22.0169 0L22.0169 -1.57264L22.0169 -3.14527L0 -3.14527L0 -1.57264Z"
+   }
+  },
+  "538:37614": {
+   "name": "Line 2",
+   "type": "LINE",
+   "parent": "538:37609",
+   "visible": true,
+   "x": 20,
+   "y": 319,
+   "w": 22.02,
+   "h": 0,
+   "rotation": 90,
+   "stroke": {
+    "color": "#FFFFFF",
+    "weight": 3.15,
+    "align": "CENTER",
+    "path": "M0 -1.57264L0 0L22.0169 0L22.0169 -1.57264L22.0169 -3.14527L0 -3.14527L0 -1.57264Z"
+   }
+  },
+  "538:37615": {
+   "name": "Group 3310",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 940,
+   "y": 241,
+   "w": 452,
+   "h": 84.3
+  },
+  "538:37616": {
+   "name": "Vector",
+   "type": "VECTOR",
+   "parent": "538:37615",
+   "visible": true,
+   "x": 969.28,
+   "y": 246.03,
+   "w": 394.65,
+   "h": 71.92,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "shadow": {
+    "x": 0.91,
+    "y": 1.83,
+    "blur": 19.9,
+    "color": "#000000"
+   },
+   "path": "M218.104 9.78281C220.597 7.42977 225.151 4.35532 228.297 3.18091C240.13 -1.23559 249.835 -0.801359 261.316 4.19949C266.763 -0.4462 281.866 -0.0309026 288.281 2.71487C294.461 0.926192 298.421 0.431755 304.874 0.826903C309.955 1.13803 308.717 2.05783 313.873 0.92063C314.471 0.674912 319.677 0.792519 320.738 0.80256C324.566 0.77621 325.618 0.922462 329.353 1.83624C330.061 2.03543 331.363 2.30351 331.84 2.78521C332.08 2.89118 332.373 3.01956 332.718 3.17032C335.135 2.4481 338.01 1.32322 340.488 0.935174C342.094 0.683829 344.249 0.819488 345.831 0.770273C351.922 0.580942 354.973 0.881899 360.793 2.67879C362.421 2.17762 365.774 1.11749 367.493 1.01747C373.981 0.640176 380.946 0.0871231 387.013 2.96408C391.703 5.18902 394.064 10.5808 394.631 15.5344C394.882 17.7253 393.091 22.4803 392.1 24.4314C389.806 28.4248 387.534 32.467 385.188 36.4077C384.121 38.1997 381.978 42.1744 380.884 43.6477C380.756 46.0294 380.772 48.4279 380.761 50.8133C380.972 63.9736 376.708 70.7415 362.737 71.2277C357.64 71.4052 353.888 71.1547 348.953 69.597C347.071 70.1057 344.053 71.0278 342.142 71.0845C333.073 71.3537 323.953 71.1207 314.874 71.1695C313.601 71.1763 311.57 70.3361 310.224 70.298C302.235 71.9359 296.049 71.6563 288.092 69.0338C282.345 72.2972 266.491 72.2361 261.303 67.7033C246.947 74.4308 228.455 72.7964 217.08 61.166C207.605 73.9098 185.858 73.7242 172.453 68.0198C167.574 71.7278 159.028 71.4133 153.111 71.0909C151.701 71.0141 149.331 69.9654 147.506 69.9497C145.812 69.9351 143.263 71.0439 142.016 71.1057C136.369 71.3857 126.081 71.7885 121.531 68.001C118.387 70.2022 113.374 71.3454 109.585 71.1659C104.758 71.2233 98.3555 71.2758 93.9123 68.9793L93.759 68.7884L91.5727 69.1526C87.6892 70.2205 85.94 70.7058 81.9939 71.0922C80.4302 71.2575 78.4918 71.1785 76.8933 71.1569C68.8488 71.3613 57.9716 72.2122 52.9127 64.7045C51.5209 65.7394 48.9426 67.6914 47.3453 68.3045C40.285 71.0148 31.8891 72.709 24.3291 71.5517C23.956 71.4945 23.2399 71.3489 22.9317 71.2257C21.9712 71.2977 18.8402 70.4622 17.8051 70.2626C13.4213 69.4176 6.06645 66.8227 3.63639 62.8315C3.59998 62.8154 3.5638 62.7995 3.52762 62.7834C-1.66784 56.987 -0.534321 39.7271 3.12368 34.9324C2.70473 33.2258 1.63498 29.2156 1.55732 27.6394C1.36362 26.7906 1.41171 25.3488 1.37884 24.4369C1.19066 19.2096 1.78477 10.4548 6.46665 7.11972C12.158 2.66275 17.6176 1.72699 24.7368 0.418028C31.6208 -0.847682 41.2123 0.896907 47.5216 3.82058C48.5951 4.31802 51.5946 6.61118 52.6747 7.41677C52.7903 7.24651 52.9074 7.07739 53.0264 6.90945C58.4572 -0.737822 68.2461 0.998888 76.3384 0.751603C83.5285 0.531904 90.3037 1.9647 97.0512 4.33343C98.907 4.98489 101.857 7.22815 103.505 8.40084C104.67 6.63219 105.297 5.42406 107.087 4.26179C111.158 0.656264 123.741 -0.166341 128.921 1.26118C129.909 1.40094 131.969 2.00425 133.012 2.27949C140.431 0.166395 151.374 -0.0308146 158.626 2.69598C165.859 0.373161 170.052 0.652888 177.563 0.847692C178.804 0.879869 180.731 1.75237 181.955 1.71143C183.857 1.64783 186.576 0.53164 188.411 0.294705C194.243 -0.458779 199.771 0.39203 205.379 1.87901C210.608 3.26532 215.252 4.94198 218.104 9.78281Z"
+  },
+  "538:37617": {
+   "name": "Untitled-2 1",
+   "type": "RECTANGLE",
+   "parent": "538:37615",
+   "visible": true,
+   "x": 940,
+   "y": 241,
+   "w": 452,
+   "h": 84.3,
+   "image": true,
+   "crop": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0.27974,
+     0.36509
+    ]
+   ],
+   "images": [
+    {
+     "ref": "e7fd5c613f54fec109d2d79a9276e6a07d039272",
+     "mode": "STRETCH"
+    }
+   ],
+   "paints": [
+    {
+     "type": "IMAGE",
+     "ref": "e7fd5c613f54fec109d2d79a9276e6a07d039272",
+     "mode": "STRETCH",
+     "crop": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       0.27974,
+       0.36509
+      ]
+     ]
+    }
+   ]
+  }
+ },
+ "assets": {
+  "05631e129c31da42d3d954c5718d6f692edd363c": {
+   "src": "/figma-assets/named-sale/05631e129c31da42d3d954c5718d6f692edd363c.png",
+   "w": 612,
+   "h": 408
+  },
+  "e7fd5c613f54fec109d2d79a9276e6a07d039272": {
+   "src": "/figma-assets/named-sale/e7fd5c613f54fec109d2d79a9276e6a07d039272.png",
+   "w": 2400,
+   "h": 1600
+  },
+  "e0a7994e286e28830c4ced20de50d8e8f88062e9": {
+   "src": "/figma-assets/named-sale/e0a7994e286e28830c4ced20de50d8e8f88062e9.jpg",
+   "w": 2400,
+   "h": 1600
+  }
+ }
+}

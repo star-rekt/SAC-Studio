@@ -19,6 +19,8 @@
  *  element's own, times any wrapper's up to its container), a layer blur and
  *  shadows -- each in Figma's terms. */
 export type Look = { fade?: number; blur?: number;
+  /** Its blend mode (CSS mix-blend-mode), where it isn't normal: a shadow that multiplies. */
+  blend?: string;
   shadows?: { x: number; y: number; blur: number; spread?: number; color: string; alpha: number; inner?: boolean;
     /** A box-shadow: cast by the element's box, so not by its type. */
     box?: true }[] };
@@ -46,7 +48,9 @@ export type Layer = ({ parent?: number } & Look & (
       /** Where to draw the image so it covers that box at its true aspect.
        *  Given explicitly because 'cover' leaves the crop to be rediscovered,
        *  and whoever rediscovers it gets a different answer. */
-      draw: { x: number; y: number; width: number; height: number } }
+      draw: { x: number; y: number; width: number; height: number };
+      /** Mirrored left for right (a flipped board section's photo). */
+      flip?: boolean }
   | { n: number; name: string; type: 'rect'; fill: string; opacity?: number;
       radius?: number; rotation?: number;
       /** A mark from the graphics library, cut to its own path rather than
@@ -56,6 +60,8 @@ export type Layer = ({ parent?: number } & Look & (
       x: number; y: number; width: number; height: number }
   | { n: number; name: string; type: 'text'; text: string; font: string;
       weight: number; size: number; lineHeight: number; letterSpacing: number;
+      /** Trimmed to its capitals (Figma's cap-height leading trim). */
+      trim?: boolean;
       colour: string; align: string; underline?: boolean; rotation?: number;
       /** Character ranges set differently from the rest (a paragraph's bold,
        *  green code word), as [from, to) offsets into `text`. */
@@ -116,6 +122,17 @@ function scaleOf(el: Element, root: HTMLElement): number {
     if (m) { const [a, b] = m[1].split(',').map(Number); total *= Math.hypot(a, b); }
   }
   return Math.abs(total - 1) < 0.001 ? 1 : total;
+}
+
+/** The whole of what's drawn on `el` -- its transform and every ancestor's
+ *  up to (not including) `root`: CSS's matrix a b c d (no translation). */
+function matrixOf(el: Element, root: HTMLElement): [number, number, number, number] {
+  let [a, b, c, d] = [1, 0, 0, 1];
+  for (let cur: Element | null = el; cur && cur !== root; cur = cur.parentElement) {
+    const m = getComputedStyle(cur).transform.match(/^matrix\(([^)]+)\)/)?.[1].split(',').map(Number);
+    if (m) [a, b, c, d] = [m[0] * a + m[2] * b, m[1] * a + m[3] * b, m[0] * c + m[2] * d, m[1] * c + m[3] * d];
+  }
+  return [a, b, c, d];
 }
 
 /** The box Figma wants for a rotated shape: true (unrotated) width/height,
@@ -339,9 +356,19 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
   const name = (el: Element, fallback: string) =>
     el.getAttribute('data-id')?.split('/').slice(-2).join('/') ?? fallback;
 
-  const walk = (el: Element, parent?: number, fade = 1) => {
+  // `carry`: a wrapper's blur, shadows and blend, which CSS draws over what's
+  // in it -- handed down to the layers drawn inside (a blurred, multiplied
+  // shadow box is a wrapper round a coloured one), as opacity already is.
+  const walk = (el: Element, parent?: number, fade = 1, carry: Look = {}) => {
     const cs = getComputedStyle(el);
     if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') return;
+    // A copy drawn only to carry a texture (a grain over type or a mark) isn't a layer.
+    if (el.getAttribute('data-export') === 'skip') return;
+    // A board compiled by the template lab (Named Sale's frames, drawn by
+    // FigmaLayers) is read with what that drawing needs -- effects handed
+    // down, board pictures as backgrounds, cap-trimmed type, a crop's own box.
+    // Every other template is read exactly as before.
+    const compiled = !!el.closest('[data-figma-compiled]');
     const b = el.getBoundingClientRect();
     const k = scaleOf(el, root);
     // Its opacity, times any wrapper's since its container (a container
@@ -354,10 +381,15 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
       // size -- while those children still paint at real, visible positions.
       // There is nothing of this element's own to draw (and it cuts
       // nothing), but its children are not empty.
-      for (const kid of Array.from(el.children)) walk(kid, parent, fade);
+      for (const kid of Array.from(el.children)) walk(kid, parent, fade, carry);
       return;
     }
-    let look: Look = { fade: fade < 0.999 ? r1(fade * 100) / 100 : undefined, ...effectsOf(cs, k) };
+    const own = effectsOf(cs, k), blend = !compiled ? undefined
+      : cs.mixBlendMode && cs.mixBlendMode !== 'normal' ? cs.mixBlendMode : carry.blend;
+    let look: Look = compiled ? { fade: fade < 0.999 ? r1(fade * 100) / 100 : undefined,
+      blur: own.blur ?? carry.blur, shadows: own.shadows ?? carry.shadows, ...(blend ? { blend } : null) }
+      : { fade: fade < 0.999 ? r1(fade * 100) / 100 : undefined, ...own };
+    const passed: Look = compiled ? { blur: look.blur, shadows: look.shadows?.filter(sh => !sh.box), blend } : {};
 
     // An element that cuts what's inside it becomes a container: its own
     // paint and everything inside it are drawn in it and cut by it. A
@@ -375,7 +407,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
         stroke: shape.stroke, strokeWidth: shape.strokeWidth });
       // Its own paint and contents are inside it: opacity and effects are
       // the container's now.
-      parent = n; fade = 1; look = {};
+      parent = n; fade = 1; look = {}; passed.blur = undefined; passed.shadows = undefined; passed.blend = undefined;
     }
 
     if (el instanceof HTMLImageElement) {
@@ -383,8 +415,24 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
       // by its object-fit and object-position. Whatever crops it -- the
       // photo slot it pans and zooms inside, a window's outline -- is the
       // container around it, so nothing here has to guess at a crop.
-      const rotation = rotationOf(el, root);
-      const box = rotation || k !== 1 ? trueBox(b, cs, k) : { left: b.left, top: b.top, width: b.width, height: b.height };
+      let rotation = rotationOf(el, root), flip: true | undefined;
+      // Unturned, its box on screen is the box: a crop's stretch can differ
+      // across and down, which one scale read off the across can't rebuild.
+      let box = rotation || (!compiled && k !== 1) ? trueBox(b, cs, k) : { left: b.left, top: b.top, width: b.width, height: b.height };
+      if (compiled) {
+        // A compiled board's photo, from the whole transform it's drawn with
+        // (a crop's zoom and turn, a mirrored hero's flip): its own size
+        // across and down, its turn, and whether it's mirrored -- a mirror
+        // read as a turn put it upside down; one scale for both axes lost
+        // a turned crop's zoom.
+        const [a, bb, c, d] = matrixOf(el, root), det = a * d - bb * c;
+        flip = det < 0 || undefined;
+        const turn = (flip ? Math.atan2(-bb, -a) : Math.atan2(bb, a)) * 180 / Math.PI;
+        rotation = Math.abs(turn) < 0.2 ? 0 : Math.round(turn * 10) / 10;
+        const w = parseFloat(cs.width) * Math.hypot(a, bb), h = parseFloat(cs.height) * Math.hypot(c, d);
+        const cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+        box = { left: cx - w / 2, top: cy - h / 2, width: w, height: h };
+      }
       const nw = el.naturalWidth || box.width, nh = el.naturalHeight || box.height;
       const pos = cs.objectPosition.split(' ');
       const px = (parseFloat(pos[0]) || 50) / 100, py = (parseFloat(pos[1] ?? pos[0]) || 50) / 100;
@@ -397,7 +445,7 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
         src: srcOf(el),
         x: bx, y: by, width: r1(box.width), height: r1(box.height),
         radius: parseFloat(cs.borderTopLeftRadius) * k || undefined,
-        rotation: rotation || undefined,
+        rotation: rotation || undefined, flip,
         brightness: bright !== 1 ? bright : undefined,
         draw: { x: r1(bx + (box.width - dw) * px), y: r1(by + (box.height - dh) * py), width: r1(dw), height: r1(dh) } });
       return;
@@ -442,7 +490,11 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
     if (isText || paragraph) {
       const lead = r1((parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.2) * k);
       const text = paragraph ? paragraph.text : broken(el as HTMLElement, lead, rotationOf(el, root));
-      if (text) {
+      // Type in a transparent colour is a copy that only carries a texture
+      // (a grain over a headline, FigmaLayers): the headline itself is the
+      // text. Its colour read as black, so it came in as a black duplicate.
+      const unseen = /rgba\([^)]*,\s*0\)|transparent/.test(cs.color);
+      if (text && !(compiled && unseen)) {
         const font = faceName(cs.fontFamily);
         const colour = hex(cs.color) ?? { fill: '#000000', opacity: 1 };
         // Every text field inside a rotated card (every offer/code/CTA line
@@ -464,11 +516,19 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
         const inT = (parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth)) * k;
         const inB = (parseFloat(cs.paddingBottom) + parseFloat(cs.borderBottomWidth)) * k;
         const typeShadows = look.shadows?.filter(s => !s.box);
+        // The lab's nudges (a compiled board's text box) taken back off:
+        // Figma sets the board's own size, spacing and place.
+        const nudge = JSON.parse(el.closest('[data-nudge]')?.getAttribute('data-nudge') ?? '{}') as
+          { dx?: number; dy?: number; ls?: number; lh?: number; fs?: number };
+        const unNudge = 1 / (1 + (nudge.fs ?? 0));
+        // Trimmed to the capitals (text-box-trim): Figma's own cap-height trim,
+        // or its taller line box is centred on the cap box and the type drops.
+        const trim = compiled && /trim/.test(cs.getPropertyValue('text-box-trim')) || undefined;
         layers.push({ n: ++n, parent, ...look, shadows: typeShadows?.length ? typeShadows : undefined,
           name: name(el, 'text'), type: 'text', text,
-          font, weight: Number(cs.fontWeight) || 400, size: r1(parseFloat(cs.fontSize) * k),
-          lineHeight: lead,
-          letterSpacing: cs.letterSpacing === 'normal' ? 0 : r1(parseFloat(cs.letterSpacing) * k),
+          font, weight: Number(cs.fontWeight) || 400, size: r1(parseFloat(cs.fontSize) * k * unNudge),
+          lineHeight: r1((lead - (nudge.lh ?? 0) * k) * unNudge), trim,
+          letterSpacing: cs.letterSpacing === 'normal' ? 0 : r1((parseFloat(cs.letterSpacing) - (nudge.ls ?? 0)) * k * unNudge),
           colour: colour.fill, align: cs.textAlign === 'start' ? 'left' : cs.textAlign,
           rotation: spin || undefined,
           // `text-decoration` was never read at all -- every underlined
@@ -476,13 +536,30 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
           // exported as plain type.
           underline: cs.textDecorationLine.includes('underline') || undefined,
           runs: paragraph?.runs.length ? paragraph.runs : undefined,
-          x: r1(tx + inL), y: r1(ty + inT),
+          x: r1(tx + inL - (nudge.dx ?? 0) * k), y: r1(ty + inT - (nudge.dy ?? 0) * k),
           width: r1(box.width - inL - inR), height: r1(box.height - inT - inB) });
       }
       return;
     }
 
-    for (const kid of Array.from(el.children)) walk(kid, parent, fade);
+    // A board's picture drawn as a background (FigmaLayers' image fills): an
+    // image layer, stretched or fitted in its box as drawn. Not a tiled texture.
+    const bgUrl = cs.backgroundImage.match(/^url\("?([^")]+)"?\)$/)?.[1];
+    if (compiled && bgUrl && !/repeat/.test(cs.backgroundRepeat.replace('no-repeat', ''))) {
+      const rotation = rotationOf(el, root);
+      const box = rotation ? trueBox(b, cs, k) : { left: b.left, top: b.top, width: b.width, height: b.height };
+      const bx = r1(box.left - base.left), by = r1(box.top - base.top);
+      const probe = new Image(); probe.src = bgUrl;
+      const nw = probe.complete && probe.naturalWidth || box.width, nh = probe.complete && probe.naturalHeight || box.height;
+      const fit = cs.backgroundSize === 'contain' ? Math.min(box.width / nw, box.height / nh)
+        : cs.backgroundSize === 'cover' ? Math.max(box.width / nw, box.height / nh) : NaN;
+      const dw = Number.isNaN(fit) ? box.width : nw * fit, dh = Number.isNaN(fit) ? box.height : nh * fit;
+      layers.push({ n: ++n, parent, ...look, name: name(el, 'image'), type: 'image',
+        src: bgUrl.startsWith('data:') ? bgUrl : decodeURIComponent(new URL(bgUrl, location.href).pathname),
+        x: bx, y: by, width: r1(box.width), height: r1(box.height), rotation: rotation || undefined,
+        draw: { x: r1(bx + (box.width - dw) / 2), y: r1(by + (box.height - dh) / 2), width: r1(dw), height: r1(dh) } });
+    }
+    for (const kid of Array.from(el.children)) walk(kid, parent, fade, passed);
   };
 
   for (const kid of Array.from(root.children)) walk(kid);

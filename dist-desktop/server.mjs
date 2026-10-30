@@ -1,9 +1,9 @@
 // server/index.ts
 import { createServer } from "node:http";
-import { readFile as readFile7, writeFile as writeFile6, rm as rm2 } from "node:fs/promises";
+import { readFile as readFile8, writeFile as writeFile6, rm as rm2 } from "node:fs/promises";
 import { tmpdir as tmpdir3 } from "node:os";
 import { randomUUID as randomUUID2 } from "node:crypto";
-import { join as join9, normalize, relative, isAbsolute } from "node:path";
+import { join as join10, normalize, relative, isAbsolute } from "node:path";
 import { execFile as execFile2 } from "node:child_process";
 
 // server/paths.ts
@@ -31,12 +31,12 @@ function ask(prompt, tools, turns = 8, timeoutMs = 3e5, model) {
       { stdio: ["pipe", "pipe", "pipe"] }
     );
     let out = "", err = "", killed = false;
-    const timer = setTimeout(() => {
+    const timer2 = setTimeout(() => {
       killed = true;
       p.kill("SIGKILL");
     }, timeoutMs);
     const done = (r) => {
-      clearTimeout(timer);
+      clearTimeout(timer2);
       resolve(r);
     };
     p.stdout.on("data", (d) => {
@@ -244,8 +244,8 @@ async function shoot(url, w, h, file2, opts = {}) {
   let cdp = null;
   try {
     const port = await portOf(profile, until);
-    const list4 = await fetch(`http://127.0.0.1:${port}/json/list`).then((r) => r.json());
-    const page = list4.find((t) => t.type === "page" && t.webSocketDebuggerUrl);
+    const list5 = await fetch(`http://127.0.0.1:${port}/json/list`).then((r) => r.json());
+    const page = list5.find((t) => t.type === "page" && t.webSocketDebuggerUrl);
     if (!page?.webSocketDebuggerUrl) throw new Error("Chrome opened no page to drive");
     cdp = await Cdp.connect(page.webSocketDebuggerUrl, until);
     await cdp.send("Page.enable");
@@ -925,13 +925,149 @@ async function image(id, kind) {
   return existsSync2(path) ? readFile5(path) : null;
 }
 
+// server/figmaLogos.ts
+import { readFile as readFile6 } from "node:fs/promises";
+import { existsSync as existsSync3 } from "node:fs";
+import { join as join8 } from "node:path";
+var FILE_KEY2 = "ZKeDJNni12gxgWK0HRpDMF";
+var ROOT2 = "1:151";
+var DIR3 = join8(DATA, "figma-logos");
+var INDEX2 = join8(DIR3, "index.json");
+var THUMB2 = 240;
+var fileOf2 = (id, kind) => join8(DIR3, kind, `${id.replace(/[^0-9A-Za-z;-]/g, "-")}.${kind === "thumb" ? "png" : "svg"}`);
+var validId2 = (id) => /^[0-9A-Za-z:;-]{1,80}$/.test(id);
+var variantOf = (name) => name.split(",").map((p) => p.split("=").pop().trim()).filter(Boolean).join(" \xB7 ");
+var itemOf = (n, brand, variant) => {
+  const b = n.absoluteBoundingBox;
+  if (!b || b.width < 4 || b.height < 4) return null;
+  return {
+    id: n.id,
+    brand: brand.trim(),
+    variant,
+    w: b.width,
+    h: b.height,
+    light: /white|knockout|reverse|inverse/i.test(`${variant} ${n.name}`)
+  };
+};
+var filing = (n, depth) => depth === 0 || n.name === "Alphabetical Logos" || /^[A-Z]$/.test(n.name);
+function logosIn(n, depth = 0, out = []) {
+  if (n.visible === false) return out;
+  if (filing(n, depth)) {
+    for (const c of n.children ?? []) logosIn(c, depth + 1, out);
+    return out;
+  }
+  if (n.type === "COMPONENT_SET") {
+    for (const c of n.children ?? []) if (c.visible !== false) {
+      const item = itemOf(c, n.name, variantOf(c.name));
+      if (item) out.push(item);
+    }
+    return out;
+  }
+  if (["COMPONENT", "INSTANCE", "FRAME", "GROUP", "VECTOR", "BOOLEAN_OPERATION"].includes(n.type)) {
+    const item = itemOf(n, n.name, "");
+    if (item) out.push(item);
+  }
+  return out;
+}
+var building2 = null;
+var fresh2 = null;
+function list4() {
+  if (fresh2 && Date.now() - fresh2.at < 6e4) return Promise.resolve(fresh2.index);
+  return building2 ??= (async () => {
+    const cached = await readFile6(INDEX2, "utf8").then(JSON.parse).catch(() => null);
+    const { version } = await api(`/files/${FILE_KEY2}?depth=1`);
+    if (cached?.version === version) {
+      fresh2 = { at: Date.now(), index: cached };
+      return cached;
+    }
+    const { nodes } = await api(
+      `/files/${FILE_KEY2}/nodes?ids=${encodeURIComponent(ROOT2)}&depth=4`
+    );
+    const root = nodes[ROOT2]?.document;
+    if (!root) throw new Error(`Frame ${ROOT2} not found in the Figma logo file`);
+    const items = logosIn(root).sort((a, b) => a.brand.localeCompare(b.brand) || a.variant.localeCompare(b.variant));
+    const index = { version, items };
+    await save2(INDEX2, JSON.stringify(index));
+    fresh2 = { at: Date.now(), index };
+    return index;
+  })().finally(() => {
+    building2 = null;
+  });
+}
+var SCALES = [0.1, 0.15, 0.2, 0.3, 0.45, 0.6, 1];
+var queue = [];
+var timer = null;
+var chain = Promise.resolve();
+var sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+async function patiently(call) {
+  for (const wait2 of [2e3, 5e3, 12e3]) {
+    try {
+      return await call();
+    } catch (e) {
+      if (!/^Figma 429/.test(String(e.message))) throw e;
+      await sleep(wait2);
+    }
+  }
+  return call();
+}
+async function flush() {
+  const batch = queue;
+  queue = [];
+  const groups = /* @__PURE__ */ new Map();
+  for (const q of batch) {
+    const want = THUMB2 / Math.max(q.item.w, q.item.h);
+    const scale = SCALES.find((s) => s >= want) ?? Math.min(4, +want.toFixed(2));
+    groups.set(scale, [...groups.get(scale) ?? [], q]);
+  }
+  for (const [scale, group] of groups)
+    for (let i = 0; i < group.length; i += 50) {
+      const part = group.slice(i, i + 50), ids = part.map((q) => q.item.id);
+      try {
+        const { images } = await patiently(() => api(
+          `/images/${FILE_KEY2}?ids=${encodeURIComponent(ids.join(","))}&format=png&scale=${scale}`
+        ));
+        await Promise.all(ids.map(async (id) => {
+          const url = images[id];
+          const res = url ? await fetch(url).catch(() => null) : null;
+          if (res?.ok) await save2(fileOf2(id, "thumb"), Buffer.from(await res.arrayBuffer()));
+        }));
+      } catch (e) {
+        console.error(`Figma logos: ${ids.length} thumbnails not rendered (${e.message})`);
+      } finally {
+        part.forEach((q) => q.done());
+      }
+    }
+}
+async function image2(id, kind) {
+  const path = fileOf2(id, kind);
+  if (!existsSync3(path)) {
+    const item = (await list4()).items.find((i) => i.id === id);
+    if (!item) return null;
+    if (kind === "thumb") await new Promise((done) => {
+      queue.push({ item, done });
+      timer ??= setTimeout(() => {
+        timer = null;
+        chain = chain.then(flush).catch((e) => console.error(`Figma logos: ${e.message}`));
+      }, 40);
+    });
+    else {
+      const { images } = await patiently(() => api(
+        `/images/${FILE_KEY2}?ids=${encodeURIComponent(id)}&format=svg&svg_outline_text=true&svg_include_id=false`
+      ));
+      const res = images[id] ? await fetch(images[id]) : null;
+      if (res?.ok) await save2(path, Buffer.from(await res.arrayBuffer()));
+    }
+  }
+  return existsSync3(path) ? readFile6(path) : null;
+}
+
 // server/export.ts
 import { mkdir as mkdir5, mkdtemp, writeFile as writeFile5, copyFile, rm, readdir as readdir2 } from "node:fs/promises";
-import { existsSync as existsSync3 } from "node:fs";
-import { join as join8, dirname as dirname5 } from "node:path";
+import { existsSync as existsSync4 } from "node:fs";
+import { join as join9, dirname as dirname5 } from "node:path";
 import { tmpdir as tmpdir2 } from "node:os";
 import { execFile } from "node:child_process";
-import { readFile as readFile6 } from "node:fs/promises";
+import { readFile as readFile7 } from "node:fs/promises";
 var slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 var nameFor = (a, n) => `${String(n + 1).padStart(2, "0")}-${slug(a.format)}-${slug(a.label)}`.slice(0, 70);
 function bundledImage(layer, want) {
@@ -955,16 +1091,16 @@ async function warmUp(session, origin, asset, file2) {
   ).catch(() => void 0);
 }
 async function briefOnly(session, name, assets, origin) {
-  const scratch = await mkdtemp(join8(tmpdir2(), "sac-figma-"));
+  const scratch = await mkdtemp(join9(tmpdir2(), "sac-figma-"));
   try {
-    if (assets[0]) await warmUp(session, origin, assets[0], join8(scratch, "warmup.png"));
+    if (assets[0]) await warmUp(session, origin, assets[0], join9(scratch, "warmup.png"));
     const build = [];
-    const queue = assets.map((asset, index) => ({ asset, index }));
-    const workers = await Promise.allSettled(Array.from({ length: Math.min(4, queue.length) }, async () => {
-      for (let job = queue.shift(); job; job = queue.shift()) {
+    const queue2 = assets.map((asset, index) => ({ asset, index }));
+    const workers = await Promise.allSettled(Array.from({ length: Math.min(4, queue2.length) }, async () => {
+      for (let job = queue2.shift(); job; job = queue2.shift()) {
         const { asset, index } = job;
         const url = `${origin}/?shot=${encodeURIComponent(asset.id)}&s=${encodeURIComponent(session)}`;
-        const file2 = join8(scratch, `${index}.png`);
+        const file2 = join9(scratch, `${index}.png`);
         let shot = await shoot(
           url,
           asset.size[0],
@@ -1005,23 +1141,23 @@ async function briefOnly(session, name, assets, origin) {
 }
 async function exportCampaign(session, name, assets, origin, onProgress, revision = "") {
   const started = Date.now();
-  const dir = join8(EXPORTS, `${slug(name) || session}-figma`);
+  const dir = join9(EXPORTS, `${slug(name) || session}-figma`);
   await rm(dir, { recursive: true, force: true });
-  await mkdir5(join8(dir, "editable"), { recursive: true });
-  await mkdir5(join8(dir, "reference"), { recursive: true });
-  await mkdir5(join8(dir, "media"), { recursive: true });
-  if (assets[0]) await warmUp(session, origin, assets[0], join8(tmpdir2(), `sac-warmup-${process.pid}.png`));
+  await mkdir5(join9(dir, "editable"), { recursive: true });
+  await mkdir5(join9(dir, "reference"), { recursive: true });
+  await mkdir5(join9(dir, "media"), { recursive: true });
+  if (assets[0]) await warmUp(session, origin, assets[0], join9(tmpdir2(), `sac-warmup-${process.pid}.png`));
   const failed = [];
   const index = [];
   const build = [];
   const fonts = /* @__PURE__ */ new Set();
   const want = /* @__PURE__ */ new Map();
   let done = 0;
-  const queue = assets.map((a, i) => ({ a, i }));
-  await Promise.all(Array.from({ length: Math.min(4, queue.length) }, async () => {
-    for (let job = queue.shift(); job; job = queue.shift()) {
+  const queue2 = assets.map((a, i) => ({ a, i }));
+  await Promise.all(Array.from({ length: Math.min(4, queue2.length) }, async () => {
+    for (let job = queue2.shift(); job; job = queue2.shift()) {
       const { a, i } = job;
-      const file2 = join8(dir, "reference", `${nameFor(a, i)}.png`);
+      const file2 = join9(dir, "reference", `${nameFor(a, i)}.png`);
       const url = `${origin}/?shot=${encodeURIComponent(a.id)}&s=${encodeURIComponent(session)}`;
       const how = { small: false, svg: true, layers: true };
       let shot = await shoot(url, a.size[0], a.size[1], file2, how);
@@ -1029,7 +1165,7 @@ async function exportCampaign(session, name, assets, origin, onProgress, revisio
         shot = await shoot(url, a.size[0], a.size[1], file2, how);
       if (!shot.ok) failed.push({ id: a.id, why: shot.error });
       else {
-        if (shot.svg) await writeFile5(join8(dir, "editable", `${nameFor(a, i)}.svg`), shot.svg);
+        if (shot.svg) await writeFile5(join9(dir, "editable", `${nameFor(a, i)}.svg`), shot.svg);
         const got = shot.layers;
         for (const f of got?.fonts ?? []) fonts.add(f);
         const used = (got?.layers ?? []).map((l) => bundledImage(l, want));
@@ -1056,10 +1192,10 @@ async function exportCampaign(session, name, assets, origin, onProgress, revisio
   }));
   const missing = [];
   for (const [to, web] of want) {
-    const from = join8(PUBLIC, web.replace(/^\//, ""));
-    if (existsSync3(from)) {
-      await mkdir5(dirname5(join8(dir, to)), { recursive: true });
-      await copyFile(from, join8(dir, to));
+    const from = join9(PUBLIC, web.replace(/^\//, ""));
+    if (existsSync4(from)) {
+      await mkdir5(dirname5(join9(dir, to)), { recursive: true });
+      await copyFile(from, join9(dir, to));
     } else missing.push(web);
   }
   if (missing.length) failed.push({ id: "media", why: `not found: ${missing.join(", ")}` });
@@ -1085,8 +1221,8 @@ async function exportCampaign(session, name, assets, origin, onProgress, revisio
     ],
     build
   };
-  await writeFile5(join8(dir, "figma-brief.json"), JSON.stringify(brief, null, 1));
-  await writeFile5(join8(dir, "manifest.json"), JSON.stringify({
+  await writeFile5(join9(dir, "figma-brief.json"), JSON.stringify(brief, null, 1));
+  await writeFile5(join9(dir, "manifest.json"), JSON.stringify({
     v: 1,
     session,
     campaign: name,
@@ -1095,7 +1231,7 @@ async function exportCampaign(session, name, assets, origin, onProgress, revisio
     assets: index.sort((a, b) => String(a.file).localeCompare(String(b.file)))
   }, null, 1));
   await writeFile5(
-    join8(dir, "HOW TO USE.txt"),
+    join9(dir, "HOW TO USE.txt"),
     `${name}
 ${index.length} assets, exported ${(/* @__PURE__ */ new Date()).toLocaleString()}
 
@@ -1136,7 +1272,7 @@ ONE WAY ONLY
 `
   );
   const doc = await figmaDocument(session, name, revision, assets, origin, brief);
-  await writeFile5(join8(dir, `${slug(name) || session}.figma.json`), JSON.stringify(doc));
+  await writeFile5(join9(dir, `${slug(name) || session}.figma.json`), JSON.stringify(doc));
   const zip = await zipUp(dir).catch(() => void 0);
   return { dir, zip, files: index.length, failed, brief, ms: Date.now() - started };
 }
@@ -1156,11 +1292,11 @@ async function figmaDocument(session, name, revision, assets, origin, ready2) {
   const read = async (rel) => {
     const publicRoot = PUBLIC;
     if (rel.startsWith("media/"))
-      return readFile6(join8(publicRoot, rel.slice("media/".length))).catch(() => null);
+      return readFile7(join9(publicRoot, rel.slice("media/".length))).catch(() => null);
     const leaf = rel.split("/").pop();
     const dirs = rel.startsWith("photographs/") ? ["photos", "reference", "graphics"] : rel.startsWith("logos/") ? ["logos"] : [];
     for (const dir of dirs) {
-      const raw = await readFile6(join8(publicRoot, dir, leaf)).catch(() => null);
+      const raw = await readFile7(join9(publicRoot, dir, leaf)).catch(() => null);
       if (raw) return raw;
     }
     return null;
@@ -1308,9 +1444,9 @@ var server = createServer(async (req, res) => {
       return send(200, { text: await rules() });
     if (url.pathname.startsWith("/ai/shot/")) {
       const rel = normalize(decodeURIComponent(url.pathname.slice("/ai/shot/".length)));
-      const file2 = join9(EXPORTS, rel.replace(/^(\.\.[/\\])+/, ""));
+      const file2 = join10(EXPORTS, rel.replace(/^(\.\.[/\\])+/, ""));
       if (!within(EXPORTS, file2)) return send(403, { error: "outside the exports directory" });
-      const png = await readFile7(file2).catch(() => null);
+      const png = await readFile8(file2).catch(() => null);
       if (!png) return send(404, { error: "no such shot" });
       res.writeHead(200, { "content-type": "image/png", "cache-control": "no-store" });
       return res.end(png);
@@ -1370,8 +1506,8 @@ var server = createServer(async (req, res) => {
         return send(400, { error: "only exported media" });
       const leaf = rel.split("/").pop();
       const source = rel.startsWith("media/") ? rel.slice("media/".length) : `${rel.startsWith("photographs/") ? "photos" : rel.split("/")[0]}/${leaf}`;
-      const file2 = join9(PUBLIC, source);
-      const bytes = await readFile7(file2).catch(() => null);
+      const file2 = join10(PUBLIC, source);
+      const bytes = await readFile8(file2).catch(() => null);
       if (!bytes) return send(404, { error: `no such file: ${rel}` });
       res.writeHead(200, {
         "content-type": /\.svg$/i.test(leaf) ? "image/svg+xml" : /\.png$/i.test(leaf) ? "image/png" : /\.webp$/i.test(leaf) ? "image/webp" : "image/jpeg",
@@ -1423,11 +1559,32 @@ var server = createServer(async (req, res) => {
       res.writeHead(200, { "content-type": "image/jpeg", "cache-control": "private, max-age=86400" });
       return res.end(bytes);
     }
+    if (url.pathname === "/api/figma-logos" && req.method === "GET") {
+      try {
+        const { items } = await list4();
+        return send(200, { items });
+      } catch (e) {
+        if (e instanceof NoToken) return send(503, { error: e.message });
+        throw e;
+      }
+    }
+    const logo = url.pathname.match(/^\/api\/figma-logos\/(thumb|full)\/([^/]+)$/);
+    if (logo && req.method === "GET") {
+      const id = decodeURIComponent(logo[2]);
+      if (!validId2(id)) return send(400, { error: "invalid node id" });
+      const bytes = await image2(id, logo[1]);
+      if (!bytes) return send(404, { error: "not in the Figma logo library" });
+      res.writeHead(200, {
+        "content-type": logo[1] === "full" ? "image/svg+xml" : "image/png",
+        "cache-control": "private, max-age=86400"
+      });
+      return res.end(bytes);
+    }
     if (url.pathname === "/ai/photo" && req.method === "POST") {
-      const { image: image2 } = JSON.parse(await body(req, 2e6));
-      const jpeg = image2?.match(/^data:image\/jpeg;base64,([A-Za-z0-9+/=]+)$/);
+      const { image: image3 } = JSON.parse(await body(req, 2e6));
+      const jpeg = image3?.match(/^data:image\/jpeg;base64,([A-Za-z0-9+/=]+)$/);
       if (!jpeg) return send(400, { error: "send a small JPEG data URL" });
-      const file2 = join9(tmpdir3(), `sac-photo-${randomUUID2()}.jpg`);
+      const file2 = join10(tmpdir3(), `sac-photo-${randomUUID2()}.jpg`);
       await writeFile6(file2, Buffer.from(jpeg[1], "base64"));
       try {
         const run = await ask(LOCATE(file2), "Read", 3, 9e4, QUICK_MODEL);
@@ -1479,7 +1636,7 @@ var server = createServer(async (req, res) => {
       if (!target) return send(400, { error: "no url to shoot" });
       if (!session || !legal(session)) return send(400, { error: "no campaign named" });
       const leaf = `${safeName(name ?? what ?? "asset")}.png`;
-      const file2 = join9(EXPORTS, session, leaf);
+      const file2 = join10(EXPORTS, session, leaf);
       const png = `/ai/shot/${session}/${leaf}`;
       let shot = await shoot(target, width ?? 1200, height ?? 900, file2);
       if (!shot.ok && /never finished|did not return/.test(shot.error)) {
@@ -1533,7 +1690,7 @@ var server = createServer(async (req, res) => {
       if (!session || !legal(session)) return send(400, { error: "no campaign named" });
       if (!issues?.length) return send(400, { error: "nothing to fix" });
       const leaf = `${safeName(name ?? "asset")}.png`;
-      const file2 = join9(EXPORTS, session, leaf);
+      const file2 = join10(EXPORTS, session, leaf);
       const shot = await shoot(target, width ?? 1200, height ?? 900, file2);
       if (!shot.ok) return send(502, { error: `screenshot failed: ${shot.error}`, ms: shot.ms });
       if (!shot.parts.length)
@@ -1573,9 +1730,9 @@ var server = createServer(async (req, res) => {
     }
     if (DESKTOP && req.method === "GET" && !url.pathname.startsWith("/api/") && !url.pathname.startsWith("/ai/")) {
       const leaf = url.pathname === "/" ? "index.html" : decodeURIComponent(url.pathname).slice(1);
-      const file2 = join9(UI, leaf);
+      const file2 = join10(UI, leaf);
       if (!within(UI, file2)) return send(403, { error: "outside the studio" });
-      const bytes = await readFile7(file2).catch(() => null);
+      const bytes = await readFile8(file2).catch(() => null);
       if (!bytes) return send(404, { error: `no file ${url.pathname}` });
       res.writeHead(200, { "content-type": mime(file2), "x-content-type-options": "nosniff" });
       return res.end(bytes);

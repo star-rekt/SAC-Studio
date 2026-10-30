@@ -1,0 +1,42 @@
+/* The board fonts the Adobe kit lacks, shipped with the app (internal): Quiet
+ * Sans's other weights (the kit serves 400 and 700 only -- 600 and 800 are
+ * set under the kit's own name too, so they join it), Tiempos Headline and
+ * PestoFresco. Loaded by src/main.tsx. */
+@font-face { font-family: "PestoFresco"; font-weight: 100; font-style: normal; font-display: block; src: url("/fonts/fonnts.com-PestoFresco_Regular.otf"); }
+@font-face { font-family: "PestoFresco"; font-weight: 140; font-style: normal; font-display: block; src: url("/fonts/fonnts.com-PestoFresco_Thin_Rough.otf"); }
+@font-face { font-family: "Quiet Sans"; font-weight: 250; font-style: normal; font-display: block; src: url("/fonts/Flatit%20%20QuietSansExtraLight.otf"); }
+@font-face { font-family: "quiet-sans"; font-weight: 250; font-style: normal; font-display: block; src: url("/fonts/Flatit%20%20QuietSansExtraLight.otf"); }
+@font-face { font-family: "Quiet Sans"; font-weight: 250; font-style: italic; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20ExtraLight%20Italic.otf"); }
+@font-face { font-family: "quiet-sans"; font-weight: 250; font-style: italic; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20ExtraLight%20Italic.otf"); }
+@font-face { font-family: "Quiet Sans"; font-weight: 300; font-style: normal; font-display: block; src: url("/fonts/Flatit%20%20QuietSansLight.otf"); }
+@font-face { font-family: "quiet-sans"; font-weight: 300; font-style: normal; font-display: block; src: url("/fonts/Flatit%20%20QuietSansLight.otf"); }
+@font-face { font-family: "Quiet Sans"; font-weight: 300; font-style: italic; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20Light%20Italic.otf"); }
+@font-face { font-family: "quiet-sans"; font-weight: 300; font-style: italic; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20Light%20Italic.otf"); }
+@font-face { font-family: "Quiet Sans"; font-weight: 400; font-style: normal; font-display: block; src: url("/fonts/Flatit%20%20QuietSansRegular.otf"); }
+@font-face { font-family: "quiet-sans"; font-weight: 400; font-style: normal; font-display: block; src: url("/fonts/Flatit%20%20QuietSansRegular.otf"); }
+@font-face { font-family: "Quiet Sans"; font-weight: 400; font-style: italic; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20Italic.otf"); }
+@font-face { font-family: "quiet-sans"; font-weight: 400; font-style: italic; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20Italic.otf"); }
+@font-face { font-family: "Quiet Sans"; font-weight: 600; font-style: normal; font-display: block; src: url("/fonts/Flatit%20%20QuietSansSemiBold.otf"); }
+@font-face { font-family: "quiet-sans"; font-weight: 600; font-style: normal; font-display: block; src: url("/fonts/Flatit%20%20QuietSansSemiBold.otf"); }
+@font-face { font-family: "Quiet Sans"; font-weight: 600; font-style: italic; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20SemiBold%20Italic.otf"); }
+@font-face { font-family: "quiet-sans"; font-weight: 600; font-style: italic; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20SemiBold%20Italic.otf"); }
+@font-face { font-family: "Quiet Sans"; font-weight: 700; font-style: normal; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20Bold.otf"); }
+@font-face { font-family: "quiet-sans"; font-weight: 700; font-style: normal; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20Bold.otf"); }
+@font-face { font-family: "Quiet Sans"; font-weight: 700; font-style: italic; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20Bold%20Italic.otf"); }
+@font-face { font-family: "quiet-sans"; font-weight: 700; font-style: italic; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20Bold%20Italic.otf"); }
+@font-face { font-family: "Quiet Sans"; font-weight: 800; font-style: normal; font-display: block; src: url("/fonts/Flatit%20%20QuietSansExtraBold.otf"); }
+@font-face { font-family: "quiet-sans"; font-weight: 800; font-style: normal; font-display: block; src: url("/fonts/Flatit%20%20QuietSansExtraBold.otf"); }
+@font-face { font-family: "Quiet Sans"; font-weight: 800; font-style: italic; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20ExtraBold%20Italic.otf"); }
+@font-face { font-family: "quiet-sans"; font-weight: 800; font-style: italic; font-display: block; src: url("/fonts/Flatit%20%20Quiet%20Sans%20ExtraBold%20Italic.otf"); }
+@font-face { font-family: "Tiempos Headline"; font-weight: 300; font-style: normal; font-display: block; src: url("/fonts/TestTiemposHeadline-Light-BF66457a50df5a0.otf"); }
+@font-face { font-family: "Tiempos Headline"; font-weight: 300; font-style: italic; font-display: block; src: url("/fonts/TestTiemposHeadline-LightItalic-BF66457a5088153.otf"); }
+@font-face { font-family: "Tiempos Headline"; font-weight: 400; font-style: normal; font-display: block; src: url("/fonts/TestTiemposHeadline-Regular-BF66457a508e31a.otf"); }
+@font-face { font-family: "Tiempos Headline"; font-weight: 400; font-style: italic; font-display: block; src: url("/fonts/TestTiemposHeadline-RegularItalic-BF66457a5091d70.otf"); }
+@font-face { font-family: "Tiempos Headline"; font-weight: 500; font-style: normal; font-display: block; src: url("/fonts/TestTiemposHeadline-Medium-BF66457a509b4ec.otf"); }
+@font-face { font-family: "Tiempos Headline"; font-weight: 500; font-style: italic; font-display: block; src: url("/fonts/TestTiemposHeadline-MediumItalic-BF66457a50b4260.otf"); }
+@font-face { font-family: "Tiempos Headline"; font-weight: 600; font-style: normal; font-display: block; src: url("/fonts/TestTiemposHeadline-Semibold-BF66457a509040b.otf"); }
+@font-face { font-family: "Tiempos Headline"; font-weight: 600; font-style: italic; font-display: block; src: url("/fonts/TestTiemposHeadline-SemiboldItalic-BF66457a510c462.otf"); }
+@font-face { font-family: "Tiempos Headline"; font-weight: 700; font-style: normal; font-display: block; src: url("/fonts/TestTiemposHeadline-Bold-BF66457a5113d17.otf"); }
+@font-face { font-family: "Tiempos Headline"; font-weight: 700; font-style: italic; font-display: block; src: url("/fonts/TestTiemposHeadline-BoldItalic-BF66457a5072af7.otf"); }
+@font-face { font-family: "Tiempos Headline"; font-weight: 900; font-style: normal; font-display: block; src: url("/fonts/TestTiemposHeadline-Black-BF66457a50e385b.otf"); }
+@font-face { font-family: "Tiempos Headline"; font-weight: 900; font-style: italic; font-display: block; src: url("/fonts/TestTiemposHeadline-BlackItalic-BF66457a505495d.otf"); }

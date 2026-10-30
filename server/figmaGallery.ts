@@ -104,7 +104,7 @@ export async function api<T>(path: string): Promise<T> {
 const fileOf = (id: string, kind: 'thumb' | 'full') => join(DIR, kind, `${id.replace(/[^0-9A-Za-z;-]/g, '-')}.jpg`);
 export const validId = (id: string) => /^[0-9A-Za-z:;-]{1,80}$/.test(id);
 
-async function save(path: string, data: Buffer | string) {
+export async function save(path: string, data: Buffer | string) {
   await mkdir(join(path, '..'), { recursive: true });
   const pending = `${path}.${process.pid}.tmp`;
   await writeFile(pending, data);

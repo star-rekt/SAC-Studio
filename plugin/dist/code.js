@@ -22,7 +22,7 @@
 
   // src/main.ts
   figma.showUI(__html__, { width: 400, height: 520, themeColors: true });
-  var BUILD = "clips-4";
+  var BUILD = "flip-1";
   var rgb = (h) => ({
     r: parseInt(h.slice(1, 3), 16) / 255,
     g: parseInt(h.slice(3, 5), 16) / 255,
@@ -111,6 +111,7 @@ If that's meant to be it, tell Claude these exact names.
       }
       t.textAutoResize = "WIDTH_AND_HEIGHT";
       t.textAlignHorizontal = (l.align || "left").toUpperCase();
+      if (l.trim) t.leadingTrim = "CAP_HEIGHT";
       return t;
     }
     if (l.type === "image") {
@@ -136,7 +137,7 @@ If that's meant to be it, tell Claude these exact names.
       art.x = l.draw.x - l.x;
       art.y = l.draw.y - l.y;
       const hash = images[l.src];
-      art.fills = hash ? [{ type: "IMAGE", imageHash: hash, scaleMode: "FILL" }] : [{ type: "SOLID", color: { r: 0.85, g: 0.85, b: 0.85 } }];
+      art.fills = hash ? [l.flip ? { type: "IMAGE", imageHash: hash, scaleMode: "CROP", imageTransform: [[-1, 0, 1], [0, 1, 0]] } : { type: "IMAGE", imageHash: hash, scaleMode: "FILL" }] : [{ type: "SOLID", color: { r: 0.85, g: 0.85, b: 0.85 } }];
       box.appendChild(art);
       if (l.clip) {
         const mask = cutout(l.clip, l.width, l.height, "#000000");
@@ -219,6 +220,7 @@ If that's meant to be it, tell Claude these exact names.
     });
     if (l.blur) effects.push({ type: "LAYER_BLUR", blurType: "NORMAL", radius: l.blur, visible: true });
     if (effects.length && "effects" in node) node.effects = effects;
+    if (l.blend && "blendMode" in node) node.blendMode = l.blend.toUpperCase().replace(/-/g, "_");
   }
   var contentOf = (f) => {
     var _a;

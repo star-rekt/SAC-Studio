@@ -1,0 +1,771 @@
+{
+ "source": {
+  "file": "ioB3sP8LwBiTUPQN7jlF81",
+  "node": "538:40114",
+  "name": "SC26_0025_Spend and Save - April Hero"
+ },
+ "size": [
+  1200,
+  1314
+ ],
+ "frame": {
+  "fill": "#7A7A7A",
+  "image": true,
+  "crop": [
+   [
+    0.59214,
+    0,
+    0.2036
+   ],
+   [
+    0,
+    0.81129,
+    0.17067
+   ]
+  ],
+  "images": [
+   {
+    "ref": "69bd5d037590dff919b6323c22dbc7cced52b39f",
+    "mode": "STRETCH"
+   }
+  ],
+  "paints": [
+   {
+    "type": "IMAGE",
+    "ref": "69bd5d037590dff919b6323c22dbc7cced52b39f",
+    "mode": "STRETCH",
+    "crop": [
+     [
+      0.59214,
+      0,
+      0.2036
+     ],
+     [
+      0,
+      0.81129,
+      0.17067
+     ]
+    ]
+   },
+   {
+    "type": "GRADIENT",
+    "css": "linear-gradient(180deg, rgba(85, 112, 130, 0.65) -52.1%, rgba(85, 112, 130, 0) 52.49%)",
+    "blend": "MULTIPLY"
+   }
+  ]
+ },
+ "layers": {
+  "538:40115": {
+   "name": "Rectangle 3600",
+   "type": "RECTANGLE",
+   "parent": null,
+   "visible": true,
+   "x": 271,
+   "y": 61,
+   "w": 653,
+   "h": 76,
+   "fill": "#C5D3D7",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#C5D3D7"
+    }
+   ],
+   "opacity": 0.18,
+   "blur": 56.2
+  },
+  "538:40116": {
+   "name": "Group 3308",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 160.9,
+   "y": 176.77,
+   "w": 878.51,
+   "h": 93,
+   "shadow": {
+    "x": 4.46,
+    "y": 7.44,
+    "blur": 19.49,
+    "color": "#00000045"
+   },
+   "shadows": [
+    {
+     "x": 4.46,
+     "y": 7.44,
+     "blur": 19.49,
+     "color": "#00000045"
+    },
+    {
+     "x": 1.49,
+     "y": 2.97,
+     "blur": 4.46,
+     "color": "#0000001A"
+    }
+   ]
+  },
+  "538:40117": {
+   "name": "Group 3245",
+   "type": "GROUP",
+   "parent": "538:40116",
+   "visible": true,
+   "x": 225.26,
+   "y": 176.77,
+   "w": 749,
+   "h": 93
+  },
+  "538:40118": {
+   "name": "Group 3173",
+   "type": "GROUP",
+   "parent": "538:40117",
+   "visible": true,
+   "x": 225.26,
+   "y": 176.77,
+   "w": 749,
+   "h": 93
+  },
+  "538:40119": {
+   "name": "FLASH SALE",
+   "type": "TEXT",
+   "parent": "538:40118",
+   "visible": true,
+   "x": 225.26,
+   "y": 176.77,
+   "w": 749,
+   "h": 93,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.49498,
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "text": {
+    "chars": "FLASH SALE",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 140.71,
+    "lineHeight": 186.37,
+    "letterSpacing": -4.22,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:40120": {
+   "name": "Group 3242",
+   "type": "GROUP",
+   "parent": "538:40116",
+   "visible": true,
+   "x": 160.9,
+   "y": 176.77,
+   "w": 41.87,
+   "h": 92.51
+  },
+  "538:40121": {
+   "name": "Union",
+   "type": "BOOLEAN_OPERATION",
+   "parent": "538:40120",
+   "visible": true,
+   "x": 160.9,
+   "y": 176.77,
+   "w": 41.87,
+   "h": 92.51,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.49498,
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "path": "M25.4747 0.800827C26.1566 -0.562969 28.213 -0.077459 28.213 1.44731L28.213 38.9795L40.4191 38.9795C41.4932 38.9795 42.1915 40.1106 41.7111 41.0713L16.3908 91.7129C15.7089 93.0767 13.6535 92.5912 13.6535 91.0665L13.6535 53.5342L1.44643 53.5342C0.372417 53.534 -0.325907 52.4031 0.154433 51.4424L25.4747 0.800827Z"
+  },
+  "538:40122": {
+   "name": "Vector 150",
+   "type": "VECTOR",
+   "parent": "538:40121",
+   "visible": true,
+   "x": 160.01,
+   "y": 172.09,
+   "w": 29.1,
+   "h": 58.21,
+   "fill": "#D79503",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#D79503"
+    }
+   ],
+   "path": "M1.04559 56.1165L26.3665 5.47479C27.0484 4.111 29.1039 4.59623 29.1039 6.121L29.1039 56.7627C29.1039 57.5608 28.4569 58.2077 27.6589 58.2077L2.33802 58.2077C1.26385 58.2077 0.56521 57.0773 1.04559 56.1165Z",
+   "radius": 1.44
+  },
+  "538:40123": {
+   "name": "Vector 151",
+   "type": "VECTOR",
+   "parent": "538:40121",
+   "visible": true,
+   "x": 174.56,
+   "y": 215.75,
+   "w": 29.1,
+   "h": 58.21,
+   "rotation": -180,
+   "turn": -180,
+   "fill": "#D79503",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#D79503"
+    }
+   ],
+   "path": "M1.04559 56.1165L26.3665 5.47479C27.0484 4.111 29.1039 4.59623 29.1039 6.121L29.1039 56.7627C29.1039 57.5608 28.4569 58.2077 27.6589 58.2077L2.33802 58.2077C1.26385 58.2077 0.56521 57.0773 1.04559 56.1165Z",
+   "radius": 1.44
+  },
+  "538:40124": {
+   "name": "Group 3247",
+   "type": "GROUP",
+   "parent": "538:40116",
+   "visible": true,
+   "x": 997.55,
+   "y": 176.77,
+   "w": 41.87,
+   "h": 92.51
+  },
+  "538:40125": {
+   "name": "Union",
+   "type": "BOOLEAN_OPERATION",
+   "parent": "538:40124",
+   "visible": true,
+   "x": 997.55,
+   "y": 176.77,
+   "w": 41.87,
+   "h": 92.51,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.49498,
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "path": "M25.4747 0.800814C26.1567 -0.562957 28.213 -0.0774645 28.213 1.4473L28.213 38.9795L40.4191 38.9795C41.4932 38.9795 42.1915 40.1106 41.7111 41.0713L16.3908 91.7129C15.7089 93.0767 13.6535 92.5912 13.6535 91.0664L13.6535 53.5342L1.44643 53.5342C0.372417 53.534 -0.325907 52.4031 0.154433 51.4424L25.4747 0.800814Z"
+  },
+  "538:40126": {
+   "name": "Vector 150",
+   "type": "VECTOR",
+   "parent": "538:40125",
+   "visible": true,
+   "x": 996.66,
+   "y": 172.09,
+   "w": 29.1,
+   "h": 58.21,
+   "fill": "#D79503",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#D79503"
+    }
+   ],
+   "path": "M1.04559 56.1165L26.3665 5.47479C27.0484 4.111 29.1039 4.59623 29.1039 6.121L29.1039 56.7627C29.1039 57.5608 28.4569 58.2077 27.6589 58.2077L2.33802 58.2077C1.26385 58.2077 0.56521 57.0773 1.04559 56.1165Z",
+   "radius": 1.44
+  },
+  "538:40127": {
+   "name": "Vector 151",
+   "type": "VECTOR",
+   "parent": "538:40125",
+   "visible": true,
+   "x": 1011.2,
+   "y": 215.75,
+   "w": 29.1,
+   "h": 58.21,
+   "rotation": -180,
+   "turn": -180,
+   "fill": "#D79503",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#D79503"
+    }
+   ],
+   "path": "M1.04559 56.1165L26.3665 5.47479C27.0484 4.111 29.1039 4.59623 29.1039 6.121L29.1039 56.7627C29.1039 57.5608 28.4569 58.2077 27.6589 58.2077L2.33802 58.2077C1.26385 58.2077 0.56521 57.0773 1.04559 56.1165Z",
+   "radius": 1.44
+  },
+  "538:40128": {
+   "name": "Group 3246",
+   "type": "GROUP",
+   "parent": null,
+   "visible": true,
+   "x": 182.35,
+   "y": 317.55,
+   "w": 827.83,
+   "h": 264.99,
+   "shadow": {
+    "x": 4.46,
+    "y": 7.44,
+    "blur": 29.63,
+    "color": "#00000059"
+   },
+   "shadows": [
+    {
+     "x": 4.46,
+     "y": 7.44,
+     "blur": 29.63,
+     "color": "#00000059"
+    },
+    {
+     "x": 1.49,
+     "y": 2.97,
+     "blur": 4.46,
+     "color": "#0000001A"
+    }
+   ]
+  },
+  "538:40129": {
+   "name": "Group 3245",
+   "type": "GROUP",
+   "parent": "538:40128",
+   "visible": true,
+   "x": 313.7,
+   "y": 318.53,
+   "w": 470,
+   "h": 264
+  },
+  "538:40130": {
+   "name": "Group 3173",
+   "type": "GROUP",
+   "parent": "538:40129",
+   "visible": true,
+   "x": 313.7,
+   "y": 318.53,
+   "w": 470,
+   "h": 264
+  },
+  "538:40131": {
+   "name": "70",
+   "type": "TEXT",
+   "parent": "538:40130",
+   "visible": true,
+   "x": 313.7,
+   "y": 318.53,
+   "w": 470,
+   "h": 264,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.49498,
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "text": {
+    "chars": "70",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 400.12,
+    "lineHeight": 388.32,
+    "letterSpacing": -12,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:40132": {
+   "name": "Group 3246",
+   "type": "GROUP",
+   "parent": "538:40128",
+   "visible": true,
+   "x": 801.18,
+   "y": 317.55,
+   "w": 209,
+   "h": 264.39
+  },
+  "538:40133": {
+   "name": "Group 3173",
+   "type": "GROUP",
+   "parent": "538:40132",
+   "visible": true,
+   "x": 801.18,
+   "y": 317.55,
+   "w": 209,
+   "h": 264.39
+  },
+  "538:40134": {
+   "name": "%",
+   "type": "TEXT",
+   "parent": "538:40133",
+   "visible": true,
+   "x": 801.18,
+   "y": 317.55,
+   "w": 208,
+   "h": 165,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.49498,
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "text": {
+    "chars": "%",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 250.21,
+    "lineHeight": 242.83,
+    "letterSpacing": -7.51,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:40135": {
+   "name": "OFF",
+   "type": "TEXT",
+   "parent": "538:40133",
+   "visible": true,
+   "x": 801.18,
+   "y": 507.94,
+   "w": 209,
+   "h": 74,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.49498,
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "text": {
+    "chars": "OFF",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 112.41,
+    "lineHeight": 109.1,
+    "letterSpacing": -3.37,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:40136": {
+   "name": "UP TO",
+   "type": "TEXT",
+   "parent": "538:40128",
+   "visible": false,
+   "x": 85.66,
+   "y": 317.55,
+   "w": 203,
+   "h": 263,
+   "fill": "#F5EBDF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#F5EBDF"
+    }
+   ],
+   "text": {
+    "chars": "UP\nTO ",
+    "family": "Quiet Sans",
+    "weight": 400,
+    "size": 161.04,
+    "lineHeight": 156.29,
+    "letterSpacing": -4.83,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:40137": {
+   "name": "UP TO",
+   "type": "TEXT",
+   "parent": "538:40128",
+   "visible": true,
+   "x": 182.35,
+   "y": 317.55,
+   "w": 114,
+   "h": 149,
+   "fill": "#FFFFFF",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.49498,
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "text": {
+    "chars": "UP\nTO ",
+    "family": "Quiet Sans",
+    "weight": 600,
+    "size": 91.08,
+    "lineHeight": 88.4,
+    "letterSpacing": -2.73,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:40138": {
+   "name": "SC26_0025_Spend and Save - April Hero",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": -349.94,
+   "y": 99,
+   "w": 1901.23,
+   "h": 1214.67,
+   "image": true,
+   "images": [
+    {
+     "ref": "052305462284913bf1776bc891d267dd71a7eee6",
+     "mode": "FILL"
+    }
+   ],
+   "paints": [
+    {
+     "type": "IMAGE",
+     "ref": "052305462284913bf1776bc891d267dd71a7eee6",
+     "mode": "FILL"
+    }
+   ],
+   "clips": true
+  },
+  "538:40139": {
+   "name": "Frame 2203",
+   "type": "FRAME",
+   "parent": null,
+   "visible": true,
+   "x": 378.1,
+   "y": 1049.61,
+   "w": 475.98,
+   "h": 119.3,
+   "fill": "#F14222",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#F14222"
+    }
+   ],
+   "clips": true,
+   "radius": 29.12
+  },
+  "538:40140": {
+   "name": "Shop Now",
+   "type": "TEXT",
+   "parent": "538:40139",
+   "visible": true,
+   "x": 475.6,
+   "y": 1087.22,
+   "w": 281,
+   "h": 43,
+   "fill": "#FFFFFF",
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#FFFFFF"
+    }
+   ],
+   "text": {
+    "chars": "Shop Now",
+    "family": "Sofia Pro",
+    "weight": 800,
+    "size": 62.12,
+    "lineHeight": 71.43,
+    "letterSpacing": -0.62,
+    "align": "CENTER",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  },
+  "538:40141": {
+   "name": "ENDS TODAY",
+   "type": "TEXT",
+   "parent": null,
+   "visible": true,
+   "x": 276,
+   "y": 70,
+   "w": 648,
+   "h": 57,
+   "fill": "#F14222",
+   "image": true,
+   "images": [
+    {
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "paints": [
+    {
+     "type": "SOLID",
+     "color": "#F14222"
+    },
+    {
+     "type": "IMAGE",
+     "ref": "05631e129c31da42d3d954c5718d6f692edd363c",
+     "mode": "TILE",
+     "scale": 0.49498,
+     "opacity": 0.56,
+     "blend": "DARKEN"
+    }
+   ],
+   "text": {
+    "chars": "ENDS TODAY",
+    "family": "Quiet Sans",
+    "weight": 800,
+    "size": 86.97,
+    "lineHeight": 186.37,
+    "letterSpacing": 14.78,
+    "align": "LEFT",
+    "valign": "TOP",
+    "resize": "WIDTH_AND_HEIGHT",
+    "trim": true,
+    "case": "TITLE"
+   }
+  }
+ },
+ "assets": {
+  "05631e129c31da42d3d954c5718d6f692edd363c": {
+   "src": "/figma-assets/named-sale/05631e129c31da42d3d954c5718d6f692edd363c.png",
+   "w": 612,
+   "h": 408
+  },
+  "052305462284913bf1776bc891d267dd71a7eee6": {
+   "src": "/figma-assets/named-sale/052305462284913bf1776bc891d267dd71a7eee6.png",
+   "w": 2400,
+   "h": 1533
+  },
+  "69bd5d037590dff919b6323c22dbc7cced52b39f": {
+   "src": "/figma-assets/named-sale/69bd5d037590dff919b6323c22dbc7cced52b39f.jpg",
+   "w": 2400,
+   "h": 1918
+  }
+ }
+}
