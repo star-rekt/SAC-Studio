@@ -5,7 +5,7 @@
 import { useState } from 'react';
 import { review, propose } from '../ai/client';
 import { saveSession } from '../session/store';
-import type { Fixes, Op, Verdict } from '../ai/types';
+import type { Fixes, Verdict } from '../ai/types';
 import type { Sheet, SheetAsset } from '../sheet/types';
 
 const SAYS = { ship: 'Good to go', fix: 'Needs fixes', reject: 'Needs rework' } as const;
@@ -18,13 +18,12 @@ const place = (where: string, assetId: string) => where.split(/,\s*/)
   .filter((w, i, all) => all.indexOf(w) === i).join(', ');
 
 type Result = { state: 'running' } | { state: 'done'; verdict: Verdict } | { state: 'failed'; error: string };
-type Fixing = { state: 'running' } | { state: 'done'; fixes: Fixes; applied?: boolean } | { state: 'failed'; error: string };
+type Fixing = { state: 'running' } | { state: 'done'; fixes: Fixes } | { state: 'failed'; error: string };
 
-/** `apply`: makes the suggested changes (the same edits as by hand). */
-export function AiCheck({ sheet, asset, apply }: { sheet: Sheet; asset: SheetAsset; apply: (ops: Op[]) => void }) {
+export function AiCheck({ sheet, asset }: { sheet: Sheet; asset: SheetAsset }) {
   const [fixing, setFixing] = useState<Record<string, Fixing>>({});
   const f = fixing[asset.id];
-  // What Claude would change to answer the review: shown first, applied only when asked.
+  // What Claude would change to answer the review: suggestions to make by hand, never applied.
   const suggest = async (verdict: Verdict) => {
     setFixing(m => ({ ...m, [asset.id]: { state: 'running' } }));
     try {
@@ -74,8 +73,6 @@ export function AiCheck({ sheet, asset, apply }: { sheet: Sheet; asset: SheetAss
           {f.fixes.ops.length > 0 ? <>
             <b>{f.fixes.ops.length} change{f.fixes.ops.length === 1 ? '' : 's'} to make</b>
             <ul>{f.fixes.ops.map((op, n) => <li key={n}><b>{place(op.id, asset.id)}</b> {op.why}</li>)}</ul>
-            {f.applied ? <p className="st-quiet">Applied. Look again to check.</p>
-              : <button className="st-primary" onClick={() => { apply(f.fixes.ops); setFixing(m => ({ ...m, [asset.id]: { ...f, applied: true } })); }}>Apply</button>}
           </> : <p className="st-quiet">Nothing it can change by moving, sizing or retyping.</p>}
           {f.fixes.cannotFix.length > 0 && <ul className="st-quiet">{f.fixes.cannotFix.map((c, n) => <li key={n}>{c.problem} — {c.needs}</li>)}</ul>}
         </div>}

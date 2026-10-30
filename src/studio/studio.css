@@ -167,7 +167,6 @@ select.st-addtype { font: inherit; padding: 9px 10px; border: 1px dashed var(--l
 .st-row.st-addtype input { font: inherit; flex: 1; padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px; }
 .st-ai-fixes { margin: 10px 0; padding-top: 10px; border-top: 1px solid var(--line); display: grid; gap: 6px; }
 .st-ai-fixes ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
-.st-ai-fixes .st-primary { justify-self: start; padding: 6px 14px; }
 /* The graphics scroll in their own box, like the photos; the panel's end clears the AI button. */
 .st-add ul.lib { max-height: 260px; overflow: auto; }
 .st-edit { padding-bottom: 96px; }

@@ -24,7 +24,6 @@ import { measureField } from '../edit/fieldFit';
 import type { FieldFit } from '../model/copyFit';
 import { listSessions, loadSession, saveSession, useAutosave, downloadFigmaFile, downloadPngs, type Card } from '../session/store';
 import { AiCheck } from './AiCheck';
-import { applyOps } from '../ai/apply';
 import { AddPanel } from './AddPanel';
 import { useEditApi } from '../edit/useEditApi';
 import { readBrief } from '../model/brief';
@@ -38,7 +37,7 @@ import { EMAIL_VARIANTS, SITE_VARIANTS, emailVariant } from '../templates/varian
 import type { EmailPart, Sheet, SheetAsset } from '../sheet/types';
 import { Sections } from './Sections';
 import { hasSections } from '../render/emailSections';
-import { ORDER, nameOf, statusOf, confirming } from './assets';
+import { ORDER, nameOf, statusOf, confirming, editIds } from './assets';
 
 
 /** A copy field's label, from its id: what it is, not where it sits. */
@@ -288,7 +287,8 @@ function Build({ format: start, formats, fine, sheet, setSheet, template, outloo
   const resetAsset = (x: SheetAsset) => setSheet(s => s && ({ ...s, updatedAt: new Date().toISOString(),
     edits: Object.fromEntries(Object.entries(s.edits).map(([key, m]) => [key,
       m && typeof m === 'object' && !Array.isArray(m)
-        ? Object.fromEntries(Object.entries(m).filter(([id]) => !(id === x.id || id.startsWith(`${x.id}/`) || id.startsWith(`${x.id}~`))))
+        // An email and its header are one set of edits: resetting either resets both.
+        ? Object.fromEntries(Object.entries(m).filter(([id]) => !editIds(x).some(own => id === own || id.startsWith(`${own}/`) || id.startsWith(`${own}~`))))
         : m])) as Sheet['edits'] }));
 
   // Its copy: every editable run on it, as it reads now.
@@ -474,7 +474,7 @@ function Build({ format: start, formats, fine, sheet, setSheet, template, outloo
         </>}
       </aside>
     </div>
-    <AiCheck sheet={sheet} asset={a} apply={ops => setSheet(s => s && ({ ...s, edits: applyOps(s.edits, ops), updatedAt: new Date().toISOString() }))} />
+    <AiCheck sheet={sheet} asset={a} />
     <footer className="st-bar st-bottom">
       <span className={`st-state is-${status}`}>{status === 'done' ? 'Confirmed' : status === 'changed' ? 'Changed since confirming' : 'Not confirmed'}</span>
       {fine && <span className="st-quiet st-label">{a.label}</span>}

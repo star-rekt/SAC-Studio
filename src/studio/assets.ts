@@ -16,7 +16,7 @@ export const nameOf = (f: string) => NAMES[f] ?? f.replace(/-/g, ' ').replace(/^
 
 /** The ids an asset's edits are kept under: its own, and for an email or its
  *  header, the pair's (a send's header is the top of its email, one set of edits). */
-const editIds = (a: SheetAsset) => /^email-(body|hero)\//.test(a.id)
+export const editIds = (a: SheetAsset) => /^email-(body|hero)\//.test(a.id)
   ? [`email-body${a.id.slice(a.id.indexOf('/'))}`, `email-hero${a.id.slice(a.id.indexOf('/'))}`] : [a.id];
 
 /** What an asset was confirmed as: its design, sections, copy and its own
