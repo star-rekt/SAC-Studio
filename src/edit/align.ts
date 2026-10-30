@@ -175,8 +175,3 @@ export function alignShifts(ids: string[], align: Align, block = false):
   }
   return out;
 }
-
-/** A short, readable label for the layer list -- the last two path segments
- *  of the id, the same convention `toLayers.ts`'s own `name()` uses for a
- *  Figma layer name. */
-export const labelOf = (id: string) => id.split('/').slice(-2).join('/');

@@ -8,7 +8,7 @@
 import { useEffect, useState } from 'react';
 import { useEdits, paintOf, sizeOf, moveOf } from './store';
 import { BRAND } from '../model/compose';
-import { alignGroup, labelOf, type Align } from './align';
+import { alignGroup, type Align } from './align';
 
 const PALETTE: [string, string][] = [
   ['orange', BRAND.orange], ['cream', BRAND.cream], ['green', BRAND.green],
@@ -94,38 +94,19 @@ export function SizeRow({ id }: { id: string }) {
 export function GroupRow() {
   const api = useEdits();
   const ids = api.selectedGroup;
-  const [block, setBlock] = useState(false);
   if (!ids.length) return null;
-  const align = (a: Align) => alignGroup(ids, a, api.edits, api.nudge, block);
-  return <section className="picked group-row">
-    <h4>Aligning {ids.length} layer{ids.length === 1 ? '' : 's'}</h4>
-    <p className="muted">Shift or Cmd-click a layer (or box-select on the
-      canvas) to add or remove it.</p>
-    <ul className="group-list">
-      {ids.map(id => <li key={id}>
-        <span>{labelOf(id)}</span>
-        <button onClick={() => api.toggleGroup(id)} aria-label={`Remove ${labelOf(id)}`}>&times;</button>
-      </li>)}
-    </ul>
-    <label className="group-mode">
-      <input type="checkbox" checked={block} onChange={e => setBlock(e.target.checked)} />
-      Move everything as one block (off: separate lines align independently;
-      layers sharing a line still move together)
-    </label>
+  const align = (a: Align) => alignGroup(ids, a, api.edits, api.nudge, false);
+  return <section className="group-row">
+    <h4>{ids.length} selected</h4>
     <div className="group-align">
-      <button onClick={() => align('left')}>Align left</button>
+      <button onClick={() => align('left')}>Left</button>
       <button onClick={() => align('center')}>Centre</button>
-      <button onClick={() => align('right')}>Align right</button>
+      <button onClick={() => align('right')}>Right</button>
     </div>
-    <button onClick={() => { ids.forEach(api.reset); api.clearGroup(); }}>
-      Reset these layers to the template's own position
-    </button>
-    <button onClick={api.clearGroup}>Clear selection</button>
+    <button onClick={api.clearGroup}>Clear</button>
   </section>;
 }
 
-/** Offsets are relative to the component's own published position. Moving a
- * line of type here never moves the ticket, image, or whole board around it. */
 export function PositionRow({ id }: { id: string }) {
   const api = useEdits();
   const { dx, dy } = moveOf(api.edits, id);

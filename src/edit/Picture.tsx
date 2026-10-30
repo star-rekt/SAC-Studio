@@ -8,6 +8,7 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useEdits, picOf, FRESH_PIC, type Pic } from './store';
 import { asDataUrl } from './Media';
 import { FigmaGallery } from './FigmaGallery';
+import { GalleryTabs } from './GalleryTabs';
 import { ZONE_LIST, photoUrl, standIn, type Zone } from '../model/compose';
 import { byKind, PHOTOS } from '../model/media';
 import { canvasZoom } from './Editable';
@@ -234,10 +235,7 @@ export function PicturePanel({ id }: { id: string }) {
   );
   return (
     <>
-      <h4>Photograph</h4>
-      <button onClick={() => api.setPic(id, { hidden: !p.hidden })}>
-        {p.hidden ? 'Restore image on this asset' : 'Remove image from this asset'}
-      </button>
+      <GalleryTabs title="Image gallery" local={<>
       <ul className="lib photos">
         {byKind('photo').map(i => (
           <li key={i.id} className={p.zone === i.id ? 'on' : ''}>
@@ -254,9 +252,12 @@ export function PicturePanel({ id }: { id: string }) {
           </li>
         ))}
       </ul>
-      <FigmaGallery onPick={url => api.setPic(id,
-        { url, zone: undefined, hidden: false, x: FRESH_PIC.x, y: FRESH_PIC.y, scale: FRESH_PIC.scale, ...AUTO })} />
-      <button onClick={() => file.current?.click()}>Replace with a file…</button>
+      <button onClick={() => file.current?.click()}>Upload an image…</button>
+      </>} figma={<FigmaGallery onPick={url => api.setPic(id,
+        { url, zone: undefined, hidden: false, x: FRESH_PIC.x, y: FRESH_PIC.y, scale: FRESH_PIC.scale, ...AUTO })} />} />
+      <button onClick={() => api.setPic(id, { hidden: !p.hidden })}>
+        {p.hidden ? 'Restore image on this asset' : 'Remove image from this asset'}
+      </button>
       <input ref={file} type="file" accept="image/*" hidden onChange={e => {
         const f = e.target.files?.[0]; e.target.value = ''; if (!f) return;
         // Not createObjectURL: that blob: reference dies with the document, so
@@ -271,7 +272,9 @@ export function PicturePanel({ id }: { id: string }) {
           copy, so it took the bottom corner with the least overlap. Check it.</p>
           : p.autoClean === false && <p className="muted">The copy touches the
           subject's legs or gear -- the cleanest option here.</p>}
-        {(p.auto || p.follow !== undefined) && <label className="group-mode">
+        {/* Only where the copy can move: an asset whose copy is a smart-placement block. */}
+        {(p.auto || p.follow !== undefined) && !!document.querySelector(`[data-id="${CSS.escape(id)}"]`)
+          ?.closest('.sheet')?.querySelector('[data-copy-id]') && <label className="group-mode">
           <input type="checkbox" checked={p.follow ?? true}
                  onChange={e => api.setPic(id, { follow: e.target.checked, autoSig: undefined })} />
           Copy follows the photo when you crop by hand (moving the copy yourself

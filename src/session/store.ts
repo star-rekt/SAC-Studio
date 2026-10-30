@@ -36,10 +36,6 @@ export const saveSession = (s: Sheet): Promise<void> =>
     { method: 'PUT', headers: { 'content-type': 'application/json' },
       body: JSON.stringify(s) }).then(json).then(() => undefined);
 
-export const deleteSession = (id: string): Promise<void> =>
-  fetch(`/api/sessions/${encodeURIComponent(id)}`, { method: 'DELETE' })
-    .then(json).then(() => undefined);
-
 export type SaveState = { state: 'idle' | 'saving' | 'saved' | 'failed'; at?: string; error?: string };
 
 /** Writes the sheet a beat after it stops changing.
@@ -70,19 +66,6 @@ export function useAutosave(sheet: Sheet, on: boolean): SaveState {
   return save;
 }
 
-export type ExportReport = {
-  dir: string; zip?: string; files: number;
-  failed: { id: string; why: string }[]; ms: number;
-};
-
-/** Render every asset and put them in a folder to drag into Figma. Slow --
- *  it is a browser per asset -- so the caller shows that it is working. */
-export const exportForFigma = (session: string): Promise<ExportReport> =>
-  fetch('/api/export', {
-    method: 'POST', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ session, origin: location.origin }),
-  }).then(json);
-
 /** The plugin needs only this one self-contained file; the review folder is
  * optional and should not be created as a side effect of downloading it. */
 export async function downloadFigmaFile(session: string, name: string): Promise<void> {
@@ -107,6 +90,24 @@ export async function downloadFigmaFile(session: string, name: string): Promise<
   const link = document.createElement('a');
   link.href = url;
   link.download = `${name.replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-|-$/g, '') || session}.figma.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1_000);
+}
+
+/** Every asset as a PNG, in one zip -- rendered with the session's own edits,
+ *  so save first. Same origin rule as the Figma file. */
+export async function downloadPngs(session: string, name: string): Promise<void> {
+  const response = await fetch(`/api/png/${encodeURIComponent(session)}?origin=${encodeURIComponent(location.origin)}`);
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: response.statusText }));
+    throw Error(error.error || `${response.status} ${response.statusText}`);
+  }
+  const url = URL.createObjectURL(await response.blob());
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `${name.replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-|-$/g, '') || session}-png.zip`;
   document.body.appendChild(link);
   link.click();
   link.remove();

@@ -8,7 +8,6 @@
  *  the board's shared ticket lockup (./Ticket.tsx). */
 import type { SheetAsset } from '../../../sheet/types';
 import { ZONE_LIST, photoFor } from '../../../model/compose';
-import type { Direction } from '../../../templates/directions';
 import type { FigmaLayout } from '../../figma/layout';
 import { FigmaFrame } from '../../figma/FigmaFrame';
 import { TicketCard, brandMarks } from './Ticket';
@@ -35,18 +34,14 @@ const PARTS = {
   '9x16': { layout: social9x16, card: '538:21857', code: '538:21904', divider: '538:21906', more: '538:21912' },
 } as const;
 type Ratio = keyof typeof PARTS;
-/** Behaviour (the card and brand row: ./Ticket.tsx) plus, here, the
- *  design directions' clip shapes. FigmaFrame supplies the photo at Figma's
- *  crop and smart placement (the card moves and scales as one). */
-export function BumpSocial({ asset, direction, ratio }: { asset: SheetAsset; direction?: Direction; ratio: Ratio }) {
+/** Behaviour: the card and brand row (./Ticket.tsx). FigmaFrame supplies the
+ *  photo at Figma's crop and smart placement (the card moves and scales as one). */
+export function BumpSocial({ asset, ratio }: { asset: SheetAsset; ratio: Ratio }) {
   const [w, h] = asset.size;
   const P = PARTS[ratio], layout = P.layout as unknown as FigmaLayout, map = BUMP_SOCIAL_FIGMA[ratio];
   const zone = ZONE_LIST.find(z => z.id === asset.media.photo) ?? photoFor('hike', 0);
   const photo = layout.frame.images?.[0] && layout.assets?.[layout.frame.images[0].ref];
-  const clipPath = direction?.shape === 'panel' ? `path("M 30 30 H ${w - 30} V ${h - 30} H 30 Z")`
-    : direction?.shape === 'notch' ? `path("M 30 30 H ${w - 30} V ${h - 30} H ${Math.round(w * .55)} V ${Math.round(h * .72)} H 30 Z")`
-    : undefined;
-  return <FigmaFrame id={asset.id} size={[w, h]} layout={layout} zone={zone} background="#838383" sheetStyle={{ clipPath }}
+  return <FigmaFrame id={asset.id} size={[w, h]} layout={layout} zone={zone} background="#838383"
     photo={photo ? { id: `${asset.id}/photo`, src: photo.src, size: [photo.w, photo.h] } : undefined}
     fixed={brandMarks(asset, layout, [map['brand/0'], map['brand/1'], map['brand/2'], P.more])}>
     <TicketCard asset={asset} layout={layout} ticketSrc={`/graphics/ticket-tag-${ratio}.svg`} offerId="extra"

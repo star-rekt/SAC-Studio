@@ -32,18 +32,42 @@ export const EMAIL_VARIANTS: Record<string, DesignVariant[]> = {
   // The Memorial Day board's fifteen whole emails, as the template lab compiled them.
   named_sale: NAMED_SALE.filter(d => d.format === 'email-body')
     .map(d => ({ id: d.id, name: d.name, height: Math.round(d.size[1]), node: d.node,
-      heroHeight: (h => h && Math.round(h.size[1]))(NAMED_SALE.find(h => h.format === 'email-hero' && h.id === d.id)) })),
+      // Its header is its hero section: that section's height.
+      heroHeight: (h => h && Math.round(h.height))(d.sections?.find(s => s.kind === 'hero')) })),
 };
 
-/** Independent board examples inside a non-email asset type. Selecting one
- * changes the design of this instance, never the number of instances. */
+/** Small formats the templates draw differently: any campaign can take
+ *  another template's design, drawn in its own colours with its own copy.
+ *  `home`: the templates whose own design it is. */
+const SHARED: Record<string, { id: string; name: string; home: string[] }[]> = {
+  'cplp-tile': [{ id: 'photo', name: 'Photo tile', home: ['sc26_0021', 'sc26_bump2', 'named_sale'] },
+    { id: 'halftone', name: 'Halftone tile', home: ['sc26_0060'] }],
+  'text-link': [{ id: 'row', name: 'Link row', home: ['sc26_0021'] },
+    { id: 'bar', name: 'Banner bar', home: ['sc26_0060', 'sc26_bump2', 'named_sale'] }],
+  'hero-mobile': [{ id: 'dark', name: 'Photo', home: ['sc26_0021', 'sc26_bump2', 'named_sale'] },
+    { id: 'cream', name: 'Cream', home: ['sc26_0060'] }],
+};
+/** A small format's design in this campaign: the one chosen, else its template's own. */
+export const siteDesign = (templateId: string, format: string, chosen: string) => {
+  const list = SHARED[format] ?? [];
+  return (list.find(d => d.id === chosen) ?? list.find(d => d.home.includes(templateId)) ?? list[0])?.id;
+};
+/** Each template's shared formats, its own design first. */
+const shared = (templateId: string) => Object.fromEntries(Object.entries(SHARED).map(([format, list]) =>
+  [format, [...list].sort((a, b) => Number(b.home.includes(templateId)) - Number(a.home.includes(templateId)))
+    .map(({ id, name }) => ({ id, name }))]));
+
+/** Independent board examples inside a non-email asset type, and the small
+ *  formats' shared designs. Selecting one changes the design of this
+ *  instance, never the number of instances. */
 export const SITE_VARIANTS: Record<string, Record<string, { id: string; name: string }[]>> = {
-  sc26_0060: { cb: [
+  sc26_0021: shared('sc26_0021'),
+  sc26_0060: { ...shared('sc26_0060'), cb: [
     { id: 'launch', name: 'Launch banner' },
     { id: 'ends-today', name: 'Ends-today banner' },
   ] },
-  named_sale: { 'hero-desktop': NAMED_SALE.filter(d => d.format === 'hero-desktop').map(d => ({ id: d.id, name: d.name })) },
-
+  sc26_bump2: shared('sc26_bump2'),
+  named_sale: { ...shared('named_sale'), 'hero-desktop': NAMED_SALE.filter(d => d.format === 'hero-desktop').map(d => ({ id: d.id, name: d.name })) },
 };
 
 /** Designs saved under an earlier id, and the board design each now is: Bump

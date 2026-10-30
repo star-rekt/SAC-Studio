@@ -17,7 +17,6 @@ import { Grain, CodeLine, PhotoWindow, WINDOW_AT, Wordmark, BrushLabel, INK } fr
 import type { FormatSpec } from '../templates/registry';
 import type { SheetAsset } from '../sheet/types';
 import type { Outlook, TemplateSpec } from '../templates/spec';
-import type { Direction } from '../templates/directions';
 
 const byId = new Map(ZONE_LIST.map(z => [z.id, z]));
 const zoneAt = (photo: string | undefined, n: number) => {
@@ -36,19 +35,12 @@ const GROUND: Record<Outlook['ground'], string> = {
   'ink': BRAND.ink, 'charcoal': '#333333',
 };
 
-export function Compose({ spec, outlook: o, asset, template, dir }: {
+export function Compose({ spec, outlook: o, asset, template }: {
   spec: FormatSpec; outlook: Outlook; asset: SheetAsset; template: TemplateSpec;
-  dir?: Direction;
 }) {
   const [W, H] = spec.size;
   const c = asset.copy;
-  // A direction, where this family has one, overrides the template's accent
-  // and its corner. Everything else about the outlook stands: a direction is a
-  // design choice within the template, not a different template.
-  const accent = dir?.accent ?? o.accent ?? template.accent;
-  // "As published" must preserve the board's measured radii. Direction B/C
-  // are deliberate alternates; direction A is not a generic 26px override.
-  const radius = dir && dir.id !== 'a' ? dir.radius : undefined;
+  const accent = o.accent ?? template.accent;
   const onPhoto = o.ground === 'photo-bleed';
   const ground = onPhoto ? zoneAt(asset.media.photo, 0) : undefined;
   const place = onPhoto ? placeOn(ground) : null;
@@ -160,7 +152,7 @@ export function Compose({ spec, outlook: o, asset, template, dir }: {
         <Picture key={n} id={`${asset.id}/el/${n}`} zone={zoneAt(asset.media.photo, n)}
           style={{ position: 'absolute', left: `${e.rect[0] * 100}%`, top: `${e.rect[1] * 100}%`,
             width: `${e.rect[2] * 100}%`, height: `${e.rect[3] * 100}%`,
-            borderRadius: radius ?? Math.max(8, W * 0.01), overflow: 'hidden', zIndex: 1 }} />
+            borderRadius: Math.max(8, W * 0.01), overflow: 'hidden', zIndex: 1 }} />
       ))}
 
       {windowed && (
@@ -262,7 +254,7 @@ export function Compose({ spec, outlook: o, asset, template, dir }: {
             background: o.button === 'pill-charcoal' ? INK
                       : o.button === 'pill-orange' ? accent : 'transparent',
             border: o.button === 'pill-outline' ? `${Math.max(2, px * 0.03)}px solid ${tone}` : undefined,
-            borderRadius: radius === 0 ? 0 : o.button === 'pill-orange' ? px * 0.1 : px * 0.38,
+            borderRadius: o.button === 'pill-orange' ? px * 0.1 : px * 0.38,
             padding: `${px * 0.19}px ${px * 0.5}px`, display: 'inline-block' }}>{c.cta}</Editable>
         )}
       </div>

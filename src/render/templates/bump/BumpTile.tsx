@@ -6,7 +6,8 @@ import { stack } from '../../../fonts';
 import { useEdits, textOf } from '../../../edit/store';
 import { fitText } from '../../../model/textContracts';
 
-export function BumpTile({ asset }: { asset: SheetAsset }) {
+/** `colour`: the field's, when another template's campaign takes this design. */
+export function BumpTile({ asset, colour = '#f14222' }: { asset: SheetAsset; colour?: string }) {
   const [w,h] = asset.size;
   const words = (asset.scope.category || asset.label || 'CATEGORY').toUpperCase()
     .replace(/\bAPPAREL\b/g,'APPAREL').split(/\s+/);
@@ -21,7 +22,7 @@ export function BumpTile({ asset }: { asset: SheetAsset }) {
     .reduce((a, b) => b.fontSize < a.fontSize ? b : a);
   const fontSize = fit.fontSize;
   return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
-    background:'#f14222',backgroundImage:'radial-gradient(#1f1f1f55 .95px, transparent 1.3px)',
+    background:colour,backgroundImage:'radial-gradient(#1f1f1f55 .95px, transparent 1.3px)',
     backgroundSize:'7px 7px',display:'grid',placeItems:'center'}}>
     <Editable id={`${asset.id}/category`} fit={fit.contract} style={{fontFamily:stack('Quiet Sans'),
       fontWeight:800,fontSize,color:'#fff',textAlign:'center',whiteSpace:'pre-line',

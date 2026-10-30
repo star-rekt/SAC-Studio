@@ -112,8 +112,7 @@ export default function Shot({ id, session }: { id: string; session: string }) {
       <div style={{ width: asset.size[0], background: '#fff' }}
            data-band={band ? `${band.x},${band.y},${band.w},${band.h}` : ''}
            data-band-why={zone ? placeOn(zone).why : ''}>
-        <One asset={asset} doc={doc} template={template} outlook={outlook}
-             direction={sheet.direction} formatDirections={sheet.formatDirections} />
+        <One asset={asset} doc={doc} template={template} outlook={outlook} />
       </div>
     </Ctx.Provider>
   );

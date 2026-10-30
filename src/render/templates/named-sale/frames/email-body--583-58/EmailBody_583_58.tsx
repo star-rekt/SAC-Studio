@@ -4,15 +4,14 @@
  *  board place and stacking order:
  *    copy tied to the brief -- urgency, urgency-2, urgency-3, amount, lead, cta/shop-all-sale, button/cta-text, offer, cta-button/shop-now, offer-2, cta-button/shop-now-2, offer-3, cta-button/shop-now-3, offer-4, cta-button/shop-now-4, offer-5, cta-button/shop-now-5, offer-6, cta-button/shop-now-6, button/cta-text-2;
  *    board copy, editable -- nav-links/nav-link-label, nav-links/nav-link-label-2, nav-links/nav-link-label-3, nav-links/nav-link-label-4, ends-5-25, ends-5-25-2, flash-sale, text, off, women-s-apparel, summer-apparel, footwear, camp-hike, your-top-picks-on-sale, product-listing-1/brand-name, product-listing-1/product-name, product-listing-1/price, product-listing-1/shop-now, product-listing-2/brand-name, product-listing-2/product-name, product-listing-2/price, product-listing-2/shop-now, product-listing-3/brand-name, product-listing-3/product-name, product-listing-3/price, product-listing-3/shop-now, product-listing-4/brand-name, product-listing-4/product-name, product-listing-4/price, product-listing-4/shop-now, top-brands-deeper-deals, unsubscribe, talk-to-a-gearhead, physical-address, copyright;
- *    photos -- product-cutout/photo, product-cutout/photo-2, product-cutout/photo-3, product-listing-1/photo, product-listing-2/photo, product-listing-3/photo, product-listing-4/photo; brand slots -- brand/0.
+ *    photos -- product-cutout/photo, product-cutout/photo-2, product-cutout/photo-3, product-listing-1/photo, product-listing-2/photo, product-listing-3/photo, product-listing-4/photo; brand slots -- none.
  *  Text contracts come from each board layer (boardFit). NUDGE (./nudges.ts)
  *  holds the fix loop's per-layer corrections to Figma's render. */
 import type { SheetAsset } from '../../../../../sheet/types';
 import { Ground } from '../../../../../edit/Editable';
 import { Picture } from '../../../../../edit/Picture';
 import { ZONE_LIST, photoFor } from '../../../../../model/compose';
-import { BrandMark } from '../../../../../render/templates/BrandMark';
-import { FigmaLayers, FigmaText, FigmaStroke, FigmaMark, type Slot } from '../../../../../render/figma/FigmaLayers';
+import { FigmaLayers, useBand, FigmaText, FigmaStroke, FigmaMark, type Slot } from '../../../../../render/figma/FigmaLayers';
 import { cropOf, type FigmaLayout } from '../../../../../render/figma/layout';
 import board from './layout.json';
 import { NUDGE } from './nudges';
@@ -86,17 +85,11 @@ export const EMAIL_BODY_583_58_FIGMA = {
   "cta/cta": "538:39125", // pill: CTA
   "cta-button/button": "538:39158", // pill: Button
   "or-tile/cta-button": "538:39169", // pill: CTA Button
-  "outdoor-research/outdoor-research-white-main": "I538:39171;876:3717", // graphic: Outdoor Research / White / Main
   "rab-tile/cta-button": "538:39176", // pill: CTA Button
-  "rab-tile/smartwool": "538:39178", // graphic: Smartwool
   "mtn-hardwear-tile/cta-button": "538:39185", // pill: CTA Button
-  "mtn-hardwear-tile/salomon-white": "538:39187", // graphic: Salomon / White
-  "tnf-tile/the-north-face-white": "538:39192", // graphic: The North Face / White
   "tnf-tile/cta-button": "538:39193", // pill: CTA Button
   "or-tile/cta-button-2": "538:39201", // pill: CTA Button
-  "or-tile/osprey-stacked": "538:39203", // graphic: Osprey_Stacked
   "rab-tile/cta-button-2": "538:39208", // pill: CTA Button
-  "rab-tile/lasportiva-symbol": "538:39210", // graphic: LaSportiva_Symbol
   "cta-button/button-2": "538:39213", // pill: Button
   "frame-2204/frame-2204/photo": "538:39073", // backdrop: Frame 2204
   "product-cutout/photo": "538:39099", // photo: image 3752
@@ -106,7 +99,6 @@ export const EMAIL_BODY_583_58_FIGMA = {
   "product-listing-2/photo": "538:39140", // photo: Product Image
   "product-listing-3/photo": "538:39146", // photo: Product Image
   "product-listing-4/photo": "538:39152", // photo: Product Image
-  "brand/0": "538:39171", // brand: Outdoor Research
   "vector/538-39084": "538:39084", // vector: Vector 150
   "vector/538-39080": "538:39080", // vector: Vector 150
 } as const;
@@ -263,22 +255,14 @@ export function EmailBody_583_58({ asset }: { asset: SheetAsset }) {
       <FigmaMark l={l} box={box} id={`${id}/or-tile/cta-button/mark`} src="/graphics/named-sale-pill-235-33x64-33-1w0of1z.svg" fill="#F14222" layout={layout} />
       {board({ bare: true })}
     </>,
-    [EMAIL_BODY_583_58_FIGMA["outdoor-research/outdoor-research-white-main"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/outdoor-research/outdoor-research-white-main/mark`} src="/graphics/named-sale-outdoor-research-white-main-3gbmg8.svg"
-      fill="#333333" layout={layout} />,
     [EMAIL_BODY_583_58_FIGMA["rab-tile/cta-button"]]: (l, box, _n, board) => <>
       <FigmaMark l={l} box={box} id={`${id}/rab-tile/cta-button/mark`} src="/graphics/named-sale-pill-235-33x64-33-1w0of1z.svg" fill="#F14222" layout={layout} />
       {board({ bare: true })}
     </>,
-    [EMAIL_BODY_583_58_FIGMA["rab-tile/smartwool"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/rab-tile/smartwool/mark`} src="/graphics/named-sale-smartwool-1o92n0p.svg"
-      fill="#333333" layout={layout} />,
     [EMAIL_BODY_583_58_FIGMA["mtn-hardwear-tile/cta-button"]]: (l, box, _n, board) => <>
       <FigmaMark l={l} box={box} id={`${id}/mtn-hardwear-tile/cta-button/mark`} src="/graphics/named-sale-pill-235-33x64-33-1w0of1z.svg" fill="#F14222" layout={layout} />
       {board({ bare: true })}
     </>,
-    [EMAIL_BODY_583_58_FIGMA["mtn-hardwear-tile/salomon-white"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/mtn-hardwear-tile/salomon-white/mark`} src="/graphics/named-sale-salomon-white-1y9lljl.svg"
-      fill="#333333" layout={layout} />,
-    [EMAIL_BODY_583_58_FIGMA["tnf-tile/the-north-face-white"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/tnf-tile/the-north-face-white/mark`} src="/graphics/named-sale-the-north-face-white-6acobi.svg"
-      fill="#333333" layout={layout} />,
     [EMAIL_BODY_583_58_FIGMA["tnf-tile/cta-button"]]: (l, box, _n, board) => <>
       <FigmaMark l={l} box={box} id={`${id}/tnf-tile/cta-button/mark`} src="/graphics/named-sale-pill-235-33x64-33-1w0of1z.svg" fill="#F14222" layout={layout} />
       {board({ bare: true })}
@@ -287,14 +271,10 @@ export function EmailBody_583_58({ asset }: { asset: SheetAsset }) {
       <FigmaMark l={l} box={box} id={`${id}/or-tile/cta-button-2/mark`} src="/graphics/named-sale-pill-235-33x64-33-1w0of1z.svg" fill="#F14222" layout={layout} />
       {board({ bare: true })}
     </>,
-    [EMAIL_BODY_583_58_FIGMA["or-tile/osprey-stacked"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/or-tile/osprey-stacked/mark`} src="/graphics/named-sale-osprey-stacked-11n05mz.svg"
-      fill="#333333" layout={layout} />,
     [EMAIL_BODY_583_58_FIGMA["rab-tile/cta-button-2"]]: (l, box, _n, board) => <>
       <FigmaMark l={l} box={box} id={`${id}/rab-tile/cta-button-2/mark`} src="/graphics/named-sale-pill-235-33x64-33-1w0of1z.svg" fill="#F14222" layout={layout} />
       {board({ bare: true })}
     </>,
-    [EMAIL_BODY_583_58_FIGMA["rab-tile/lasportiva-symbol"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/rab-tile/lasportiva-symbol/mark`} src="/graphics/named-sale-lasportiva-symbol-xb6ehh.svg"
-      fill="#333333" layout={layout} />,
     [EMAIL_BODY_583_58_FIGMA["cta-button/button-2"]]: (l, box, _n, board) => <>
       <FigmaMark l={l} box={box} id={`${id}/cta-button/button-2/mark`} src="/graphics/named-sale-pill-447x113-1qwtcrv.svg" fill="#F14222" layout={layout} />
       {board({ bare: true })}
@@ -393,11 +373,6 @@ export function EmailBody_583_58({ asset }: { asset: SheetAsset }) {
         <FigmaStroke l={l} box={box} />
       </>;
     },
-    // The board's logo until the brief names a brand.
-    [EMAIL_BODY_583_58_FIGMA["brand/0"]]: (l, box, _n, board) => asset.media.brands?.[0]
-      ? <BrandMark id={`${id}/brand/0`} name={asset.media.brands[0]} fallback="/logos/brand-outdoor-research.svg"
-          style={{ ...box, objectFit: 'contain' }} />
-      : board(),
     [EMAIL_BODY_583_58_FIGMA["vector/538-39084"]]: (_l, box) => <img src="/figma-assets/named-sale/vector-538-39084.svg" alt="" data-figma-vector style={{ position: 'absolute',
       left: box.left, top: box.top, width: box.width, height: box.height, transform: box.transform, pointerEvents: 'none' }} />,
     [EMAIL_BODY_583_58_FIGMA["vector/538-39080"]]: (_l, box) => <img src="/figma-assets/named-sale/vector-538-39080.svg" alt="" data-figma-vector style={{ position: 'absolute',
@@ -405,7 +380,9 @@ export function EmailBody_583_58({ asset }: { asset: SheetAsset }) {
   };
   const [w, h] = layout.size;
   // data-figma-compiled: the studio's Figma export reads a compiled board's way (toLayers).
-  return <Ground id={`${id}/fill`} className="sheet" data-figma-compiled="" style={{ width: w, height: h, position: 'relative', overflow: 'hidden', background: '#fff' }}>
+  // In an email built of sections, one band of the board (FigmaBand), not a sheet of its own.
+  const band = useBand();
+  return <Ground id={`${id}/fill`} className={band ? 'band' : 'sheet'} data-export-name={band?.name} data-figma-compiled="" style={{ width: w, height: band?.height ?? h, position: 'relative', overflow: 'hidden', background: '#fff' }}>
     <FigmaLayers layout={layout} slots={slots} nudges={NUDGE} />
   </Ground>;
 }

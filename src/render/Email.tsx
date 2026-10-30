@@ -13,7 +13,6 @@ import { BrandMark } from './templates/BrandMark';
 const PLACEHOLDER_LOGOS = ['patagonia', 'the-north-face', 'mountain-hardwear', 'osprey', 'outdoor-research', 'smartwool'];
 import { Editable, Movable, Ground } from '../edit/Editable';
 import { placeOn } from '../model/safe';
-import { directionsFor, type Direction } from '../templates/directions';
 import { useEdits, textOf } from '../edit/store';
 import { fitText } from '../model/textContracts';
 
@@ -118,9 +117,7 @@ export const TeaserBar = ({ id, text }: { id: string; text: string }) => {
 };
 
 /* -------------------------------------------------------------- the hero */
-export function EmailHeader({ doc, i, dir, bare = false }:
-  { doc: Doc; i: number; dir?: Direction; bare?: boolean }) {
-  const d = dir ?? directionsFor(ORANGE)[0];
+export function EmailHeader({ doc, i, bare = false }: { doc: Doc; i: number; bare?: boolean }) {
   const s = doc.sends[i], b = doc.brief;
   const H = 826;                                   // 290:6620, measured
   const k = `${s.id}/header`;
@@ -146,10 +143,7 @@ export function EmailHeader({ doc, i, dir, bare = false }:
   // The marquee runs across the top, so a ticket on a top band sits under it.
   const top = place.vert === 'top' ? 132 : place.vert === 'bottom' ? 420 : 232;
 
-  // A cut corner takes space out of the lockup, so the copy has to stop short
-  // of it. Without this the notch ate the end of 'SHOP NOW >'.
-  const notch = d.shape === 'notch' ? 64 : 0;
-  const inner = TW - pad * 2 - notch;
+  const inner = TW - pad * 2;
   const big = t.kind === 'stacked'
     ? fit([t.markdown], 92, 46, inner)
     : fit([t.lead, t.offer], 104, 52, inner);
@@ -200,19 +194,13 @@ export function EmailHeader({ doc, i, dir, bare = false }:
 
       {/* the ticket: solid orange, tilted, with a hole punched out of a corner */}
       <Movable id={`${k}/ticket`} style={{ position: 'absolute', left, top, zIndex: 3 }}>
-        <Ground id={`${k}/ticket/fill`} style={{ width: TW, background: d.accent, borderRadius: d.radius,
-          padding: `30px ${pad + notch}px 26px ${pad}px`,
-          transform: d.tilt ? `rotate(${d.tilt}deg)` : undefined,
+        <Ground id={`${k}/ticket/fill`} style={{ width: TW, background: ORANGE, borderRadius: 26,
+          padding: `30px ${pad}px 26px ${pad}px`,
+          transform: 'rotate(-2.2deg)',
           boxShadow: '0 18px 44px #0000003D',
-          // The punched hole and the cut corner are the same tool: a mask that
-          // takes a piece out of the lockup so the photograph shows through it.
-          ...(d.shape === 'tag' ? {
-            WebkitMaskImage: 'radial-gradient(circle 23px at calc(100% - 48px) 38px, transparent 99%, #000 100%)',
-            maskImage: 'radial-gradient(circle 23px at calc(100% - 48px) 38px, transparent 99%, #000 100%)',
-          } : d.shape === 'notch' ? {
-            WebkitMaskImage: 'linear-gradient(-42deg, transparent 0 78px, #000 78px)',
-            maskImage: 'linear-gradient(-42deg, transparent 0 78px, #000 78px)',
-          } : null) }}>
+          // The punched hole: a mask that takes a piece out of the lockup so the photograph shows through it.
+          WebkitMaskImage: 'radial-gradient(circle 23px at calc(100% - 48px) 38px, transparent 99%, #000 100%)',
+          maskImage: 'radial-gradient(circle 23px at calc(100% - 48px) 38px, transparent 99%, #000 100%)' }}>
 
           {t.kind === 'stacked' ? (
             <>
@@ -566,29 +554,6 @@ export function EmailBody({ doc, i, hero, templateId }: {
                      templateId={templateId} recsIndex={sec.kind === 'productRecs' ? recs++ : 0} />
       )); })()}
       <Footer />
-    </div>
-  );
-}
-
-export function Direction({ doc, i }: { doc: Doc; i: number }) {
-  const { mode, edits } = useEdits();
-  const s = doc.sends[i];
-  const hero = s.sections.find(x => x.kind === 'hero');
-  const c = copyFor(s, doc.brief);
-  const chosenPhoto = Object.entries(edits.pic).find(([id]) =>
-    id.startsWith(`${s.id}/`) && id.endsWith('/photo'))?.[1];
-  if (mode !== 'edit' || !hero || hero.kind !== 'hero') return null;
-  return (
-    <div className="direction">
-      <h4>{s.id} — what the brief says</h4>
-      {hero.design && <p><b>Design</b> {hero.design}</p>}
-      {doc.brief.creativeDirection && <p><b>Campaign creative</b> {doc.brief.creativeDirection}</p>}
-      {hero.copy && <p><b>Copy</b> {hero.copy}</p>}
-      <p><b>Photography</b> {chosenPhoto?.hidden ? 'removed on this asset'
-        : chosenPhoto?.zone ? `library image ${chosenPhoto.zone}`
-        : chosenPhoto?.url ? 'designer-selected image'
-        : 'selected template image retained until you choose a replacement'}</p>
-      <p><b>Read as</b> {c.angle} · {c.ticket.kind} offer — {c.because}</p>
     </div>
   );
 }

@@ -4,7 +4,7 @@
  *  board place and stacking order:
  *    copy tied to the brief -- lead, amount, title, button/shop-now, button/cta-text, button/cta-text-2;
  *    board copy, editable -- free-shipping-on-select-gear-apparel, nav-links/nav-link-label, nav-links/nav-link-label-2, nav-links/nav-link-label-3, nav-links/nav-link-label-4, text, off, past-season-styles, your-top-picks, product-listing-1/brand-name, product-listing-1/product-name, product-listing-1/price, product-listing-1/shop-now, product-listing-2/brand-name, product-listing-2/product-name, product-listing-2/price, product-listing-2/shop-now, product-listing-3/brand-name, product-listing-3/product-name, product-listing-3/price, product-listing-3/shop-now, product-listing-4/brand-name, product-listing-4/product-name, product-listing-4/price, product-listing-4/shop-now, looking-for-more-deals, button/cta-text-3, button/cta-text-4, button/cta-text-5, button/cta-text-6, button/cta-text-7, unsubscribe, talk-to-a-gearhead, physical-address, copyright;
- *    photos -- image/photo, image/photo-2, image/photo-3, product-listing-1/photo, product-listing-2/photo, product-listing-3/photo, product-listing-4/photo; brand slots -- brand/0, brand/1, brand/2, brand/3.
+ *    photos -- image/photo, image/photo-2, image/photo-3, product-listing-1/photo, product-listing-2/photo, product-listing-3/photo, product-listing-4/photo; brand slots -- brand/0, brand/1, brand/2, brand/3, brand/4.
  *  Text contracts come from each board layer (boardFit). NUDGE (./nudges.ts)
  *  holds the fix loop's per-layer corrections to Figma's render. */
 import type { SheetAsset } from '../../../../../sheet/types';
@@ -12,7 +12,7 @@ import { Ground } from '../../../../../edit/Editable';
 import { Picture } from '../../../../../edit/Picture';
 import { ZONE_LIST, photoFor } from '../../../../../model/compose';
 import { BrandMark } from '../../../../../render/templates/BrandMark';
-import { FigmaLayers, FigmaText, FigmaStroke, FigmaMark, type Slot } from '../../../../../render/figma/FigmaLayers';
+import { FigmaLayers, useBand, FigmaText, FigmaStroke, FigmaMark, type Slot } from '../../../../../render/figma/FigmaLayers';
 import { cropOf, type FigmaLayout } from '../../../../../render/figma/layout';
 import board from './layout.json';
 import { NUDGE } from './nudges';
@@ -72,9 +72,6 @@ export const EMAIL_BODY_2_585_2727_FIGMA = {
   "copyright": "538:38100", // text: Copyright
   "free-shipping-skinny-banner/arrow": "538:37854", // graphic: Group 3191
   "art/vector-741": "538:38044", // graphic: Vector 741
-  "rab/rab-white": "I538:38050;876:3882", // graphic: Rab / White
-  "patagonia/patagonia-white": "I538:38053;21584:46497;876:3734", // graphic: Patagonia / White
-  "brand-logo-frame/brand-logo": "538:38055", // graphic: Brand Logo
   "button/button": "538:38057", // pill: Button
   "cta-button/button": "538:38090", // pill: Button
   "shop-all/button": "I538:38092;59:4675", // pill: Button
@@ -89,7 +86,8 @@ export const EMAIL_BODY_2_585_2727_FIGMA = {
   "brand/0": "538:38050", // brand: Rab
   "brand/1": "538:38052", // brand: Brand Logo
   "brand/2": "538:38053", // brand: Patagonia
-  "brand/3": "538:38056", // brand: Osprey *NEW
+  "brand/3": "538:38055", // brand: Brand Logo
+  "brand/4": "538:38056", // brand: Osprey *NEW
   "product-listing-1/photo": "538:38066", // photo: Product Image
   "product-listing-2/photo": "538:38072", // photo: Product Image
   "product-listing-3/photo": "538:38078", // photo: Product Image
@@ -186,12 +184,6 @@ export function EmailBody2_585_2727({ asset }: { asset: SheetAsset }) {
       fill="#000000" pad={[0.05707738777210708, 0.08684627575277339]} layout={layout} />,
     [EMAIL_BODY_2_585_2727_FIGMA["art/vector-741"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/art/vector-741/mark`} src="/graphics/named-sale-vector-741-1uyq7d2.svg"
       fill="#F14221" layout={layout} />,
-    [EMAIL_BODY_2_585_2727_FIGMA["rab/rab-white"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/rab/rab-white/mark`} src="/graphics/named-sale-rab-white-1p7xd0t.svg"
-      fill="#FFFFFF" layout={layout} />,
-    [EMAIL_BODY_2_585_2727_FIGMA["patagonia/patagonia-white"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/patagonia/patagonia-white/mark`} src="/graphics/named-sale-patagonia-white-fkr8vd.svg"
-      fill="#FFFFFF" layout={layout} />,
-    [EMAIL_BODY_2_585_2727_FIGMA["brand-logo-frame/brand-logo"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/brand-logo-frame/brand-logo/mark`} src="/graphics/named-sale-brand-logo-h8tbf9.svg"
-      fill="#FFFFFF" layout={layout} />,
     [EMAIL_BODY_2_585_2727_FIGMA["button/button"]]: (l, box, _n, board) => <>
       <FigmaMark l={l} box={box} id={`${id}/button/button/mark`} src="/graphics/named-sale-pill-470x120-16vaikd.svg" fill="#F14222" layout={layout} />
       {board({ bare: true })}
@@ -280,6 +272,11 @@ export function EmailBody2_585_2727({ asset }: { asset: SheetAsset }) {
       ? <BrandMark id={`${id}/brand/3`} name={asset.media.brands[3]} fallback="/logos/brand-osprey.svg"
           style={{ ...box, objectFit: 'contain' }} />
       : board(),
+    // The board's logo until the brief names a brand.
+    [EMAIL_BODY_2_585_2727_FIGMA["brand/4"]]: (l, box, _n, board) => asset.media.brands?.[4]
+      ? <BrandMark id={`${id}/brand/4`} name={asset.media.brands[4]} fallback="/logos/brand-osprey.svg"
+          style={{ ...box, objectFit: 'contain' }} />
+      : board(),
     [EMAIL_BODY_2_585_2727_FIGMA["product-listing-1/photo"]]: (l, box) => {
       const img = l.images?.[0] && layout.assets?.[l.images[0].ref];
       const crop = img && l.crop ? cropOf(l.crop, [l.w, l.h], [img.w, img.h]) : undefined;
@@ -331,7 +328,9 @@ export function EmailBody2_585_2727({ asset }: { asset: SheetAsset }) {
   };
   const [w, h] = layout.size;
   // data-figma-compiled: the studio's Figma export reads a compiled board's way (toLayers).
-  return <Ground id={`${id}/fill`} className="sheet" data-figma-compiled="" style={{ width: w, height: h, position: 'relative', overflow: 'hidden', background: '#fff' }}>
+  // In an email built of sections, one band of the board (FigmaBand), not a sheet of its own.
+  const band = useBand();
+  return <Ground id={`${id}/fill`} className={band ? 'band' : 'sheet'} data-export-name={band?.name} data-figma-compiled="" style={{ width: w, height: band?.height ?? h, position: 'relative', overflow: 'hidden', background: '#fff' }}>
     <FigmaLayers layout={layout} slots={slots} nudges={NUDGE} />
   </Ground>;
 }

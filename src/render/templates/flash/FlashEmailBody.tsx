@@ -11,6 +11,8 @@
  *  shared renderer used for the same sections, so existing edits still land. */
 import type { Doc, Zone } from '../../../model/compose';
 import type { Section } from '../../../model/sections';
+import type { EmailPart } from '../../../sheet/types';
+import { FLASH_ADDED } from '../../emailSections';
 import { photoFor } from '../../../model/compose';
 import { copyFor } from '../../../model/copy';
 import { Editable } from '../../../edit/Editable';
@@ -209,8 +211,18 @@ function Deals({ k, header, items, pursuit }: { k: string; header?: string; purs
   </>;
 }
 
-export function FlashEmailBody({ doc, i, hero }: { doc: Doc; i: number; hero?: React.ReactNode }) {
+export function FlashEmailBody({ doc, i, hero, parts }: { doc: Doc; i: number; hero?: React.ReactNode;
+  /** The email's sections when chosen (render/emailSections.ts): the brief's, by
+   *  their place in it, and any added, from the brief's categories and brands. */
+  parts?: EmailPart[] }) {
   const s = doc.sends[i];
+  const items = (names: string[] = []) => names.map(name => ({ name, percent: '' }));
+  const added = (sec: Section): Section => sec.kind === 'brandTiles' ? { ...sec, items: items(doc.brief.brands) }
+    : sec.kind === 'categoryTiles' ? { ...sec, items: items(doc.brief.categories) } : sec;
+  const shown = parts
+    ? parts.flatMap((p, n) => p.off ? [] : p.design === 'brief' && s.sections[p.section] ? [{ n, sec: s.sections[p.section], k: `${s.id}/s${p.section}` }]
+      : p.design === 'added' && FLASH_ADDED[p.section] ? [{ n, sec: added(FLASH_ADDED[p.section]), k: `${s.id}/${p.key}` }] : [])
+    : s.sections.map((sec, n) => ({ n, sec, k: `${s.id}/s${n}` }));
   let recs = 0;
   return (
     <div className="sheet stack" style={{ width: W, background: '#fff' }}>
@@ -218,21 +230,22 @@ export function FlashEmailBody({ doc, i, hero }: { doc: Doc; i: number; hero?: R
       <Nav />
       {s.tb && <TeaserBar id={`${s.id}/tb`} text={s.tb} />}
       {hero}
-      {s.sections.map((sec: Section, n) => {
-        const k = `${s.id}/s${n}`;
+      {shown.map(({ n, sec, k }) => [
+        // data-part: where the section starts, for the Sections list to scroll to.
+        <div key={`${k}/at`} data-part={n} />, (() => {
         if (sec.kind === 'categoryTiles')
-          return <Categories key={n} k={k} header={sec.header} pursuit={s.pursuit} items={sec.items.map(it => it.name)} />;
+          return <Categories key={k} k={k} header={sec.header} pursuit={s.pursuit} items={sec.items.map(it => it.name)} />;
         if (sec.kind === 'productRecs') {
           // A second Product Recs block with no header of its own gets the
           // board's third heading, not a repeat of the first.
           const header = sec.header || (recs++ > 0 ? 'More Current Deals' : 'Flash Sale Top Picks');
-          return <Picks key={n} k={k} header={header} count={sec.count ?? 4} cta={sec.cta || 'See More'} />;
+          return <Picks key={k} k={k} header={header} count={sec.count ?? 4} cta={sec.cta || 'See More'} />;
         }
         if (sec.kind === 'moreDeals')
-          return <Deals key={n} k={k} header={sec.header} pursuit={s.pursuit} items={sec.items} />;
-        return <SectionView key={n} sec={sec} k={k} pursuit={s.pursuit} brief={doc.brief}
+          return <Deals key={k} k={k} header={sec.header} pursuit={s.pursuit} items={sec.items} />;
+        return <SectionView key={k} sec={sec} k={k} pursuit={s.pursuit} brief={doc.brief}
           body={copyFor(s, doc.brief).body} templateId="sc26_0021" />;
-      })}
+      })()])}
       <Footer />
     </div>
   );

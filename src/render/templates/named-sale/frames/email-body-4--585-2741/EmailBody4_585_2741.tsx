@@ -11,7 +11,7 @@ import type { SheetAsset } from '../../../../../sheet/types';
 import { Ground } from '../../../../../edit/Editable';
 import { Picture } from '../../../../../edit/Picture';
 import { ZONE_LIST, photoFor } from '../../../../../model/compose';
-import { FigmaLayers, FigmaText, FigmaStroke, FigmaMark, type Slot } from '../../../../../render/figma/FigmaLayers';
+import { FigmaLayers, useBand, FigmaText, FigmaStroke, FigmaMark, type Slot } from '../../../../../render/figma/FigmaLayers';
 import { cropOf, type FigmaLayout } from '../../../../../render/figma/layout';
 import board from './layout.json';
 import { NUDGE } from './nudges';
@@ -385,7 +385,9 @@ export function EmailBody4_585_2741({ asset }: { asset: SheetAsset }) {
   };
   const [w, h] = layout.size;
   // data-figma-compiled: the studio's Figma export reads a compiled board's way (toLayers).
-  return <Ground id={`${id}/fill`} className="sheet" data-figma-compiled="" style={{ width: w, height: h, position: 'relative', overflow: 'hidden', background: '#fff' }}>
+  // In an email built of sections, one band of the board (FigmaBand), not a sheet of its own.
+  const band = useBand();
+  return <Ground id={`${id}/fill`} className={band ? 'band' : 'sheet'} data-export-name={band?.name} data-figma-compiled="" style={{ width: w, height: band?.height ?? h, position: 'relative', overflow: 'hidden', background: '#fff' }}>
     <FigmaLayers layout={layout} slots={slots} nudges={NUDGE} />
   </Ground>;
 }

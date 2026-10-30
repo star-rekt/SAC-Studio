@@ -32,8 +32,8 @@ const preview: Api = {
 
 assert.match(readFileSync(new URL('../index.html', import.meta.url), 'utf8'),
   /<title>SAC Studio<\/title>/);
-assert.match(readFileSync(new URL('../src/App.tsx', import.meta.url), 'utf8'),
-  /<strong>SAC Studio<\/strong>/);
+assert.match(readFileSync(new URL('../src/studio/Studio.tsx', import.meta.url), 'utf8'),
+  /className="st-brand">SAC Studio</);
 
 const brief = 'Launch: Extra 20% off select outdoor gear. Email x1. Paid Social x1. Campaign Banner x1.';
 const upload: UserMedia = {
@@ -228,34 +228,6 @@ for (const selected of TEMPLATES) {
   </Ctx.Provider>);
   assert.match(matchedHtml, /data:image\/png;base64,AAAA/,
     `${selected.id}: matched photo not rendered`);
-  const squaredHtml = renderToStaticMarkup(<Ctx.Provider value={preview}>
-    <One asset={social} doc={compose(countedSheet.brief.text, sendsOf(countedSheet))}
-      template={template} outlook={outlook}
-      formatDirections={{ 'paid-social-1x1':'b' }} />
-  </Ctx.Provider>);
-  assert.match(squaredHtml, /data-design-direction="b"/,
-    `${selected.id}: per-format design direction not applied`);
-  assert.match(squaredHtml, /border:8px solid/,
-    `${selected.id}: direction did not change the visible treatment`);
-  if (selected.id === 'sc26_0060') {
-    assert.match(squaredHtml, /M 30 30 H 1050 V 1050 H 30 Z/,
-      'Bump squared direction did not change the stepped crop');
-  }
-  for (const directed of [countedSheet.assets.find(asset => asset.format === 'cb')!, emailHero]) {
-    const directedHtml = renderToStaticMarkup(<Ctx.Provider value={preview}>
-      <One asset={directed} doc={emailDoc} template={template} outlook={outlook}
-        formatDirections={{ [directed.format]:'c' }} />
-    </Ctx.Provider>);
-    assert.match(directedHtml, /data-design-direction="c"/,
-      `${selected.id}/${directed.format}: direction did not apply to this type`);
-  }
-  const squareBanner = renderToStaticMarkup(<Ctx.Provider value={preview}>
-    <One asset={countedSheet.assets.find(asset => asset.format === 'cb')!}
-      doc={emailDoc} template={template} outlook={outlook}
-      formatDirections={{ cb:'b' }} />
-  </Ctx.Provider>);
-  assert.match(squareBanner, /background:#101010/i,
-    `${selected.id}: square banner did not adopt its ink palette`);
   const sheet = buildSheet(brief, selected.id, 'Three-board smoke test', undefined,
     undefined, { formats: template.formats.map(format => format.format) });
   const doc = compose(sheet.brief.text, sendsOf(sheet));
@@ -283,7 +255,7 @@ for (const selected of TEMPLATES) {
     </Ctx.Provider>);
   assert.match(libraryHtml, /Trail socks/);
   assert.match(libraryHtml, /trail, socks/);
-  assert.equal((libraryHtml.match(/Remove upload/g) ?? []).length, 1,
+  assert.equal((libraryHtml.match(/aria-label="Remove upload"/g) ?? []).length, 1,
     `${selected.id}: only user-added media may be removed`);
   assert.match(libraryHtml, /Add to/,
     `${selected.id}: library cannot add a graphic to the board`);

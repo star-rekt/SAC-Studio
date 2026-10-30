@@ -16,7 +16,9 @@ import { Editable, Ground } from '../../../edit/Editable';
 import { Media } from '../../../edit/Media';
 import { Picture } from '../../../edit/Picture';
 import { ZONE_LIST, photoFor } from '../../../model/compose';
-import { useEdits, textOf } from '../../../edit/store';
+import { Fragment } from 'react';
+import { useEdits, textOf, type Edits } from '../../../edit/store';
+import { sectionOf } from '../../emailSections';
 import { boardFit } from '../../../model/textContracts';
 import { BrandMark } from '../BrandMark';
 import { layerOf, boxOf, anchorOf, typeOf, cropOf, placeIn, brandSlot, type FigmaLayer, type FigmaLayout } from '../../figma/layout';
@@ -301,11 +303,35 @@ export function Bump2EmailHero({ asset, design }: { asset: SheetAsset; design: D
  *    placement frames each within its own visible shape. */
 export function Bump2EmailBody({ asset, design }: { asset: SheetAsset; design: Design }) {
   const { edits } = useEdits();
+  return <Ground id={`${asset.id}/fill`} className="sheet" style={{ width: W, position: 'relative', background: '#fff' }}>
+    {blocksOf(asset, design, edits)}
+  </Ground>;
+}
+
+/** An email built of sections (its `parts`), each the blocks it names
+ *  (render/emailSections.ts) from its own design. A part keyed apart (from
+ *  another design, or a second copy) has ids of its own. */
+export function Bump2EmailSections({ asset }: { asset: SheetAsset }) {
+  const { edits } = useEdits();
+  return <Ground id={`${asset.id}/fill`} className="sheet" style={{ width: W, position: 'relative', background: '#fff' }}>
+    {asset.parts!.map((p, n) => {
+      if (p.off) return null;
+      const section = sectionOf('sc26_bump2', p), design = Number(p.design.replace('design-', '')) as Design;
+      if (!section || !LAYOUTS[design]) return null;
+      const blocks = blocksOf(p.key ? { ...asset, id: `${asset.id}~${p.key}` } : asset, design, edits);
+      // data-part: where the section starts, for the Sections list to scroll to.
+      return <Fragment key={p.key || `${p.design}.${p.section}`}><div data-part={n} />{section.blocks.map(i => blocks[i])}</Fragment>;
+    })}
+  </Ground>;
+}
+
+/** Every block of a design, drawn, in the board's order: its ids numbered as
+ *  the whole email numbers them, so a section keeps its edits wherever it is. */
+function blocksOf(asset: SheetAsset, design: Design, edits: Edits) {
   const layout = LAYOUTS[design], R = reader(layout), L = (l: string) => layerOf(layout, l);
   const id = asset.id;
   let heading = 0, grid = 0, cta = 0;
-  return <Ground id={`${id}/fill`} className="sheet" style={{ width: W, position: 'relative', background: '#fff' }}>
-    {R.all.map(section => {
+  return R.all.map(section => {
       const name = L(section).name;
       if (name === 'SL/PH') return <Inbox key={section} asset={asset} layout={layout} section={section} />;
       if (name === 'HEADER') return <Nav key={section} layout={layout} section={section} id={id} />;
@@ -337,6 +363,5 @@ export function Bump2EmailBody({ asset, design }: { asset: SheetAsset; design: D
       return R.find(section, l => l.name === 'Vector 747').length
         ? <BrandTiles key={section} asset={asset} layout={layout} section={section} />
         : <Categories key={section} asset={asset} layout={layout} section={section} />;
-    })}
-  </Ground>;
+    });
 }

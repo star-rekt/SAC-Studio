@@ -10,11 +10,12 @@
  *  send. Each section is a block of its board height with every layer at its
  *  board box, stacked in the board's order; the hero is the send's own
  *  compiled hero (./EmailSend.tsx), passed in. */
-import type { ReactNode } from 'react';
+import { Fragment, type ReactNode } from 'react';
 import type { SheetAsset } from '../../../sheet/types';
 import { Editable, Ground } from '../../../edit/Editable';
 import { Media } from '../../../edit/Media';
-import { useEdits, textOf, picOf } from '../../../edit/store';
+import { useEdits, textOf, picOf, type Edits } from '../../../edit/store';
+import { sectionOf } from '../../emailSections';
 import { boardFit } from '../../../model/textContracts';
 import { stack } from '../../../fonts';
 import { BrandMark } from '../BrandMark';
@@ -217,6 +218,33 @@ export function Footer({ layout, section, id }: { layout: FigmaLayout; section: 
 
 export function BumpEmailBody({ asset, hero, send }: { asset: SheetAsset; hero?: ReactNode; send: 1 | 2 | 3 }) {
   const { edits } = useEdits();
+  return <Ground id={`${asset.id}/fill`} className="sheet" style={{ width: W, position: 'relative', background: '#fff' }}>
+    {blocksOf(asset, send, hero, edits)}
+  </Ground>;
+}
+
+/** An email built of sections (its `parts`), each the blocks it names
+ *  (render/emailSections.ts) from its own send's design. A part keyed apart
+ *  (from another send, or a second copy) has ids of its own. The hero is
+ *  always the email's own. */
+export function BumpEmailSections({ asset, hero }: { asset: SheetAsset; hero?: ReactNode }) {
+  const { edits } = useEdits();
+  return <Ground id={`${asset.id}/fill`} className="sheet" style={{ width: W, position: 'relative', background: '#fff' }}>
+    {asset.parts!.map((p, n) => {
+      if (p.off) return null;
+      const section = sectionOf('sc26_0060', p), send = Number(p.design.replace('send-', '')) as 1 | 2 | 3;
+      if (!section || !LAYOUTS[send]) return null;
+      const blocks = blocksOf(p.key ? { ...asset, id: `${asset.id}~${p.key}` } : asset, send, hero, edits);
+      // data-part: where the section starts, for the Sections list to scroll to.
+      return <Fragment key={p.key || `${p.design}.${p.section}`}><div data-part={n} />{section.blocks.map(i => blocks[i])}</Fragment>;
+    })}
+  </Ground>;
+}
+
+/** A send's blocks, drawn, in the order the email reads (emailSections'
+ *  bumpBlocks): nav, hero, body copy, a heading, its products and See More,
+ *  a second heading, then the brand tiles or a second grid and See More, footer. */
+function blocksOf(asset: SheetAsset, send: 1 | 2 | 3, hero: ReactNode, edits: Edits): ReactNode[] {
   const layout = LAYOUTS[send], R = reader(layout), L = (l: string) => layerOf(layout, l);
   const id = asset.id;
   const nav = R.section('HEADER'), body = R.section('SAC Email Body'), footer = R.section('Footer');
@@ -231,46 +259,38 @@ export function BumpEmailBody({ asset, hero, send }: { asset: SheetAsset; hero?:
   const copy = COPY[send](asset.copy.code || 'AUTUMN20');
   const seeMore = (n: 0 | 1) => {
     const button = R.find(ctas[n], l => l.name === 'Button')[0];
-    return <Section layout={layout} id={ctas[n]} frame={`bump-body-cta-${n}`}>
+    return <Section key={`cta${n}`} layout={layout} id={ctas[n]} frame={`bump-body-cta-${n}`}>
       <Button button={L(button)} label={L(R.find(button, l => l.type === 'TEXT')[0])}
         id={`${id}/${n ? 'see-more-2' : 'see-more'}`} text="See More" />
     </Section>;
   };
 
-  return <Ground id={`${id}/fill`} className="sheet" style={{ width: W, position: 'relative', background: '#fff' }}>
-    <Nav layout={layout} section={nav} id={id} />
-
-    {hero}
-
-    <Section layout={layout} id={body} frame="bump-body-copy">
+  return [
+    <Nav key="nav" layout={layout} section={nav} id={id} />,
+    <Fragment key="hero">{hero}</Fragment>,
+    <Section key="copy" layout={layout} id={body} frame="bump-body-copy">
       {(() => { const t = text(body); return <div style={{ ...anchorOf(t), height: undefined }}>
         <Editable id={`${id}/body`} style={{ ...typeOf(t), whiteSpace: 'normal', width: t.w }}>{textOf(edits, `${id}/body`, copy)}</Editable>
       </div>; })()}
       {/* The board's dark Shop Now button and its label (the section's second run). */}
       <Button button={L(R.find(body, l => l.type === 'FRAME' && l.fill === '#333333')[0])}
         label={L(R.find(body, l => l.type === 'TEXT')[1])} id={`${id}/body-cta`} text="Shop Now" />
-    </Section>
-
-    <Section layout={layout} id={heads[0]} frame="bump-body-heading-0">
+    </Section>,
+    <Section key="head0" layout={layout} id={heads[0]} frame="bump-body-heading-0">
       <Heading layout={layout} section={heads[0]} id={`${id}/header1`} eyebrowId={`${id}/header1/eyebrow`}
         title={textOf(edits, `${id}/header1`, 'Your Top Picks')} eyebrow={eyebrow} />
-    </Section>
-    <Section layout={layout} id={grids[0]} frame="bump-body-products-0"><Products layout={layout} section={grids[0]} id={id} /></Section>
-    {seeMore(0)}
-
-    <Section layout={layout} id={heads[1]} frame="bump-body-heading-1">
+    </Section>,
+    <Section key="grid0" layout={layout} id={grids[0]} frame="bump-body-products-0"><Products layout={layout} section={grids[0]} id={id} /></Section>,
+    seeMore(0),
+    <Section key="head1" layout={layout} id={heads[1]} frame="bump-body-heading-1">
       <Heading layout={layout} section={heads[1]} id={`${id}/header2`} eyebrowId={`${id}/header2/eyebrow`}
         title={textOf(edits, `${id}/header2`, secondTitle)} eyebrow={eyebrow} />
-    </Section>
-    {tiles
-      ? <BrandTiles asset={asset} layout={layout} section={tiles} />
-      : <>
-        <Section layout={layout} id={grids[1]} frame="bump-body-products-1"><Products layout={layout} section={grids[1]} id={`${id}/s2`} /></Section>
-        {seeMore(1)}
-      </>}
-
-    <Footer layout={layout} section={footer} id={id} />
-  </Ground>;
+    </Section>,
+    ...(tiles ? [<BrandTiles key="tiles" asset={asset} layout={layout} section={tiles} />] : [
+      <Section key="grid1" layout={layout} id={grids[1]} frame="bump-body-products-1"><Products layout={layout} section={grids[1]} id={`${id}/s2`} /></Section>,
+      seeMore(1)]),
+    <Footer key="footer" layout={layout} section={footer} id={id} />,
+  ];
 }
 
 export const boxStyle = (l: FigmaLayer) => ({ left: l.x, top: l.y, width: l.w, height: l.h });

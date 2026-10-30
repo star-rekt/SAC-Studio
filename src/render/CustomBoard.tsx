@@ -44,13 +44,19 @@ export function CustomBoard({ asset }: { asset: SheetAsset }) {
         lineHeight:1.3, fontWeight:700, whiteSpace:'pre-wrap' }}>
       {seeded}
     </Editable>}
-    {texts.map(layer => <Editable key={layer.id}
-      id={`${asset.id}/custom-text/${layer.id}`}
-      style={{ position:'absolute', left:layer.left, top:layer.top,
-        width:layer.width, minHeight:layer.height, zIndex:60,
-        color:'#222222', fontFamily:stack('Sofia Pro'), fontSize:54,
-        lineHeight:1.15, fontWeight:700, whiteSpace:'pre-wrap' }}>
-      {layer.text}
-    </Editable>)}
+    <CustomTexts assetId={asset.id} />
   </div>;
+}
+
+/** The text layers a designer added to an asset, over its design. */
+export function CustomTexts({ assetId }: { assetId: string }) {
+  const api = useEdits();
+  return <>{(api.edits.customText?.[assetId] ?? []).map(layer => <Editable key={layer.id}
+    id={`${assetId}/custom-text/${layer.id}`}
+    style={{ position:'absolute', left:layer.left, top:layer.top,
+      width:layer.width, minHeight:layer.height, zIndex:60,
+      color:'#222222', fontFamily:stack('Sofia Pro'), fontSize:54,
+      lineHeight:1.15, fontWeight:700, whiteSpace:'pre-wrap' }}>
+    {layer.text}
+  </Editable>)}</>;
 }

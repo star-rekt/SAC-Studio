@@ -13,11 +13,10 @@ import { Compose } from './Compose';
 import { outlookFor, type TemplateSpec } from '../templates/spec';
 import type { FormatSpec } from '../templates/registry';
 import type { SheetAsset } from '../sheet/types';
-import type { Direction } from '../templates/directions';
 
-export function AssetView({ spec, asset, template, dir }: {
-  spec: FormatSpec; asset: SheetAsset; template: TemplateSpec; dir?: Direction;
+export function AssetView({ spec, asset, template }: {
+  spec: FormatSpec; asset: SheetAsset; template: TemplateSpec;
 }) {
   return <Compose spec={spec} outlook={outlookFor(template, asset.format)}
-                  asset={asset} template={template} dir={dir} />;
+                  asset={asset} template={template} />;
 }

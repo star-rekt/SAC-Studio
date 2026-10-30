@@ -50,7 +50,6 @@ export function FigmaGallery({ onPick }: { onPick: (url: string) => void }) {
   const shown = items.filter(i => (!chip || i.pursuits.includes(chip))
     && words.every(w => i.name.toLowerCase().includes(w) || i.tags.some(t => t.startsWith(w))));
   return <>
-    <h4>Figma gallery</h4>
     <div className="chips">
       <button className={chip ? '' : 'on'} onClick={() => setChip(null)}>All</button>
       {chips.map(c => <button key={c} className={chip === c ? 'on' : ''} onClick={() => setChip(c)}>{c}</button>)}

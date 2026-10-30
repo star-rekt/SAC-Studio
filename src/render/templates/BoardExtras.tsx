@@ -7,7 +7,6 @@ import { Picture } from '../../edit/Picture';
 import { Media } from '../../edit/Media';
 import { ZONE_LIST, photoFor } from '../../model/compose';
 import { stack } from '../../fonts';
-import type { Direction } from '../../templates/directions';
 import { fitText, measureAndFit, measuredContract } from '../../model/textContracts';
 import { DerivedSite as FlashDerivedSite } from './flash/BoardExtras';
 
@@ -16,6 +15,8 @@ const photoByBoard: Record<string,string> = {
   sc26_0021:'/reference/flash-hero-photo.png',
 };
 const ink = '#333', orange = '#f14222', green = '#79ac41';
+/** A campaign's colour on its site formats: Flash's orange, the others' green. */
+export const siteAccent = (templateId: string) => templateId === 'sc26_0021' ? orange : green;
 // The Flash board's own "Affiliate Text Link" layer comment gives three
 // example instances verbatim, not a formula to re-derive -- used as each
 // instance's placeholder in reference order, same as GT/CB's literal copy.
@@ -37,7 +38,6 @@ function ThemePicture({asset,templateId,style}: {asset:SheetAsset;templateId:str
 
 export function DerivedTile({asset,templateId}: {asset:SheetAsset;templateId:string}) {
   const [w,h] = asset.size;
-  const flash = templateId==='sc26_0021';
   return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,position:'relative',overflow:'hidden',
     background:'#24241b'}}>
     <ThemePicture asset={asset} templateId={templateId}
@@ -64,22 +64,24 @@ export function DerivedTile({asset,templateId}: {asset:SheetAsset;templateId:str
       const { fontSize } = fit;
       return <div style={{position:'absolute',left:70,bottom:39,display:'inline-block'}}>
         <Media id={`${asset.id}/cta/mark`} src="/graphics/pill-tile.svg"
-          fill={flash?orange:green} style={{position:'absolute',inset:0}} />
+          fill={siteAccent(templateId)} style={{position:'absolute',inset:0}} />
         <Editable id={`${asset.id}/cta`} fit={fit.contract} style={{position:'relative',
           ...text(fontSize!,{color:'#fff',padding:'15px 23px',whiteSpace:'nowrap'})}}>{cta}</Editable>
       </div>; })()}
   </Ground>;
 }
 
-export function DerivedSite({asset,templateId,direction}: {
-  asset:SheetAsset;templateId:string;direction?:Direction}) {
+/** `design`: the shared design chosen (templates/variants.ts siteDesign) --
+ *  the affiliate link's row or bar, the mobile hero's cream or photo -- in
+ *  this campaign's colours. */
+export function DerivedSite({asset,templateId,design}: {
+  asset:SheetAsset;templateId:string;design?:string}) {
   const [w,h] = asset.size;
-  const bump = templateId==='sc26_0060', flash = templateId==='sc26_0021';
-  const accent = direction && direction.id !== 'a' ? direction.accent
-    : flash ? orange : green;
-  if (asset.format==='text-link' && templateId==='sc26_0021') {
-    // Flash-specific affiliate text links - delegate to isolated flash component
-    return <FlashDerivedSite asset={asset} templateId={templateId} direction={direction} />;
+  const bump = templateId==='sc26_0060';
+  const accent = siteAccent(templateId);
+  if (asset.format==='text-link' && design==='row') {
+    // The affiliate link as a row (Flash's design), in this campaign's colour and copy.
+    return <FlashDerivedSite asset={asset} templateId={templateId} />;
   }
   // The rest of the function remains unchanged for non-Flash templates
   if (asset.format==='logo-strip') return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,
@@ -89,27 +91,28 @@ export function DerivedSite({asset,templateId,direction}: {
       key={brand} id={`${asset.id}/brand/${n}`} src={`/logos/brand-${brand}.svg`}
       alt={brand} style={{width:w*.20,height:h*.65,objectFit:'contain'}} />)}
   </Ground>;
+  const cream = design==='cream';
   if (asset.format==='hero-mobile') return <Ground id={`${asset.id}/fill`} className="sheet" style={{width:w,height:h,
-    position:'relative',overflow:'hidden',background:bump?'#f5ecdf':'#282820'}}>
+    position:'relative',overflow:'hidden',background:cream?'#f5ecdf':'#282820'}}>
     <ThemePicture asset={asset} templateId={templateId}
-      style={{position:'absolute',left:0,top:bump?h*.48:0,width:w,height:bump?h*.52:h}} />
-    {!bump && <div style={{position:'absolute',inset:0,pointerEvents:'none',
+      style={{position:'absolute',left:0,top:cream?h*.48:0,width:w,height:cream?h*.52:h}} />
+    {!cream && <div style={{position:'absolute',inset:0,pointerEvents:'none',
       background:'linear-gradient(180deg,#0005,transparent 46%,#0009)'}} />}
     {(() => { const urgency = asset.copy.marquee || asset.copy.eyebrow || 'LIMITED TIME';
       const fit = fitText(urgency, 'hero.urgency', { widthBudget: w - 48, fontMax: 25 });
       const { fontSize } = fit;
       return <Editable id={`${asset.id}/urgency`} fit={fit.contract} style={{position:'absolute',left:24,top:26,
-        ...text(fontSize!,{color:bump?green:'#fff',letterSpacing:2,whiteSpace:'nowrap'})}}>{urgency}</Editable>; })()}
-    <Editable id={`${asset.id}/offer`} style={{position:'absolute',left:20,top:bump?83:h*.52,
-      ...text(bump?65:68,{color:bump?ink:'#fff',whiteSpace:'pre-line',maxWidth:w-34})}}>
+        ...text(fontSize!,{color:cream?accent:'#fff',letterSpacing:2,whiteSpace:'nowrap'})}}>{urgency}</Editable>; })()}
+    <Editable id={`${asset.id}/offer`} style={{position:'absolute',left:20,top:cream?83:h*.52,
+      ...text(cream?65:68,{color:cream?ink:'#fff',whiteSpace:'pre-line',maxWidth:w-34})}}>
       {asset.scope.topic || `${asset.copy.lead || 'EXTRA'}\n${asset.copy.offer || '20% OFF'}`}
     </Editable>
     {(() => { const cta = asset.copy.cta || 'Shop Now';
       const fit = fitText(cta, 'hero.cta', { widthBudget: w * .5, fontMax: 25 });
       const { fontSize } = fit;
-      return <div style={{position:'absolute',left:22,top:bump?h*.35:h*.81,display:'inline-block'}}>
+      return <div style={{position:'absolute',left:22,top:cream?h*.35:h*.81,display:'inline-block'}}>
         <Media id={`${asset.id}/cta/mark`} src="/graphics/pill-soft.svg"
-          fill={bump?ink:orange} style={{position:'absolute',inset:0}} />
+          fill={cream?ink:bump?accent:orange} style={{position:'absolute',inset:0}} />
         <Editable id={`${asset.id}/cta`} fit={fit.contract} style={{position:'relative',
           ...text(fontSize!,{color:'#fff',padding:'17px 24px',whiteSpace:'nowrap'})}}>{cta}</Editable>
       </div>; })()}

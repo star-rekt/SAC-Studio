@@ -57,14 +57,25 @@ export type SheetAsset = {
   size: [number, number];
   scope: Scope;
   label: string;
-  variant: string;              // 'base' | 'direction-a' | ...
+  variant: string;              // the chosen design ('base' when the format has one)
   copy: Copy;
   media: { photo?: string; brands?: string[] };
   /** Only email-body carries these; everything else is a single composition. */
   sections?: Section[];
+  /** An email built of its template's sections (Named Sale), top to bottom;
+   *  unset, it's its design's own. */
+  parts?: EmailPart[];
   /** What in the brief decided this, in words. */
   because: string;
 };
+
+/** One of an email's sections: a design's section (its index in designs.ts).
+ *  Key '' is the email's own design's section, edited under the email's own
+ *  id; any other key gives it ids of its own (a section from another design,
+ *  or a second copy), so its edits are its own. Off: hidden, kept with its edits. */
+export type EmailPart = { design: string; section: number; key: string; off?: true;
+  /** Its title bar's words from the brief (a section's header), over the board's. */
+  heading?: string };
 
 export type Sheet = {
   v: 10;
@@ -92,28 +103,12 @@ export type Sheet = {
            customSizes?: Record<string, [number, number]>;
            /** Phases the designer set by hand, overriding the brief's. */
            phases?: string[] };
-  /** Which of the three design directions is chosen, per family. Email and
-   *  social are chosen apart because they are reviewed apart. */
-  direction?: { email?: 'a' | 'b' | 'c'; social?: 'a' | 'b' | 'c' };
-  /** Current per-asset-type design directions. Legacy family picks remain a
-   * fallback for campaigns saved before this control existed. */
-  formatDirections?: Record<string, 'a' | 'b' | 'c'>;
+  /** Assets the designer confirmed in Build, each with what it
+   *  was confirmed as -- a change since then asks for it again. */
+  confirmed?: Record<string, string>;
   assets: SheetAsset[];
   edits: Edits;
 };
-
-/** A content hash of the decisions, ignoring timestamps and the designer's
- *  own edits. Stamped into Figma so a board can say which version it is. */
-export function sheetHash(s: Sheet): string {
-  const stable = JSON.stringify({ t: s.templateId, b: s.brief.text,
-    a: s.assets.map(x => [x.id, x.copy, x.media, x.variant]) });
-  let h = 0x811c9dc5;
-  for (let i = 0; i < stable.length; i++) {
-    h ^= stable.charCodeAt(i);
-    h = Math.imul(h, 0x01000193) >>> 0;
-  }
-  return h.toString(16).padStart(8, '0');
-}
 
 const slug = (s: string) =>
   s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

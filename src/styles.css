@@ -27,9 +27,6 @@ body{margin:0;background:#E8E4DE;color:var(--ink);
   padding:10px 16px;background:#fff;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .bar strong{font-size:15px}
 .muted{color:#00000088;font-size:12px}
-.seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
-.seg button{border:0;background:#fff;padding:6px 12px;cursor:pointer;font:inherit}
-.seg button.on{background:var(--ink);color:#fff}
 .bar button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;font:inherit}
 .bar button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .zoom{display:flex;gap:8px;align-items:center;font-size:12px;color:#00000088}
@@ -46,25 +43,12 @@ body{margin:0;background:#E8E4DE;color:var(--ink);
 .why{max-width:420px;font-size:11px;line-height:1.45;color:#00000088;margin:0 0 8px}
 .gap{width:420px;padding:28px;background:#FFF3F0;color:#8A1F11;font-size:13px;border-radius:6px}
 main{padding:20px 20px 60px 20px}
-main.with-panel{padding-right:320px}
 /* the panel is a fixed rail: the sticky bars give it the width rather than
    running underneath it, which hid whatever sat at the top of the panel */
-.bar.with-panel,.tabs.with-panel{padding-right:316px}
 .board{display:flex;gap:28px;align-items:flex-start}
-.col h3{margin:0 0 8px;font-size:13px;display:flex;gap:8px;align-items:baseline}
-.col h3 small{color:#00000066;font-weight:400}
 .scaler{zoom:var(--z);position:relative}
-.marquee-capture{position:absolute;inset:0;z-index:30;cursor:crosshair}
-.marquee-rect{position:fixed;border:1px solid #3B82F6;background:#3B82F622;pointer-events:none;z-index:31}
 .sheet{position:relative;overflow:hidden;box-shadow:0 2px 14px #0000001f;background:#fff}
-.variant-choice{display:flex;align-items:center;gap:8px;margin:5px 0 10px;color:#555;font-size:12px}
-.variant-choice select{max-width:280px;padding:5px 8px;border:1px solid #ccc;border-radius:5px;background:#fff;color:#222}
 .stack{display:flex;flex-direction:column;height:auto}
-.direction{max-width:420px;background:#fff;border:1px solid var(--line);border-left:3px solid #F14222;
-  padding:10px 12px;margin-bottom:10px;font-size:11px;line-height:1.45}
-.direction h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#00000077}
-.direction p{margin:4px 0}
-.direction b{color:#F14222}
 
 /* editing affordances */
 .ed{outline:0}
@@ -81,6 +65,8 @@ main.with-panel{padding-right:320px}
 /* a layer gathered into an alignment-block selection -- a different hue from
    the single-select orange, since the two can be true of different elements
    at once and need to read as separate things. */
+.marquee-capture{position:absolute;inset:0;z-index:30;cursor:crosshair}
+.marquee-rect{position:fixed;border:1px solid #3B82F6;background:#3B82F622;pointer-events:none;z-index:31}
 .ed.in-group{box-shadow:inset 0 0 0 2px #3B82F6}
 .gr.in-group{box-shadow:inset 0 0 0 2px #3B82F6}
 .pic.in-group,img.media.in-group{outline:2px solid #3B82F6;outline-offset:2px}
@@ -96,8 +82,6 @@ span.media.removed{display:grid;place-items:center;border:2px dashed #F14222;
 
 .panel{position:fixed;right:0;top:49px;bottom:0;width:300px;overflow:auto;background:#fff;
   border-left:1px solid var(--line);padding:16px;box-shadow:-8px 0 24px #00000012;z-index:21}
-.panel .shut{position:absolute;right:10px;top:8px;width:26px;padding:0;line-height:24px;
-  border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer;font-size:16px}
 .panel h4{margin:16px 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#00000077}
 .panel h4:first-child{margin-top:0}
 /* the selected run's own controls, above the campaign's -- ruled off so it
@@ -113,7 +97,7 @@ span.media.removed{display:grid;place-items:center;border:2px dashed #F14222;
 .group-align{display:flex;gap:6px;margin-bottom:8px}
 .group-align button{flex:1}
 /* the media library: what a selected slot can be filled with */
-.panel ul.lib{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 10px;padding:0;list-style:none}
+.panel ul.lib{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:0 0 10px;padding:0;list-style:none}
 .panel ul.lib li{margin:0}
 .panel ul.lib button{width:100%;margin:0;padding:8px 6px;display:flex;flex-direction:column;
   align-items:center;gap:6px;background:#F7F5F2;border:1px solid #00000014;border-radius:6px;cursor:pointer}
@@ -122,22 +106,18 @@ span.media.removed{display:grid;place-items:center;border:2px dashed #F14222;
 .panel ul.lib span{font-size:10px;line-height:1.2;color:#00000099;text-align:center}
 /* photographs are browsed, not listed — 31 of them, and the band that decides
    whether one can carry type is a thing you see, not a thing you read */
-.panel ul.lib.photos{grid-template-columns:1fr 1fr 1fr;max-height:260px;overflow:auto}
+.panel ul.lib.photos{grid-template-columns:repeat(3,minmax(0,1fr));max-height:260px;overflow:auto}
 .panel ul.lib.photos button{padding:0;gap:0;overflow:hidden}
 .panel .chips{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}
 .panel .chips button{width:auto;margin:0;padding:3px 8px;font-size:11px;border-radius:999px;text-transform:capitalize}
 .panel .chips button.on{border-color:var(--ink);background:#fff}
 .panel ul.lib.photos img{height:48px;width:100%;object-fit:cover}
-.panel ul.lib.photos span{padding:3px 2px;font-size:9px}
+.panel ul.lib.photos span{padding:3px 2px;font-size:9px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .panel ul.lib button[disabled]{opacity:.45;cursor:default}
-.panel .user-media-controls{padding:4px 6px 8px;background:#fff;border:1px solid #ddd}
-.panel .user-media-controls label{font-size:10px;margin:2px 0}
-.panel .user-media-controls input,.panel input:not([type=range]){box-sizing:border-box;width:100%;padding:6px}
-.panel ul.lib .user-media-controls button{display:block;width:auto;padding:4px 6px;
-  font-size:10px;color:#922;background:#fff;border:1px solid #ddd}
+.panel input:not([type=range]){box-sizing:border-box;width:100%;padding:6px}
 .panel ul.lib button.add-graphic{display:block;width:100%;padding:4px;
   font-size:10px;background:#eef5e6;border-color:#91b369;color:#263d16}
-.panel .user-media-controls small{display:block;color:#922;overflow-wrap:anywhere}
+.panel ul.lib li small{display:block;font-size:10px;color:#922;overflow-wrap:anywhere}
 .panel .position-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .panel .position-row label{font-size:11px;margin:0}
 .panel .position-row input{margin-top:4px}
@@ -173,33 +153,10 @@ kbd{background:#eee;border-radius:3px;padding:1px 4px;font-size:11px}
 
 /* The font warning in the top bar: a weight the kit does not carry is a real
    difference from the reference boards, not a detail to leave unsaid. */
-.fontwarn{display:flex;align-items:center;gap:6px;font-size:12px;color:#8A4B00;
-  background:#FFF4E5;border:1px solid #F0D9B5;border-radius:6px;padding:4px 9px}
-.fontwarn.bad{color:#8A1F11;background:#FDECEA;border-color:#F3C6C0}
 
 /* ---- the AI connector panel ---- */
 body.shot{background:#fff}
 body.shot #root{display:inline-block}
-.aitab,.doit{display:flex;gap:2px;margin:0 0 12px}
-.doit{gap:6px;margin-top:8px}
-.aitab button,.doit button{flex:1;margin:0;padding:6px 8px;font-size:11px;
-  border:1px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;
-  font-family:inherit;width:auto}
-.aitab button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.doit button:first-child{background:var(--ink);color:#fff;border-color:var(--ink)}
-.doit button:disabled{opacity:.5;cursor:not-allowed}
-.aierr{font-size:12px;line-height:1.5;color:#8A1F11;background:#FFF3F0;padding:8px 10px;border-radius:5px}
-.aierr code{display:inline;background:#00000010;padding:1px 4px}
-.recon{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
-.recon th{text-align:left;font-weight:600;color:#00000099;width:33%;padding:4px 4px 4px 0;
-  vertical-align:top;font-size:10.5px}
-.recon td{padding:4px 4px 4px 0;vertical-align:top;word-break:break-word}
-.recon td.m{width:14px;text-align:center;color:#00000055}
-.recon tr{border-top:1px solid #00000010}
-.recon tr.agree td,.recon tr.agree th{color:#00000066}
-.recon tr.differ td.m{color:#C2410C;font-weight:700}
-.recon tr.differ th{color:#9A3412}
-.recon tr.only-claude td.m,.recon tr.only-code td.m{color:#1D4ED8;font-weight:700}
 .because{list-style:none;padding:0;margin:0}
 .because li{font-size:11px;line-height:1.5;padding:6px 0;border-top:1px solid #00000010}
 .because i{display:block;color:#00000077;font-style:normal;margin-top:2px}
@@ -216,13 +173,8 @@ body.shot #root{display:inline-block}
 .issues li.medium{border-left-color:#D97706}
 .issues li.low{border-left-color:#9CA3AF}
 .issues i{display:block;color:#00000077;font-style:normal;margin-top:2px}
-.shotpeek{width:100%;border:1px solid var(--line);border-radius:4px;display:block}
 
 /* ---- campaigns ---- */
-.cname{border:1px solid transparent;border-radius:6px;padding:5px 8px;font:inherit;font-weight:600;
-  background:transparent;width:230px;color:inherit}
-.cname:hover{border-color:var(--line)}
-.cname:focus{border-color:var(--ink);outline:none;background:#fff}
 .save{font-size:11px;color:#00000066}
 .save.saving{color:#92400E}
 .save.failed{color:#8A1F11;font-weight:600}
@@ -265,7 +217,7 @@ body.shot #root{display:inline-block}
   align-items:center;text-align:left;border:0;background:transparent;cursor:pointer;
   padding:7px 2px;font:inherit}
 .rows li > button:hover{background:#00000006}
-.rows img,.rows .ph{grid-row:span 2;width:44px;height:34px;object-fit:cover;
+.rows img{grid-row:span 2;width:44px;height:34px;object-fit:cover;
   border-radius:3px;background:#00000010;display:block}
 .rows b{font-size:12px;line-height:1.3}
 .rows span{font-size:10.5px;color:#00000077}
@@ -281,20 +233,14 @@ body.shot #root{display:inline-block}
 .rows li > button > em{grid-column:3;grid-row:1;font-style:normal;justify-self:end}
 .rows .verdict{margin:0;padding:2px 7px;font-size:9.5px}
 .rows li.running > button{opacity:.75}
-.rows li.queued > button{opacity:.45}
 .detail{padding:2px 2px 12px}
 .detail > ul:first-of-type{margin:6px 0;padding-left:16px;font-size:11px;line-height:1.6}
 .detail a{font-size:11px;color:inherit}
 
 /* ---- proposed fixes ---- */
-.fixit{width:100%;margin:10px 0 0;padding:7px 8px;font:inherit;font-size:11px;
-  border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer}
-.fixit.go{background:var(--ink);color:#fff;border-color:var(--ink)}
-.fixit:disabled{opacity:.55;cursor:not-allowed}
 .ops{list-style:none;padding:0;margin:0}
 .ops li{font-size:11px;line-height:1.5;padding:6px 0 6px 8px;border-top:1px solid #00000010;
   border-left:3px solid #1D4ED8}
-.ops.cant li{border-left-color:#00000020}
 .ops b{display:block}
 .ops i{display:block;color:#00000077;font-style:normal;margin-top:2px}
 
@@ -320,15 +266,6 @@ body.shot #root{display:inline-block}
 .read li.none{color:#9A3412}
 
 /* ---- deliverables ---- */
-.deliver{list-style:none;padding:0;margin:0 0 10px}
-.deliver li{border-top:1px solid #00000010}
-.deliver label{display:flex;gap:8px;align-items:center;margin:0;padding:5px 0;
-  font-size:11px;cursor:pointer}
-.deliver input{margin:0}
-.deliver input[type=number]{width:42px;padding:3px 4px;border:1px solid var(--line);
-  border-radius:4px;font:inherit;text-align:right}
-.deliver span{flex:1}
-.deliver b{color:#00000077;font-weight:600;min-width:14px;text-align:right}
 .counts{display:flex;gap:10px;margin:0 0 10px}
 .counts label{flex:1;margin:0}
 .counts span{display:block;font-size:10.5px;color:#00000077;margin-bottom:3px}
@@ -344,35 +281,19 @@ body.shot #root{display:inline-block}
 .swatches .clear{background:#fff;color:#00000066;font-size:13px;line-height:1}
 
 /* ---- design directions ---- */
-.dirs{list-style:none;padding:0;margin:0 0 12px}
-.dirs li{border-top:1px solid #00000010}
-.dirs button{display:grid;grid-template-columns:22px 1fr;gap:8px;width:100%;
-  text-align:left;border:0;background:transparent;cursor:pointer;padding:7px 2px;font:inherit}
-.dirs button:hover{background:#00000006}
-.dirs li.on button{background:#00000009}
-.dirs i{grid-row:span 2;width:22px;height:22px;display:block;border:1px solid #00000022}
-.dirs b{font-size:12px}
-.dirs li.on b::after{content:" ·  in use";font-weight:400;color:#00000066;font-size:10.5px}
-.dirs span{font-size:10.5px;color:#00000077;line-height:1.45}
 /* the brush mark is selectable in its own right, like a run of type */
 .mark.on{outline:1px dashed #00000026;outline-offset:2px;cursor:pointer}
 .mark.picked{outline:2px solid var(--ink);outline-offset:2px}
-
-/* Copy fit panel (src/edit/CopyFit.tsx) */
-.copyfit-total{font-size:12px;font-weight:600;margin:0 0 6px}
-.copyfit-asset{margin:0 0 14px;padding:0 0 8px;border-bottom:1px solid #00000014}
-.copyfit-asset h5{margin:8px 0 6px;font-size:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:baseline}
-.copyfit-asset h5 small{font-weight:400;color:#00000088}
-.copyfit-asset h5 .copyfit-sum{color:#D93025;font-weight:600}
-.copyfit-row{display:grid;grid-template-columns:1fr;gap:3px;margin:0 0 8px;padding:6px 8px;border-radius:6px;background:#F7F5F2}
-.copyfit-row.contract{background:#FFF7D6}
-.copyfit-row.wrap{background:#FDE7E5}
-.copyfit-where{all:unset;cursor:pointer;font-size:11px;color:#00000099;display:flex;align-items:center;gap:6px}
-.copyfit-where i{width:8px;height:8px;border-radius:50%;flex:none}
-.copyfit-row textarea{width:100%;box-sizing:border-box;font:inherit;font-size:13px;resize:vertical;min-height:28px}
-.copyfit-box{display:flex;gap:6px;align-items:flex-start}
-.copyfit-restore{all:unset;cursor:pointer;font-size:11px;color:#00000099;text-decoration:underline;padding-top:6px}
-.copyfit-count{font-size:11px;color:#00000099}
-.copyfit-note{font-size:11px;color:#5a3b00}
-.copyfit-row.wrap .copyfit-note{color:#8a1c12}
-.copyfit-stage{position:fixed;left:-200000px;top:0;visibility:hidden;pointer-events:none}
+/* A gallery's Local / Figma tabs (GalleryTabs). */
+.panel .gallery-tabs{display:flex;gap:2px;margin:0 0 10px;padding:2px;background:#00000008;border-radius:8px}
+.panel .gallery-tabs button{flex:1;margin:0;padding:5px 8px;border:0;border-radius:6px;background:none;font-size:12px;cursor:pointer;color:#00000099}
+.panel .gallery-tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px #0000001f}
+/* An upload's thumbnail: its tags as the caption, typed in place; a small cross removes it. */
+.panel ul.lib li{position:relative}
+.panel ul.lib input.lib-tags{width:100%;margin:2px 0 0;padding:2px 4px;border:1px solid transparent;border-radius:4px;
+  background:none;font-size:10px;text-align:center;color:#00000099}
+.panel ul.lib input.lib-tags:hover,.panel ul.lib input.lib-tags:focus{border-color:#00000026;background:#fff;color:var(--ink)}
+.panel ul.lib button.lib-x{position:absolute;top:3px;right:3px;width:18px;height:18px;margin:0;padding:0;
+  display:grid;place-items:center;border:0;border-radius:50%;background:#000000a0;color:#fff;font-size:13px;line-height:1;
+  cursor:pointer;opacity:0;transition:opacity .12s}
+.panel ul.lib li:hover button.lib-x,.panel ul.lib button.lib-x:focus{opacity:1}

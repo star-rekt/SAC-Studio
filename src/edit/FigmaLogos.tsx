@@ -49,7 +49,6 @@ export function FigmaLogos({ brand, onPick }: { brand?: string; onPick: (url: st
   const words = norm(query).split(/\s+/).filter(Boolean);
   const found = words.length ? items.filter(i => words.every(w => norm(`${i.brand} ${i.variant}`).includes(w))) : [];
   return <>
-    <h4>Figma logos</h4>
     <input type="search" placeholder="Search a brand" value={query} onChange={e => setQuery(e.target.value)} />
     {!words.length ? <p className="muted">Type a brand name to see its logos.</p>
       : !found.length ? <p className="muted">No logo for “{query}” in the Figma library.</p>

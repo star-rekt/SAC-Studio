@@ -7,7 +7,6 @@ import { Picture } from '../../../edit/Picture';
 import { Media } from '../../../edit/Media';
 import { ZONE_LIST, photoFor } from '../../../model/compose';
 import { stack } from '../../../fonts';
-import type { Direction } from '../../../templates/directions';
 import { fitText, measureAndFit } from './textContracts';
 import { measuredContract } from '../../../model/textContracts';
 
@@ -71,12 +70,11 @@ export function DerivedTile({asset,templateId}: {asset:SheetAsset;templateId:str
   </Ground>;
 }
 
-export function DerivedSite({asset,templateId,direction}: {
-  asset:SheetAsset;templateId:string;direction?:Direction}) {
+export function DerivedSite({asset,templateId}: {
+  asset:SheetAsset;templateId:string}) {
   const [w,h] = asset.size;
   const bump = templateId==='sc26_0060', flash = templateId==='sc26_0021';
-  const accent = direction && direction.id !== 'a' ? direction.accent
-    : flash ? orange : green;
+  const accent = flash ? orange : green;
   if (asset.format==='text-link') {
     const message = asset.scope.topic
       || (flash ? FLASH_AFFILIATE[((asset.scope.instance ?? 1) - 1) % FLASH_AFFILIATE.length] : undefined)

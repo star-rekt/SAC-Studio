@@ -11,7 +11,7 @@ import type { SheetAsset } from '../../../../../sheet/types';
 import { Ground } from '../../../../../edit/Editable';
 import { Picture } from '../../../../../edit/Picture';
 import { ZONE_LIST, photoFor } from '../../../../../model/compose';
-import { FigmaLayers, FigmaText, FigmaMark, type Slot } from '../../../../../render/figma/FigmaLayers';
+import { FigmaLayers, useBand, FigmaText, FigmaMark, type Slot } from '../../../../../render/figma/FigmaLayers';
 import { cropOf, type FigmaLayout } from '../../../../../render/figma/layout';
 import board from './layout.json';
 import { NUDGE } from './nudges';
@@ -72,7 +72,9 @@ export function HeroDesktop3_585_2723({ asset }: { asset: SheetAsset }) {
   const crop = photo && layout.frame.crop ? cropOf(layout.frame.crop, [w, h], [photo.w, photo.h]) : undefined;
   const drawn = { ...layout, frame: { ...layout.frame, paints: layout.frame.paints?.filter(p => p.type !== 'IMAGE') } };
   // data-figma-compiled: the studio's Figma export reads a compiled board's way (toLayers).
-  return <Ground id={`${id}/fill`} className="sheet" data-figma-compiled="" style={{ width: w, height: h, position: 'relative', overflow: 'hidden', background: '#fff' }}>
+  // In an email built of sections, one band of the board (FigmaBand), not a sheet of its own.
+  const band = useBand();
+  return <Ground id={`${id}/fill`} className={band ? 'band' : 'sheet'} data-export-name={band?.name} data-figma-compiled="" style={{ width: w, height: band?.height ?? h, position: 'relative', overflow: 'hidden', background: '#fff' }}>
     <Picture id={`${id}/photo`} zone={zone} initialSrc={photo?.src} slot focus={crop?.focus}
       initialScale={crop?.initialScale} initialRotate={crop?.rotate} initialCrop={layout.frame.crop}
       style={{ position: 'absolute', inset: 0 }} />

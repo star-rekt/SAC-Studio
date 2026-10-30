@@ -57,7 +57,7 @@ import * as media from './media.ts';
 import * as photoAnalysis from './photoAnalysis.ts';
 import * as gallery from './figmaGallery.ts';
 import * as logos from './figmaLogos.ts';
-import { exportCampaign, briefOnly, figmaDocument } from './export.ts';
+import { exportCampaign, briefOnly, figmaDocument, pngZip } from './export.ts';
 
 const PORT = Number(process.env.SAC_AI_PORT ?? 5179);
 const DESKTOP = process.env.SAC_STUDIO_DESKTOP === '1';
@@ -236,6 +236,25 @@ const server = createServer(async (req, res) => {
         'x-sac-media-complete': '1',
       });
       return res.end(JSON.stringify(doc));
+    }
+
+    // Every asset as a PNG, in one zip. Same origin rule as the Figma file.
+    if (url.pathname.startsWith('/api/png/') && req.method === 'GET') {
+      const id = decodeURIComponent(url.pathname.slice('/api/png/'.length));
+      if (!sessions.legal(id)) return send(400, { error: `not a session id: ${id}` });
+      const sheet = await sessions.get(id);
+      if (!sheet) return send(404, { error: `no session ${id}` });
+      const reqOrigin = url.searchParams.get('origin');
+      const shotOrigin = reqOrigin && /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(reqOrigin)
+        ? reqOrigin : studioOrigin();
+      try {
+        const zip = await pngZip(id, sheet.name ?? id, sheet.assets, shotOrigin);
+        res.writeHead(200, { 'content-type': 'application/zip',
+          'content-disposition': `attachment; filename="${safeName(sheet.name ?? id)}-png.zip"` });
+        return res.end(zip);
+      } catch (e) {
+        return send(500, { error: e instanceof Error ? e.message : String(e) });
+      }
     }
 
     // What the plugin builds from. Same manifest the folder carries, without

@@ -16,21 +16,6 @@ import { EmailBody12_585_2749 } from './frames/email-body-12--585-2749/EmailBody
 import { EmailBody13_585_2751 } from './frames/email-body-13--585-2751/EmailBody13_585_2751';
 import { EmailBody14_585_2753 } from './frames/email-body-14--585-2753/EmailBody14_585_2753';
 import { EmailBody15_585_2754 } from './frames/email-body-15--585-2754/EmailBody15_585_2754';
-import { Hero_538_38694 } from './frames/hero--538-38694/Hero_538_38694';
-import { Hero_538_38786 } from './frames/hero--538-38786/Hero_538_38786';
-import { Hero_538_38996 } from './frames/hero--538-38996/Hero_538_38996';
-import { Hero_538_39981 } from './frames/hero--538-39981/Hero_538_39981';
-import { Hero_538_40427 } from './frames/hero--538-40427/Hero_538_40427';
-import { Hero_538_40727 } from './frames/hero--538-40727/Hero_538_40727';
-import { Hero_538_41041 } from './frames/hero--538-41041/Hero_538_41041';
-import { Sc260025SpendAndSaveAprilHero_538_38109 } from './frames/sc26-0025-spend-and-save-april-hero--538-38109/Sc260025SpendAndSaveAprilHero_538_38109';
-import { Sc260025SpendAndSaveAprilHero_538_40114 } from './frames/sc26-0025-spend-and-save-april-hero--538-40114/Sc260025SpendAndSaveAprilHero_538_40114';
-import { Frame2204_538_39073 } from './frames/frame-2204--538-39073/Frame2204_538_39073';
-import { Frame4614_538_39682 } from './frames/frame-4614--538-39682/Frame4614_538_39682';
-import { Frame4630_538_38417 } from './frames/frame-4630--538-38417/Frame4630_538_38417';
-import { Frame4631_538_38035 } from './frames/frame-4631--538-38035/Frame4631_538_38035';
-import { Frame4631_538_39407 } from './frames/frame-4631--538-39407/Frame4631_538_39407';
-import { Frame4632_538_38878 } from './frames/frame-4632--538-38878/Frame4632_538_38878';
 import { HeroDesktop_569_2491 } from './frames/hero-desktop--569-2491/HeroDesktop_569_2491';
 import { HeroDesktop2_585_2722 } from './frames/hero-desktop-2--585-2722/HeroDesktop2_585_2722';
 import { HeroDesktop3_585_2723 } from './frames/hero-desktop-3--585-2723/HeroDesktop3_585_2723';
@@ -55,21 +40,6 @@ export const COMPONENTS: Record<string, ComponentType<{ asset: SheetAsset }>> = 
   EmailBody13_585_2751,
   EmailBody14_585_2753,
   EmailBody15_585_2754,
-  Hero_538_38694,
-  Hero_538_38786,
-  Hero_538_38996,
-  Hero_538_39981,
-  Hero_538_40427,
-  Hero_538_40727,
-  Hero_538_41041,
-  Sc260025SpendAndSaveAprilHero_538_38109,
-  Sc260025SpendAndSaveAprilHero_538_40114,
-  Frame2204_538_39073,
-  Frame4614_538_39682,
-  Frame4630_538_38417,
-  Frame4631_538_38035,
-  Frame4631_538_39407,
-  Frame4632_538_38878,
   HeroDesktop_569_2491,
   HeroDesktop2_585_2722,
   HeroDesktop3_585_2723,

@@ -1,8 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App';
-import Shot from './Shot';
+// The shared styles first: the app's own (studio.css) build on them.
 import './styles.css';
+import { Studio } from './studio/Studio';
+import Shot from './Shot';
 
 // `?shot=<assetId>&s=<sessionId>` is the connector's camera angle: one asset
 // out of one campaign, no chrome, so a headless screenshot is of the
@@ -17,5 +18,5 @@ document.head.appendChild(Object.assign(document.createElement('link'), { rel: '
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {shot && session ? <Shot id={shot} session={session} /> : <App />}
+    {shot && session ? <Shot id={shot} session={session} /> : <Studio />}
   </StrictMode>);

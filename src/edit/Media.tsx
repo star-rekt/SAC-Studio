@@ -16,6 +16,7 @@ import { Swatches, SizeRow, PositionRow } from './Controls';
 import { offeredFor, isMediaSlot, byKind, LIBRARY, PHOTOS,
          type Item, type Kind } from '../model/media';
 import { FigmaLogos } from './FigmaLogos';
+import { GalleryTabs } from './GalleryTabs';
 import { tagsFromFilename, type UserMedia } from '../model/userMedia';
 import { canvasZoom, pick } from './Editable';
 import MARK_SHAPES from '../data/mark-shapes.json';
@@ -218,7 +219,7 @@ export function MediaControls({ id }: { id: string }) {
 
 /** The library. Its own section, because it is a place you go to look for
  *  something — not a control on whatever happens to be selected. */
-function UserTags({ item }: { item: UserMedia }) {
+export function UserTags({ item }: { item: UserMedia }) {
   const api = useEdits();
   const [draft, setDraft] = useState(item.tags.join(', '));
   const [error, setError] = useState('');
@@ -229,17 +230,14 @@ function UserTags({ item }: { item: UserMedia }) {
     try { await api.retagLibrary(item.id, tags); setError(''); }
     catch (e) { setError(String(e)); }
   };
-  return <div className="user-media-controls">
-    <label>Tags
-      <input value={draft} placeholder="socks, trail, autumn"
-        onChange={e => setDraft(e.target.value)} onBlur={() => { void save(); }}
-        onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); void save(); } }} />
-    </label>
-    <button type="button" onClick={() => { void api.removeLibrary(item.id).catch(e => setError(String(e))); }}>
-      Remove upload
-    </button>
+  return <>
+    <input className="lib-tags" value={draft} placeholder="Add tags" title="Tags (comma separated)"
+      onChange={e => setDraft(e.target.value)} onBlur={() => { void save(); }}
+      onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); void save(); } }} />
+    <button type="button" className="lib-x" title="Remove upload" aria-label="Remove upload"
+      onClick={() => { void api.removeLibrary(item.id).catch(e => setError(String(e))); }}>×</button>
     {error && <small role="alert">{error}</small>}
-  </div>;
+  </>;
 }
 
 /** The brand a brand slot shows now, by its logo's alt text ('Brand' when unnamed). */
@@ -282,9 +280,9 @@ export function LibraryPanel({ selected, assets }: { selected: string | null;
     ...byKind(value), ...api.library.filter(item => item.kind === value),
   ];
 
-  const grid = (items: Item[], head: string) => items.length > 0 && (
+  const grid = (items: Item[], head?: string) => items.length > 0 && (
     <section key={head}>
-      <h4>{head}</h4>
+      {head && <h4>{head}</h4>}
       <ul className="lib">
         {items.map(i => (
           <li key={i.id} draggable={!!target?.custom}
@@ -300,7 +298,7 @@ export function LibraryPanel({ selected, assets }: { selected: string | null;
                         ? { zone: i.id, url: undefined, hidden: false }
                         : { url: i.file, zone: undefined, hidden: false })}>
               <img src={i.file} alt="" loading="lazy" />
-              <span>{i.name}</span>
+              {!('userAdded' in i && i.userAdded === true) && <span>{i.name}</span>}
             </button>
             {(i.kind === 'mark' || target?.custom) && target && <button type="button" className="add-graphic"
               onClick={() => api.addGraphic(target.id, i, target.size, target.custom)}>
@@ -317,20 +315,22 @@ export function LibraryPanel({ selected, assets }: { selected: string | null;
     offeredFor(slot).some(base => base.kind === item.kind))] : [];
   return (
     <>
-      <h4>Library</h4>
-      {target && <label>Board for new layers
+      {!slot && <h4>Library</h4>}
+      {target && assets.length > 1 && (!slot || offeredFor(slot)[0]?.kind === 'mark') && <label>Board for new layers
         <select value={target.id} onChange={e => setTargetId(e.target.value)}>
           {assets.map(asset => <option key={asset.id} value={asset.id}>
             {asset.label} · {asset.id}
           </option>)}
         </select>
       </label>}
-      {slot ? <><p className="muted">Replacing <code>{slot}</code></p>
-        {grid(offered, `${offered.length} to choose from`)}
+      {slot ? <>
         {/* A brand slot can also take any logo from the Figma vendor library,
             searched from the brand it shows now. */}
-        {offeredFor(slot)[0]?.kind === 'brand' && <FigmaLogos key={slot} brand={brandOf(slot)}
-          onPick={url => api.setPic(slot, { url, zone: undefined, hidden: false })} />}</>
+        {offeredFor(slot)[0]?.kind === 'brand'
+          ? <GalleryTabs title="Logo gallery" local={grid(offered)}
+              figma={<FigmaLogos key={slot} brand={brandOf(slot)}
+                onPick={url => api.setPic(slot, { url, zone: undefined, hidden: false })} />} />
+          : grid(offered, `${offered.length} to choose from`)}</>
       : <p className="muted">Select an image or graphic on the artwork to replace it,
           or add an image below for later use.</p>}
       <h4>Add your own image</h4>

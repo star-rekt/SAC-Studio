@@ -51,7 +51,3 @@ export const outlookFor = (spec: TemplateSpec, format: string): Outlook => {
   const over = spec.formats?.[format];
   return over ? { ...base, ...over } : base;
 };
-
-/** The accent in play for a format: the class's own, or the template's. */
-export const accentFor = (spec: TemplateSpec, format: string): string =>
-  outlookFor(spec, format).accent ?? spec.accent;

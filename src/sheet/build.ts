@@ -15,6 +15,7 @@ import { readSends, impliedSend, type Send } from '../model/sections';
 import { copyFor, copyFromAi } from '../model/copy';
 import { templateById, type Template, type FormatSpec } from '../templates/registry';
 import { DESIGNS as NAMED_SALE } from '../render/templates/named-sale/designs';
+import { briefParts } from '../render/templates/named-sale/sections';
 import { phaseOf, endsOf, phasesOf, namedCopy } from '../model/namedSale';
 import { photoFor, pursuitOf } from '../model/compose';
 import { assetId, type Sheet, type SheetAsset, type Scope, type Copy } from './types';
@@ -415,16 +416,19 @@ export function buildSheet(briefText: string, templateId: string, name?: string,
       }
       used.add(id);
 
+      const variant = /^email-/.test(f.format) ? initialEmailVariant(t.id, brief, send)
+        : t.id === 'named_sale' && NAMED_SALE.some(d => d.format === f.format) ? namedDesign(f.format, words, brief) : 'base';
       assets.push({
         id,
         format: f.format, size: plan?.customSizes?.[id] ?? f.size,
         custom: t.formats.some(known => known.format === f.format) ? undefined : true,
         scope: s.scope, label: s.label,
-        variant: /^email-/.test(f.format) ? initialEmailVariant(t.id, brief, send)
-          : t.id === 'named_sale' && NAMED_SALE.some(d => d.format === f.format) ? namedDesign(f.format, words, brief) : 'base',
+        variant,
         copy: { ...copy, title: brief.name, dates: brief.dates },
         media: { ...(photo ? { photo } : {}), brands: brief.brands },
         sections: f.format === 'email-body' ? send?.sections : undefined,
+        // A Named Sale email whose brief lists its sections is built of them.
+        parts: t.id === 'named_sale' && f.format === 'email-body' ? briefParts(variant, send?.sections) : undefined,
         because: because + note,
       });
     });
@@ -460,8 +464,7 @@ export function migrateSheet(old: Sheet | (Omit<Sheet, 'v'> & { v: number })): S
                           old.brief.html, old.brief.ai, old.plan);
   const variants = new Map(old.assets.map(a => [a.id, a.variant]));
   return { ...next, id: old.id, createdAt: old.createdAt, updatedAt: old.updatedAt,
-           edits: old.edits, direction: old.direction,
-           formatDirections: old.formatDirections,
+           edits: old.edits,
            assets: next.assets.map(a => ({ ...a,
              variant: variants.get(a.id) && variants.get(a.id) !== 'base'
                ? variants.get(a.id)! : a.variant })) };

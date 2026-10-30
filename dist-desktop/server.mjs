@@ -1276,6 +1276,30 @@ ONE WAY ONLY
   const zip = await zipUp(dir).catch(() => void 0);
   return { dir, zip, files: index.length, failed, brief, ms: Date.now() - started };
 }
+async function pngZip(session, name, assets, origin) {
+  const scratch = await mkdtemp(join9(tmpdir2(), "sac-png-"));
+  const dir = join9(scratch, slug(name) || session);
+  try {
+    await mkdir5(dir);
+    if (assets[0]) await warmUp(session, origin, assets[0], join9(scratch, "warmup.png"));
+    const queue2 = assets.map((asset, index) => ({ asset, index }));
+    const failed = [];
+    await Promise.all(Array.from({ length: Math.min(4, queue2.length) }, async () => {
+      for (let job = queue2.shift(); job; job = queue2.shift()) {
+        const { asset, index } = job;
+        const url = `${origin}/?shot=${encodeURIComponent(asset.id)}&s=${encodeURIComponent(session)}`;
+        const file2 = join9(dir, `${nameFor(asset, index)}.png`);
+        let shot = await shoot(url, asset.size[0], asset.size[1], file2, { small: false });
+        if (!shot.ok) shot = await shoot(url, asset.size[0], asset.size[1], file2, { small: false });
+        if (!shot.ok) failed.push(`${asset.label}: ${shot.error}`);
+      }
+    }));
+    if (failed.length) throw Error(`${failed.length} asset${failed.length === 1 ? "" : "s"} did not render -- ${failed.join("; ")}`);
+    return await readFile7(await zipUp(dir));
+  } finally {
+    await rm(scratch, { recursive: true, force: true });
+  }
+}
 var zipUp = (dir) => new Promise((res, rej) => {
   const out = `${dir}.zip`;
   execFile(
@@ -1486,6 +1510,24 @@ var server = createServer(async (req, res) => {
         "x-sac-media-complete": "1"
       });
       return res.end(JSON.stringify(doc));
+    }
+    if (url.pathname.startsWith("/api/png/") && req.method === "GET") {
+      const id = decodeURIComponent(url.pathname.slice("/api/png/".length));
+      if (!legal(id)) return send(400, { error: `not a session id: ${id}` });
+      const sheet = await get(id);
+      if (!sheet) return send(404, { error: `no session ${id}` });
+      const reqOrigin = url.searchParams.get("origin");
+      const shotOrigin = reqOrigin && /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(reqOrigin) ? reqOrigin : studioOrigin();
+      try {
+        const zip = await pngZip(id, sheet.name ?? id, sheet.assets, shotOrigin);
+        res.writeHead(200, {
+          "content-type": "application/zip",
+          "content-disposition": `attachment; filename="${safeName(sheet.name ?? id)}-png.zip"`
+        });
+        return res.end(zip);
+      } catch (e) {
+        return send(500, { error: e instanceof Error ? e.message : String(e) });
+      }
     }
     if (url.pathname.startsWith("/api/brief/") && req.method === "GET") {
       const id = decodeURIComponent(url.pathname.slice("/api/brief/".length));

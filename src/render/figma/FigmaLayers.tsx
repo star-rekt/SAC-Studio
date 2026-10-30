@@ -31,6 +31,13 @@ export type Slot = (l: FigmaLayer, box: CSSProperties & { width: number; height:
   board: (how?: { bare?: boolean }) => ReactNode) => ReactNode;
 /** Nudges tried live (the lab's fix loop), over a template's own. */
 export const NudgeOverride = createContext<Record<string, Nudge> | null>(null);
+/** A strip of a compiled board -- one of an email's sections (designs.ts):
+ *  only its top-level blocks are drawn, from its top, at its height. */
+export type Band = { top: number; height: number; blocks: string[]; name?: string;
+  /** The layer saying the section's title, and words to say there instead (a brief's header). */
+  title?: string; heading?: string };
+export const FigmaBand = createContext<Band | null>(null);
+export const useBand = () => useContext(FigmaBand);
 
 const blendOf = (b?: string) => b ? b.toLowerCase().replace(/_/g, '-') as CSSProperties['mixBlendMode'] : undefined;
 /** An image fill's CSS size: a tile at its scale of the image's own size. */
@@ -116,6 +123,8 @@ const grained = (l: FigmaLayer, layout: FigmaLayout, look: CSSProperties, run: R
 export function FigmaText({ l, box, nudge, id, text, contract, layout }: { l: FigmaLayer; box: CSSProperties & { width: number };
   nudge: Nudge; id: string; text: string; contract: string; layout: FigmaLayout }) {
   const { edits } = useEdits();
+  const band = useBand();
+  if (band?.heading && band.title && layout.layers[band.title] === l) text = band.heading;
   const t = l.text!, board = t.chars.replace(/\u2028/g, '\n');
   text = text.replace(/\u2028/g, '\n');
   // Runs only while the copy is the board's own: another line has no runs to keep.
@@ -129,7 +138,7 @@ export function FigmaText({ l, box, nudge, id, text, contract, layout }: { l: Fi
     const fitted = live.split('\n').map(line => boardFit(line, contract, l)).reduce((a, b) => b.fontSize < a.fontSize ? b : a);
     const fit = paragraph ? { ...fitted, fontSize: t.size } : fitted;
     const look = textLook(l, fit.fontSize, nudge, box.width);
-    return <div style={textBox(l, box)} {...nudgeOf(nudge)}>
+    return <div style={textBox(l, box)} {...nudgeOf(nudge)} data-role={contract.replace(/^lab\./, '')}>
       {grained(l, layout, look, <Editable id={id} fit={fit.contract} style={{ ...look, pointerEvents: 'auto' }}>{text}</Editable>, live)}
     </div>;
   }
@@ -140,7 +149,7 @@ export function FigmaText({ l, box, nudge, id, text, contract, layout }: { l: Fi
   const look = textLook(l, fit.fontSize, nudge, box.width);
   const size = (p: typeof parts[number]) => ({ fontWeight: p.style.fontWeight as number,
     fontSize: p.style.fontSize ? (p.style.fontSize as number) * k : undefined });
-  return <div style={textBox(l, box)} {...nudgeOf(nudge)}>
+  return <div style={textBox(l, box)} {...nudgeOf(nudge)} data-role={contract.replace(/^lab\./, '')}>
     {grained(l, layout, look, <div style={look}>
       {parts.map((p, i) => <Editable key={i} as="span" id={`${id}/${i}`} fit={fit.contract}
         style={{ ...size(p), color: p.style.fill as string, pointerEvents: 'auto' }}>{p.text}</Editable>)}
@@ -252,19 +261,22 @@ export function FigmaLayers({ layout, slots = {}, nudges = {}, copy }: { layout:
    *  place of the first of them. */
   copy?: { id: string; layers: string[] } }) {
   const live = useContext(NudgeOverride);
+  const band = useBand();
   const { edits } = useEdits();
   const all = live ? { ...nudges, ...live } : nudges;
   const kids = new Map<string | null, string[]>();
   for (const [id, l] of Object.entries(layout.layers)) kids.set(l.parent, [...(kids.get(l.parent) ?? []), id]);
   const [w, h] = layout.size;
+  const top = (kids.get(null) ?? []).filter(id => !band || band.blocks.includes(id));
   return <>
-    {(layout.frame.paints ?? []).map((p, i) => <Paint key={i} p={p} layout={layout} w={w} h={h} />)}
+    {(layout.frame.paints ?? []).map((p, i) => <Paint key={i} p={p} layout={layout} w={w} h={band?.height ?? h} />)}
     {/* The layers, apart from the frame's own background: the lab hides
         these to capture that background (Figma's export leaves it out). */}
-    <div data-figma-layers style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-      {(kids.get(null) ?? []).map(id => !copy?.layers.includes(id)
+    <div data-figma-layers style={band ? { position: 'absolute', left: 0, right: 0, top: -band.top, height: h, pointerEvents: 'none' }
+      : { position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+      {top.map(id => !copy?.layers.includes(id)
         ? <Layer key={id} id={id} layout={layout} kids={kids} slots={slots} nudges={all} />
-        : id === (kids.get(null) ?? []).find(t => copy.layers.includes(t))
+        : id === top.find(t => copy.layers.includes(t))
         ? <CopyBlock key="copy" id={copy.id} edits={edits}>
             {copy.layers.map(c => <Layer key={c} id={c} layout={layout} kids={kids} slots={slots} nudges={all} />)}
           </CopyBlock>

@@ -353,8 +353,9 @@ export function toLayers(root: HTMLElement): { layers: Layer[]; fonts: string[] 
   const layers: Layer[] = [];
   let n = 0;
 
-  const name = (el: Element, fallback: string) =>
-    el.getAttribute('data-id')?.split('/').slice(-2).join('/') ?? fallback;
+  // data-export-name: a layer named for people (an email's section), not by its id.
+  const name = (el: Element, fallback: string) => el.getAttribute('data-export-name')
+    ?? el.getAttribute('data-id')?.split('/').slice(-2).join('/') ?? fallback;
 
   // `carry`: a wrapper's blur, shadows and blend, which CSS draws over what's
   // in it -- handed down to the layers drawn inside (a blurred, multiplied

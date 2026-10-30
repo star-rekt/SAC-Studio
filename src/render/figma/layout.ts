@@ -123,8 +123,10 @@ export function typeOf(l: FigmaLayer, fontSize?: number): CSSProperties {
     // took clicks meant for whatever sits just above it (the Bump hero's
     // EXTRA swallowed its urgency badge). A clip a little past the box --
     // room for accents above, descenders below -- keeps clicks to the run's
-    // own area; nothing the run draws reaches past it.
-    ...(t.trim ? { textBoxTrim: 'trim-both', textBoxEdge: 'cap alphabetic', clipPath: 'inset(-35% -10% -45% -10%)' } : null),
+    // own area; nothing the run draws reaches past it. Up and down only: a
+    // run moved along its line (the code line's "CODE" and its word, moved
+    // by hand or by smart placement) was cut off by a side edge and vanished.
+    ...(t.trim ? { textBoxTrim: 'trim-both', textBoxEdge: 'cap alphabetic', clipPath: 'inset(-35% -100000px -45% -100000px)' } : null),
   } as CSSProperties;
 }
 

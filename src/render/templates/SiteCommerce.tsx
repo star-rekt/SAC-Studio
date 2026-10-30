@@ -7,7 +7,6 @@ import type { SheetAsset } from '../../sheet/types';
 import { Editable, Ground } from '../../edit/Editable';
 import { Media } from '../../edit/Media';
 import { stack } from '../../fonts';
-import type { Direction } from '../../templates/directions';
 import { fitText, type Contract } from '../../model/textContracts';
 
 const green = '#7ea63f', ink = '#333333';
@@ -33,11 +32,10 @@ function promotion(asset: SheetAsset) {
     : `Extra ${offer} Code ${asset.copy.code}${/end/i.test(asset.scope.phase ?? '') ? ' | Ends Today' : ''}`;
 }
 
-export function CampaignBanner({ asset, templateId, direction }: {
-  asset: SheetAsset; templateId: string; direction?: Direction }) {
+export function CampaignBanner({ asset, templateId }: {
+  asset: SheetAsset; templateId: string }) {
   const [w,h] = asset.size;
-  const accent = direction && direction.id !== 'a' ? direction.accent
-    : templateId === 'sc26_0021' ? '#f14222' : green;
+  const accent = templateId === 'sc26_0021' ? '#f14222' : green;
   const ends = asset.variant === 'ends-today' ||
     (asset.variant === 'base' && /end/i.test(asset.scope.phase ?? ''));
   // This board's own reference example happened to say "70% Off" and that
@@ -230,10 +228,9 @@ function PLP({ asset, accent }: { asset: SheetAsset; accent: string }) {
   </Phone>;
 }
 
-export function BadgingMock({ asset, templateId, direction }: {
-  asset: SheetAsset; templateId: string; direction?: Direction }) {
-  const accent = direction && direction.id !== 'a' ? direction.accent
-    : templateId === 'sc26_0021' ? '#f14222' : green;
+export function BadgingMock({ asset, templateId }: {
+  asset: SheetAsset; templateId: string }) {
+  const accent = templateId === 'sc26_0021' ? '#f14222' : green;
   return asset.format === 'pdp-badging-mock'
     ? <PDP asset={asset} accent={accent} /> : <PLP asset={asset} accent={accent} />;
 }

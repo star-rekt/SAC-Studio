@@ -4,7 +4,7 @@
  *  board place and stacking order:
  *    copy tied to the brief -- title, offer, lead;
  *    board copy, editable -- past-season-styles;
- *    photos -- photo; brand slots -- brand/0, brand/1, brand/2, brand/3.
+ *    photos -- photo; brand slots -- brand/0, brand/1, brand/2, brand/3, brand/4.
  *  Text contracts come from each board layer (boardFit). NUDGE (./nudges.ts)
  *  holds the fix loop's per-layer corrections to Figma's render. */
 import type { SheetAsset } from '../../../../../sheet/types';
@@ -12,7 +12,7 @@ import { Ground } from '../../../../../edit/Editable';
 import { Picture } from '../../../../../edit/Picture';
 import { ZONE_LIST, photoFor } from '../../../../../model/compose';
 import { BrandMark } from '../../../../../render/templates/BrandMark';
-import { FigmaLayers, FigmaText, FigmaMark, type Slot } from '../../../../../render/figma/FigmaLayers';
+import { FigmaLayers, useBand, FigmaText, FigmaMark, type Slot } from '../../../../../render/figma/FigmaLayers';
 import { cropOf, type FigmaLayout } from '../../../../../render/figma/layout';
 import board from './layout.json';
 import { NUDGE } from './nudges';
@@ -34,13 +34,11 @@ export const PAID_SOCIAL_4X5_569_2507_FIGMA = {
   "lead": "538:37785", // lead: UP\u2028TO
   "past-season-styles": "I538:37793;21584:46496", // text: *Past season styles.
   "art/vector-741": "538:37782", // graphic: Vector 741
-  "brand-logo-frame/brand-logo": "538:37788", // graphic: Brand Logo
-  "rab/rab-white": "I538:37792;876:3882", // graphic: Rab / White
-  "patagonia/patagonia-white": "I538:37793;21584:46497;876:3734", // graphic: Patagonia / White
-  "brand/0": "538:37790", // brand: Brand Logo
-  "brand/1": "538:37791", // brand: Osprey *NEW
-  "brand/2": "538:37792", // brand: Rab
-  "brand/3": "538:37793", // brand: Patagonia
+  "brand/0": "538:37788", // brand: Brand Logo
+  "brand/1": "538:37790", // brand: Brand Logo
+  "brand/2": "538:37791", // brand: Osprey *NEW
+  "brand/3": "538:37792", // brand: Rab
+  "brand/4": "538:37793", // brand: Patagonia
   "vector/538-37741": "538:37741", // vector: Group 2904
 } as const;
 
@@ -58,12 +56,6 @@ export function PaidSocial4x5_569_2507({ asset }: { asset: SheetAsset }) {
       text={l.text!.chars} />,
     [PAID_SOCIAL_4X5_569_2507_FIGMA["art/vector-741"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/art/vector-741/mark`} src="/graphics/named-sale-vector-741-1oaxut2.svg"
       fill="#F14222" layout={layout} />,
-    [PAID_SOCIAL_4X5_569_2507_FIGMA["brand-logo-frame/brand-logo"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/brand-logo-frame/brand-logo/mark`} src="/graphics/named-sale-brand-logo-14575h4.svg"
-      fill="#FFFFFF" layout={layout} />,
-    [PAID_SOCIAL_4X5_569_2507_FIGMA["rab/rab-white"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/rab/rab-white/mark`} src="/graphics/named-sale-rab-white-e1paf4.svg"
-      fill="#FFFFFF" layout={layout} />,
-    [PAID_SOCIAL_4X5_569_2507_FIGMA["patagonia/patagonia-white"]]: (l, box) => <FigmaMark l={l} box={box} id={`${id}/patagonia/patagonia-white/mark`} src="/graphics/named-sale-patagonia-white-ympwhf.svg"
-      fill="#FFFFFF" layout={layout} />,
     // The board's logo until the brief names a brand.
     [PAID_SOCIAL_4X5_569_2507_FIGMA["brand/0"]]: (l, box, _n, board) => asset.media.brands?.[0]
       ? <BrandMark id={`${id}/brand/0`} name={asset.media.brands[0]} fallback="/logos/brand-patagonia.svg"
@@ -71,17 +63,22 @@ export function PaidSocial4x5_569_2507({ asset }: { asset: SheetAsset }) {
       : board(),
     // The board's logo until the brief names a brand.
     [PAID_SOCIAL_4X5_569_2507_FIGMA["brand/1"]]: (l, box, _n, board) => asset.media.brands?.[1]
-      ? <BrandMark id={`${id}/brand/1`} name={asset.media.brands[1]} fallback="/logos/brand-osprey.svg"
+      ? <BrandMark id={`${id}/brand/1`} name={asset.media.brands[1]} fallback="/logos/brand-the-north-face.svg"
           style={{ ...box, objectFit: 'contain' }} />
       : board(),
     // The board's logo until the brief names a brand.
     [PAID_SOCIAL_4X5_569_2507_FIGMA["brand/2"]]: (l, box, _n, board) => asset.media.brands?.[2]
-      ? <BrandMark id={`${id}/brand/2`} name={asset.media.brands[2]} fallback="/logos/brand-rab.svg"
+      ? <BrandMark id={`${id}/brand/2`} name={asset.media.brands[2]} fallback="/logos/brand-osprey.svg"
           style={{ ...box, objectFit: 'contain' }} />
       : board(),
     // The board's logo until the brief names a brand.
     [PAID_SOCIAL_4X5_569_2507_FIGMA["brand/3"]]: (l, box, _n, board) => asset.media.brands?.[3]
-      ? <BrandMark id={`${id}/brand/3`} name={asset.media.brands[3]} fallback="/logos/brand-patagonia.svg"
+      ? <BrandMark id={`${id}/brand/3`} name={asset.media.brands[3]} fallback="/logos/brand-rab.svg"
+          style={{ ...box, objectFit: 'contain' }} />
+      : board(),
+    // The board's logo until the brief names a brand.
+    [PAID_SOCIAL_4X5_569_2507_FIGMA["brand/4"]]: (l, box, _n, board) => asset.media.brands?.[4]
+      ? <BrandMark id={`${id}/brand/4`} name={asset.media.brands[4]} fallback="/logos/brand-patagonia.svg"
           style={{ ...box, objectFit: 'contain' }} />
       : board(),
     [PAID_SOCIAL_4X5_569_2507_FIGMA["vector/538-37741"]]: (_l, box) => <img src="/figma-assets/named-sale/vector-538-37741.svg" alt="" data-figma-vector style={{ position: 'absolute',
@@ -93,7 +90,9 @@ export function PaidSocial4x5_569_2507({ asset }: { asset: SheetAsset }) {
   const crop = photo && layout.frame.crop ? cropOf(layout.frame.crop, [w, h], [photo.w, photo.h]) : undefined;
   const drawn = { ...layout, frame: { ...layout.frame, paints: layout.frame.paints?.filter(p => p.type !== 'IMAGE') } };
   // data-figma-compiled: the studio's Figma export reads a compiled board's way (toLayers).
-  return <Ground id={`${id}/fill`} className="sheet" data-figma-compiled="" style={{ width: w, height: h, position: 'relative', overflow: 'hidden', background: '#fff' }}>
+  // In an email built of sections, one band of the board (FigmaBand), not a sheet of its own.
+  const band = useBand();
+  return <Ground id={`${id}/fill`} className={band ? 'band' : 'sheet'} data-export-name={band?.name} data-figma-compiled="" style={{ width: w, height: band?.height ?? h, position: 'relative', overflow: 'hidden', background: '#fff' }}>
     <Picture id={`${id}/photo`} zone={zone} initialSrc={photo?.src} slot focus={crop?.focus}
       initialScale={crop?.initialScale} initialRotate={crop?.rotate} initialCrop={layout.frame.crop}
       style={{ position: 'absolute', inset: 0 }} />

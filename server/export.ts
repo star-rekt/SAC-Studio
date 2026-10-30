@@ -304,6 +304,34 @@ ONE WAY ONLY
   return { dir, zip, files: index.length, failed, brief, ms: Date.now() - started };
 }
 
+/** Every asset as a PNG, zipped: what a designer hands on when the campaign
+ *  needs no Figma. Rendered as the Figma export is (the shot page, the
+ *  session's own edits), into a temp folder that goes once the zip is read. */
+export async function pngZip(session: string, name: string, assets: Asset[], origin: string): Promise<Buffer> {
+  const scratch = await mkdtemp(join(tmpdir(), 'sac-png-'));
+  const dir = join(scratch, slug(name) || session);
+  try {
+    await mkdir(dir);
+    if (assets[0]) await warmUp(session, origin, assets[0], join(scratch, 'warmup.png'));
+    const queue = assets.map((asset, index) => ({ asset, index }));
+    const failed: string[] = [];
+    await Promise.all(Array.from({ length: Math.min(4, queue.length) }, async () => {
+      for (let job = queue.shift(); job; job = queue.shift()) {
+        const { asset, index } = job;
+        const url = `${origin}/?shot=${encodeURIComponent(asset.id)}&s=${encodeURIComponent(session)}`;
+        const file = join(dir, `${nameFor(asset, index)}.png`);
+        let shot = await shoot(url, asset.size[0], asset.size[1], file, { small: false });
+        if (!shot.ok) shot = await shoot(url, asset.size[0], asset.size[1], file, { small: false });
+        if (!shot.ok) failed.push(`${asset.label}: ${shot.error}`);
+      }
+    }));
+    if (failed.length) throw Error(`${failed.length} asset${failed.length === 1 ? '' : 's'} did not render -- ${failed.join('; ')}`);
+    return await readFile(await zipUp(dir));
+  } finally {
+    await rm(scratch, { recursive: true, force: true });
+  }
+}
+
 /** macOS and Linux both ship `zip`; without it the folder is still there. */
 const zipUp = (dir: string) => new Promise<string>((res, rej) => {
   const out = `${dir}.zip`;

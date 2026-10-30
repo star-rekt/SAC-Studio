@@ -16,7 +16,7 @@ import { useEdits } from '../../edit/store';
 import type { Zone } from '../../model/compose';
 import { cropOf, boxOf, type FigmaLayout, type FigmaLayer } from './layout';
 
-export function FigmaFrame({ id, size, layout, zone, photo, background, frameHeight, ground, fixed, after, centred, attrs, sheetStyle, children }: {
+export function FigmaFrame({ id, size, layout, zone, photo, background, frameHeight, ground, fixed, after, centred, attrs, children }: {
   /** The asset's id: the sheet is `<id>/fill`, the copy block `<id>/copy`. */
   id: string;
   /** The sheet's px size. */
@@ -40,8 +40,6 @@ export function FigmaFrame({ id, size, layout, zone, photo, background, frameHei
   /** Keep the copy exactly where it was designed; only the photo is framed. */
   centred?: boolean;
   attrs?: Record<string, string>;
-  /** Extra sheet styling (a design direction's clip shape). */
-  sheetStyle?: React.CSSProperties;
   children: ReactNode;
 }) {
   const { edits } = useEdits();
@@ -51,7 +49,7 @@ export function FigmaFrame({ id, size, layout, zone, photo, background, frameHei
   const cropped = at ? at.crop : layout.frame.crop;
   const crop = photo && cropped ? cropOf(cropped, at ? [at.w, at.h] : [fw, fh], photo.size) : undefined;
   return <Ground id={`${id}/fill`} className="sheet" {...attrs} style={{ width: w, height: h, position: 'relative',
-    overflow: 'hidden', background: background ?? layout.frame.fill, ...sheetStyle }}>
+    overflow: 'hidden', background: background ?? layout.frame.fill }}>
     <div style={{ position: 'absolute', width: fw, height: fh, pointerEvents: 'none',
       transform: `scale(${w / fw},${(frameHeight ?? h) / fh})`, transformOrigin: 'top left' }}>
       {ground}
