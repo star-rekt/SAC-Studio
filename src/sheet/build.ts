@@ -367,7 +367,12 @@ export function buildSheet(briefText: string, templateId: string, name?: string,
   // Only what was asked for. A brief requesting a hero, a banner and email
   // does not want a logo strip and two badging mocks as well -- that was
   // fifteen formats for every campaign whatever it said.
-  const asked = plan?.formats?.length ? plan.formats : brief.formats;
+  // An email header is its email's top, so asking for headers is asking for
+  // their emails: a brief that lists only "Launch Hero, Sustain Hero…" under
+  // Email came back as five headers and no emails. Not the other way round:
+  // lifecycle secondaries are emails without a header.
+  const listed = plan?.formats?.length ? plan.formats : brief.formats;
+  const asked = listed.includes('email-hero') ? [...new Set([...listed, 'email-body'])] : listed;
   const wanted = new Set(asked);
   const building = t.formats.filter(f => wanted.has(f.format));
   // Requested formats absent from the selected board are *custom boards*,

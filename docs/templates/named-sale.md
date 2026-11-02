@@ -1,9 +1,9 @@
-# Named Sale — change log
+# Named Sale (named_sale) — template log
 
 A template for a sale named for its occasion, compiled whole from the SC26_0027 Memorial Day
 board by the template lab (`template-lab/`, outside the repo). Branch `named-sale`, off
 `template-lab`. The proxy trial was dropped (branch `figma-proxy` deleted; its last commit was
-`9e12552`).
+`9e12552`). How the lab works: `../template-lab.md`. What reached the app, when: `../releases.md`.
 
 ## What's in it
 | Piece | File | What it does |
@@ -22,8 +22,9 @@ board by the template lab (`template-lab/`, outside the repo). Branch `named-sal
 | Email hero | `named-sale/NamedSale.tsx` (`NamedSaleHero`), `One.tsx` | A send's email hero is the top of its email design, cut where the hero ends (designs.ts `heroHeight`: its first section after the hero). Same component, same ids as the send's email body. |
 | Export | `src/render/toLayers.ts` | Transparent type isn't exported. It's the copy that carries a grain over a headline, and it came in as a black duplicate. |
 | Board check | `scripts/check-three-boards.tsx` | The smoke brief's offer is checked in the words as read (an offer set as "20" / "%" / "OFF" layers reads as one line). Named Sale's email hero is checked for the brief's offer number, not Claude's headline verbatim: its lockups have no headline line. |
-| Email heroes | `template-lab/heroes.json`, `named-sale/frames/<hero>/` | Each email design's hero section, compiled as a design of its own and paired with its email by id (design 3's hero is design 3). Replaces the earlier crop of the email body. It has its own edits: a logo changed in the email doesn't change its hero. |
-| Graphics | `FigmaLayers.tsx` (`FigmaMark`), `template-lab/codegen.mjs`, `named-sale/marks.json`, `src/data/mark-shapes.json`, `src/model/media.ts`, `public/graphics/named-sale-*.svg` | The board's graphics as library marks (recoloured, resized, swapped, exported as vector paths): the brush arrows as `bump2-arrow`; each pill (CTA, category button) as a mark of its own exact shape, its label and contents live over it; other one-colour art (offer brushes, bolts) as marks cut from the board's paths, its grain kept as an overlay. 50 marks, registered by integrate.mjs. |
+| Email headers | `named-sale/NamedSale.tsx` (`NamedSaleHero`), `template-lab/heroes.json` | A send's email header is its email's hero section, drawn as that band of the email under the email's own ids: one set of edits, so a photo or logo changed in either shows in both (as Bump's, Bump 2's and Flash's). Until 2026-10-30 each was a design compiled on its own, with its own edits, which is why a photo changed in the email didn't reach its header; those 15 designs are gone. `heroes.json` now only tells the lab which block of each email is its hero. |
+| Graphics | `FigmaLayers.tsx` (`FigmaMark`), `template-lab/codegen.mjs`, `named-sale/marks.json`, `src/data/mark-shapes.json`, `src/model/media.ts`, `public/graphics/named-sale-*.svg` | The board's graphics as library marks (recoloured, resized, swapped, exported as vector paths): the brush arrows as `bump2-arrow`; each pill (CTA, category button) as a mark of its own exact shape, its label and contents live over it; other one-colour art (offer brushes, bolts) as marks cut from the board's paths, its grain kept as an overlay. 32 marks, registered by integrate.mjs. Brand logos are never graphics (2026-10-30): a logo drawn light (a hero's brand row) is a brand slot the brief's brands fill; one drawn dark (the beige Top Brands tiles) stays as the board draws it, since the library's logos are white. |
+| Sections | `named-sale/designs.ts` (`sections`), `named-sale/sections.ts`, `render/emailSections.ts`, `template-lab/codegen.mjs` (`sectionsOf`) | Each email design split into its sections (nav, hero, product feeds, brand and category tiles, category buttons, footer, each with its look); an email can hide, reorder, restyle and add them, and a brief that lists sections builds them. See `../email-sections-log.md`. |
 | Renderer fixes | `FigmaLayers.tsx` | A boolean operation draws only its result (the bolts were gold: their operands drew over the white). A paragraph wraps at its board size (long copy was fitted as one line and shrank to 40%). A text's colour is its topmost fill ("Looking For More Deals?" was white on white). |
 | Roles | `template-lab/codegen.mjs`, `roles.dictionary.json` | Only a generic CTA ("Shop Now", "Shop All") takes the brief's; "Shop Men's" keeps its words. Photo slots by size against the frame's width (category thumbnails, product cut-outs), named `…/photo`. The "3 DAYS ONLY" sticker removed by its picture, wherever it is. Brand names with a note ("Osprey *NEW") match the stocked brand. An unstocked brand gets a stocked placeholder logo. The sale's name is swapped inside its line ("MEMORIAL DAY FAVORITES" → "LABOR DAY FAVORITES"). |
 | Compile | `scripts/figma-pull.ts`, `layout.ts` (`placeIn`) | A frame compiled on its own keeps its turn on the board. FULL: a mirrored layer (Figma reports a flip as a 180° turn) is recorded as `mirror`, apart from its turn, and placed and flipped as Figma draws it. Email design 13's hero is mirrored, with its type mirrored back: its photo showed the wrong part. Now 98% (email) and 98.4% (hero). |
@@ -43,16 +44,19 @@ board by the template lab (`template-lab/`, outside the repo). Branch `named-sal
   11 (97.9%), 13 (93.7%), 14 (97.95%), 15 (97.1%).
 
 ## Not done yet
-- **Email hero alone:** a send's standalone email-hero asset uses the shared vocabulary.
-- **Other formats:** tiles, bars, banners and badging also use the shared vocabulary.
-- **Figma export:** the export of `FigmaLayers` frames hasn't been checked against Figma yet.
-- **Fonts in the shipped app:** shipping these fonts is still open (the mirror is public).
-- **Images:** 38 MB of images to slim before mirroring.
+- **Small formats:** tiles, bars, banners and badging use the shared designs (Named Sale's own: the photo tile, the banner bar, the photo mobile hero); the board has no frames of these to compile.
+- **Figma export:** compiled frames export layer for layer (checked on every photo); a full check in Figma of every design is still open.
+- **Fonts:** shipped with the app; the mirror is public, so they are public with it.
+
+## History
+Newest first.
+- **2026-10-30** `4673f63`: the email header is its email's hero section, under the email's ids; the 15 separately compiled header designs removed (lab: integrate no longer pairs them).
+- **2026-10-30** `2990c3f` … `ec583ba`: sections (see `../email-sections-log.md`).
+- **2026-10-30** `e46cc8e`: brand logos are brand slots, not library graphics (50 marks → 32).
+- **2026-10-29** `65acc96`: fonts shipped (`public/fonts/`); images slimmed 39 MB → 21 MB (1800px, JPEG 72), the removed sticker dropped.
+- **2026-10-29** `7e42487`: the template, compiled whole from the Memorial Day board (4 heroes, 3 socials, 15 emails); phase-aware brief copy; graphics as library marks; Figma export of compiled frames.
+- **2026-10-29** `b3b399b`: full-detail compile (figma-pull FULL) and `FigmaLayers`, which every compiled frame is drawn with.
+- **2026-10-29** `e6d2a49`: brand slots search the Figma vendor-logo library.
 
 ## Rollback
-Committed on `named-sale`, 2026-10-30, newest first. Revert in this order:
-- `7e42487`: the Named Sale template (`git revert 7e42487`).
-- `b3b399b`: full-detail compile and FigmaLayers (Named Sale depends on it).
-- `e6d2a49`: Figma vendor-logo search for brand slots (independent).
-
-Not mirrored to SAC-Studio yet.
+Newest first; `git revert <sha>` in this order: `4673f63`, `e46cc8e`, then `65acc96`, `7e42487`, `b3b399b` (Named Sale depends on it), `e6d2a49` (independent). The sections commits are listed in `../email-sections-log.md`. In the app: mirror `cff7769` brought the template, `ce86f2a` the rest (`../releases.md`).

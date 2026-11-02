@@ -24,7 +24,7 @@ import { measureField } from '../edit/fieldFit';
 import type { FieldFit } from '../model/copyFit';
 import { listSessions, loadSession, saveSession, useAutosave, downloadFigmaFile, downloadPngs, type Card } from '../session/store';
 import { AiCheck } from './AiCheck';
-import { AddPanel } from './AddPanel';
+import { AddPanel, FrameSize } from './AddPanel';
 import { useEditApi } from '../edit/useEditApi';
 import { readBrief } from '../model/brief';
 import { readBriefWithAi } from '../ai/client';
@@ -76,10 +76,17 @@ function AddType({ have, offered, onAdd }: { have: string[]; offered: string[]; 
     const f = (custom ?? '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     if (/^[a-z][a-z0-9-]*$/.test(f)) { onAdd(f); setCustom(null); }
   };
+  const groups: [string, string[]][] = [['Main', ORDER.filter(f => offered.includes(f))],
+    ['Site and text', offered.filter(f => !ORDER.includes(f))]];
   return custom === null
     ? <select className="st-addtype" value="" onChange={e => e.target.value === '\u0000' ? setCustom('') : e.target.value && onAdd(e.target.value)} aria-label="Add an asset type">
         <option value="">+ Add an asset type</option>
-        {offered.filter(f => !have.includes(f)).map(f => <option key={f} value={f}>{nameOf(f)}</option>)}
+        {/* Every type the template has, the main ones first; those in the plan
+            show as such (more of one is its + on the plan). */}
+        {groups.map(([group, list]) => <optgroup key={group} label={group}>
+            {list.map(f => <option key={f} value={f} disabled={have.includes(f)}>
+              {nameOf(f)}{have.includes(f) ? ' · in the plan' : ''}</option>)}
+          </optgroup>)}
         <option value={'\u0000'}>Custom…</option>
       </select>
     : <div className="st-row st-addtype">
@@ -456,6 +463,9 @@ function Build({ format: start, formats, fine, sheet, setSheet, template, outloo
             }} /></>}
         {fine && api.selectedGroup.length > 0 ? <GroupRow /> : <>
         {!picked && <><p className="st-quiet">Click a photo, logo or line of copy on the asset to change it.</p>
+          {a.custom && <FrameSize asset={a} onSize={size => setSheet(s => s && ({ ...s, updatedAt: new Date().toISOString(),
+            plan: { ...s.plan, customSizes: { ...s.plan?.customSizes, [a.id]: size } },
+            assets: s.assets.map(x => x.id === a.id ? { ...x, size } : x) }))} />}
           <AddPanel asset={a} /></>}
         {picked && kind !== 'photo' && <h3>{kind === 'media' ? 'Logo or graphic' : kind === 'shape' ? 'Background' : 'Text'}</h3>}
         {kind === 'photo' && <PicturePanel id={picked!} />}

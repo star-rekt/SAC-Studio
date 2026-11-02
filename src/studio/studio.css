@@ -145,6 +145,8 @@ body:has(.st) { background: var(--paper); }
 .st-steps li.is-done { color: var(--ok); border-color: #b7d9ba; }
 /* Build: adding to an asset, and what's picked. */
 .st-add h3 { margin-top: 18px; }
+.st-edit .st-frame .st-row { align-items: center; gap: 6px; flex-wrap: nowrap; }
+.st-edit .st-frame input { font: inherit; width: 84px; margin: 0; padding: 7px 8px; border: 1px solid var(--line); border-radius: 8px; }
 .st-edit .st-add-text { width: 100%; margin: 0 0 6px; }
 .st-upload { display: flex; gap: 6px; }
 .st-edit .st-upload input { flex: 1; min-width: 0; margin: 0; }

@@ -21,12 +21,12 @@ export const editIds = (a: SheetAsset) => /^email-(body|hero)\//.test(a.id)
 
 /** What an asset was confirmed as: its design, sections, copy and its own
  *  edits (an email's and its header's together) -- graphics and text layers
- *  added to it too, where it has any. */
+ *  added to it too, where it has any, and a custom asset's frame once resized. */
 export const signature = (s: Sheet, a: SheetAsset) => {
   const ids = editIds(a);
   const own = (m?: Record<string, unknown>) => Object.entries(m ?? {})
     .filter(([k]) => ids.some(id => k.startsWith(`${id}/`) || k.startsWith(`${id}~`))).sort();
-  const added = [s.edits.graphics?.[a.id], s.edits.customText?.[a.id]].filter(x => x?.length);
+  const added = [s.edits.graphics?.[a.id], s.edits.customText?.[a.id], s.plan?.customSizes?.[a.id]].filter(x => x?.length);
   const text = JSON.stringify([a.variant, a.parts ?? null, a.copy, own(s.edits.text), own(s.edits.pic), own(s.edits.move),
     own(s.edits.size), own(s.edits.paint), ...added]);
   let h = 5381; for (let i = 0; i < text.length; i++) h = (h * 33 + text.charCodeAt(i)) >>> 0;

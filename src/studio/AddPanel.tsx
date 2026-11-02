@@ -9,6 +9,22 @@ import { byKind } from '../model/media';
 import { tagsFromFilename, type UserMedia } from '../model/userMedia';
 import type { SheetAsset } from '../sheet/types';
 
+/** A custom asset's frame: width × height in px, set on Enter or leaving the box. */
+export function FrameSize({ asset, onSize }: { asset: SheetAsset; onSize: (size: [number, number]) => void }) {
+  const [w, h] = asset.size;
+  const set = (i: 0 | 1, v: string) => {
+    const n = Math.round(Number(v));
+    if (n >= 50 && n <= 8000 && n !== asset.size[i]) onSize(i === 0 ? [n, h] : [w, n]);
+  };
+  const box = (i: 0 | 1) => <input key={`${asset.id}${i}${asset.size[i]}`} type="number" min={50} max={8000}
+    defaultValue={asset.size[i]} aria-label={i === 0 ? 'Width' : 'Height'}
+    onBlur={e => set(i, e.target.value)} onKeyDown={e => e.key === 'Enter' && set(i, e.currentTarget.value)} />;
+  return <section className="st-frame">
+    <h3>Frame</h3>
+    <div className="st-row">{box(0)}<span>×</span>{box(1)}<span className="st-quiet">px</span></div>
+  </section>;
+}
+
 export function AddPanel({ asset }: { asset: SheetAsset }) {
   const api = useEdits();
   const file = useRef<HTMLInputElement>(null);
